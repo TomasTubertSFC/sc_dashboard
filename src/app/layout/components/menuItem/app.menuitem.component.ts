@@ -8,12 +8,39 @@ import {
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { MenuService } from './app.menu.service';
+import { MenuService } from '../menu/app.menu.service';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: '[app-menuitem]',
   templateUrl: './app.menuitem.component.html',
+  animations: [
+    trigger('children', [
+      state(
+        'collapsed',
+        style({
+          height: '0',
+        })
+      ),
+      state(
+        'expanded',
+        style({
+          height: '*',
+        })
+      ),
+      transition(
+        'collapsed <=> expanded',
+        animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')
+      ),
+    ]),
+  ],
 })
 export class AppMenuitemComponent implements OnInit, OnDestroy {
   @Input() item: any;
@@ -32,10 +59,7 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
 
   key: string = '';
 
-  constructor(
-    public router: Router,
-    private menuService: MenuService
-  ) {
+  constructor(public router: Router, private menuService: MenuService) {
     //check to active route
     this.menuSourceSubscription = this.menuService.menuSource$.subscribe(
       (value) => {

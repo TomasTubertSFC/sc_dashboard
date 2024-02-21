@@ -9,38 +9,36 @@ import { BadgeModule } from 'primeng/badge';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { RippleModule } from 'primeng/ripple';
-import { AppMenuComponent } from './app.menu.component';
-import { AppMenuitemComponent } from './app.menuitem.component';
+import { AppMenuComponent } from './components/menu/app.menu.component';
+import { AppMenuitemComponent } from './components/menuItem/app.menuitem.component';
 import { RouterModule } from '@angular/router';
-import { AppTopBarComponent } from './app.topbar.component';
-import { AppFooterComponent } from './app.footer.component';
-// import { AppConfigModule } from './config/config.module';
-import { AppSidebarComponent } from "./app.sidebar.component";
-import { AppLayoutComponent } from "./app.layout.component";
+import { AppTopBarComponent } from './components/topbar/app.topbar.component';
+import { AppFooterComponent } from './components/footer/app.footer.component';
+import { AppSidebarComponent } from './components/sidebar/app.sidebar.component';
+import { AppLayoutComponent } from './components/layout/app.layout.component';
 
 @NgModule({
-    declarations: [
-        AppMenuitemComponent,
-        AppTopBarComponent,
-        AppFooterComponent,
-        AppMenuComponent,
-        AppSidebarComponent,
-        AppLayoutComponent,
-    ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        InputTextModule,
-        SidebarModule,
-        BadgeModule,
-        RadioButtonModule,
-        InputSwitchModule,
-        RippleModule,
-        RouterModule,
-        // AppConfigModule
-    ],
-    exports: [AppLayoutComponent]
+  declarations: [
+    AppMenuitemComponent,
+    AppTopBarComponent,
+    AppFooterComponent,
+    AppMenuComponent,
+    AppSidebarComponent,
+    AppLayoutComponent,
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    InputTextModule,
+    SidebarModule,
+    BadgeModule,
+    RadioButtonModule,
+    InputSwitchModule,
+    RippleModule,
+    RouterModule,
+  ],
+  exports: [AppLayoutComponent],
 })
-export class AppLayoutModule { }
+export class AppLayoutModule {}

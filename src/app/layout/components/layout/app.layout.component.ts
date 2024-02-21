@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subject, Subscription } from 'rxjs';
-import { AppSidebarComponent } from './app.sidebar.component';
-import { AppTopBarComponent } from './app.topbar.component';
+import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
+import { AppTopBarComponent } from '../topbar/app.topbar.component';
 
 interface LayoutState {
   staticMenuDesktopInactive: boolean;
@@ -20,9 +20,8 @@ interface LayoutState {
   templateUrl: './app.layout.component.html',
 })
 export class AppLayoutComponent implements OnDestroy {
-
   private overlayOpen = new Subject<any>();
- 
+
   sidebarMenuIsOpen: boolean = false;
 
   overlayOpen$ = this.overlayOpen.asObservable();
@@ -37,11 +36,10 @@ export class AppLayoutComponent implements OnDestroy {
     staticMenuDesktopInactive: false,
     staticMenuMobileActive: false,
   };
-  
+
   @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
   @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
-
 
   constructor(public renderer: Renderer2, public router: Router) {
     this.overlayMenuOpenSubscription = this.overlayOpen$.subscribe(() => {
@@ -80,7 +78,7 @@ export class AppLayoutComponent implements OnDestroy {
       });
   }
 
-  //Toggle sidebar menu 
+  //Toggle sidebar menu
   toggleSidebarMenu() {
     this.sidebarMenuIsOpen = !this.sidebarMenuIsOpen;
     if (this.isDesktop()) {
