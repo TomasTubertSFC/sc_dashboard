@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 
@@ -7,6 +7,7 @@ import { LayoutService } from "./service/app.layout.service";
     templateUrl: './app.topbar.component.html'
 })
 export class AppTopBarComponent {
+    @Output() toggleSidebar = new EventEmitter<void>();
 
     items!: MenuItem[];
 
@@ -17,4 +18,8 @@ export class AppTopBarComponent {
     @ViewChild('topbarmenu') menu!: ElementRef;
 
     constructor(public layoutService: LayoutService) { }
+
+    onToggleSidebar() {
+        this.toggleSidebar.emit();
+      }
 }

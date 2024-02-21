@@ -1,5 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
-// import { LayoutService } from './service/app.layout.service';
+import { LayoutService } from './service/app.layout.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,6 +7,6 @@ import { Component, ElementRef } from '@angular/core';
 })
 export class AppSidebarComponent {
   constructor(
-    // public layoutService: LayoutService, 
+    public layoutService: LayoutService, 
     public el: ElementRef) {}
 }

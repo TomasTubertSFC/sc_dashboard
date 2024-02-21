@@ -1,14 +1,19 @@
-<div class="layout-wrapper" [ngClass]="containerClass">
-    <app-topbar></app-topbar>
-    <div class="layout-sidebar">
-        <app-sidebar></app-sidebar>
+<!-- layout-theme-light layout-static p-ripple-disabled layout-static-inactive // layout-mobile-active-->
+<!-- <div
+  class="layout-wrapper layout-theme-light layout-static p-ripple-disabled"
+  [ngClass]="{ 'layout-static-inactive': !sidebarMenuIsOpen }"
+> -->
+<div class="layout-wrapper layout-theme-light layout-static p-ripple-disabled" [ngClass]="containerClass">
+  <app-topbar (toggleSidebar)="toggleSidebarMenu()" />
+  <div class="layout-sidebar">
+    <app-sidebar />
+  </div>
+  <div class="layout-main-container">
+    <div class="layout-main">
+      <router-outlet />
     </div>
-    <div class="layout-main-container">
-        <div class="layout-main">
-            <router-outlet></router-outlet>
-        </div>
-        <app-footer></app-footer>
-    </div>
-    <app-config></app-config>
-    <div class="layout-mask"></div>
+    <app-footer />
+  </div>
+  <!-- <app-config></app-config> -->
+  <div class="layout-mask"></div>
 </div>
