@@ -42,6 +42,8 @@ import {
     ]),
   ],
 })
+
+
 export class AppMenuitemComponent implements OnInit, OnDestroy {
   @Input() item: any;
 
