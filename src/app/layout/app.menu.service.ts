@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { MenuChangeEvent } from './api/menuchangeevent';
+
+export interface MenuChangeEvent {
+    key: string;
+    routeEvent?: boolean;
+}
 
 @Injectable({
     providedIn: 'root'
 })
+
 export class MenuService {
 
     private menuSource = new Subject<MenuChangeEvent>();
@@ -13,6 +18,7 @@ export class MenuService {
     menuSource$ = this.menuSource.asObservable();
     resetSource$ = this.resetSource.asObservable();
 
+    //Activate item with route
     onMenuStateChange(event: MenuChangeEvent) {
         this.menuSource.next(event);
     }

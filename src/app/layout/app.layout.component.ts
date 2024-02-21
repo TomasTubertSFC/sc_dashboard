@@ -10,10 +10,6 @@ import { filter, Subject, Subscription } from 'rxjs';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';
 
-interface AppConfig {
-  menuMode: string;
-}
-
 interface LayoutState {
   staticMenuDesktopInactive: boolean;
   staticMenuMobileActive: boolean;
@@ -24,9 +20,10 @@ interface LayoutState {
   templateUrl: './app.layout.component.html',
 })
 export class AppLayoutComponent implements OnDestroy {
-  sidebarMenuIsOpen: boolean = false;
 
   private overlayOpen = new Subject<any>();
+ 
+  sidebarMenuIsOpen: boolean = false;
 
   overlayOpen$ = this.overlayOpen.asObservable();
 
@@ -34,27 +31,19 @@ export class AppLayoutComponent implements OnDestroy {
 
   menuOutsideClickListener: any;
 
-  profileMenuOutsideClickListener: any;
-
-  @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
-
-  @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
-
-  _config: AppConfig = {
-    menuMode: 'static',
-  };
-
-  config = signal<any>(this._config);
+  menuMode: string = 'static';
 
   state: LayoutState = {
     staticMenuDesktopInactive: false,
     staticMenuMobileActive: false,
   };
+  
+  @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
-  constructor(
-    public renderer: Renderer2,
-    public router: Router
-  ) {
+  @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
+
+
+  constructor(public renderer: Renderer2, public router: Router) {
     this.overlayMenuOpenSubscription = this.overlayOpen$.subscribe(() => {
       if (!this.menuOutsideClickListener) {
         this.menuOutsideClickListener = this.renderer.listen(
@@ -91,6 +80,7 @@ export class AppLayoutComponent implements OnDestroy {
       });
   }
 
+  //Toggle sidebar menu 
   toggleSidebarMenu() {
     this.sidebarMenuIsOpen = !this.sidebarMenuIsOpen;
     if (this.isDesktop()) {
@@ -145,9 +135,8 @@ export class AppLayoutComponent implements OnDestroy {
   get containerClass() {
     return {
       'layout-static-inactive':
-        this.state.staticMenuDesktopInactive &&
-        this.config().menuMode === 'static',
-        'layout-mobile-active': this.state.staticMenuMobileActive,
+        this.state.staticMenuDesktopInactive && this.menuMode,
+      'layout-mobile-active': this.state.staticMenuMobileActive,
     };
   }
 
