@@ -15,7 +15,7 @@ export class AppMenuComponent implements OnInit {
                 label: '',
                 items: [
                     { label: 'Resumen', icon: '', routerLink: ['/'] },
-                    { label: 'Episodios de olor', icon: '', routerLink: ['/episodios'] },
+                    { label: 'Episodios de olor', icon: '', routerLink: ['/episodes'] },
                     { label: 'Registros de olor', icon: '', routerLink: ['/registros'] },
                     { label: 'Informes', icon: '',  command: () => {console.log('command')} },
                     { label: 'Descargar CSV', icon: '', command: () => {console.log('command')} },

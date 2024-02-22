@@ -6,6 +6,9 @@ const routes: Routes = [
   {
     path: '',
     component: AppLayoutComponent,
+    children: [
+        { path: 'episodes', loadChildren: () => import('./modules/episodes/episodes.module').then(m => m.EpisodesModule) },
+    ]
   },
 ];
 
@@ -20,3 +23,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
+
