@@ -1,22 +1,44 @@
-interface point {
+interface Point {
   x: number;
   y: number;
   id?: number | undefined | null;
 }
-interface convexHull {
-  prevPoint: point;
-  observation: point;
-  nextPoint: point;
+interface ConvexHull {
+  prevPoint: Point;
+  observation: Point;
+  nextPoint: Point;
+}
+interface Angle{
+  angle: number;
+  vertexPosition: Point;
+  initialSidePosition: Point;
+  terminalSidePosition: Point;
 }
 
 export class Cone {
 
-  private points: point[];
+  public initialAdjacentAngle!: Angle;
+  public observationCone!: Angle;
+  public terminalAdjacentAngle!: Angle;
+  public completeConeCoordinates!: Angle;
+  private coneSize!: number;
 
-  constructor(points: point[]) {
-    this.points = points;
+  constructor(private points: Point[], private observation: Point) {
+    if (!points.find(point => point === observation)) {
+        points.push(observation);
+    }
+    let convexHull = this.getCompleteConvexHull(points);
+    let observationConvexHull = this.getObservationConvexHull(convexHull, observation);
+    if (observationConvexHull === null) {
+      return;
+    }
+    else{
+      this.coneSize = this.getConeSize(convexHull, observation);
+      this.calculateCone(observationConvexHull, this.coneSize);
+    }
   }
-    /**
+
+  /**
    * Calcula la envolvente convexa de un conjunto de puntos utilizando el algoritmo de Graham.
    *
    * @param {Object[]} points - Un array de objetos que representan los puntos. Cada objeto debe tener propiedades 'x' e 'y'.
@@ -31,7 +53,7 @@ export class Cone {
    * ];
    * let convexHull = getCompleteConvexHull(points);
    */
-  private getCompleteConvexHull(points: point[]) {
+  private getCompleteConvexHull(points: Point[]) {
     const n = points.length;
 
     if (n < 2) {
@@ -42,7 +64,7 @@ export class Cone {
     points.sort((a, b) => a.y - b.y);
 
     // Función auxiliar para determinar la orientación de tres puntos
-    function orientation(p:point, q:point, r:point) {
+    function orientation(p:Point, q:Point, r:Point) {
         const val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
         if (val === 0) return 0; // Colineales
         return (val > 0) ? 1 : 2; // En sentido horario o antihorario
@@ -101,7 +123,7 @@ export class Cone {
    * let observation = {x: 30, y: 40};
    * let convexHull = getObservationConvexHull(puntos, puntoObservacion);
    */
-  private getObservationConvexHull(convexHull:point[], observation:point) {
+  private getObservationConvexHull(convexHull:Point[], observation:Point) {
 
     convexHull = convexHull.filter((item, index) => {
         return convexHull.indexOf(item) === index;
@@ -141,10 +163,10 @@ export class Cone {
    * let observation = {x: 15, y: 25};
    * let maxDistance = getConeSize(observationConvexHull, observation);
    */
-  private getConeSize(convexHull:point[], observation:point) {
+  private getConeSize(convexHull:Point[], observation:Point) {
 
     // Función para calcular la distancia euclidiana entre dos puntos
-    function calculateDistance(p1:point, p2:point) {
+    function calculateDistance(p1:Point, p2:Point) {
         let dx = p2.x - p1.x;
         let dy = p2.y - p1.y;
         return Math.sqrt(dx * dx + dy * dy);
@@ -176,7 +198,7 @@ export class Cone {
    * let p2 = {x: 50, y: 60};
    * let angle = 90
    */
-  private calculateAngle(p1:point, vertex:point, p2:point) {
+  private calculateAngle(p1:Point, vertex:Point, p2:Point) {
     if (p1.x === p2.x && p1.y === p2.y) {
         return 0;
     }
@@ -215,7 +237,7 @@ export class Cone {
    * let coneSize = 100;
    * let cone = calculateCone(convexHull, coneSize);
    */
-  private calculateCone(convexHull:convexHull, coneSize:number, adjacentDegrees = 30) {
+  private calculateCone(convexHull:ConvexHull, coneSize:number, adjacentDegrees = 30) {
 
     const angle = this.calculateAngle(convexHull.prevPoint, convexHull.observation, convexHull.nextPoint);
 
@@ -235,34 +257,32 @@ export class Cone {
         y: convexHull.observation.y + coneSize * Math.sin(terminalAnglePointInRadians)
     };
 
-    const observationCone = {
+    this.observationCone = {
         angle: angle,
         vertexPosition: convexHull.observation,
         initialSidePosition: convexHull.prevPoint,
         terminalSidePosition: convexHull.nextPoint,
     };
 
-    const initialAdjacentAngle = {
+    this.initialAdjacentAngle = {
         angle: adjacentDegrees,
         vertexPosition: convexHull.observation,
         initialSidePosition: pointRadiusInitialCone,
         terminalSidePosition: convexHull.prevPoint,
     };
 
-    const terminalAdjacentAngle = {
+    this.terminalAdjacentAngle = {
         angle: adjacentDegrees,
         vertexPosition: convexHull.observation,
         initialSidePosition: convexHull.nextPoint,
         terminalSidePosition: pointRadiusTerminalCone,
     };
 
-    const completeConeCoordinates = [convexHull.observation, pointRadiusInitialCone, pointRadiusTerminalCone];
-
-    return {
-        initialAdjacentAngle: initialAdjacentAngle,
-        observationCone: observationCone,
-        terminalAdjacentAngle: terminalAdjacentAngle,
-        completeConeCoordinates: completeConeCoordinates
+    this.completeConeCoordinates = {
+      angle: this.terminalAdjacentAngle.angle + this.observationCone.angle + this.initialAdjacentAngle.angle,
+      vertexPosition: convexHull.observation,
+      initialSidePosition: pointRadiusInitialCone,
+      terminalSidePosition: pointRadiusTerminalCone
     };
 
   }
@@ -288,7 +308,7 @@ export class Cone {
    * let observation = {x: 30, y: 40};
    * drawPoints(context, points, observation);
    */
-  private drawPoints(canvas:HTMLCanvasElement, points:point[] , observation:point, defaultColor:string = '#000', observationColor:string = '#0f0', pointSize:number = 5) {
+  private drawPoints(canvas:HTMLCanvasElement, points:Point[] , observation:Point, defaultColor:string = '#000', observationColor:string = '#0f0', pointSize:number = 5) {
     let ctx = canvas.getContext('2d');
     if (ctx){
       ctx.fillStyle = defaultColor;
@@ -327,4 +347,94 @@ export class Cone {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
+  /**
+   * Dibuja un cono de observación y sus ángulos adyacentes en un contexto de canvas.
+   *
+   * @param {CanvasRenderingContext2D} context - El contexto 2D del canvas en el que se dibujará el cono.
+   * @param {Object} cone - Un objeto que representa el cono y sus ángulos adyacentes.
+   * @param {number} coneSize - El tamaño del cono.
+   * @param {string} [adjacentColor='#00F'] - El color de los ángulos adyacentes. Es opcional y su valor por defecto es '#00F'.
+   * @param {string} [observationColor='#F00'] - El color del cono de observación. Es opcional y su valor por defecto es '#F00'.
+   * @param {number} [pointSize=null] - El tamaño de los puntos que representan los ángulos adyacentes. Es opcional y su valor por defecto es null.
+   *
+   * @example
+   * let context = document.getElementById('canvas').getContext('2d');
+   * let cone = {
+   *     observationCone: {
+   *         vertexPosition: {x: 30, y: 40},
+   *         initialSidePosition: {x: 10, y: 20},
+   *         terminalSidePosition: {x: 50, y: 60},
+   *         angle: 90,
+   *     },
+   *     initialAdjacentAngle: {
+   *         initialSidePosition: {x: 10, y: 20},
+   *         angle: 30,
+   *     },
+   *     terminalAdjacentAngle: {
+   *         terminalSidePosition: {x: 50, y: 60},
+   *         angle: 30,
+   *     },
+   * };
+   * let coneSize = 100;
+   * drawCone(context, cone, coneSize);
+   */
+  public drawCone(canvas:HTMLCanvasElement, adjacentColor:string = '#00F', observationColor:string = '#F00', pointSize:number|null = null) {
+
+    // Dibujar el arco del angulo de observacion abarcando todos los puntos
+    const initialAnglePoint = this.calculateAngle({ x: this.observationCone.vertexPosition.x + 1000, y: this.observationCone.vertexPosition.y }, this.observationCone.vertexPosition, this.observationCone.initialSidePosition) * (Math.PI / 180);
+    const finalAnglePoint = this.calculateAngle({ x: this.observationCone.vertexPosition.x + 1000, y: this.observationCone.vertexPosition.y }, this.observationCone.vertexPosition, this.observationCone.terminalSidePosition) * (Math.PI / 180);
+    let ctx = canvas.getContext('2d');
+    if (ctx){
+      ctx.strokeStyle = observationColor;
+      ctx.lineWidth = 1;
+      ctx.fillStyle = this.hexToRGBA(observationColor, 0.2);
+      ctx.beginPath();
+      ctx.arc(this.observationCone.vertexPosition.x, this.observationCone.vertexPosition.y, this.coneSize, initialAnglePoint, finalAnglePoint, false);
+      ctx.lineTo(this.observationCone.vertexPosition.x, this.observationCone.vertexPosition.y);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fill();
+
+      // Dibujar 30º de angulo desde el punto previo
+      ctx.strokeStyle = adjacentColor;
+      ctx.lineWidth = 1;
+      ctx.fillStyle = this.hexToRGBA(adjacentColor, 0.2);
+      ctx.beginPath();
+      ctx.arc(this.observationCone.vertexPosition.x, this.observationCone.vertexPosition.y, this.coneSize, initialAnglePoint, initialAnglePoint + (- this.initialAdjacentAngle.angle * (Math.PI / 180)), true);
+      ctx.lineTo(this.observationCone.vertexPosition.x, this.observationCone.vertexPosition.y);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fill();
+
+      // Dibujar ángulo adyacente final
+      ctx.beginPath();
+      ctx.arc(this.observationCone.vertexPosition.x, this.observationCone.vertexPosition.y, this.coneSize, finalAnglePoint, finalAnglePoint + (this.terminalAdjacentAngle.angle * (Math.PI / 180)), false);
+      ctx.lineTo(this.observationCone.vertexPosition.x, this.observationCone.vertexPosition.y);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fill();
+
+      // Dibujar el cono de observación si se ha pasado el parametro pointSize
+      if (pointSize) {
+          // Dibujar punto en ángulo adyacente inicial
+          ctx.strokeStyle = '#000';
+          ctx.beginPath();
+          ctx.arc(this.initialAdjacentAngle.initialSidePosition.x, this.initialAdjacentAngle.initialSidePosition.y, 5, 0, 2 * Math.PI);
+          ctx.stroke();
+
+          // Dibujar punto en ángulo adyacente final
+          ctx.strokeStyle = '#000';
+          ctx.beginPath();
+          ctx.arc(this.terminalAdjacentAngle.terminalSidePosition.x, this.terminalAdjacentAngle.terminalSidePosition.y, 5, 0, 2 * Math.PI);
+          ctx.stroke();
+      }
+
+      // Dibujar número de grados del angulo del cono de observación
+      ctx.fillStyle = '#F00';
+      ctx.font = '20px Arial';
+      ctx.fillText(`${this.observationCone.angle.toFixed(2)}°`, this.observationCone.vertexPosition.x + 10, this.observationCone.vertexPosition.y - 10);
+      ctx.fillStyle = '#00F';
+      ctx.fillText(`${(this.observationCone.angle + this.terminalAdjacentAngle.angle + this.initialAdjacentAngle.angle).toFixed(2)}°`, this.observationCone.vertexPosition.x + 10, this.observationCone.vertexPosition.y + 10);
+    }
+  }
 }
