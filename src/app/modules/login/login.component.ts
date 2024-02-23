@@ -52,6 +52,8 @@ export class LoginComponent {
     private messageService: MessageService,
     private router: Router
   ) {
+    this.authService.isLoggedIn.value && this.router.navigate(['/']);
+    
     this.router.events
       .pipe(
         filter(
