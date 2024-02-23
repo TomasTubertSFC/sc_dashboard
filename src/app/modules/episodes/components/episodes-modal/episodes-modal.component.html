@@ -1,0 +1,15 @@
+@if(!episdoesSidebarVisible){
+  <button id="toggleModalButton" pButton pRipple class="p-button-rounded p-button-help" (click)="onToggleEpisodesModal()">
+    <i class="pi pi-bars" style="font-size: 2rem;"></i>
+  </button>
+}
+<div id="episodesModal" #episodesModal></div>
+<p-sidebar [(visible)]="episdoesSidebarVisible" [appendTo]="episodesModal" [position]="'right'" [styleClass]="'floatSidebar lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
+  <h3>Episodios de olor</h3>
+  <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  </p>
+</p-sidebar>
+
+
