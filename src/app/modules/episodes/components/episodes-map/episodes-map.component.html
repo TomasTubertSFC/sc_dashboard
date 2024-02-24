@@ -8,11 +8,11 @@
     @for(point of points; track point){
       <mgl-marker [lngLat]="[point.x, point.y]" />
     }
-    @for(cone of canvas; track cone){
-      <mgl-canvas-source id="route" [canvas]="cone"  />
-    }
+
   </mgl-map>
 }
-@if(canvas){
-  {{canvas[0]}}
+
+@if(points && observation){
+  <app-episodes-map-cone [points]="points" [observation]="observation" ></app-episodes-map-cone>
 }
+

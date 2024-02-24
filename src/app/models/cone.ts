@@ -1,3 +1,5 @@
+import { ElementRef } from "@angular/core";
+
 interface Point {
   x: number;
   y: number;
@@ -21,19 +23,53 @@ export class Cone {
   public observationCone!: Angle;
   public terminalAdjacentAngle!: Angle;
   public completeConeCoordinates!: Angle;
-  private coneSize!: number;
+  public coneSize!: number;
+  private minX: number = 0;
+  private maxX: number = 0;
+  private minY: number = 0;
+  private maxY: number = 0;
+  private mapWidth: number = 0;
+  private mapHeight: number = 0;
+  private mapCenterX: number = 0;
+  private mapCenterY: number = 0;
+  private scale: number = 0;
 
-  constructor(private points: Point[], private observation: Point) {
+  constructor(public points: Point[], public observation: Point, toDraw:boolean = false, canvasHeight:number = 0, canvasWidth:number = 0) {
     if (!points.find(point => point === observation)) {
         points.push(observation);
     }
-    let convexHull = this.getCompleteConvexHull(points);
-    let observationConvexHull = this.getObservationConvexHull(convexHull, observation);
+    let convexHull = this.getCompleteConvexHull(this.points);
+    this.coneSize = this.getConeSize(convexHull, observation);
+
+    if(toDraw && canvasHeight && canvasWidth){
+      this.coneSize = (Math.min(canvasHeight, canvasWidth) / 2) - 2;
+      this.minX = this.observation.x - this.coneSize;
+      this.maxX = this.observation.x + this.coneSize;
+      this.minY = this.observation.y - this.coneSize;
+      this.maxY = this.observation.y + this.coneSize;
+      this.mapWidth = this.maxX - this.minX;
+      this.mapHeight = this.maxY - this.minY;
+      this.mapCenterX = (this.maxX + this.minX) / 2;
+      this.mapCenterY = (this.maxY + this.minY) / 2;
+      this.scale = Math.min(canvasWidth / this.mapWidth, canvasHeight / this.mapHeight);
+      this.points = this.points.map(point => ({
+        x: (point.x - this.mapCenterX) * this.scale + canvasWidth / 2 - 1,
+        y: ((point.y + ( (this.observation.y - point.y) * 2 )) - this.mapCenterY) * this.scale + canvasHeight / 2 - 1,
+        id: point.id
+      }));
+      this.observation = {
+        x: (this.observation.x - this.mapCenterX) * this.scale + canvasWidth / 2 - 1,
+        y: (this.observation.y - this.mapCenterY) * this.scale + canvasHeight / 2 - 1,
+        id: this.observation.id
+      };
+    }
+
+    convexHull = this.getCompleteConvexHull(this.points);
+    let observationConvexHull = this.getObservationConvexHull(convexHull, this.observation);
     if (observationConvexHull === null) {
       return;
     }
     else{
-      this.coneSize = this.getConeSize(convexHull, observation);
       this.calculateCone(observationConvexHull, this.coneSize);
     }
   }
@@ -378,12 +414,16 @@ export class Cone {
    * let coneSize = 100;
    * drawCone(context, cone, coneSize);
    */
-  public drawCone(canvas:HTMLCanvasElement, adjacentColor:string = '#00F', observationColor:string = '#F00', pointSize:number|null = null) {
+  public drawCone(canvas:ElementRef<HTMLCanvasElement>, adjacentColor:string = '#00F', observationColor:string = '#F00', pointSize:number|null = null) {
+
 
     // Dibujar el arco del angulo de observacion abarcando todos los puntos
     const initialAnglePoint = this.calculateAngle({ x: this.observationCone.vertexPosition.x + 1000, y: this.observationCone.vertexPosition.y }, this.observationCone.vertexPosition, this.observationCone.initialSidePosition) * (Math.PI / 180);
     const finalAnglePoint = this.calculateAngle({ x: this.observationCone.vertexPosition.x + 1000, y: this.observationCone.vertexPosition.y }, this.observationCone.vertexPosition, this.observationCone.terminalSidePosition) * (Math.PI / 180);
-    let ctx = canvas.getContext('2d');
+    console.log(canvas);
+    let ctx = canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
+
+
     if (ctx){
       ctx.strokeStyle = observationColor;
       ctx.lineWidth = 1;

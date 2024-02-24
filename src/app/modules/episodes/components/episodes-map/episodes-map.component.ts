@@ -9,28 +9,24 @@ import { Point } from 'chart.js';
   styleUrl: './episodes-map.component.scss'
 })
 export class EpisodesMapComponent {
-  private cone!: Cone;
+  public cone: Cone | undefined;
   public points!: Point[];
   public observation!: Point;
-  public canvas!: HTMLCanvasElement[];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
 
-  ngOnInit(): void {
     this.http.get<any[]>('/assets/data/points.json').subscribe(data => {
       let getPoints = 70;
-        this.points = data.slice(getPoints, getPoints + 6).map(point => {
+        this.points = data.slice(getPoints, getPoints + 5).map(point => {
         return {
-          x: point.longitude,
-          y: point.latitude
+          x: Number(point.longitude),
+          y: Number(point.latitude)
         };
       });
-      this.observation = this.points[0];
-      //this.cone = new Cone(this.points, this.observation);
-      //this.canvas[0] = new HTMLCanvasElement();
-      //this.canvas[0].width = 800;
-      //this.canvas[0].height = 800;
-      //this.cone.drawCone(this.canvas[0])
+      this.observation = this.points[4];
     });
+  }
+
+  ngOnInit(): void {
   }
 }
