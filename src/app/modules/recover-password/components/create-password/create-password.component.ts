@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavigationEnd, Router, Event, ActivatedRoute } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from '../../../../services/auth/auth.service';
 
@@ -20,6 +19,14 @@ export class CreatePasswordComponent {
   password!: string;
 
   loading: boolean = false;
+
+  showPasswords: {
+    password: boolean;
+    password_confirmation: boolean;
+  } = {
+    password: false,
+    password_confirmation: false,
+  };
 
   private token!: string | null;
   private email!: string | null;
@@ -50,6 +57,11 @@ export class CreatePasswordComponent {
     if (!this.token && !this.email) {
       this.router.navigate(['/login']);
     }
+  }
+
+  toggleShowPassword(field: string) {
+    this.showPasswords[field as keyof typeof this.showPasswords] =
+      !this.showPasswords[field as keyof typeof this.showPasswords];
   }
 
   showSuccess() {
@@ -87,23 +99,13 @@ export class CreatePasswordComponent {
       next: () => {
         this.showSuccess();
         this.loading = false;
-        this.router.navigate(['/login']);
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1500);
       },
       error: (resp) => {
         if (resp.status == 422) {
           this.showWarn();
-          Object.keys(resp.error.errors)
-            .map((key) => key)
-            .forEach((field) => {
-              let errors: { [error: string]: true } = resp.error.errors[
-                field
-              ].reduce((acc: any, error: string) => {
-                acc[error] = true;
-                return acc;
-              }, {});
-              this.newPasswordForm.controls[field].setErrors(errors);
-              this.newPasswordForm.controls[field].markAsTouched();
-            });
         }
         this.loading = false;
       },

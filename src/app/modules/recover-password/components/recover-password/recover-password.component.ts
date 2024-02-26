@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavigationEnd, Router, Event } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../../../services/auth/auth.service';
 
 import { MessageService } from 'primeng/api';
-
 
 @Component({
   selector: 'app-recover-password',
@@ -14,7 +12,6 @@ import { MessageService } from 'primeng/api';
   styleUrl: './recover-password.component.scss',
   providers: [MessageService],
 })
-
 export class RecoverPasswordComponent {
   valCheck: string[] = ['remember'];
 

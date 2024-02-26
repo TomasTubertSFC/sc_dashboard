@@ -10,6 +10,8 @@ import { SharedComponentsModule } from '../../shared/shared.module';
 import { ToastModule } from 'primeng/toast';
 import { RecoverPasswordComponent } from './components/recover-password/recover-password.component';
 import { CreatePasswordComponent } from './components/create-password/create-password.component';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @NgModule({
   imports: [
@@ -23,7 +25,9 @@ import { CreatePasswordComponent } from './components/create-password/create-pas
     RouterModule,
     SharedComponentsModule,
     ToastModule,
+    InputGroupModule,
+    InputGroupAddonModule,
   ],
-  declarations: [RecoverPasswordComponent,CreatePasswordComponent],
+  declarations: [RecoverPasswordComponent, CreatePasswordComponent],
 })
 export class RecoverPasswordModule {}
