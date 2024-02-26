@@ -3,10 +3,10 @@ import {
   OnDestroy,
   Renderer2,
   ViewChild,
-  signal,
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subject, Subscription } from 'rxjs';
+
 import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
 import { AppTopBarComponent } from '../topbar/app.topbar.component';
 
