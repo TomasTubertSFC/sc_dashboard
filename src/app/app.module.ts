@@ -14,6 +14,7 @@ import { authInterceptorProviders } from './interceptor/auth.interceptor';
 import { LoginModule } from './modules/login/login.module';
 import { initializeInterceptorProvider } from './helpers/intializeApp';
 import { AuthService } from './services/auth/auth.service';
+import { RecoverPasswordModule } from './modules/recover-password/recover-password.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { AuthService } from './services/auth/auth.service';
     BrowserAnimationsModule,
     HttpClientModule,
     LoginModule,
+    RecoverPasswordModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',

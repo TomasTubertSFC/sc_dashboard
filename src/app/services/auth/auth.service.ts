@@ -6,9 +6,18 @@ import { catchError, filter } from 'rxjs/operators';
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { environment } from '../../../environments/environments';
 
+export interface RecoverPasswords {
+  password: String;
+  password_confirmation: String;
+  token?: String | null;
+  email?: String | null;
+}
+
+
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthService {
   private _isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
@@ -112,5 +121,29 @@ export class AuthService {
         // this.user = undefined;
         this.router.navigate(['/login']);
       });
+  }
+
+  recoverPasswordEmail(email: string): Observable<Object> {
+    return this.http.post(
+      `${environment.BACKEND_BASE_URL}/forgot-password`,
+      { email },
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  }
+
+  postCreatePasswords(passwords: RecoverPasswords): Observable<Object> {
+    return this.http.post(
+      `${environment.BACKEND_BASE_URL}/reset-password`,
+      { ...passwords },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
   }
 }
