@@ -1,10 +1,16 @@
-import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth/auth.service';
-import { environment } from '../../environments/environments';
+import { APP_INITIALIZER } from '@angular/core';
 
-export default function initializeAppFactory(
-  authService: AuthService,
+function initializeAppFactory(
+  authService: AuthService
 ): () => Observable<boolean | { status: number; data: any }> {
   return () => authService.userIsLogged();
 }
+
+export const initializeInterceptorProvider = {
+  provide: APP_INITIALIZER,
+  useFactory: initializeAppFactory,
+  deps: [AuthService],
+  multi: true,
+};

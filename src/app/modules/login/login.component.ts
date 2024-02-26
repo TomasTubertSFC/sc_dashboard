@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth/auth.service';
-import { MessageService } from 'primeng/api';
-import { filter } from 'rxjs/operators';
 import { NavigationEnd, Router, Event } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+import { AuthService } from '../../services/auth/auth.service';
+
+import { MessageService } from 'primeng/api';
 
 export interface UserLogin {
   email: String;
@@ -98,14 +100,6 @@ export class LoginComponent {
       next: () => {
         this.showSuccess();
         this.router.navigate(['/']);
-
-        // if (this.lastUrl) {
-        //   this.router.navigate([this.lastUrl]);
-        //   this.lastUrl = null;
-        // } else {
-        //   console.log('else', this.lastUrl);
-        //   this.router.navigate(['/']);
-        // }
         this.loading = false;
       },
       error: (resp: any) => {

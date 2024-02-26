@@ -12,7 +12,7 @@ import {
 } from '@angular/common/http';
 import { authInterceptorProviders } from './interceptor/auth.interceptor';
 import { LoginModule } from './modules/login/login.module';
-import initializeAppFactory from './helpers/intializeApp';
+import { initializeInterceptorProvider } from './helpers/intializeApp';
 import { AuthService } from './services/auth/auth.service';
 
 @NgModule({
@@ -30,12 +30,7 @@ import { AuthService } from './services/auth/auth.service';
     }),
   ],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeAppFactory,
-      deps: [AuthService],
-      multi: true,
-    },
+    initializeInterceptorProvider,
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     authInterceptorProviders,
   ],

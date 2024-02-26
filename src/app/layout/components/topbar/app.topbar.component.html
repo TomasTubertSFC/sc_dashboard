@@ -2,13 +2,22 @@
   <icon-odour-logo [iconClass]="'w-full'" />
   <div class="flex gap-4 align-items-center">
     <h1 class="m-0 d-none hidden lg:block">Zona de estudio 1</h1>
-    <button pButton type="button" class="p-button-rounded p-button-secondary hidden lg:block">
+    <button
+      pButton
+      type="button"
+      class="p-button-rounded p-button-secondary hidden lg:block"
+    >
       Filtro tiempo
     </button>
-    <button pButton type="button" class="p-button-rounded p-button-secondary hidden lg:block">
+    <button
+      pButton
+      type="button"
+      class="p-button-rounded p-button-secondary hidden lg:block"
+    >
       Cambiar zona de estudio
     </button>
     <button
+      (click)="profileMenu.toggle($event)"
       class="m-0 p-link layout-menu-button layout-topbar-button hidden lg:flex"
     >
       <i class="pi pi-user"></i>
@@ -20,5 +29,6 @@
     >
       <i class="pi pi-bars"></i>
     </button>
+    <p-menu #profileMenu [model]="profileItems" [popup]="true" />
   </div>
 </div>
