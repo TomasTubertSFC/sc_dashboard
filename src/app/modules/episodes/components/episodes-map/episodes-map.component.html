@@ -1,6 +1,26 @@
-<mgl-map class="card"
-    [style]="'mapbox://styles/mapbox/streets-v9'"
-    [zoom]="[9]"
-    [center]="[-74.50, 40]"
-    [projection]="'globe'"
-  ></mgl-map>
+@if(observation){
+  <mgl-map class="card"
+      [style]="'mapbox://styles/mapbox/streets-v9'"
+      [zoom]="[17]"
+      [center]="[observation.x, observation.y]"
+      [projection]="{
+        name: 'albers',
+        center: [observation.x, observation.y],
+        parallels: [observation.x, observation.y]
+      }"
+    >
+    @for(point of points; track point){
+      <mgl-marker [lngLat]="[point.x, point.y]" />
+    }
+    @if(cone){
+      <mgl-canvas-source
+        [id]="'canvasCone'"
+        [canvas]="'canvasCone'"
+        [coordinates]="cone.imageCoordinates"
+        [animate]="false"
+        ></mgl-canvas-source>
+      <mgl-layer id="canvasLayer" type="raster" [source]="'canvasCone'" [paint]="{'raster-opacity':1}"></mgl-layer>
+    }
+  </mgl-map>
+}
+<canvas #canvasCone id="canvasCone" [width]="canvasWidth" [height]="canvasHeight" style="display: none;"></canvas>
