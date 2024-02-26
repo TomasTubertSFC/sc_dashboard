@@ -1,0 +1,80 @@
+<div
+  class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+>
+  <div class="flex flex-column align-items-center justify-content-center">
+    <icon-odour-collect [iconClass]="'mb-5 w-9rem'" />
+    <div
+      style="
+        border-radius: 56px;
+        padding: 0.3rem;
+        background: linear-gradient(
+          180deg,
+          var(--primary-color) 10%,
+          rgba(33, 150, 243, 0) 30%
+        );
+      "
+    >
+      <div
+        class="w-full surface-card py-8 px-5 sm:px-8"
+        style="border-radius: 53px"
+      >
+        <div class="text-center mb-5">
+          <div class="text-900 text-3xl font-medium mb-3">
+            Accede al Dashboard
+          </div>
+          <span class="text-600 font-medium">Inicia sesión para continuar</span>
+        </div>
+        <form [formGroup]="loginForm" class="flex flex-column gap-5">
+          <span class="p-float-label">
+            <input
+              formControlName="email"
+              class="w-full md:w-30rem"
+              style="padding: 1rem"
+              id="email"
+              name="email"
+              type="email"
+              aria-label="Email"
+              required
+              pInputText
+            />
+            <label for="email">Email</label>
+          </span>
+          <span class="p-float-label">
+            <input
+              formControlName="password"
+              class="w-full md:w-30rem"
+              style="padding: 1rem"
+              id="password"
+              name="password"
+              type="password"
+              aria-label="password"
+              required
+              pInputText
+            />
+            <label for="password">Password</label>
+          </span>
+          <div
+            class="flex align-items-center justify-content-between mb-5 gap-5"
+          >
+            <a
+              class="font-medium no-underline ml-2 text-right cursor-pointer"
+              style="color: var(--primary-color)"
+              >Has olvidado la contraseña?</a
+            >
+          </div>
+          <button
+            pButton
+            pRipple
+            class="p-button-rounded"
+            label="Iniciar sesión"
+            [disabled]="!loginForm.valid || loading"
+            [loading]="loading"
+            type="submit"
+            (click)="submit()"
+          ></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<p-toast position="top-center"/>

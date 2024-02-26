@@ -6,9 +6,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MenuService } from '../menu/app.menu.service';
 import {
   animate,
   state,
@@ -16,6 +13,10 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+import { MenuService } from '../menu/app.menu.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
