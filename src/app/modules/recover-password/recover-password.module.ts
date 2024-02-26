@@ -8,7 +8,8 @@ import { PasswordModule } from 'primeng/password';
 import { RouterModule } from '@angular/router';
 import { SharedComponentsModule } from '../../shared/shared.module';
 import { ToastModule } from 'primeng/toast';
-import { RecoverPasswordComponent } from './recover-password.component';
+import { RecoverPasswordComponent } from './components/recover-password/recover-password.component';
+import { CreatePasswordComponent } from './components/create-password/create-password.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,6 @@ import { RecoverPasswordComponent } from './recover-password.component';
     SharedComponentsModule,
     ToastModule,
   ],
-  declarations: [RecoverPasswordComponent],
+  declarations: [RecoverPasswordComponent,CreatePasswordComponent],
 })
 export class RecoverPasswordModule {}
