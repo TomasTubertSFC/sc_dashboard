@@ -11,7 +11,6 @@ import { EpisodesMapComponent } from './components/episodes-map/episodes-map.com
 import { EpisodesTimelineComponent } from './components/episodes-timeline/episodes-timeline.component';
 import { EpisodesModalComponent } from './components/episodes-modal/episodes-modal.component';
 import { SidebarModule } from 'primeng/sidebar';
-import { EpisodesMapConeComponent } from './components/episodes-map/components/episodes-map-cone/episodes-map-cone.component';
 
 @NgModule({
   declarations: [
@@ -19,14 +18,12 @@ import { EpisodesMapConeComponent } from './components/episodes-map/components/e
     EpisodesMapComponent,
     EpisodesTimelineComponent,
     EpisodesModalComponent,
-    EpisodesMapConeComponent,
   ],
   exports:[
     EpisodesPageComponent,
     EpisodesMapComponent,
     EpisodesTimelineComponent,
     EpisodesModalComponent,
-    EpisodesMapConeComponent,
   ],
   imports: [
     ButtonModule,

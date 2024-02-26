@@ -34,6 +34,9 @@ export class Cone {
   private mapCenterY: number = 0;
   private scale: number = 0;
 
+  public imageCoordinates!: number[][];
+
+
   constructor(public points: Point[], public observation: Point, toDraw:boolean = false, canvasHeight:number = 0, canvasWidth:number = 0) {
     if (!points.find(point => point === observation)) {
         points.push(observation);
@@ -42,6 +45,12 @@ export class Cone {
     this.coneSize = this.getConeSize(convexHull, observation);
 
     if(toDraw && canvasHeight && canvasWidth){
+      this.imageCoordinates = [
+          [this.observation.x - this.coneSize, this.observation.y + this.coneSize],
+          [this.observation.x + this.coneSize, this.observation.y + this.coneSize],
+          [this.observation.x + this.coneSize, this.observation.y - this.coneSize],
+          [this.observation.x - this.coneSize, this.observation.y - this.coneSize]
+        ];
       this.coneSize = (Math.min(canvasHeight, canvasWidth) / 2) - 2;
       this.minX = this.observation.x - this.coneSize;
       this.maxX = this.observation.x + this.coneSize;
