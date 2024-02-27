@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { AuthService } from '../../../../services/auth/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { confirmPasswordValidator } from '../../../../validators/confirm-password.validator';
 import { UserService } from '../../../../services/user/user.service';
+
+import { MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-profile',
