@@ -21,11 +21,11 @@ export class CreatePasswordComponent {
   loading: boolean = false;
 
   showPasswords: {
-    password: boolean;
-    password_confirmation: boolean;
+    new_password: boolean;
+    new_password_confirmation: boolean;
   } = {
-    password: false,
-    password_confirmation: false,
+    new_password: false,
+    new_password_confirmation: false,
   };
 
   private token!: string | null;
@@ -33,11 +33,11 @@ export class CreatePasswordComponent {
 
   newPasswordForm: FormGroup = new FormGroup(
     {
-      password: new FormControl('', [
+      new_password: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
       ]),
-      password_confirmation: new FormControl('', [
+      new_password_confirmation: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
       ]),
@@ -77,7 +77,7 @@ export class CreatePasswordComponent {
     this.messageService.add({
       severity: 'warn',
       summary: 'Error',
-      detail: 'Error al cambiar la contraseña, intenta de nuevo.',
+      detail: 'Error al cambiar la contraseña, intentalo de nuevo.',
     });
   }
 
@@ -87,8 +87,8 @@ export class CreatePasswordComponent {
 
   submit() {
     const passwords = {
-      password: this.newPasswordForm.value.password!,
-      password_confirmation: this.newPasswordForm.value.password_confirmation!,
+      password: this.newPasswordForm.value.new_password!,
+      password_confirmation: this.newPasswordForm.value.new_password_confirmation!,
       token: this.token,
       email: this.email,
     };

@@ -28,7 +28,7 @@ export class AppTopBarComponent {
       {
         label: 'Mi perfil',
         icon: 'pi pi-user',
-        url: '/',
+        routerLink: '/profile',
       },
       {
         label: 'Cerrar sessión',
