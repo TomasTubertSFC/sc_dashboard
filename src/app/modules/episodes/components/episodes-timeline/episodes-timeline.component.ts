@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Cone } from '../../../../models/cone';
-import { Point } from 'chart.js';
 import { Episode } from '../../../../models/episode';
+import { EpisodeService } from '../../../../services/episode.service';
 
 @Component({
   selector: 'app-episodes-timeline',
@@ -18,7 +17,13 @@ export class EpisodesTimelineComponent {
     }[] = []
   public episodes: Episode[] = [];
 
-  constructor(private http: HttpClient) { }
+  public selectedEpisode: Episode | null = null;
+
+  constructor(
+    private http: HttpClient,
+    private episodeService: EpisodeService
+    ) {
+    }
 
   ngOnInit() {
     this.http.get<Episode[]>('/assets/data/episodes.json').subscribe(data => {
@@ -40,11 +45,29 @@ export class EpisodesTimelineComponent {
         }
       });
     });
-    console.log(this.terms);
+
+    this.episodeService.episode.subscribe(episode => {
+      this.selectedEpisode = episode;
+    });
   }
 
   public getHeightByIntensity(intensity: number): string {
     return `height: ${(intensity + 1) * 10}px`;
+  }
+
+  public selectEpisode(
+    event: Event,
+    term: number,
+    episode: number
+    ): void {
+    let element = event.target as HTMLElement;
+    //remover a classe active de todos os elementos
+    document.querySelectorAll('.episode').forEach(element => {
+      element.classList.remove('active');
+    });
+    element.classList.add('active');
+    this.selectedEpisode = this.terms[term].episodes[episode];
+    this.episodeService.episode = this.selectedEpisode;
   }
 
 }

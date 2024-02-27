@@ -1,11 +1,11 @@
 <div class="card col-12">
-  <h4>Timeline</h4>
+  <!-- <p>Episodios de Olor</p> -->
   <div id="timeline" class="flex gap-1">
-    @for(term of terms; track term){
+    @for(term of terms; track term; let tIndex = $index){
       <div class="term">
         <span>{{term.year}}/{{term.month}}</span>
-        @for(episode of term.episodes; track episode){
-          <div class="episode" pTooltip="{{episode.date}}" [autoHide]="false" tooltipPosition="top" >
+        @for(episode of term.episodes; track episode; let epIndex = $index){
+          <div class="episode" pTooltip="{{episode.date}}" [autoHide]="false" tooltipPosition="top" (click)="selectEpisode($event, tIndex, epIndex)" >
             <div class="intensity" [style]="getHeightByIntensity(episode.intensity)"></div>
           </div>
         }

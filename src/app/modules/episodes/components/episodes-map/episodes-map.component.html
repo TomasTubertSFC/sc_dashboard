@@ -4,11 +4,7 @@
       [style]="'mapbox://styles/mapbox/streets-v9'"
       [zoom]="[17]"
       [center]="[observation.x, observation.y]"
-      [projection]="{
-        name: 'albers',
-        center: [observation.x, observation.y],
-        parallels: [observation.x, observation.y]
-      }"
+      [projection]="'globe'"
     >
     @for(point of points; track point){
       <mgl-marker [lngLat]="[point.x, point.y]" />
