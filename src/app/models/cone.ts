@@ -1,6 +1,6 @@
 import { ElementRef } from "@angular/core";
 
-interface Point {
+export interface Point {
   x: number;
   y: number;
   id?: number | undefined | null;
