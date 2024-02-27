@@ -5,12 +5,19 @@ import { LoginComponent } from './modules/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RecoverPasswordComponent } from './modules/recover-password/components/recover-password/recover-password.component';
 import { CreatePasswordComponent } from './modules/recover-password/components/create-password/create-password.component';
+import { ProfileComponent } from './modules/profile/components/profile/profile.component';
 
 const routes: Routes = [
   {
     path: '',
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      },
+    ],
   },
   {
     path: 'login',
