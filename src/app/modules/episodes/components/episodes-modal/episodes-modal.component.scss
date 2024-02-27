@@ -1,0 +1,15 @@
+
+#toggleModalButton{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  padding: 12px;
+}
+#episodesModal{
+    .floatSidebar{
+    max-height: calc(100vh - 9rem);
+    margin-top: auto;
+    border-radius: 10px;
+  }
+}
