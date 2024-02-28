@@ -1,0 +1,41 @@
+:host {
+  padding: 16px;
+}
+
+header {
+  background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.2)
+    ),
+    radial-gradient(77.36% 256.97% at 77.36% 57.52%, #ff6200 0%, #d7b1f2 100%);
+  clip-path: ellipse(150% 87% at 93% 13%);
+  min-height: 600px;
+  img {
+    aspect-ratio: 29/20;
+    margin-right: -100px;
+  }
+}
+
+.p-button-rounded {
+  width: fit-content;
+}
+
+.companys {
+  img {
+    max-width: 200px;
+  }
+  .overlay-logo {
+    background: linear-gradient(
+        90deg,
+        rgba(251, 199, 145, 0.2),
+        rgba(246, 158, 188, 0.2)
+      ),
+      linear-gradient(
+        180deg,
+        rgba(172, 180, 223, 0.2),
+        rgba(212, 162, 221, 0.2)
+      );
+    padding: 3px;
+  }
+}

@@ -15,6 +15,7 @@ import { initializeInterceptorProvider } from './helpers/intializeApp';
 import { RecoverPasswordModule } from './modules/recover-password/recover-password.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { LandingModule } from './modules/landing/landing.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
     LoginModule,
     RecoverPasswordModule,
     ProfileModule,
+    LandingModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',
