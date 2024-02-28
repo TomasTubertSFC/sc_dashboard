@@ -24,6 +24,7 @@ export class Cone {
   public terminalAdjacentAngle!: Angle;
   public completeConeCoordinates!: Angle;
   public coneSize!: number;
+  public convexHull!: Point[];
   private minX: number = 0;
   private maxX: number = 0;
   private minY: number = 0;
@@ -41,21 +42,47 @@ export class Cone {
     if (!points.find(point => point === observation)) {
         points.push(observation);
     }
-    let convexHull = this.getCompleteConvexHull(this.points);
-    this.coneSize = this.getConeSize(convexHull, observation);
+    this.convexHull = this.getCompleteConvexHull(this.points);
+    this.coneSize = this.getConeSize(this.convexHull, observation);
+    let observationConvexHull = this.getObservationConvexHull(this.convexHull, this.observation);
 
     if(toDraw && canvasHeight && canvasWidth){
-      this.imageCoordinates = [
+
+      if(observationConvexHull === null){
+
+        this.points.forEach((point, i) => {
+          if (i === 0) {
+            this.minX = this.maxX = point.x;
+            this.minY = this.maxY = point.y;
+          } else {
+            this.minX = Math.min(point.x, this.minX);
+            this.minY = Math.min(point.y, this.minY);
+            this.maxX = Math.max(point.x, this.maxX);
+            this.maxY = Math.max(point.y, this.maxY);
+          }
+        });
+
+        this.imageCoordinates = [
+          [this.minX, this.maxY],
+          [this.maxX, this.maxY],
+          [this.maxX, this.minY],
+          [this.minX, this.minY]
+        ];
+      }
+      else{
+        this.imageCoordinates = [
           [this.observation.x - this.coneSize, this.observation.y + this.coneSize],
           [this.observation.x + this.coneSize, this.observation.y + this.coneSize],
           [this.observation.x + this.coneSize, this.observation.y - this.coneSize],
           [this.observation.x - this.coneSize, this.observation.y - this.coneSize]
         ];
-      this.coneSize = (Math.min(canvasHeight, canvasWidth) / 2) - 2;
-      this.minX = this.observation.x - this.coneSize;
-      this.maxX = this.observation.x + this.coneSize;
-      this.minY = this.observation.y - this.coneSize;
-      this.maxY = this.observation.y + this.coneSize;
+        this.coneSize = (Math.min(canvasHeight, canvasWidth) / 2) - 2;
+        this.minX = this.observation.x - this.coneSize;
+        this.maxX = this.observation.x + this.coneSize;
+        this.minY = this.observation.y - this.coneSize;
+        this.maxY = this.observation.y + this.coneSize;
+      }
+
       this.mapWidth = this.maxX - this.minX;
       this.mapHeight = this.maxY - this.minY;
       this.mapCenterX = (this.maxX + this.minX) / 2;
@@ -73,8 +100,8 @@ export class Cone {
       };
     }
 
-    convexHull = this.getCompleteConvexHull(this.points);
-    let observationConvexHull = this.getObservationConvexHull(convexHull, this.observation);
+    this.convexHull = this.getCompleteConvexHull(this.points);
+    observationConvexHull = this.getObservationConvexHull(this.convexHull, this.observation);
     if (observationConvexHull === null) {
       return;
     }
