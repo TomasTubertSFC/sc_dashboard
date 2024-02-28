@@ -29,6 +29,7 @@ $gutter: 1rem; //for primeflex grid system
 }
 
 .floatSidebar{
+  height: fit-content;
   max-height: calc(100vh - 17rem);
   margin:  8rem 3rem auto;
   border-radius: 12px;
