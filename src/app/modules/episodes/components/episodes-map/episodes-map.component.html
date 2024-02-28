@@ -1,26 +1,46 @@
-@if(observation){
-  <mgl-map class="card"
-      [style]="'mapbox://styles/mapbox/streets-v9'"
-      [zoom]="[17]"
-      [center]="[observation.x, observation.y]"
-      [projection]="{
-        name: 'albers',
-        center: [observation.x, observation.y],
-        parallels: [observation.x, observation.y]
-      }"
-    >
-    @for(point of points; track point){
-      <mgl-marker [lngLat]="[point.x, point.y]" />
-    }
-    @if(cone){
-      <mgl-canvas-source
-        [id]="'canvasCone'"
-        [canvas]="'canvasCone'"
-        [coordinates]="cone.imageCoordinates"
-        [animate]="false"
-        ></mgl-canvas-source>
-      <mgl-layer id="canvasLayer" type="raster" [source]="'canvasCone'" [paint]="{'raster-opacity':1}"></mgl-layer>
-    }
-  </mgl-map>
-}
 <canvas #canvasCone id="canvasCone" [width]="canvasWidth" [height]="canvasHeight" style="display: none;"></canvas>
+
+<mgl-map class="card"
+    [style]="'mapbox://styles/mapbox/streets-v9'"
+    [zoom]="[17]"
+    [center]="[observation.x, observation.y]"
+    [projection]="'globe'"
+  >
+
+  @if(episode){
+
+    @for(point of points; track point){
+
+      <mgl-marker [lngLat]="[point.x, point.y]">
+        <div class="pi pi-map-marker" style="color: #000; font-size: 1rem"></div>
+      </mgl-marker>
+
+    }
+
+    @for(point of episode.observations; track point){
+
+      <mgl-marker [lngLat]="[point.x, point.y]">
+        <div
+        (mouseover)="overObservation(point.id)"
+        (mouseleave)="leaveObservation()"
+        (click)="observationSelected($event, point.id)"
+        class="pi pi-user btn-observation"></div>
+      </mgl-marker>
+
+    }
+
+    @if(cones.length > 0){
+      @for(cone of cones; track cone){
+        <mgl-canvas-source
+          [id]="'cone-' + cone.id + '-source'"
+          [canvas]="'cone-' + cone.id"
+          [coordinates]="cone.cone.imageCoordinates"
+          [animate]="true"
+        ></mgl-canvas-source>
+        <mgl-layer [id]="'cone-' + cone.id + '-layer'" type="raster" [source]="'cone-' + cone.id + '-source'" [paint]="{'raster-opacity':1}"></mgl-layer>
+      }
+    }
+
+  }
+</mgl-map>
+

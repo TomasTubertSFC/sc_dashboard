@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { EpisodesRoutingModule } from './episodes-routing.module';
 import { EpisodesPageComponent } from './episodes-page/episodes-page.component';
@@ -26,6 +27,7 @@ import { SidebarModule } from 'primeng/sidebar';
     EpisodesModalComponent,
   ],
   imports: [
+    TooltipModule,
     ButtonModule,
     SplitButtonModule,
     SidebarModule,

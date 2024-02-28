@@ -1,7 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Cone } from '../../../../models/cone';
-import { HttpClient } from '@angular/common/http';
 import { Point } from 'chart.js';
+import { EpisodeService } from '../../../../services/episode.service';
+import { Episode } from '../../../../models/episode';
 
 @Component({
   selector: 'app-episodes-map',
@@ -11,74 +12,81 @@ import { Point } from 'chart.js';
 export class EpisodesMapComponent {
   public cone!: Cone;
   public points!: Point[];
-  public observation!: Point;
+  public observation: Point = { x: 0, y: 0};
   public coneCanvas!: any;
   public imageLoaded: boolean = false;
+  public episode: Episode | null = null;
 
-  public canvasHeight: number = 1200;
-  public canvasWidth: number = 1200;
+  public canvasHeight: number = 1800;
+  public canvasWidth: number = 1800;
 
-  @ViewChild('canvasCone') canvas!: ElementRef<HTMLCanvasElement>;
   public context!: CanvasRenderingContext2D;
 
-  constructor(private http: HttpClient) {}
+  public cones: {
+    cone: Cone,
+    canvas: HTMLCanvasElement,
+    id: number,
+  }[] = [];
 
-  ngOnInit(): void {
-
-    this.http.get<any[]>('/assets/data/points.json').subscribe(data => {
-      let getPoints = 70;
-      this.points = data.slice(getPoints, getPoints + 5).map(point => {
-        return {
-          x: Number(point.longitude),
-          y: Number(point.latitude)
-        };
-      });
-
-      this.points = [
-        { x:-21.954511459310332, y: 64.15324648934966 },
-        { x:-21.9548085263586, y: 64.15332601355283 },
-        { x:-21.95469386890137, y: 64.15338736063957 },
-        { x:-21.95440722525831, y: 64.15331010873041 },
-        { x:-21.954224815667267, y: 64.15327375481641 },
-        { x:-21.954125793317843, y: 64.15331919720147 },
-        { x:-21.953990289050214, y: 64.15328965965965 },
-        { x:-21.95409973480484, y: 64.15324421722619 },
-        { x:-21.953641104975937, y: 64.15327148269519 },
-        { x:-21.953573352842117, y: 64.1533146529663 },
-        { x:-21.953338826225067, y: 64.15327148269519 },
-        { x:-21.95340136665628, y: 64.1532192238561 }
-      ];
-      this.observation = {y: 64.15304654177504, x: -21.954016347563222}
-      // this.points = [
-      //   { x: 9.75716266387601, y: 1.8538941362906889 },
-      //   { x: 9.757227312574946, y: 1.8540453776735677 },
-      //   { x: 9.757336007640191, y: 1.853997804094428 },
-      //   { x: 9.757272779791778, y: 1.85384727276098 },
-      //   { x: 9.757142771968644, y: 1.8538813553281615 },
-      //   { x: 9.757036208179185, y: 1.853918988162013 },
-      //   { x: 9.757061073063394, y: 1.853992123666997 },
-      //   { x: 9.757082385821285, y: 1.8539864432395279 },
-      //   { x: 9.757102988153912, y: 1.8540404072996897 },
-      //   { x: 9.757186107909689, y: 1.8540112951095415 },
-      //   { x: 9.757144192819169, y: 1.8538799352212083 },
-      //   { x: 9.757147034520221, y: 1.8538586336167708 },
-      //   { x: 9.757188239185478, y: 1.8538508230284265 },
-      //   { x: 9.757181134932846, y: 1.8538039594975728 },
-      //   { x: 9.75714206154338, y: 1.8538131901931372 },
-      //   { x: 9.757147034520221, y: 1.853857923563307 }
-
-      // ],
-      // this.observation = {x: 9.757574710532872, y: 1.854080880347308};
-      this.cone = new Cone(this.points, this.observation, true, this.canvasHeight, this.canvasWidth);
-      console.log('Cono calculado para dibujo', this.cone);
-      let coneCalculation = new Cone(this.points, this.observation);
-      console.log('Cono con coordenadas',coneCalculation);
-      this.drawCone();
-    });
-  }
+  constructor(
+    private episodeService: EpisodeService
+    ) {}
 
   ngAfterViewInit(): void {
-    this.context = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
+
+    this.episodeService.episode.subscribe(episode => {
+
+      this.cones.map(cone => {
+        cone.canvas.remove();
+        return;
+      })
+      this.cones = [];
+
+      if (episode) {
+
+        this.points = episode.APGEMO.map(point => {
+          return { x: point.x, y: point.y };
+        });
+
+        // coordenadas promedio de las observaciones
+        let averageX = 0;
+        let averageY = 0;
+        episode.observations.forEach(observation => {
+          averageX += observation.x/episode.observations.length;
+          averageY += observation.y/episode.observations.length;
+        });
+
+        this.observation = { x: averageX, y: averageY };
+
+        this.episode = episode;
+
+        episode.observations.forEach(observation => {
+          //create canvas for each observation
+
+          let canvas:HTMLCanvasElement = document.createElement('canvas') as HTMLCanvasElement;
+          let id:number = observation.id ?  observation.id : 0;
+          let points = [...this.points];
+
+          canvas.width = this.canvasWidth;
+          canvas.height = this.canvasHeight;
+          canvas.id = `cone-${id}`;
+          canvas.style.display = 'none';
+
+          document.body.appendChild(canvas);
+
+          this.coneCanvas = canvas;
+          this.context = new ElementRef(canvas).nativeElement.getContext('2d') as CanvasRenderingContext2D;
+          this.cone = new Cone(points, observation, true, this.canvasHeight, this.canvasWidth);
+          let cone = this.cone;
+          this.cones.push({cone, canvas, id});
+
+          if(this.cone.observationCone && this.cone.observationCone.angle){
+            this.drawCone(undefined, undefined, 0.10);
+          }
+
+        });
+      }
+    });
   }
 
   private hexToRGBA(hex:string, alpha:number = 1) {
@@ -114,15 +122,15 @@ export class EpisodesMapComponent {
     return angleInRadians * (180 / Math.PI);  // Convertir a grados
   }
 
-  private drawCone(adjacentColor:string = '#14b8a6', observationColor:string = '#c93d82', pointSize:number|null = null) {
-
+  private drawCone(adjacentColor:string = '#14b8a6', observationColor:string = '#c93d82', alpha:number = 0.2) {
+    if(this.cone.observationCone?.vertexPosition){
     // Dibujar el arco del angulo de observacion abarcando todos los puntos
     const initialAnglePoint = this.calculateAngle({ x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y }, this.cone.observationCone.vertexPosition, this.cone.observationCone.initialSidePosition) * (Math.PI / 180);
     const finalAnglePoint = this.calculateAngle({ x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y }, this.cone.observationCone.vertexPosition, this.cone.observationCone.terminalSidePosition) * (Math.PI / 180);
 
-    this.context.strokeStyle = observationColor;
+    this.context.strokeStyle = this.hexToRGBA(observationColor, alpha * 2);
     this.context.lineWidth = 1;
-    this.context.fillStyle = this.hexToRGBA(observationColor, 0.2);
+    this.context.fillStyle = this.hexToRGBA(observationColor, alpha);
     this.context.beginPath();
     this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, finalAnglePoint, false);
     this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
@@ -131,9 +139,9 @@ export class EpisodesMapComponent {
     this.context.fill();
 
     // Dibujar 30º de angulo desde el punto previo
-    this.context.strokeStyle = adjacentColor;
+    this.context.strokeStyle = this.hexToRGBA(adjacentColor, alpha * 2);
     this.context.lineWidth = 1;
-    this.context.fillStyle = this.hexToRGBA(adjacentColor, 0.2);
+    this.context.fillStyle = this.hexToRGBA(adjacentColor, alpha);
     this.context.beginPath();
     this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, initialAnglePoint + (- this.cone.initialAdjacentAngle.angle * (Math.PI / 180)), true);
     this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
@@ -148,33 +156,101 @@ export class EpisodesMapComponent {
     this.context.closePath();
     this.context.stroke();
     this.context.fill();
-
-    // Dibujar el cono de observación si se ha pasado el parametro pointSize
-    if (pointSize) {
-        // Dibujar punto en ángulo adyacente inicial
-        this.context.strokeStyle = '#000';
-        this.context.beginPath();
-        this.context.arc(this.cone.initialAdjacentAngle.initialSidePosition.x, this.cone.initialAdjacentAngle.initialSidePosition.y, 5, 0, 2 * Math.PI);
-        this.context.stroke();
-
-        // Dibujar punto en ángulo adyacente final
-        this.context.strokeStyle = '#000';
-        this.context.beginPath();
-        this.context.arc(this.cone.terminalAdjacentAngle.terminalSidePosition.x, this.cone.terminalAdjacentAngle.terminalSidePosition.y, 5, 0, 2 * Math.PI);
-        this.context.stroke();
     }
-
-    // Dibujar número de grados del angulo del cono de observación
-    this.context.fillStyle = observationColor;
-    this.context.font = '20px Arial';
-    this.context.fillText(`${this.cone.observationCone.angle.toFixed(2)}°`, this.cone.observationCone.vertexPosition.x + 10, this.cone.observationCone.vertexPosition.y - 10);
-    this.context.fillStyle = adjacentColor;
-    this.context.fillText(`${(this.cone.observationCone.angle + this.cone.terminalAdjacentAngle.angle + this.cone.initialAdjacentAngle.angle).toFixed(2)}°`, this.cone.observationCone.vertexPosition.x + 10, this.cone.observationCone.vertexPosition.y + 10);
-
-    // //color de fondo del canvas
-    // this.context.fillStyle = '#ff0';
-    // this.context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
-
-
+    else{
+      //this.drawConvexHull();
+    }
   }
+
+  private drawConvexHull() {
+
+
+    let minX:number = 0, maxX:number = 0, minY:number = 0, maxY:number = 0;
+
+    this.cone.convexHull.forEach((p, i) => {
+      if (i === 0) {
+        minX = maxX = p.x;
+        minY = maxY = p.y;
+      } else {
+        minX = Math.min(p.x, minX);
+        minY = Math.min(p.y, minY);
+        maxX = Math.max(p.x, maxX);
+        maxY = Math.max(p.y, maxY);
+      }
+    });
+
+    const mapWidth = maxX - minX;
+    const mapHeight = maxY - minY;
+    const mapCenterX = (maxX + minX) / 2;
+    const mapCenterY = (maxY + minY) / 2;
+
+    this.coneCanvas.height = maxY - minY;
+    this.coneCanvas.width = maxX - minX;
+    const scale = Math.min(this.canvasWidth / mapWidth, this.canvasHeight / mapHeight);
+
+
+    this.context.strokeStyle = this.hexToRGBA('#14b8a6', 0.5);
+    this.context.beginPath();
+    this.cone.convexHull.forEach(p => {
+      console.log(((p.y - mapCenterY ) * scale + this.canvasHeight / 2) - minY);
+      this.context.lineTo(
+        ((p.x - mapCenterX ) * scale + this.canvasWidth / 2) - minX,
+        ((p.y - mapCenterY ) * scale + this.canvasHeight / 2) - minY
+      );
+    });
+    this.context.closePath();
+    this.context.stroke();
+    this.context.fillStyle = this.hexToRGBA('#14b8a6', 0.2);
+    this.context.fill();
+    this.context.beginPath();
+  }
+
+
+  public observationSelected(event:Event, id:number | null = null):void {
+    if(id !== null && this.episodeService.observation.value !== id){
+      let element = event.target as HTMLElement;
+      //remover a classe active de todos os elementos
+      document.querySelectorAll('.btn-observation').forEach(element => {
+        element.classList.remove('active');
+      });
+      element.classList.add('active');
+      this.episodeService.observation = id;
+    }
+    else {
+      this.episodeService.observation = null;
+      document.querySelectorAll('.btn-observation').forEach(element => {
+        element.classList.remove('active');
+      });
+    }
+  }
+
+  public overObservation(id:number | null = null):void {
+    if(id !== null){
+      this.cones.forEach(cone => {
+        this.cone = cone.cone;
+        this.coneCanvas = cone.canvas;
+        this.context = cone.canvas.getContext('2d') as CanvasRenderingContext2D;
+        this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        if(cone.id === id){
+          this.drawCone(undefined, undefined, 0.5);
+        }
+      });
+    }
+  }
+
+  public leaveObservation():void {
+    this.cones.forEach(cone => {
+      this.cone = cone.cone;
+      this.coneCanvas = cone.canvas;
+      this.context = cone.canvas.getContext('2d') as CanvasRenderingContext2D;
+      this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+      if(cone.id === this.episodeService.observation.value){
+        this.drawCone(undefined, undefined, 0.5);
+      }
+      else {
+        this.drawCone(undefined, undefined, 0.10);
+      }
+    });
+  }
+
 }
