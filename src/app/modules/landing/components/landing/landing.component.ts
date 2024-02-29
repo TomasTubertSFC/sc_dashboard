@@ -18,4 +18,86 @@ export class LandingComponent {
       id: 2,
     },
   ];
+
+  reviews: { name: string; company: string; comment: string; img: string }[] = [
+    {
+      name: 'Javier',
+      company: 'Google',
+      comment:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.',
+      img: '../assets/images/icon-fecyt.png',
+    },
+    {
+      name: 'Maria',
+      company: 'Ajuntament de Barcelona',
+      comment:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.',
+      img: '../assets/images/icon-fecyt.png',
+    },
+    {
+      name: 'Carmen',
+      company: 'Ajuntament de Badalona',
+      comment:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.',
+      img: '../assets/images/icon-fecyt.png',
+    },
+  ];
+
+  map_points: { top: string; left: string; id: number }[] = [
+    {
+      top: '14%',
+      left: '4%',
+      id: 1,
+    },
+    {
+      top: '23%',
+      left: '14%',
+      id: 2,
+    },
+    {
+      top: '65%',
+      left: '52%',
+      id: 3,
+    },
+    {
+      top: '43%',
+      left: '67%',
+      id: 4,
+    },
+    {
+      top: '49%',
+      left: '20%',
+      id: 5,
+    },
+    {
+      top: '4%',
+      left: '20%',
+      id: 6,
+    },
+    {
+      top: '22%',
+      left: '64%',
+      id: 7,
+    },
+    {
+      top: '74%',
+      left: '30%',
+      id: 8,
+    },
+    {
+      top: '36%',
+      left: '46%',
+      id: 9,
+    },
+    {
+      top: '29%',
+      left: '84%',
+      id: 10,
+    },
+    {
+      top: '78%',
+      left: '86%',
+      id: 11,
+    },
+  ];
 }

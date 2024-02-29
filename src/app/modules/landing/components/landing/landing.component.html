@@ -1,11 +1,11 @@
 <header
-  class="relative flex justify-content-between w-auto p-5 pb-0 overflow-x-hidden md:p-8 md:pb-0 md:min-h-full lg:justify-content-center"
+  class="relative flex justify-content-center w-auto p-5 pb-0 overflow-x-hidden md:p-8 md:pb-0 md:min-h-full md:justify-content-start lg:justify-content-center"
 >
   <div
-    class="absolute z-1 flex flex-column justify-content-start align-items-center gap-3 text-center max-w-30rem md:relative md:align-items-start md:text-left"
+    class="absolute z-1 flex flex-column justify-content-start align-items-center gap-3 text-center max-w-30rem lg:relative md:align-items-start md:text-left"
   >
     <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
-    <p>
+    <p class="pl-3 pr-3 sm:p-0">
       Debitis magni reprehenderit autem aliquid porro deleniti. Architecto
       pariatur aliquam explicabo perspiciatis distinctio eum unde corrupti
       voluptas alias molestias itaque, enim sunt.
@@ -31,5 +31,145 @@
       </div>
     </div>
     }
+  </div>
+</section>
+
+<section class="p-5 pb-0 md:p-8 md:pb-0">
+  <h2>Funcionamiento del sistema</h2>
+  <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore aperiam
+    dolorem blanditiis corporis debitis quos dolorum commodi recusandae ab unde.
+    Voluptatibus cumque nam quod quisquam praesentium animi expedita, aspernatur
+    totam?
+  </p>
+  <div class="grid mt-8 mb-2">
+    <div class="col-12 lg:col-6">
+      <img
+        class="w-full border-round"
+        src="../assets/images/default-img.webp"
+        alt=""
+      />
+    </div>
+    <div
+      class="col-12 flex flex-column text-center lg:align-items-end lg:col-6 lg:text-right"
+    >
+      <h4>Lorem ipsum dolor sit amet</h4>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore
+        aperiam dolorem blanditiis corporis debitis quos dolorum commodi
+        recusandae ab unde. Voluptatibus cumque nam quod quisquam praesentium
+        animi expedita, aspernatur totam?
+      </p>
+    </div>
+  </div>
+  <div class="grid mt-8 mb-2 flex-column-reverse lg:flex-row">
+    <div
+      class="col-12 flex flex-column text-center lg:align-items-start lg:col-6 lg:text-left"
+    >
+      <h4>Lorem ipsum dolor sit amet</h4>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore
+        aperiam dolorem blanditiis corporis debitis quos dolorum commodi
+        recusandae ab unde. Voluptatibus cumque nam quod quisquam praesentium
+        animi expedita, aspernatur totam?
+      </p>
+    </div>
+    <div class="col-12 lg:col-6">
+      <img
+        class="w-full border-round"
+        src="../assets/images/default-img.webp"
+        alt=""
+      />
+    </div>
+  </div>
+</section>
+
+<section class="p-5 pb-0 md:p-8 md:pb-0">
+  <p-carousel
+    [value]="reviews"
+    [numVisible]="1"
+    [numScroll]="1"
+    [circular]="true"
+    [autoplayInterval]="5000"
+    [showIndicators]="false"
+    [showNavigators]="false"
+  >
+    <ng-template pTemplate="header">
+      <h2 class="mb-4 text-center">Opiniones de nuestros clientes</h2>
+    </ng-template>
+    <ng-template pTemplate="item" let-review>
+      <div
+        class="p-5 flex flex-column align-items-center surface-card border-round review"
+      >
+        <h3 class="m-0">{{ review.company }}</h3>
+        <p>{{ review.name }}</p>
+        <p class="max-w-30rem">{{ review.comment }}</p>
+        <img
+          width="100"
+          height="50"
+          src="{{ review.img }}"
+          alt="{{ review.company }}"
+        />
+      </div>
+    </ng-template>
+  </p-carousel>
+</section>
+
+<section
+  class="relative flex flex-column gap-4 justify-content-center w-auto p-5 pb-0 overflow-x-hidden md:p-8 md:pb-0 md:min-h-full md:justify-content-start lg:justify-content-start"
+>
+  <div
+    class="flex flex-column justify-content-start align-items-center gap-4 text-center md:align-items-start md:text-left"
+  >
+    <div class="max-w-30rem">
+      <h2 class="m-0">Escena global</h2>
+      <p class="pl-3 pr-3 sm:p-0">
+        Debitis magni reprehenderit autem aliquid porro deleniti. Architecto
+        pariatur aliquam explicabo perspiciatis distinctio eum unde corrupti
+        voluptas alias molestias itaque, enim sunt.
+      </p>
+    </div>
+    <div class="grid">
+      <div
+        class="col text-left border-primary border-solid border-left-1 border-y-none border-right-none pl-3"
+      >
+        <h3 class="m-0">+13.000</h3>
+        <p>Tenemos más de 13.000 registros de olores</p>
+      </div>
+      <div
+        class="col text-left border-primary border-solid border-left-1 border-y-none border-right-none pl-3"
+      >
+        <h3 class="m-0">+2000</h3>
+        <p>Tenemos más de 2.00 usuarios mapeando</p>
+      </div>
+      <div
+        class="col text-left border-primary border-solid border-left-1 border-y-none border-right-none pl-3"
+      >
+        <h3 class="m-0">+13.000</h3>
+        <p>Tenemos más de 13.000 registros de olores</p>
+      </div>
+    </div>
+  </div>
+  <div class="w-full relative">
+    <img
+      class="w-full"
+      width="500"
+      src="..\assets\images\map.png"
+      alt="mapa del mundo"
+    />
+    @for (point of map_points; track point.id) {
+    <div
+      class="spot"
+      [id]="point.id"
+      [style.top]="point.top"
+      [style.left]="point.left"
+    >
+      <div></div>
+    </div>
+    }
+    <button pButton pRipple class=" world-btn p-button-rounded text-center absolute">
+      Contactar con ventas
+    </button>
   </div>
 </section>

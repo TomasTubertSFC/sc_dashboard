@@ -1,7 +1,9 @@
 :host {
-  padding: 16px;
+  > section {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
 }
-
 header {
   background: linear-gradient(
       0deg,
@@ -14,7 +16,7 @@ header {
   img {
     aspect-ratio: 29/20;
     margin-right: -100px;
-    filter: opacity(0.85);
+    filter: opacity(0.55);
   }
 }
 
@@ -41,5 +43,63 @@ header {
         rgba(212, 162, 221, 0.2)
       );
     padding: 3px;
+  }
+}
+
+.review {
+  img {
+    object-fit: contain;
+  }
+}
+
+.spot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  top: 5px;
+  left: 5px;
+  text-align: center;
+  background-color: rgba(255, 98, 0, 0.8);
+  border: 0.5px solid #fff;
+  border-radius: 100%;
+  transition: transform 0.3s ease;
+  > div {
+    display: block;
+    position: absolute;
+    top: 47%;
+    left: 47%;
+    width: 1em;
+    height: 1em;
+    margin: -0.5em auto auto -0.52em;
+    transform-origin: 50% 50%;
+    border-radius: 50%;
+    background: #ff6200;
+    opacity: 0;
+    z-index: 0;
+    animation: pulsate 3.5s ease-out infinite;
+  }
+}
+.world-btn {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  45% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  header {
+    img {
+      filter: opacity(1);
+    }
   }
 }
