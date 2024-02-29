@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { EpisodeService } from '../../../../services/episode.service';
-import { Episode } from '../../../../models/episode';
+import { StudyZoneService } from '../../../../services/study-zone.service';
+import { Episode } from '../../../../models/study-zone';
 
 @Component({
   selector: 'app-episodes-modal',
@@ -12,18 +12,18 @@ export class EpisodesModalComponent {
 
   public episode: Episode | null = null;
 
-  constructor(
-    private episodeService: EpisodeService
-  ) { }
+  constructor(private studyZoneService: StudyZoneService) { }
 
   ngOnInit() {
-    this.episodeService.episode.subscribe(episode => {
+    this.studyZoneService.episode.subscribe(episode => {
       if (episode) {
         this.episode = episode;
       }
     });
   }
+
   public onToggleEpisodesModal() {
     this.episdoesSidebarVisible = !this.episdoesSidebarVisible;
   }
+  
 }

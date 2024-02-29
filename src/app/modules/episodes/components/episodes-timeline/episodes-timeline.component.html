@@ -1,15 +1,47 @@
-<div class="card col-12">
+<div class="card col-12 ">
   <!-- <p>Episodios de Olor</p> -->
   <div id="timeline" class="flex gap-1">
-    @for(term of terms; track term; let tIndex = $index){
-      <div class="term">
-        <span>{{term.year}}/{{term.month}}</span>
-        @for(episode of term.episodes; track episode; let epIndex = $index){
-          <div class="episode" pTooltip="{{episode.date}}" [autoHide]="false" tooltipPosition="top" (click)="selectEpisode($event, tIndex, epIndex)" >
-            <div class="intensity" [style]="getHeightByIntensity(episode.intensity)"></div>
-          </div>
-        }
+    <div id="intensity-chart">
+      <div class="intensity-level">
+        <span>7</span>
       </div>
-    }
+      <div class="intensity-level">
+        <span>6</span>
+      </div>
+      <div class="intensity-level">
+        <span>5</span>
+      </div>
+      <div class="intensity-level">
+        <span>4</span>
+      </div>
+      <div class="intensity-level">
+        <span>3</span>
+      </div>
+      <div class="intensity-level">
+        <span>2</span>
+      </div>
+      <div class="intensity-level">
+        <span>1</span>
+      </div>
+      <div class="intensity-level">
+      </div>
+    </div>
+    <div id="terms" #termsSlider class="flex">
+      @for(term of terms; track term; let tIndex = $index){
+        <div class="term">
+          <span>{{term.year}}/{{term.month}}</span>
+          @for(episode of term.episodes; track episode; let epIndex = $index){
+            <div class="episode" pTooltip="{{episode.date}}" [autoHide]="false" tooltipPosition="top"
+            (click)="selectEpisode($event, tIndex, epIndex)"
+            (mouseover)="previewEpisode(tIndex, epIndex)"
+            (mouseleave)="hidePreviewEpisode()">
+              <div class="intensity" [style]="getHeightByIntensity(episode.intensity)"></div>
+            </div>
+          }
+        </div>
+      }
+    </div>
   </div>
+  <p-button #prevButton (onClick)="prev()" icon="pi pi-angle-left" [rounded]="true" [raised]="true" [text]="true" severity="secondary"></p-button>
+  <p-button #nextButton (onClick)="next()" icon="pi pi-angle-right" [rounded]="true" [raised]="true" [text]="true" severity="secondary"></p-button>
 </div>
