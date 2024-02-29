@@ -7,6 +7,8 @@ import { DialogModule } from 'primeng/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
+import { SharedComponentsModule } from '../../shared/shared.module';
+import { RouterLink } from '@angular/router';
 
 @NgModule({
   declarations: [LandingComponent],
@@ -18,6 +20,8 @@ import { RippleModule } from 'primeng/ripple';
     ReactiveFormsModule,
     InputTextModule,
     RippleModule,
+    RouterLink,
+    SharedComponentsModule,
   ],
 })
 export class LandingModule {}

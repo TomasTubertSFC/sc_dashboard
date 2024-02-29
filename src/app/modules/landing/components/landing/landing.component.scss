@@ -16,7 +16,7 @@ header {
   img {
     aspect-ratio: 29/20;
     margin-right: -100px;
-    filter: opacity(0.55);
+    object-fit: cover;
   }
 }
 
@@ -80,12 +80,12 @@ header {
   }
 }
 
-.world{
-@for $i from 1 through 10 {
-  .spot:nth-child(#{$i}) > div {
-    animation-delay: #{$i}s;
+.world {
+  @for $i from 1 through 10 {
+    .spot:nth-child(#{$i}) > div {
+      animation-delay: #{$i}s;
+    }
   }
-}
 }
 
 .world-btn {
