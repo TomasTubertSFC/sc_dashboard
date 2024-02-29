@@ -10,7 +10,12 @@
       pariatur aliquam explicabo perspiciatis distinctio eum unde corrupti
       voluptas alias molestias itaque, enim sunt.
     </p>
-    <button pButton pRipple class="p-button-rounded text-center">
+    <button
+      pButton
+      pRipple
+      class="p-button-rounded text-center"
+      (click)="showDialog()"
+    >
       Contacta con ventas
     </button>
   </div>
@@ -151,7 +156,7 @@
       </div>
     </div>
   </div>
-  <div class="w-full relative">
+  <div class="world w-full relative">
     <img
       class="w-full"
       width="500"
@@ -168,8 +173,82 @@
       <div></div>
     </div>
     }
-    <button pButton pRipple class=" world-btn p-button-rounded text-center absolute">
+    <button
+      pButton
+      pRipple
+      class="world-btn p-button-rounded text-center absolute"
+      (click)="showDialog()"
+    >
       Contactar con ventas
     </button>
   </div>
 </section>
+
+<p-dialog
+  [showHeader]="false"
+  [modal]="true"
+  [(visible)]="visible"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ maxWidth: '500px', width: '80%' }"
+>
+  <div class="flex justify-content-end">
+    <p-button
+      (click)="closeDialog()"
+      icon="pi pi-times"
+      [rounded]="true"
+      [text]="true"
+    ></p-button>
+  </div>
+  <form
+    [formGroup]="contactForm"
+    class="flex flex-column align-items-center gap-5 mt-5"
+  >
+    <span class="p-float-label w-full">
+      <input
+        formControlName="name"
+        name="name"
+        id="name"
+        class="w-full md:w-30rem"
+        style="padding: 1rem"
+        required
+        pInputText
+      />
+      <label for="name">Nombre</label>
+    </span>
+    <span class="p-float-label w-full">
+      <input
+        formControlName="company"
+        name="company"
+        id="company"
+        class="w-full md:w-30rem"
+        style="padding: 1rem"
+        required
+        pInputText
+      />
+      <label for="company">Empresa</label>
+    </span>
+    <span class="p-float-label w-full">
+      <input
+        formControlName="email"
+        name="email"
+        id="email"
+        class="w-full md:w-30rem"
+        style="padding: 1rem"
+        required
+        pInputText
+      />
+      <label for="email">Email</label>
+    </span>
+    <button
+      pButton
+      pRipple
+      class="p-button-rounded"
+      label="Enviar"
+      [disabled]="!contactForm.valid || loading"
+      [loading]="loading"
+      type="submit"
+      (click)="submit()"
+    ></button>
+  </form>
+</p-dialog>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-landing',
@@ -6,6 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './landing.component.scss',
 })
 export class LandingComponent {
+  visible: boolean = false;
+  loading: boolean = false;
+
   company_icons: { src: string; alt: string; id: number }[] = [
     {
       src: '../assets/images/icon-fecyt.png',
@@ -100,4 +104,23 @@ export class LandingComponent {
       id: 11,
     },
   ];
+
+  showDialog() {
+    this.visible = true;
+  }
+  closeDialog() {
+    this.visible = false;
+  }
+
+  contactForm: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    company: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+  });
+
+  submit() {
+    this.loading = true;
+    const { name, company, email } = this.contactForm.value;
+    this.loading = false;
+  }
 }
