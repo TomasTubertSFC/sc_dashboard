@@ -1,0 +1,181 @@
+button.btn-primary,
+input[type="button"].btn-primary,
+button.btn-primary {
+  background-color: $violet;
+  border: $violet;
+  color: $black;
+  &:hover,
+  &:active,
+  &:focus-visible,
+  &:first-child:active {
+    background-color: $violet-dark;
+    color: $black;
+  }
+  &:disabled {
+    background-color: $violet-light;
+  }
+}
+
+input[type="button"].btn-secondary,
+button.btn-secondary {
+  background-color: $black;
+  border: $black;
+  color: $white;
+  &:hover,
+  &:active,
+  &:focus-visible,
+  &:first-child:active {
+    background-color: $grey;
+    color: $black;
+  }
+  &:disabled {
+    background-color: $grey-light;
+  }
+}
+
+input[type="button"].btn-grey,
+button.btn-grey {
+  background-color: $grey;
+  border: $black;
+  color: $white;
+  &:hover,
+  &:active,
+  &:focus-visible,
+  &:first-child:active {
+    background-color: $grey;
+    color: $black;
+  }
+  &:disabled {
+    background-color: $grey-light;
+  }
+}
+
+input[type="button"].btn-grey-light,
+button.btn-grey-light {
+  background-color: $grey-light;
+  border: $grey-light;
+  color: $black;
+  &:hover,
+  &:active,
+  &:focus-visible,
+  &:first-child:active {
+    background-color: $grey-light;
+    color: $black;
+  }
+  &:disabled {
+    background-color: $grey-lighter;
+  }
+}
+
+input[type="button"].btn-grey-lighter,
+button.btn-grey-light {
+  background-color: $grey-lighter;
+  border: $grey-lighter;
+  color: $black;
+  &:hover,
+  &:active,
+  &:focus-visible,
+  &:first-child:active {
+    background-color: $grey-lighter;
+    color: $black;
+  }
+  &:disabled {
+    background-color: white;
+  }
+}
+.btn.btn-white,
+input[type="button"].btn-white,
+button.btn-white {
+  background-color: white;
+  border-color: $black;
+  color: $black;
+  &:hover,
+  &:active,
+  &:focus-visible,
+  &:first-child:active {
+    border-color: $violet-dark;
+    color: $violet-dark;
+  }
+  &:disabled {
+    background-color: $grey-light;
+  }
+}
+
+input[type="button"].btn-xs,
+button.btn-sm {
+  min-width: max-content;
+  height: 42px;
+  padding: 12px;
+  font-size: 14px;
+}
+
+input[type="button"].btn-sm,
+button.btn-sm {
+  width: 100%;
+  max-width: 118px;
+  height: 42px;
+  padding: 12px 16px;
+}
+
+input[type="button"].btn-lg,
+button.btn-lg {
+  width: 100%;
+  max-width: 304px;
+  height: 48px;
+  padding: 12px 16px;
+}
+
+input[type="button"].loading,
+button.loading {
+  position: relative;
+  color: transparent !important;
+  &::before {
+    position: absolute;
+    content: "";
+    display: flex;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: ldng 1s infinite;
+  }
+}
+@keyframes ldng {
+  0% {
+    transform: rotate(0);
+    animation-timing-function: linear;
+  }
+  100% {
+    transform: rotate(360deg);
+    animation-timing-function: linear;
+  }
+}
+button.close {
+  padding: 20px;
+  position: relative;
+  background-color: transparent !important;
+  border: none;
+  cursor: pointer;
+  height: auto;
+  min-width: auto;
+  width: 25px;
+  right: 0px;
+  margin: -10px 0 -10px auto;
+  &::after,
+  &::before {
+    content: " ";
+    position: absolute;
+    background: $grey-light;
+    height: 3px;
+    width: 25px;
+    transform: translate(-50%, -50%);
+    border-radius: 3px;
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+}

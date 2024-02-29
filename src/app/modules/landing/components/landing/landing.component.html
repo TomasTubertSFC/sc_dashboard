@@ -6,7 +6,7 @@
     pButton
     pRipple
     [routerLink]="['/dashboard']"
-    class="p-element p-ripple p-button-rounded text-center p-button p-component"
+    class="p-element p-ripple p-button-rounded text-center p-button p-component btn-primary"
   >
     Entrar al panel
   </button>
@@ -26,7 +26,7 @@
     <button
       pButton
       pRipple
-      class="p-button-rounded text-center"
+      class="p-button-rounded text-center btn-secondary"
       (click)="showDialog()"
     >
       Contacta con ventas
@@ -189,7 +189,7 @@
     <button
       pButton
       pRipple
-      class="world-btn p-button-rounded text-center absolute"
+      class="z-3 world-btn p-button-rounded text-center absolute btn-secondary"
       (click)="showDialog()"
     >
       Contactar con ventas
@@ -256,7 +256,7 @@
     <button
       pButton
       pRipple
-      class="p-button-rounded"
+      class="p-button-rounded btn-primary"
       label="Enviar"
       [disabled]="!contactForm.valid || loading"
       [loading]="loading"
