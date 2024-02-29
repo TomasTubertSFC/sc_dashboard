@@ -7,8 +7,7 @@
     [projection]="'globe'"
   >
 
-  @if(episode){
-
+  @if(points){
     @for(point of points; track point){
 
       <mgl-marker [lngLat]="[point.x, point.y]">
@@ -16,6 +15,9 @@
       </mgl-marker>
 
     }
+  }
+
+  @if(episode && !previewEpisode){
 
     @for(point of episode.observations; track point){
 
@@ -41,6 +43,19 @@
       }
     }
 
+  }
+  @else if(previewEpisode){
+    @for(point of previewEpisode.observations; track point){
+
+      <mgl-marker [lngLat]="[point.x, point.y]">
+        <div
+        (mouseover)="overObservation(point.id)"
+        (mouseleave)="leaveObservation()"
+        (click)="observationSelected($event, point.id)"
+        class="pi pi-user btn-observation"></div>
+      </mgl-marker>
+
+    }
   }
 </mgl-map>
 

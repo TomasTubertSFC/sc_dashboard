@@ -1,8 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Cone } from '../../../../models/cone';
 import { Point } from 'chart.js';
-import { EpisodeService } from '../../../../services/episode.service';
-import { Episode } from '../../../../models/episode';
+import { StudyZoneService } from '../../../../services/study-zone.service';
+import { Episode, StudyZone } from '../../../../models/study-zone';
 
 @Component({
   selector: 'app-episodes-map',
@@ -10,12 +10,15 @@ import { Episode } from '../../../../models/episode';
   styleUrl: './episodes-map.component.scss'
 })
 export class EpisodesMapComponent {
+
   public cone!: Cone;
   public points!: Point[];
   public observation: Point = { x: 0, y: 0};
   public coneCanvas!: any;
   public imageLoaded: boolean = false;
-  public episode: Episode | null = null;
+  public studyZone: StudyZone | null = null;
+  public episode: Episode| null = null;
+  public previewEpisode: Episode| null = null;
 
   public canvasHeight: number = 1800;
   public canvasWidth: number = 1800;
@@ -29,12 +32,38 @@ export class EpisodesMapComponent {
   }[] = [];
 
   constructor(
-    private episodeService: EpisodeService
-    ) {}
+    private studyZoneService: StudyZoneService
+    ) {
+    }
 
   ngAfterViewInit(): void {
 
-    this.episodeService.episode.subscribe(episode => {
+    this.studyZoneService.studyZone.subscribe(studyZone => {
+      if (studyZone) {
+        this.points = studyZone.APGEMO.map(point => {
+          return { x: point.x, y: point.y };
+        });
+        //obtener media de las coordenadas
+        let averageX = 0;
+        let averageY = 0;
+        studyZone.APGEMO.forEach(point => {
+          averageX += point.x/studyZone.APGEMO.length;
+          averageY += point.y/studyZone.APGEMO.length;
+        });
+        this.observation = { x: averageX, y: averageY };
+      }
+    });
+
+    this.studyZoneService.previewEpisode.subscribe(episode => {
+      if (episode) {
+        this.previewEpisode = episode;
+      }
+      else {
+        this.previewEpisode = null;
+      }
+    });
+
+    this.studyZoneService.episode.subscribe(episode => {
 
       this.cones.map(cone => {
         cone.canvas.remove();
@@ -43,10 +72,6 @@ export class EpisodesMapComponent {
       this.cones = [];
 
       if (episode) {
-
-        this.points = episode.APGEMO.map(point => {
-          return { x: point.x, y: point.y };
-        });
 
         // coordenadas promedio de las observaciones
         let averageX = 0;
@@ -205,19 +230,18 @@ export class EpisodesMapComponent {
     this.context.beginPath();
   }
 
-
   public observationSelected(event:Event, id:number | null = null):void {
-    if(id !== null && this.episodeService.observation.value !== id){
+    if(id !== null && this.studyZoneService.observation.value !== id){
       let element = event.target as HTMLElement;
       //remover a classe active de todos os elementos
       document.querySelectorAll('.btn-observation').forEach(element => {
         element.classList.remove('active');
       });
       element.classList.add('active');
-      this.episodeService.observation = id;
+      this.studyZoneService.observation = id;
     }
     else {
-      this.episodeService.observation = null;
+      this.studyZoneService.observation = null;
       document.querySelectorAll('.btn-observation').forEach(element => {
         element.classList.remove('active');
       });
@@ -244,7 +268,7 @@ export class EpisodesMapComponent {
       this.coneCanvas = cone.canvas;
       this.context = cone.canvas.getContext('2d') as CanvasRenderingContext2D;
       this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-      if(cone.id === this.episodeService.observation.value){
+      if(cone.id === this.studyZoneService.observation.value){
         this.drawCone(undefined, undefined, 0.5);
       }
       else {

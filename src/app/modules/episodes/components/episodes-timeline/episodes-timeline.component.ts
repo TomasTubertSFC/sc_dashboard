@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { Episode } from '../../../../models/episode';
-import { EpisodeService } from '../../../../services/episode.service';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Episode, StudyZone } from '../../../../models/study-zone';
+import { StudyZoneService } from '../../../../services/study-zone.service';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-episodes-timeline',
@@ -15,21 +16,26 @@ export class EpisodesTimelineComponent {
     month: number;
     episodes: Episode[];
     }[] = []
-  public episodes: Episode[] = [];
+
+  public studyZone: StudyZone | null = null;
 
   public selectedEpisode: Episode | null = null;
 
-  constructor(
-    private http: HttpClient,
-    private episodeService: EpisodeService
-    ) {
-    }
+  @ViewChild('termsSlider') termsSlider!: ElementRef;
+  @ViewChild('nextButton') nextButton!: Button;
+  @ViewChild('prevButton') prevButton!: Button;
+  public currentElement:number = 1;
+  public galleryElementWidth!:number;
+  public galleryTotalWidth!:number;
+  public currentScroll!:number;
+
+  constructor(private studyZoneService: StudyZoneService) { }
 
   ngOnInit() {
-    this.http.get<Episode[]>('/assets/data/episodes.json').subscribe(data => {
-      this.episodes = data;
-      //separar array por meses y años
-      this.episodes.forEach(episode => {
+    this.studyZoneService.studyZone.subscribe(data => {
+      if(!data) return;
+      this.studyZone = data;
+      this.studyZone.episodes.forEach(episode => {
         const date = new Date(episode.date);
         const year = date.getFullYear();
         const month = date.getMonth();
@@ -45,29 +51,72 @@ export class EpisodesTimelineComponent {
         }
       });
     });
+  }
 
-    this.episodeService.episode.subscribe(episode => {
-      this.selectedEpisode = episode;
-    });
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.getGalleryElementwidth();
+    })
   }
 
   public getHeightByIntensity(intensity: number): string {
     return `height: ${(intensity + 1) * 10}px`;
   }
 
-  public selectEpisode(
-    event: Event,
-    term: number,
-    episode: number
-    ): void {
-    let element = event.target as HTMLElement;
-    //remover a classe active de todos os elementos
-    document.querySelectorAll('.episode').forEach(element => {
-      element.classList.remove('active');
-    });
-    element.classList.add('active');
-    this.selectedEpisode = this.terms[term].episodes[episode];
-    this.episodeService.episode = this.selectedEpisode;
+  public selectEpisode(event: Event, term: number, episode: number): void {
+    this.hidePreviewEpisode();
+
+    if(this.selectedEpisode !== this.terms[term].episodes[episode]){
+      let element = event.target as HTMLElement;
+      //remover a classe active de todos os elementos
+      document.querySelectorAll('.episode').forEach(element => {
+        element.classList.remove('active');
+      });
+      element.classList.add('active');
+      this.selectedEpisode = this.terms[term].episodes[episode];
+      this.studyZoneService.episode = this.selectedEpisode;
+    }
   }
 
+  public previewEpisode(term: number, episode: number): void {
+    if(this.selectedEpisode !== this.terms[term].episodes[episode]){
+      let selectedPreviewEpisode = this.terms[term].episodes[episode];
+      this.studyZoneService.previewEpisode = selectedPreviewEpisode;
+    }
+    else this.hidePreviewEpisode();
+  }
+
+  public hidePreviewEpisode(): void {
+    this.studyZoneService.previewEpisode = null;
+  }
+
+  prev(){
+    if(this.currentScroll > 0){
+      let gallery = this.termsSlider.nativeElement as HTMLElement;
+      gallery.scrollLeft = gallery.scrollLeft - this.galleryTotalWidth/2;
+    }
+  }
+
+  next(){
+    if(this.currentScroll !== this.galleryTotalWidth - this.galleryElementWidth){
+      let gallery = this.termsSlider.nativeElement as HTMLElement;
+      gallery.scrollLeft = gallery.scrollLeft + this.galleryTotalWidth/2;
+    }
+  }
+
+  getGalleryElementwidth(){
+    this.galleryTotalWidth = this.termsSlider.nativeElement.clientWidth;
+    let termsSlider = this.termsSlider.nativeElement as HTMLElement;
+    termsSlider.addEventListener('scroll', () => {
+      this.currentScroll = termsSlider.scrollLeft;
+    });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.getGalleryElementwidth();
+    let termsSlider = this.termsSlider.nativeElement as HTMLElement;
+    this.currentScroll = this.galleryElementWidth * this.currentElement;
+    termsSlider.scrollLeft = this.currentScroll;
+  }
 }
