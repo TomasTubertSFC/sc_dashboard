@@ -10,10 +10,11 @@ header {
     ),
     radial-gradient(77.36% 256.97% at 77.36% 57.52%, #ff6200 0%, #d7b1f2 100%);
   clip-path: ellipse(150% 87% at 93% 13%);
-  min-height: 600px;
+  min-height: 725px;
   img {
     aspect-ratio: 29/20;
     margin-right: -100px;
+    filter: opacity(0.85);
   }
 }
 
@@ -24,6 +25,9 @@ header {
 .companys {
   img {
     max-width: 200px;
+  }
+  .surface-card {
+    background-color: var(--surface-ground) !important;
   }
   .overlay-logo {
     background: linear-gradient(

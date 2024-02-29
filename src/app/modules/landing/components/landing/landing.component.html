@@ -1,54 +1,35 @@
 <header
-  class="flex justify-content-between w-auto p-3 pb-0 pr-0 sm:p-8 sm:pb-0 sm:pr-0 overflow-x-hidden"
+  class="relative flex justify-content-between w-auto p-5 pb-0 overflow-x-hidden md:p-8 md:pb-0 md:min-h-full lg:justify-content-center"
 >
-  <div class="flex flex-column justify-content-start gap-5">
+  <div
+    class="absolute z-1 flex flex-column justify-content-start align-items-center gap-3 text-center max-w-30rem md:relative md:align-items-start md:text-left"
+  >
     <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
     <p>
       Debitis magni reprehenderit autem aliquid porro deleniti. Architecto
       pariatur aliquam explicabo perspiciatis distinctio eum unde corrupti
       voluptas alias molestias itaque, enim sunt.
     </p>
-    <button pButton pRipple class="p-button-rounded">
+    <button pButton pRipple class="p-button-rounded text-center">
       Contacta con ventas
     </button>
   </div>
-  <div class="flex align-items-end">
+  <div class="flex align-items-end justify-content-end w-full lg:w-auto">
     <img src="..\assets\images\screen-1.png" alt="dashboard" />
   </div>
 </header>
-<section class="grid companys">
-  <div class="col flex justify-content-center">
-    <div class="flex align-items-center overlay-logo border-round-lg">
-      <div class="surface-card border-round-lg p-3 h-full">
-        <img src="..\assets\images\icon-fecyt.png" alt="company-2" />
+
+<section class="flex flex-column align-items-center">
+  <h2 class="text-center mt-5 mb-5">Empresas colaboradoras</h2>
+  <div class="m-0 grid companys">
+    @for (icon of company_icons; track icon.id){
+    <div class="col flex justify-content-center">
+      <div class="flex align-items-center overlay-logo border-round-lg">
+        <div class="surface-card border-round-lg p-3 h-full">
+          <img src="{{ icon.src }}" alt="{{ icon.alt }}" />
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col flex justify-content-center">
-    <div class="flex align-items-center overlay-logo border-round-lg">
-      <div class="surface-card border-round-lg p-3 h-full">
-        <img
-          src="..\assets\images\logo-ministerio-innovacion.svg"
-          alt="company-2"
-        />
-      </div>
-    </div>
-  </div>
-  <div class="col flex justify-content-center">
-    <div class="flex align-items-center overlay-logo border-round-lg">
-      <div class="surface-card border-round-lg p-3 h-full">
-        <img src="..\assets\images\icon-fecyt.png" alt="company-2" />
-      </div>
-    </div>
-  </div>
-  <div class="col flex justify-content-center">
-    <div class="flex align-items-center overlay-logo border-round-lg">
-      <div class="surface-card border-round-lg p-3 h-full">
-        <img
-          src="..\assets\images\logo-ministerio-innovacion.svg"
-          alt="company-2"
-        />
-      </div>
-    </div>
+    }
   </div>
 </section>
