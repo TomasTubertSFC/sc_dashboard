@@ -1,7 +1,15 @@
+@import "../../../../../../styles/colors.scss";
+
 :host {
   > section {
     max-width: 1024px;
     margin: 0 auto;
+  }
+}
+nav {
+  .btn-primary {
+    border: $black 1px solid;
+    background-color: transparent;
   }
 }
 header {
@@ -74,7 +82,7 @@ header {
     margin: -0.5em auto auto -0.52em;
     transform-origin: 50% 50%;
     border-radius: 50%;
-    background: #ff6200;
+    background: $orange;
     opacity: 0;
     z-index: 0;
     animation: pulsate 3.5s ease-out infinite;
@@ -85,6 +93,32 @@ header {
   @for $i from 1 through 10 {
     .spot:nth-child(#{$i}) > div {
       animation-delay: #{$i}s;
+    }
+  }
+  .spot:nth-child(even) {
+    background-color: rgba(215, 177, 242, 0.8);
+    > div {
+      background-color: #d7b1f2;
+    }
+  }
+  .spot:nth-child(odd) {
+    background-color: rgba(203, 232, 124, 0.8);
+    > div {
+      background-color: #cbe87c;
+    }
+  }
+  .spot:nth-child(5),
+  .spot:nth-child(8) {
+    background-color: rgba(138, 209, 249, 0.8);
+    > div {
+      background-color: #7cbce0;
+    }
+  }
+  .spot:nth-child(2),
+  .spot:nth-child(6) {
+    background-color: rgba(255, 98, 0, 0.8);
+    > div {
+      background-color: #ff6200;
     }
   }
 }
