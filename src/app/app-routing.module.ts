@@ -11,6 +11,10 @@ import { LandingComponent } from './modules/landing/components/landing/landing.c
 const routes: Routes = [
   {
     path: '',
+    component: LandingComponent,
+  },
+  {
+    path: 'dashboard',
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
     children: [
@@ -38,10 +42,6 @@ const routes: Routes = [
   {
     path: 'password-reset/:token',
     component: CreatePasswordComponent,
-  },
-  {
-    path: 'landing',
-    component: LandingComponent,
   },
 ];
 
