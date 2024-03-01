@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-nuisance-degree-graph',
@@ -9,6 +9,8 @@ export class NuisanceDegreeGraphComponent implements OnInit {
   basicData: any;
 
   basicOptions: any;
+
+  visible: boolean = false;
 
   ngOnInit(): void {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -124,5 +126,9 @@ export class NuisanceDegreeGraphComponent implements OnInit {
         },
       },
     };
+  }
+
+  showDialog() {
+    this.visible = true;
   }
 }

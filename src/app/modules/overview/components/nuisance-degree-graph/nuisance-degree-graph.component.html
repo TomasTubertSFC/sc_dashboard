@@ -1,3 +1,16 @@
 <div class="card">
-  <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+  <p-chart
+    type="bar"
+    [data]="basicData"
+    [options]="basicOptions"
+    (onDataSelect)="showDialog()"
+  ></p-chart>
 </div>
+<p-dialog
+  header="Información semaforo"
+  [modal]="true"
+  [(visible)]="visible"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ maxWidth: '500px', width: '80%' }"
+></p-dialog>
