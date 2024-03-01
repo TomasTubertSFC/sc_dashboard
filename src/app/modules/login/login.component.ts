@@ -99,7 +99,7 @@ export class LoginComponent {
     this.authService.login(this.user).subscribe({
       next: () => {
         this.showSuccess();
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
         this.loading = false;
       },
       error: (resp: any) => {
