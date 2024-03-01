@@ -1,0 +1,7 @@
+<div class="card">
+  <p-progressBar [value]="value">
+    <ng-template pTemplate="content" let-value>
+      <span>{{ (value / 100) * totalUsers }}/{{ totalUsers }}</span>
+    </ng-template>
+  </p-progressBar>
+</div>
