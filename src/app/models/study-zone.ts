@@ -6,6 +6,12 @@ export interface StudyZone {
 }
 export interface Episode {
   date: Date;
-  intensity: number;
+  inconvenience: number;
   observations: Point[];
+}
+export interface Observation {
+  id: number;
+  date: Date;
+  inconvenience: number;
+  coordiantes: Point;
 }
