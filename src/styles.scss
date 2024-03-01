@@ -13,7 +13,41 @@
 @import "../node_modules/mapbox-gl/dist/mapbox-gl.css";
 
 $gutter: 1rem; //for primeflex grid system
+:root {
+  //PRIMARY
 
+  --violet: #{$violet};
+  --violet-light: #{$violet-light};
+  --violet-lighter: #{$violet-lighter};
+  --violet-dark: #{$violet-dark};
+  --violet-transparency: #{$violet-transparency};
+
+  //SECONDARY
+
+  --green: #{$green};
+  --green-light: #{$green-light};
+  --green-lighter: #{$green-lighter};
+  --green-dark: #{$green-dark};
+  --green-transparency: #{$green-transparency};
+
+  --orange: #{$orange};
+  --orange-light: #{$orange-light};
+  --orange-lighter: #{$orange-lighter};
+  --orange-dark: #{$orange-dark};
+  --orange-transparency: #{$orange-transparency};
+
+  --blue: #{$blue};
+  --blue-light: #{$blue-light};
+  --blue-lighter: #{$blue-lighter};
+  --blue-dark: #{$blue-dark};
+  --blue-transparency: #{$blue-transparency};
+
+  --yellow: #{$yellow};
+  --yellow-light: #{$yellow-light};
+  --yellow-lighter: #{$yellow-lighter};
+  --yellow-dark: #{$yellow-dark};
+  --yellow-transparency: #{$yellow-transparency};
+}
 body {
   font-family: Space Grotesk;
 }

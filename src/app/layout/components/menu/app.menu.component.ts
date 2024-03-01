@@ -18,8 +18,16 @@ export class AppMenuComponent implements OnInit {
         label: '',
         items: [
           { label: 'Resumen', icon: '', routerLink: ['/dashboard'] },
-          { label: 'Episodios de olor', icon: '', routerLink: ['/dashboard/episodes'] },
-          { label: 'Registros de olor', icon: '', routerLink: ['/dashboard/registros'] },
+          {
+            label: 'Episodios de olor',
+            icon: '',
+            routerLink: ['/dashboard/episodes'],
+          },
+          {
+            label: 'Registros de olor',
+            icon: '',
+            routerLink: ['/dashboard/registros'],
+          },
           {
             label: 'Informes',
             icon: '',

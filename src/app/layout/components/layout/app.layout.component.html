@@ -1,8 +1,3 @@
-<!-- layout-theme-light layout-static p-ripple-disabled layout-static-inactive // layout-mobile-active-->
-<!-- <div
-  class="layout-wrapper layout-theme-light layout-static p-ripple-disabled"
-  [ngClass]="{ 'layout-static-inactive': !sidebarMenuIsOpen }"
-> -->
 <div class="layout-wrapper layout-theme-light layout-static p-ripple-disabled" [ngClass]="containerClass">
   <app-topbar (toggleSidebar)="toggleSidebarMenu()" />
   <div class="layout-sidebar">
@@ -12,8 +7,6 @@
     <div class="layout-main">
       <router-outlet />
     </div>
-    <!-- <app-footer /> -->
   </div>
-  <!-- <app-config></app-config> -->
   <div class="layout-mask"></div>
 </div>

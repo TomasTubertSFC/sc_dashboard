@@ -7,6 +7,7 @@ import { RecoverPasswordComponent } from './modules/recover-password/components/
 import { CreatePasswordComponent } from './modules/recover-password/components/create-password/create-password.component';
 import { ProfileComponent } from './modules/profile/components/profile/profile.component';
 import { LandingComponent } from './modules/landing/components/landing/landing.component';
+import { OverviewComponent } from './modules/overview/components/overview/overview.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: '',
+        component: OverviewComponent,
+      },
       {
         path: 'profile',
         component: ProfileComponent,
