@@ -1,0 +1,11 @@
+.episode-card {
+  background-color: var(--violet-lighter);
+  border: 1px solid var(--violet);
+  width: 130px;
+  height: 130px;
+}
+
+.episode-card.counter {
+  background-color: var(--green-lighter);
+  border: 1px solid var(--green);
+}

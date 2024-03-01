@@ -14,9 +14,14 @@ export class ParticipantCitizenshipGraphComponent implements OnInit {
 
   percentageOfActiveUsers: number = this.activeUsers / this.totalUsers;
 
+  backgroundColor!: string;
+
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    const documentStyle = getComputedStyle(document.documentElement);
+    this.backgroundColor = documentStyle.getPropertyValue('--violet');
+
     let interval = setInterval(() => {
       this.value = this.value + 1;
       if (this.value >= this.percentageOfActiveUsers * 100) {

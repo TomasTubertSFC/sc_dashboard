@@ -64,7 +64,7 @@ export class NuisanceDegreeGraphComponent implements OnInit {
         },
         {
           label: 'Febrero',
-          data: [0, 0, 0, 1],
+          data: [0, 1, 0, 1],
           backgroundColor: backgroundColors,
           borderColor: borderColors,
           categoryPercentage: 1.0,
@@ -73,7 +73,7 @@ export class NuisanceDegreeGraphComponent implements OnInit {
         },
         {
           label: 'Marzo',
-          data: [0, 0, 0, 0],
+          data: [0, 0, 1, 0],
           backgroundColor: backgroundColors,
           borderColor: borderColors,
           categoryPercentage: 1.0,
@@ -82,7 +82,7 @@ export class NuisanceDegreeGraphComponent implements OnInit {
         },
         {
           label: 'Abril',
-          data: [0, 1, 0, 0],
+          data: [1, 1, 0, 0],
           backgroundColor: backgroundColors,
           borderColor: borderColors,
           categoryPercentage: 1.0,
