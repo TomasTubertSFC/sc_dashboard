@@ -6,10 +6,15 @@ import { AuthGuard } from './guards/auth.guard';
 import { RecoverPasswordComponent } from './modules/recover-password/components/recover-password/recover-password.component';
 import { CreatePasswordComponent } from './modules/recover-password/components/create-password/create-password.component';
 import { ProfileComponent } from './modules/profile/components/profile/profile.component';
+import { LandingComponent } from './modules/landing/components/landing/landing.component';
 
 const routes: Routes = [
   {
     path: '',
+    component: LandingComponent,
+  },
+  {
+    path: 'dashboard',
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
     children: [
@@ -19,7 +24,10 @@ const routes: Routes = [
       },
       {
         path: 'episodes',
-        loadChildren: () => import('./modules/episodes/episodes.module').then(m => m.EpisodesModule)
+        loadChildren: () =>
+          import('./modules/episodes/episodes.module').then(
+            (m) => m.EpisodesModule
+          ),
       },
     ],
   },
@@ -48,4 +56,3 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
-
