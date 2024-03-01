@@ -1,29 +1,35 @@
 <div class="card col-12 ">
   <!-- <p>Episodios de Olor</p> -->
   <div id="timeline" class="flex gap-1">
-    <div id="intensity-chart">
-      <div class="intensity-level">
+    <div id="inconvenience-chart">
+      <div class="inconvenience-level">
+        <span>9</span>
+      </div>
+      <div class="inconvenience-level">
+        <span>8</span>
+      </div>
+      <div class="inconvenience-level">
         <span>7</span>
       </div>
-      <div class="intensity-level">
+      <div class="inconvenience-level">
         <span>6</span>
       </div>
-      <div class="intensity-level">
+      <div class="inconvenience-level">
         <span>5</span>
       </div>
-      <div class="intensity-level">
+      <div class="inconvenience-level">
         <span>4</span>
       </div>
-      <div class="intensity-level">
+      <div class="inconvenience-level">
         <span>3</span>
       </div>
-      <div class="intensity-level">
+      <div class="inconvenience-level">
         <span>2</span>
       </div>
-      <div class="intensity-level">
+      <div class="inconvenience-level">
         <span>1</span>
       </div>
-      <div class="intensity-level">
+      <div class="inconvenience-level">
       </div>
     </div>
     <div id="terms" #termsSlider class="flex">
@@ -31,11 +37,11 @@
         <div class="term">
           <span>{{term.year}}/{{term.month}}</span>
           @for(episode of term.episodes; track episode; let epIndex = $index){
-            <div class="episode" pTooltip="{{episode.date}}" [autoHide]="false" tooltipPosition="top"
+            <div class="episode" pTooltip="{{episode.date}}" [autoHide]="false" [positionTop]="-10" tooltipPosition="top"
             (click)="selectEpisode($event, tIndex, epIndex)"
             (mouseover)="previewEpisode(tIndex, epIndex)"
             (mouseleave)="hidePreviewEpisode()">
-              <div class="intensity" [style]="getHeightByIntensity(episode.intensity)"></div>
+              <div class="inconvenience" [style]="getHeightByInconvenience(episode.inconvenience)"></div>
             </div>
           }
         </div>

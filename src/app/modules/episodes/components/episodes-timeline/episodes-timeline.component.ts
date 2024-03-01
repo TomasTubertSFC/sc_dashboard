@@ -59,8 +59,8 @@ export class EpisodesTimelineComponent {
     })
   }
 
-  public getHeightByIntensity(intensity: number): string {
-    return `height: ${(intensity + 1) * 10}px`;
+  public getHeightByInconvenience(inconvenience: number): string {
+    return `height: ${((inconvenience + 1) * 10)-2}px`;
   }
 
   public selectEpisode(event: Event, term: number, episode: number): void {
