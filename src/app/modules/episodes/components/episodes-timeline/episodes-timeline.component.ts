@@ -19,7 +19,7 @@ export class EpisodesTimelineComponent {
 
   public studyZone: StudyZone | null = null;
 
-  public selectedEpisode: Episode | null = null;
+  public episode: Episode | null = null;
 
   @ViewChild('termsSlider') termsSlider!: ElementRef;
   @ViewChild('nextButton') nextButton!: Button;
@@ -35,12 +35,13 @@ export class EpisodesTimelineComponent {
     this.studyZoneService.studyZone.subscribe(data => {
       if(!data) return;
       this.studyZone = data;
-      this.studyZone.episodes.forEach(episode => {
+      this.studyZone.episodes.forEach((episode,index) => {
         const date = new Date(episode.date);
         const year = date.getFullYear();
         const month = date.getMonth();
         const term = this.terms.find(term => term.year === year && term.month === month);
         if(term){
+          episode.id = index
           term.episodes.push(episode);
         } else {
           this.terms.push({
@@ -66,20 +67,20 @@ export class EpisodesTimelineComponent {
   public selectEpisode(event: Event, term: number, episode: number): void {
     this.hidePreviewEpisode();
 
-    if(this.selectedEpisode !== this.terms[term].episodes[episode]){
+    if(this.episode !== this.terms[term].episodes[episode]){
       let element = event.target as HTMLElement;
       //remover a classe active de todos os elementos
       document.querySelectorAll('.episode').forEach(element => {
         element.classList.remove('active');
       });
       element.classList.add('active');
-      this.selectedEpisode = this.terms[term].episodes[episode];
-      this.studyZoneService.episode = this.selectedEpisode;
+      this.episode = this.terms[term].episodes[episode];
+      this.studyZoneService.episode = this.episode;
     }
   }
 
   public previewEpisode(term: number, episode: number): void {
-    if(this.selectedEpisode !== this.terms[term].episodes[episode]){
+    if(this.episode !== this.terms[term].episodes[episode]){
       let selectedPreviewEpisode = this.terms[term].episodes[episode];
       this.studyZoneService.previewEpisode = selectedPreviewEpisode;
     }

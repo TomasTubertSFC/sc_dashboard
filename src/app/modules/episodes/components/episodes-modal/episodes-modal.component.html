@@ -1,20 +1,25 @@
-@if(!episdoesSidebarVisible && episode){
+@if(!episdoesSidebarVisible && studyZone){
   <button id="toggleModalButton" pButton pRipple class="p-button-rounded p-button-help" (click)="onToggleEpisodesModal()">
-    <i class="pi pi-bars" style="font-size: 2rem;"></i>
+    <i class="pi pi-bars" style="font-size: 1.5rem;"></i>
   </button>
 }
 <div id="episodesModal" #episodesModal></div>
 <p-sidebar [(visible)]="episdoesSidebarVisible" [appendTo]="episodesModal" [position]="'right'" [styleClass]="'floatSidebar lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
-  @if(episode){
-    <h3>Episodio de olor</h3>
-    <h6>{{episode.date}} | Grado de molestia : {{episode.inconvenience}}</h6>
-    @for(observation of episode.observations; track observation; let index = $index){
-      <div class="observation">
-        {{observation | json}}
-      </div>
-    }
-
+  <ng-template pTemplate="header">Episodios de olor:</ng-template>
+  @if(studyZone){
+    <p-accordion [activeIndex]="episode?.id">
+      @for( ep of studyZone.episodes; track ep; let index = $index){
+        <p-accordionTab [classList]="'position-sticky'" [ngClass]="{'preview': index === previewEpisode?.id}" header="{{'Episodio ' + index}} ">
+          @for(obs of ep.observations; track obs; let index = $index){
+            <div class="observation" [ngClass]="{ 'active' : obs.id === observation }">
+              {{obs | json}}
+            </div>
+          }
+        </p-accordionTab>
+      }
+    </p-accordion>
   }
+
 </p-sidebar>
 
 

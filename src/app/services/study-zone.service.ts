@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Episode, StudyZone } from '../models/study-zone';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -41,7 +41,15 @@ export class StudyZoneService {
   }
 
   constructor(private http: HttpClient) {
-    this.http.get<StudyZone>('/assets/data/study-zone.json').subscribe(data => {
+    this.http.get<StudyZone>('/assets/data/study-zone.json').pipe<StudyZone>(
+      map((studyZone: StudyZone) => {
+        studyZone.episodes.map((episode: Episode, index:number) => {
+          episode.id = index
+          return episode;
+        })
+        return studyZone;
+      })
+    ).subscribe(data => {
       this.studyZone = data;
     });
   }
