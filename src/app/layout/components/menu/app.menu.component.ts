@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 
 import { AuthService } from '../../../services/auth/auth.service';
+import { PdfService } from '../../../services/pdf/pdf.service';
 
 @Component({
   selector: 'app-menu',
@@ -10,7 +11,10 @@ import { AuthService } from '../../../services/auth/auth.service';
 export class AppMenuComponent implements OnInit {
   model: any[] = [];
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private pdfService: PdfService
+  ) {}
 
   ngOnInit() {
     this.model = [
@@ -36,10 +40,10 @@ export class AppMenuComponent implements OnInit {
             },
           },
           {
-            label: 'Descargar CSV',
+            label: 'Descargar PDF',
             icon: '',
             command: () => {
-              console.log('command');
+              this.downloadAsPdf();
             },
           },
           {
@@ -59,5 +63,9 @@ export class AppMenuComponent implements OnInit {
         ],
       },
     ];
+  }
+
+  downloadAsPdf(): void {
+    this.pdfService.downloadAsPdf();
   }
 }
