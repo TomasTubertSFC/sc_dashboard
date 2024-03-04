@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
-import { Episode } from '../../../../models/study-zone';
+import { Episode, StudyZone } from '../../../../models/study-zone';
 import { Point } from 'chart.js';
 
 @Component({
@@ -10,20 +10,34 @@ import { Point } from 'chart.js';
 })
 export class EpisodesModalComponent {
   public episdoesSidebarVisible: boolean = false;
-
+  public studyZone: StudyZone | null = null;
   public episode: Episode | null = null;
+  public previewEpisode: Episode | null = null;
   public observation: number | null = null;
 
   constructor(private studyZoneService: StudyZoneService) { }
 
   ngOnInit() {
+
+    this.studyZoneService.studyZone.subscribe(studyZone => {
+      if (studyZone) {
+        this.studyZone = studyZone;
+      }
+    });
+
     this.studyZoneService.episode.subscribe(episode => {
       if (episode) {
         this.episode = episode;
       }
     });
+    this.studyZoneService.previewEpisode.subscribe(episode => {
+      if (episode) {
+        this.previewEpisode = episode;
+      }
+    });
+
     this.studyZoneService.observation.subscribe(observation => {
-      if (observation) {
+      if (observation !== null) {
         this.observation = observation;
         if (!this.episdoesSidebarVisible) this.onToggleEpisodesModal();
       }

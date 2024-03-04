@@ -8,6 +8,7 @@ export interface Episode {
   date: Date;
   inconvenience: number;
   observations: Point[];
+  id: number
 }
 export interface Observation {
   id: number;

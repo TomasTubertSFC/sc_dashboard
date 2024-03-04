@@ -5,6 +5,7 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TooltipModule } from 'primeng/tooltip';
+import { AccordionModule } from 'primeng/accordion';
 
 import { EpisodesRoutingModule } from './episodes-routing.module';
 import { EpisodesPageComponent } from './episodes-page/episodes-page.component';
@@ -31,6 +32,7 @@ import { SidebarModule } from 'primeng/sidebar';
     ButtonModule,
     SplitButtonModule,
     SidebarModule,
+    AccordionModule,
     CommonModule,
     EpisodesRoutingModule,
     NgxMapboxGLModule.withConfig({

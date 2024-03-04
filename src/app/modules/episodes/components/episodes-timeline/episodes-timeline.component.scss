@@ -142,7 +142,8 @@
             pointer-events: none;
             width: 100%;
             box-sizing: content-box;
-            background:  linear-gradient(0deg, #8edead, #43c6ac);
+            background:  linear-gradient(0deg, #8edead, #43c6ac) no-repeat bottom;
+            background-size: 110% 90px;
             border: 1px solid rgba(0, 129, 86, 0.2);
             border-bottom: none;
             padding-bottom: 0;
@@ -152,7 +153,10 @@
           &:hover{
             z-index: 1;
             .inconvenience{
-              background: linear-gradient(0deg, #348ac7, #7474bf);
+              background: linear-gradient(0deg, #348ac7, #7474bf) no-repeat bottom;
+              background-size: 90px 90px;
+              border: 1px solid rgba(0, 129, 86, 0.2);
+              border-bottom: none;
               border-color: #6666c2;
               box-shadow: 0 -4px 5px 0 rgba(0, 0, 0, 0.16), 0 0 5px 0 rgba(0, 0, 0, 0.26);
             }
@@ -160,7 +164,8 @@
           &.active{
             z-index: 1;
             .inconvenience{
-              background: linear-gradient(0deg, #fd9a77, #fb827a);
+              background: linear-gradient(0deg, #fd9a77, #fb827a) no-repeat bottom;
+              background-size: 90px 90px;
               border-color: #e96c63;
               box-shadow: 0 -8px 10px 0 rgba(0, 0, 0, 0.16), 0 0 5px 0 rgba(0, 0, 0, 0.26);
             }
