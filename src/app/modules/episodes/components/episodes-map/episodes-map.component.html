@@ -21,8 +21,9 @@
 
     @for(point of episode.observations; track point){
 
-      <mgl-marker [lngLat]="[point.x, point.y]">
+      <mgl-marker [lngLat]="[point.longitude, point.latitude]">
         <div
+        [ngClass]="{ 'active' : point.id === selectedObservation }"
         (mouseover)="overObservation(point.id)"
         (mouseleave)="leaveObservation()"
         (click)="observationSelected($event, point.id)"
@@ -47,7 +48,7 @@
   @else if(previewEpisode){
     @for(point of previewEpisode.observations; track point){
 
-      <mgl-marker [lngLat]="[point.x, point.y]">
+      <mgl-marker [lngLat]="[point.longitude, point.latitude]">
         <div
         (mouseover)="overObservation(point.id)"
         (mouseleave)="leaveObservation()"

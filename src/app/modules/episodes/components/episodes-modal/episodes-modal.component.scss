@@ -13,12 +13,26 @@
     border-radius: 10px;
   }
 }
-.active{
-  background-color: #f8f9fa;
+.observation{
+  transition: all .3s ease;
+  background-color: transparent;
+  border-left: 0 solid transparent ;
+  padding: 10px;
+  border-radius: 5px;
   color: #495057;
-  border-left: 3px solid #007bff;
-  .episode{
-    background-color: #007bff;
+  cursor: pointer;
+  &.active, &.active:hover{
+    cursor: default;
+    background-color: #fffbfa;
+    border-left: 10px solid #fd9a77 ;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  &:hover{
+    background-color: #ebebff;
+    border-left: 10px solid #7474bf ;
+    padding: 10px;
+    border-radius: 5px;
   }
 }
 :host ::ng-deep {

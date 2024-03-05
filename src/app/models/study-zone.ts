@@ -1,4 +1,5 @@
 import { Point } from "./cone";
+import { Observation } from "./observation";
 
 export interface StudyZone {
   APGEMO: Point[];
@@ -7,12 +8,6 @@ export interface StudyZone {
 export interface Episode {
   date: Date;
   inconvenience: number;
-  observations: Point[];
+  observations: Observation[];
   id: number
-}
-export interface Observation {
-  id: number;
-  date: Date;
-  inconvenience: number;
-  coordiantes: Point;
 }
