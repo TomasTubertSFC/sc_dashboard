@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { Cone } from '../../../../models/cone';
 import { Point } from 'chart.js';
 import { StudyZoneService } from '../../../../services/study-zone.service';
@@ -14,6 +14,7 @@ export class EpisodesMapComponent {
   public cone!: Cone;
   public points!: Point[];
   public observation: Point = { x: 0, y: 0};
+  public selectedObservation: number | null = null;
   public coneCanvas!: any;
   public imageLoaded: boolean = false;
   public studyZone: StudyZone | null = null;
@@ -63,6 +64,11 @@ export class EpisodesMapComponent {
       }
     });
 
+    this.studyZoneService.observation.subscribe(observation => {
+      this.selectedObservation = observation;
+      this.leaveObservation();
+    });
+
     this.studyZoneService.episode.subscribe(episode => {
 
       this.cones.map(cone => {
@@ -73,12 +79,13 @@ export class EpisodesMapComponent {
 
       if (episode) {
 
+        console.log(episode.observations);
         // coordenadas promedio de las observaciones
         let averageX = 0;
         let averageY = 0;
         episode.observations.forEach(observation => {
-          averageX += observation.x/episode.observations.length;
-          averageY += observation.y/episode.observations.length;
+          averageX += observation.longitude / episode.observations.length;
+          averageY += observation.latitude / episode.observations.length;
         });
 
         this.observation = { x: averageX, y: averageY };
@@ -89,7 +96,7 @@ export class EpisodesMapComponent {
           //create canvas for each observation
 
           let canvas:HTMLCanvasElement = document.createElement('canvas') as HTMLCanvasElement;
-          let id:number = observation.id ?  observation.id : 0;
+          let id:number = observation.id;
           let points = [...this.points];
 
           canvas.width = this.canvasWidth;
@@ -99,10 +106,12 @@ export class EpisodesMapComponent {
 
           document.body.appendChild(canvas);
 
+
           this.coneCanvas = canvas;
           this.context = new ElementRef(canvas).nativeElement.getContext('2d') as CanvasRenderingContext2D;
-          this.cone = new Cone(points, observation, true, this.canvasHeight, this.canvasWidth);
+          this.cone = new Cone(points, {x: observation.longitude, y: observation.latitude, id: observation.id}, true, this.canvasHeight, this.canvasWidth);
           let cone = this.cone;
+          console.log(cone);
           this.cones.push({cone, canvas, id});
 
           if(this.cone.observationCone && this.cone.observationCone.angle){
@@ -232,19 +241,10 @@ export class EpisodesMapComponent {
 
   public observationSelected(event:Event, id:number | null = null):void {
     if(id !== null && this.studyZoneService.observation.value !== id){
-      let element = event.target as HTMLElement;
-      //remover a classe active de todos os elementos
-      document.querySelectorAll('.btn-observation').forEach(element => {
-        element.classList.remove('active');
-      });
-      element.classList.add('active');
       this.studyZoneService.observation = id;
     }
     else {
       this.studyZoneService.observation = null;
-      document.querySelectorAll('.btn-observation').forEach(element => {
-        element.classList.remove('active');
-      });
     }
   }
 

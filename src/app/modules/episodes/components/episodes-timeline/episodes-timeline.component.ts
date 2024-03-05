@@ -66,7 +66,6 @@ export class EpisodesTimelineComponent {
 
   public selectEpisode(event: Event, term: number, episode: number): void {
     this.hidePreviewEpisode();
-
     if(this.episode !== this.terms[term].episodes[episode]){
       let element = event.target as HTMLElement;
       //remover a classe active de todos os elementos
@@ -80,25 +79,27 @@ export class EpisodesTimelineComponent {
   }
 
   public previewEpisode(term: number, episode: number): void {
+
     if(this.episode !== this.terms[term].episodes[episode]){
       let selectedPreviewEpisode = this.terms[term].episodes[episode];
       this.studyZoneService.previewEpisode = selectedPreviewEpisode;
     }
     else this.hidePreviewEpisode();
+
   }
 
   public hidePreviewEpisode(): void {
     this.studyZoneService.previewEpisode = null;
   }
 
-  prev(){
+  public prev(){
     if(this.currentScroll > 0){
       let gallery = this.termsSlider.nativeElement as HTMLElement;
       gallery.scrollLeft = gallery.scrollLeft - this.galleryTotalWidth/2;
     }
   }
 
-  next(){
+  public next(){
     if(this.currentScroll !== this.galleryTotalWidth - this.galleryElementWidth){
       let gallery = this.termsSlider.nativeElement as HTMLElement;
       gallery.scrollLeft = gallery.scrollLeft + this.galleryTotalWidth/2;

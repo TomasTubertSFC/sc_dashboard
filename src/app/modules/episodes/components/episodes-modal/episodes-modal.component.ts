@@ -31,21 +31,22 @@ export class EpisodesModalComponent {
       }
     });
     this.studyZoneService.previewEpisode.subscribe(episode => {
-      if (episode) {
-        this.previewEpisode = episode;
-      }
+      this.previewEpisode = episode;
     });
 
     this.studyZoneService.observation.subscribe(observation => {
-      if (observation !== null) {
         this.observation = observation;
         if (!this.episdoesSidebarVisible) this.onToggleEpisodesModal();
-      }
     });
+
   }
 
   public onToggleEpisodesModal() {
     this.episdoesSidebarVisible = !this.episdoesSidebarVisible;
   }
-
+  public observationSelected(id:number | null = null):void {
+    if(id !== null){
+      this.studyZoneService.observation = id;
+    }
+  }
 }

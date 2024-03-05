@@ -29,6 +29,7 @@ export class StudyZoneService {
     return this._previewEpisode;
   }
   public set previewEpisode(value: Episode|null) {
+    console.log(value)
     this._previewEpisode.next(value);
   }
 

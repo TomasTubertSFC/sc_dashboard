@@ -1,159 +1,216 @@
 
   {
     "APGEMO":[
-      {"x":-21.954511459310332, "y": 64.15324648934966 },
-      {"x":-21.9548085263586, "y": 64.15332601355283 },
-      {"x":-21.95469386890137, "y": 64.15338736063957 },
-      {"x":-21.95440722525831, "y": 64.15331010873041 },
-      {"x":-21.954224815667267, "y": 64.15327375481641 },
-      {"x":-21.954125793317843, "y": 64.15331919720147 },
-      {"x":-21.953990289050214, "y": 64.15328965965965 },
-      {"x":-21.95409973480484, "y": 64.15324421722619 },
-      {"x":-21.953641104975937, "y": 64.15327148269519 },
-      {"x":-21.953573352842117, "y": 64.1533146529663 },
-      {"x":-21.953338826225067, "y": 64.15327148269519 },
-      {"x":-21.95340136665628, "y": 64.1532192238561 }
+      {"x":2.1488025699850932, "y": 41.374829419455985 },
+      {"x":2.1493968867070796, "y": 41.375230099973656 },
+      {"x":2.1494015298064704, "y": 41.374791093364074 },
+      {"x":2.1496986881674633, "y": 41.375345077405576 }
     ],
     "episodes":[
       {
         "date": "2023-06-01",
         "inconvenience": 3,
         "observations":[
-          {"x":-21.954753190407125, "y":64.15361871507056, "id": 0},
-          {"x":-21.954511459310332, "y":64.15331010873041, "id": 1},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 2},
-          {"x":-21.95358374739112, "y":64.1538373798973, "id": 3}
-        ]
-      },
-      {
-        "date": "2023-06-02",
-        "inconvenience": 5,
-        "observations":[
-          {"x":-21.95562490827204, "y":64.1533673068623, "id": 4},
-          {"x":-21.952813953533674, "y":64.15308198502176, "id": 5},
-          {"x":-21.954315990458383, "y":64.15285045120066, "id": 6},
-          {"x":-21.952551097060535, "y":64.15363040842838, "id": 7}
-        ]
-      },
-      {
-        "date": "2023-06-03",
-        "inconvenience": 0,
-        "observations":[
-          {"x":-21.954753190405067, "y":64.15361871509663, "id": 8},
-          {"x":-21.95304654173674, "y":64.15327148269519, "id": 9},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 10},
-          {"x":-21.953583747350214, "y":64.1538373763957, "id": 11}
-        ]
-      },
-      {
-        "date": "2023-06-04",
-        "inconvenience": 2,
-        "observations":[
-          {"x":-21.954753190405067, "y":64.15361871509663, "id": 12},
-          {"x":-21.95304654173674, "y":64.15327148269519, "id": 13},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 14},
-          {"x":-21.953583747350214, "y":64.1538373763957, "id": 15}
-        ]
-      },
-      {
-        "date": "2023-07-01",
-        "inconvenience": 3,
-        "observations":[
-          {"x":-21.954753190407125, "y":64.15361871507056, "id": 16},
-          {"x":-21.95469386890137, "y":64.15327148269519, "id": 17},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 18},
-          {"x":-21.95358374739112, "y":64.1538373798973, "id": 19}
-        ]
-      },
-      {
-        "date": "2023-08-02",
-        "inconvenience": 5,
-        "observations":[
-          {"x":-21.95562490827204, "y":64.1533673068623, "id": 20},
-          {"x":-21.952813953533674, "y":64.15308198502176, "id": 21},
-          {"x":-21.954315990458383, "y":64.15285045120066, "id": 22},
-          {"x":-21.952551097060535, "y":64.15363040842838, "id": 23}
-        ]
-      },
-      {
-        "date": "2023-08-03",
-        "inconvenience": 0,
-        "observations":[
-          {"x":-21.954753190405067, "y":64.15361871509663, "id": 24},
-          {"x":-21.95304654173674, "y":64.15327148269519, "id": 25},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 26},
-          {"x":-21.953583747350214, "y":64.1538373763957, "id": 27}
-        ]
-      },
-      {
-        "date": "2023-08-04",
-        "inconvenience": 6,
-        "observations":[
-          {"x":-21.954753190405067, "y":64.15361871509663, "id": 28},
-          {"x":-21.95304654173674, "y":64.15327148269519, "id": 29},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 30},
-          {"x":-21.953583747350214, "y":64.1538373763957, "id": 31}
-        ]
-      },
-      {
-        "date": "2023-06-01",
-        "inconvenience": 3,
-        "observations":[
-          {"x":-21.954753190407125, "y":64.15361871507056, "id": 32},
-          {"x":-21.954511459310332, "y":64.15331010873041, "id": 33},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 34},
-          {"x":-21.95358374739112, "y":64.1538373798973, "id": 35}
-        ]
-      },
-      {
-        "date": "2023-06-02",
-        "inconvenience": 5,
-        "observations":[
-          {"x":-21.95562490827204, "y":64.1533673068623, "id": 36},
-          {"x":-21.952813953533674, "y":64.15308198502176, "id": 37},
-          {"x":-21.954315990458383, "y":64.15285045120066, "id": 38},
-          {"x":-21.952551097060535, "y":64.15363040842838, "id": 39}
-        ]
-      },
-      {
-        "date": "2023-06-03",
-        "inconvenience": 0,
-        "observations":[
-          {"x":-21.954753190405067, "y":64.15361871509663, "id": 40},
-          {"x":-21.95304654173674, "y":64.15327148269519, "id": 41},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 42},
-          {"x":-21.953583747350214, "y":64.1538373763957, "id": 43}
-        ]
-      },
-      {
-        "date": "2023-06-04",
-        "inconvenience": 2,
-        "observations":[
-          {"x":-21.954753190405067, "y":64.15361871509663, "id": 44},
-          {"x":-21.95304654173674, "y":64.15327148269519, "id": 45},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 46},
-          {"x":-21.953583747350214, "y":64.1538373763957, "id": 47}
-        ]
-      },
-
-      {
-        "date": "2023-07-01",
-        "inconvenience": 3,
-        "observations":[
-          {"x":-21.954753190407125, "y":64.15361871507056, "id": 48},
-          {"x":-21.95469386890137, "y":64.15327148269519, "id": 49},
-          {"x":-21.953092903209562, "y":64.15353335346946, "id": 50},
-          {"x":-21.95358374739112, "y":64.1538373798973, "id": 51}
-        ]
-      },
-      {
-        "date": "2023-08-02",
-        "inconvenience": 5,
-        "observations":[
-          {"x":-21.95562490827204, "y":64.1533673068623, "id": 52},
-          {"x":-21.952813953533674, "y":64.15308198502176, "id": 53},
-          {"x":-21.954315990458383, "y":64.15285045120066, "id": 54},
-          {"x":-21.952551097060535, "y":64.15363040842838, "id": 55}
+          {
+            "id": 13717,
+            "longitude": 2.148942318412885,
+            "latitude": 41.37703282758233,
+            "color": 3,
+            "relationships": {
+                "odourSubType": {
+                    "id": 51,
+                    "odourTypeId": 3,
+                    "name": "Grasa y aceite",
+                    "slug": "fat-and-oil",
+                    "relationships": {
+                        "odourType": {
+                            "id": 3,
+                            "name": "Comida",
+                            "slug": "food",
+                            "relationships": []
+                        }
+                    }
+                },
+                "odourIntensity": {
+                    "id": 7,
+                    "name": "Extremadamente fuerte",
+                    "power": 6,
+                    "slug": "extremadamente-fuerte"
+                },
+                "odourHedonicTone": {
+                    "id": 9,
+                    "index": 4,
+                    "name": "Extremadamente agradable",
+                    "slug": "extremadamente-agradable"
+                }
+            },
+            "likes": 0,
+            "liked": false,
+            "description": "Olores fuertes a fritura entre las 10:00 de la ma\u00f1ana y las 24:00 de la noche.\nNo puedo abrir ventanas.\nMe causa dolores de cabeza y muy malestar.",
+            "origin": "Bar La Garimbota",
+            "createdAt": "2023-07-30T10:20:27.000000Z",
+            "updatedAt": "2023-07-30T10:20:27.000000Z"
+        },
+        {
+            "id": 13724,
+            "longitude": 2.15038586687726,
+            "latitude": 41.37449842064499,
+            "color": 4,
+            "relationships": {
+                "odourSubType": {
+                    "id": 89,
+                    "odourTypeId": 5,
+                    "name": "Otros",
+                    "slug": "other",
+                    "relationships": {
+                        "odourType": {
+                            "id": 5,
+                            "name": "Aguas residuales y residuos",
+                            "slug": "wastewater-and-waste",
+                            "relationships": []
+                        }
+                    }
+                },
+                "odourIntensity": {
+                    "id": 3,
+                    "name": "D\u00e9bil",
+                    "power": 2,
+                    "slug": "debil"
+                },
+                "odourHedonicTone": {
+                    "id": 5,
+                    "index": 0,
+                    "name": "Neutral",
+                    "slug": "neutral"
+                }
+            },
+            "likes": 0,
+            "liked": false,
+            "description": "Yep",
+            "origin": "Rubiah",
+            "createdAt": "2023-08-19T14:04:52.000000Z",
+            "updatedAt": "2023-08-19T14:04:52.000000Z"
+        },
+        {
+            "id": 13726,
+            "longitude": 2.1475582193484346,
+            "latitude":41.37404198794295,
+            "color": 6,
+            "relationships": {
+                "odourSubType": {
+                    "id": 92,
+                    "odourTypeId": 7,
+                    "name": "Sin olor",
+                    "slug": "no-odour",
+                    "relationships": {
+                        "odourType": {
+                            "id": 7,
+                            "name": "No lo s\u00e9",
+                            "slug": "no-odour",
+                            "relationships": []
+                        }
+                    }
+                },
+                "odourIntensity": {
+                    "id": 2,
+                    "name": "Muy d\u00e9bil",
+                    "power": 1,
+                    "slug": "muy-debil"
+                },
+                "odourHedonicTone": {
+                    "id": 1,
+                    "index": -4,
+                    "name": "Extremadamente desagradable",
+                    "slug": "extremadamente-desagradable"
+                }
+            },
+            "likes": 0,
+            "liked": false,
+            "description": "Construction noise from garden after hours on weekend",
+            "origin": "Construction noise after hours on weekend",
+            "createdAt": "2023-08-19T14:24:45.000000Z",
+            "updatedAt": "2023-08-19T14:24:45.000000Z"
+        },
+        {
+            "id": 13727,
+            "longitude": 2.149355098812565,
+            "latitude": 41.37630321476795,
+            "color": 7,
+            "relationships": {
+                "odourSubType": {
+                    "id": 19,
+                    "odourTypeId": 1,
+                    "name": "No lo s\u00e9",
+                    "slug": "i-dont-know",
+                    "relationships": {
+                        "odourType": {
+                            "id": 1,
+                            "name": "Campo y naturaleza",
+                            "slug": "country-and-nature",
+                            "relationships": []
+                        }
+                    }
+                },
+                "odourIntensity": {
+                    "id": 6,
+                    "name": "Muy fuerte",
+                    "power": 5,
+                    "slug": "muy-fuerte"
+                },
+                "odourHedonicTone": {
+                    "id": 1,
+                    "index": -4,
+                    "name": "Extremadamente desagradable",
+                    "slug": "extremadamente-desagradable"
+                }
+            },
+            "likes": 0,
+            "liked": false,
+            "description": "El olor es muy desagradable y se percibe a kil\u00f3metros de distancia. El olor adem\u00e1s se percibe de forma recurrente y peri\u00f3dica.",
+            "origin": "El olor proviene de la granja La Constancia, en el t\u00e9rmino de Picassent.",
+            "createdAt": "2023-08-19T20:31:51.000000Z",
+            "updatedAt": "2023-08-19T20:31:51.000000Z"
+        },
+        {
+            "id": 13736,
+            "longitude":  2.1482732566545746,
+            "latitude": 41.37542869722843,
+            "color": 7,
+            "relationships": {
+                "odourSubType": {
+                    "id": 76,
+                    "odourTypeId": 5,
+                    "name": "Residuo descompuesto",
+                    "slug": "decomposed-waste",
+                    "relationships": {
+                        "odourType": {
+                            "id": 5,
+                            "name": "Aguas residuales y residuos",
+                            "slug": "wastewater-and-waste",
+                            "relationships": []
+                        }
+                    }
+                },
+                "odourIntensity": {
+                    "id": 7,
+                    "name": "Extremadamente fuerte",
+                    "power": 6,
+                    "slug": "extremadamente-fuerte"
+                },
+                "odourHedonicTone": {
+                    "id": 1,
+                    "index": -4,
+                    "name": "Extremadamente desagradable",
+                    "slug": "extremadamente-desagradable"
+                }
+            },
+            "likes": 0,
+            "liked": false,
+            "description": "Durante todo el d\u00eda ha habido olor a putrefacci\u00f3n!!\n\nPasa continuamente necesitamos alguna respuesta y una investigaci\u00f3n",
+            "origin": "De la f\u00e1brica tersa",
+            "createdAt": "2023-08-30T17:24:03.000000Z",
+            "updatedAt": "2023-08-30T17:24:03.000000Z"
+        }
         ]
       }
     ]
