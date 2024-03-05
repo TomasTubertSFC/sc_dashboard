@@ -1,6 +1,6 @@
-@if(!episdoesSidebarVisible && studyZone){
-  <button id="toggleModalButton" pButton pRipple class="p-button-rounded p-button-help" (click)="onToggleEpisodesModal()">
-    <i class="pi pi-bars" style="font-size: 1.5rem;"></i>
+@if(studyZone){
+  <button id="toggleModalButton" pButton pRipple class="p-button-rounded" (click)="onToggleEpisodesModal()">
+    <i class="pi pi-bars"></i>
   </button>
 }
 <div id="episodesModal" #episodesModal></div>
