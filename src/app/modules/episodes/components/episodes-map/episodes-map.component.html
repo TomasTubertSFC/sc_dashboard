@@ -8,7 +8,7 @@
   >
 
   @if(points){
-    @for(point of points; track point){
+    @for(point of APEGMOpoints; track point){
 
       <mgl-marker [lngLat]="[point.x, point.y]">
         <div class="pi pi-map-marker" style="color: #000; font-size: 1rem"></div>
@@ -35,10 +35,10 @@
     @if(cones.length > 0){
       @for(cone of cones; track cone){
         <mgl-canvas-source
-          [id]="'cone-' + cone.id + '-source'"
-          [canvas]="'cone-' + cone.id"
-          [coordinates]="cone.cone.imageCoordinates"
-          [animate]="true"
+        [id]="'cone-' + cone.id + '-source'"
+        [canvas]="'cone-' + cone.id"
+        [coordinates]="cone.cone.imageCoordinates"
+        [animate]="true"
         ></mgl-canvas-source>
         <mgl-layer [id]="'cone-' + cone.id + '-layer'" type="raster" [source]="'cone-' + cone.id + '-source'" [paint]="{'raster-opacity':1}"></mgl-layer>
       }
@@ -54,9 +54,44 @@
         (mouseleave)="leaveObservation()"
         (click)="observationSelected($event, point.id)"
         class="pi pi-user btn-observation"></div>
+        
       </mgl-marker>
 
     }
+  }
+  <mgl-geojson-source id="polygons">
+    <mgl-feature
+        *ngFor="let polygon of APEGMOpolygon"
+        [geometry]="polygon.geometry"
+      ></mgl-feature>
+  </mgl-geojson-source>
+
+  @if(cones.length > 0){
+
+    <mgl-layer
+      [id]="'poligonos'"
+      [type]="'fill'"
+      [source]="'polygons'"
+      [paint]="{
+        'fill-color': '#088',
+        'fill-opacity': 0.5
+      }"
+
+
+    ></mgl-layer>
+
+  }
+  @else{
+  <mgl-layer
+    id="poligonos"
+    type="fill"
+    source="polygons"
+    [paint]="{
+      'fill-color': '#088',
+      'fill-opacity': 0.5
+    }"
+
+  ></mgl-layer>
   }
 </mgl-map>
 

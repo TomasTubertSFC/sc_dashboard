@@ -2,7 +2,7 @@ import { Point } from "./cone";
 import { Observation } from "./observation";
 
 export interface StudyZone {
-  APGEMO: Point[];
+  APGEMO: (Point | Point[])[];
   episodes: Episode[];
 }
 export interface Episode {

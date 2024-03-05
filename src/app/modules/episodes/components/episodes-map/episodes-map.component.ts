@@ -3,6 +3,7 @@ import { Cone } from '../../../../models/cone';
 import { Point } from 'chart.js';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Episode, StudyZone } from '../../../../models/study-zone';
+import { GeoJSONSourceComponent } from 'ngx-mapbox-gl';
 
 @Component({
   selector: 'app-episodes-map',
@@ -21,6 +22,8 @@ export class EpisodesMapComponent {
   public studyZone: StudyZone | null = null;
   public episode: Episode| null = null;
   public previewEpisode: Episode| null = null;
+  public APEGMOpoints: Point[] = [];
+  public APEGMOpolygon: any[] = [];
 
   public canvasHeight: number = 1800;
   public canvasWidth: number = 1800;
@@ -43,17 +46,36 @@ export class EpisodesMapComponent {
 
     this.studyZoneService.studyZone.subscribe(studyZone => {
       if (studyZone) {
-        this.points = studyZone.APGEMO.map(point => {
-          return { x: point.x, y: point.y };
+
+        this.points = studyZone.APGEMO.flat();
+
+        //separamos puntos y poligonos de APEGMO
+        studyZone.APGEMO.forEach(point => {
+          if (Array.isArray(point)) {
+            let polygon:any = {
+              geometry: {
+                type: 'Polygon',
+                coordinates: [point.map(pt => [pt.x, pt.y])]
+              }
+            };
+            this.APEGMOpolygon.push(polygon);
+
+          }
+          else {
+            this.APEGMOpoints.push(point);
+          }
         });
+        console.log(this.APEGMOpolygon);
+
         //obtener media de las coordenadas
         let averageX = 0;
         let averageY = 0;
-        studyZone.APGEMO.forEach(point => {
-          averageX += point.x/studyZone.APGEMO.length;
-          averageY += point.y/studyZone.APGEMO.length;
+        this.points.map(point => {
+          averageX += point.x/this.points.length;
+          averageY += point.y/this.points.length;
         });
         this.observation = { x: averageX, y: averageY };
+
       }
     });
 
