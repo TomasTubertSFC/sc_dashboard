@@ -6,13 +6,14 @@ import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { AccordionModule } from 'primeng/accordion';
+import { SidebarModule } from 'primeng/sidebar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 import { EpisodesRoutingModule } from './episodes-routing.module';
 import { EpisodesPageComponent } from './episodes-page/episodes-page.component';
 import { EpisodesMapComponent } from './components/episodes-map/episodes-map.component';
 import { EpisodesTimelineComponent } from './components/episodes-timeline/episodes-timeline.component';
 import { EpisodesModalComponent } from './components/episodes-modal/episodes-modal.component';
-import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { SidebarModule } from 'primeng/sidebar';
     AccordionModule,
     CommonModule,
     EpisodesRoutingModule,
+    OverlayPanelModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoibmV0aWZpZzM1MiIsImEiOiJjbHN4Yzcyc3AwMW8xMmtwMnVlenEyaGQ0In0.SMd509FY7jcvLxBPpbw0pA',
     })

@@ -19,14 +19,14 @@
 
   @if(episode && !previewEpisode){
 
-    @for(point of episode.observations; track point){
+    @for(obs of episode.observations; track obs){
 
-      <mgl-marker [lngLat]="[point.longitude, point.latitude]">
+      <mgl-marker [lngLat]="[obs.longitude, obs.latitude]">
         <div
-        [ngClass]="{ 'active' : point.id === selectedObservation }"
-        (mouseover)="overObservation(point.id)"
+        [ngClass]="{ 'active' : obs.id === selectedObservation, 'preview' : obs.id === previewObservation}"
+        (mouseover)="overObservation(obs.id)"
         (mouseleave)="leaveObservation()"
-        (click)="observationSelected($event, point.id)"
+        (click)="observationSelected($event, obs.id)"
         class="pi pi-user btn-observation"></div>
       </mgl-marker>
 

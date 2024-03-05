@@ -15,6 +15,7 @@ export class EpisodesMapComponent {
   public points!: Point[];
   public observation: Point = { x: 0, y: 0};
   public selectedObservation: number | null = null;
+  public previewObservation: number | null = null;
   public coneCanvas!: any;
   public imageLoaded: boolean = false;
   public studyZone: StudyZone | null = null;
@@ -32,10 +33,11 @@ export class EpisodesMapComponent {
     id: number,
   }[] = [];
 
-  constructor(
-    private studyZoneService: StudyZoneService
-    ) {
-    }
+  constructor(private studyZoneService: StudyZoneService) {}
+
+  ngOnInit() {
+
+  }
 
   ngAfterViewInit(): void {
 
@@ -68,6 +70,13 @@ export class EpisodesMapComponent {
       this.selectedObservation = observation;
       this.leaveObservation();
     });
+    this.studyZoneService.previewObservation.subscribe(previewObservation => {
+      this.previewObservation = previewObservation;
+      this.overObservation(this.previewObservation);
+      if(previewObservation === null){
+        this.leaveObservation();
+      }
+    });
 
     this.studyZoneService.episode.subscribe(episode => {
 
@@ -79,7 +88,6 @@ export class EpisodesMapComponent {
 
       if (episode) {
 
-        console.log(episode.observations);
         // coordenadas promedio de las observaciones
         let averageX = 0;
         let averageY = 0;
@@ -106,12 +114,11 @@ export class EpisodesMapComponent {
 
           document.body.appendChild(canvas);
 
-
           this.coneCanvas = canvas;
           this.context = new ElementRef(canvas).nativeElement.getContext('2d') as CanvasRenderingContext2D;
           this.cone = new Cone(points, {x: observation.longitude, y: observation.latitude, id: observation.id}, true, this.canvasHeight, this.canvasWidth);
           let cone = this.cone;
-          console.log(cone);
+
           this.cones.push({cone, canvas, id});
 
           if(this.cone.observationCone && this.cone.observationCone.angle){
@@ -226,7 +233,6 @@ export class EpisodesMapComponent {
     this.context.strokeStyle = this.hexToRGBA('#14b8a6', 0.5);
     this.context.beginPath();
     this.cone.convexHull.forEach(p => {
-      console.log(((p.y - mapCenterY ) * scale + this.canvasHeight / 2) - minY);
       this.context.lineTo(
         ((p.x - mapCenterX ) * scale + this.canvasWidth / 2) - minX,
         ((p.y - mapCenterY ) * scale + this.canvasHeight / 2) - minY
@@ -250,6 +256,7 @@ export class EpisodesMapComponent {
 
   public overObservation(id:number | null = null):void {
     if(id !== null){
+      if(this.studyZoneService.previewObservation.value !== id) this.studyZoneService.previewObservation = id;
       this.cones.forEach(cone => {
         this.cone = cone.cone;
         this.coneCanvas = cone.canvas;
@@ -263,6 +270,7 @@ export class EpisodesMapComponent {
   }
 
   public leaveObservation():void {
+    if(this.studyZoneService.previewObservation.value !== null) this.studyZoneService.previewObservation = null;
     this.cones.forEach(cone => {
       this.cone = cone.cone;
       this.coneCanvas = cone.canvas;

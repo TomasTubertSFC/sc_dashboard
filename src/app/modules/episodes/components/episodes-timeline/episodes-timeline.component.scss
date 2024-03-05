@@ -150,7 +150,16 @@
             border-radius: 3px 3px 0 0;
             box-shadow: 0;
           }
-          &:hover{
+          &.active{
+            z-index: 1;
+            .inconvenience{
+              background: linear-gradient(0deg, #fd9a77, #fb827a) no-repeat bottom;
+              background-size: 90px 90px;
+              border-color: #e96c63;
+              box-shadow: 0 -8px 10px 0 rgba(0, 0, 0, 0.16), 0 0 5px 0 rgba(0, 0, 0, 0.26);
+            }
+          }
+          &.preview{
             z-index: 1;
             .inconvenience{
               background: linear-gradient(0deg, #348ac7, #7474bf) no-repeat bottom;
@@ -159,15 +168,6 @@
               border-bottom: none;
               border-color: #6666c2;
               box-shadow: 0 -4px 5px 0 rgba(0, 0, 0, 0.16), 0 0 5px 0 rgba(0, 0, 0, 0.26);
-            }
-          }
-          &.active{
-            z-index: 1;
-            .inconvenience{
-              background: linear-gradient(0deg, #fd9a77, #fb827a) no-repeat bottom;
-              background-size: 90px 90px;
-              border-color: #e96c63;
-              box-shadow: 0 -8px 10px 0 rgba(0, 0, 0, 0.16), 0 0 5px 0 rgba(0, 0, 0, 0.26);
             }
           }
         }
