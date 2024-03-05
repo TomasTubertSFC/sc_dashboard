@@ -7,7 +7,7 @@
   border-radius: 12px;
   box-shadow: 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12), 0 11px 15px -7px rgba(0,0,0,.2);
   z-index: 100;
-  padding: 20px 15px 50px 15px;
+  padding: 12px 7px 45px 7px;
   #timeline{
     position: relative;
     display: flex;
@@ -89,7 +89,7 @@
       .term{
         min-width: max-content;
         padding-left: 10px;
-        padding-right: 10px;
+        padding-right: 25px;
         z-index: 0;
         height: 90px;
         display: flex;
@@ -115,7 +115,8 @@
           z-index: 0;
           padding-top: 50px;
           position: absolute;
-          bottom: -37px;
+          bottom: -30px;
+          font-size: 0.8rem;
           font-weight: 500;
           left: 5px;
           color:  rgba(0,0,0,.2);
@@ -123,9 +124,9 @@
             content: '';
             position: absolute;
             width: 1px;
-            height: 13px;
+            height: 15px;
             background-color: rgba(0,0,0,.2);
-            bottom: 17px;
+            bottom: 15px;
             left: 5px;
             z-index: 0;
           }
@@ -138,6 +139,7 @@
           height: 90px;
           display: flex;
           align-items: flex-end;
+          font-size: 0.8rem;
           .inconvenience{
             pointer-events: none;
             width: 100%;
@@ -173,11 +175,11 @@
         }
         &:hover{
           span{
-            bottom: -45px;
+            bottom: -35px;
             color: rgba(0,0,0,.5);
-            font-size: 1.2rem;
+            font-size: 0.8rem;
             &::before{
-              bottom: 20px;
+              bottom: 15px;
               height: 18px;
               background-color: rgba(0,0,0,.5);
             }
@@ -197,13 +199,13 @@
 
   p-button{
     position: absolute;
-    bottom: 10px;
+    bottom: 7px;
     z-index: 10;
-    right: 60px;
+    right: 50px;
     background: white;
     border-radius: 50%;
     &:last-child{
-      right: 15px;
+      right: 7px;
     }
   }
 }
