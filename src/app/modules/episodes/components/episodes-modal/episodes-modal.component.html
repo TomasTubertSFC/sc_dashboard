@@ -1,6 +1,6 @@
-@if(!episdoesSidebarVisible && studyZone){
-  <button id="toggleModalButton" pButton pRipple class="p-button-rounded p-button-help" (click)="onToggleEpisodesModal()">
-    <i class="pi pi-bars" style="font-size: 1.5rem;"></i>
+@if(studyZone){
+  <button id="toggleModalButton" pButton pRipple class="p-button-rounded" (click)="onToggleEpisodesModal()">
+    <i class="pi pi-bars"></i>
   </button>
 }
 <div id="episodesModal" #episodesModal></div>
@@ -9,19 +9,36 @@
   @if(studyZone){
     <p-accordion [activeIndex]="episode?.id">
       @for( ep of studyZone.episodes; track ep; let index = $index){
-        <p-accordionTab [classList]="'position-sticky'" [ngClass]="{'preview': index === previewEpisode?.id}" header="{{'Episodio ' + index}} ">
-          <h5>Observaciones</h5>
-          @for(obs of ep.observations; track obs; let index = $index){
-            <div class="observation" [ngClass]="{ 'active' : obs.id === observation }" (click)="observationSelected(obs.id)">
-              <div>
-                <b>Fecha:</b> {{obs.createdAt| date:'dd/MM/yyyy hh:mm'}}<br/>
+        <p-accordionTab
+        [classList]="'position-sticky'"
+        [ngClass]="{'preview': index === previewEpisode?.id}"
+        header="{{'Episodio ' + (index + 1)}}"
+        (click)="selectEpisode(ep)"
+        >
+          <h6>Observaciones</h6>
+          <div class="flex flex-wrap gap-1">
+            @for(obs of ep.observations; track obs; let index = $index){
+              <div
+              class="observation"
+              (click)="[ol.show($event), observationSelected(obs.id)]"
+              (mouseenter)="[ol.show($event), observationPreview(obs.id)]"
+              (mouseover)="ol.show($event)"
+              (mouseleave)="[ol.hide(), observationPreview(null)]"
+              [ngClass]="{ 'active' : obs.id === observation , 'preview' : obs.id === previewObservation && obs.id !== observation}"
+              >
+                <div>
+                  <b>{{obs.createdAt| date:'HH:mm'}}h.</b>
+                </div>
+              </div>
+              <p-overlayPanel #ol>
+                <b>Date:</b> {{obs.createdAt| date:'dd/MM/yyyy HH:mm'}}<br/>
                 <b>Type:</b> {{obs.relationships.odourSubType.relationships?.odourType?.name}}<br/>
                 <b>Subtype:</b> {{obs.relationships.odourSubType.name}}<br/>
                 <b>Hedonic Tone:</b> {{obs.relationships.odourHedonicTone?.name}}<br/>
                 <b>Intensity:</b> {{obs.relationships.odourIntensity?.name}}<br/>
-              </div>
-            </div>
-          }
+              </p-overlayPanel>
+            }
+          </div>
         </p-accordionTab>
       }
     </p-accordion>

@@ -29,7 +29,6 @@ export class StudyZoneService {
     return this._previewEpisode;
   }
   public set previewEpisode(value: Episode|null) {
-    console.log(value)
     this._previewEpisode.next(value);
   }
 
@@ -39,6 +38,14 @@ export class StudyZoneService {
   }
   public set observation(value: number | null) {
     this._observation.next(value);
+  }
+
+  private _previewObservation: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
+  public get previewObservation(): BehaviorSubject<number | null> {
+    return this._previewObservation;
+  }
+  public set previewObservation(value: number|null) {
+    this._previewObservation.next(value);
   }
 
   constructor(private http: HttpClient) {

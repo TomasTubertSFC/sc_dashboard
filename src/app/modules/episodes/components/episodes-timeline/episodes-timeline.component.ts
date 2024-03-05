@@ -20,6 +20,7 @@ export class EpisodesTimelineComponent {
   public studyZone: StudyZone | null = null;
 
   public episode: Episode | null = null;
+  public episodePreview: Episode | null = null;
 
   @ViewChild('termsSlider') termsSlider!: ElementRef;
   @ViewChild('nextButton') nextButton!: Button;
@@ -52,6 +53,12 @@ export class EpisodesTimelineComponent {
         }
       });
     });
+    this.studyZoneService.episode.subscribe(episode => {
+        this.episode = episode;
+    });
+    this.studyZoneService.previewEpisode.subscribe(episode => {
+        this.episodePreview = episode;
+    });
   }
 
   ngAfterViewInit() {
@@ -64,17 +71,15 @@ export class EpisodesTimelineComponent {
     return `height: ${((inconvenience + 1) * 10)-2}px`;
   }
 
-  public selectEpisode(event: Event, term: number, episode: number): void {
+  public selectEpisode(event: Event, id: number): void {
     this.hidePreviewEpisode();
-    if(this.episode !== this.terms[term].episodes[episode]){
-      let element = event.target as HTMLElement;
-      //remover a classe active de todos os elementos
-      document.querySelectorAll('.episode').forEach(element => {
-        element.classList.remove('active');
-      });
-      element.classList.add('active');
-      this.episode = this.terms[term].episodes[episode];
-      this.studyZoneService.episode = this.episode;
+    this.studyZoneService.previewEpisode = null;
+    this.studyZoneService.previewObservation = null;
+    this.studyZoneService.observation = null;
+    if(this.episode !== this.studyZone?.episodes[id]){
+      if(this.studyZone?.episodes[id]){
+        this.studyZoneService.episode = this.studyZone?.episodes[id];
+      }
     }
   }
 

@@ -456,9 +456,8 @@ export class Cone {
     // Dibujar el arco del angulo de observacion abarcando todos los puntos
     const initialAnglePoint = this.calculateAngle({ x: this.observationCone.vertexPosition.x + 1000, y: this.observationCone.vertexPosition.y }, this.observationCone.vertexPosition, this.observationCone.initialSidePosition) * (Math.PI / 180);
     const finalAnglePoint = this.calculateAngle({ x: this.observationCone.vertexPosition.x + 1000, y: this.observationCone.vertexPosition.y }, this.observationCone.vertexPosition, this.observationCone.terminalSidePosition) * (Math.PI / 180);
-    console.log(canvas);
-    let ctx = canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
 
+    let ctx = canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
 
     if (ctx){
       ctx.strokeStyle = observationColor;

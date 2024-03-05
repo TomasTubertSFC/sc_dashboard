@@ -36,12 +36,17 @@
       @for(term of terms; track term; let tIndex = $index){
         <div class="term">
           <span>{{term.year}}/{{term.month}}</span>
-          @for(episode of term.episodes; track episode; let epIndex = $index){
-            <div class="episode" pTooltip="{{episode.date}}" [autoHide]="false" [positionTop]="-10" tooltipPosition="top"
-            (click)="selectEpisode($event, tIndex, epIndex)"
+          @for(ep of term.episodes; track ep; let epIndex = $index){
+            <div
+            class="episode"
+            pTooltip="{{ep.date}}"
+            [autoHide]="false"
+            [ngClass]="{'active' : ep.id === episode?.id, 'preview' : ep.id === episodePreview?.id && ep.id !== episode?.id}"
+            [positionTop]="-10" tooltipPosition="top"
+            (click)="selectEpisode($event, ep.id)"
             (mouseover)="previewEpisode(tIndex, epIndex)"
             (mouseleave)="hidePreviewEpisode()">
-              <div class="inconvenience" [style]="getHeightByInconvenience(episode.inconvenience)"></div>
+              <div class="inconvenience" [style]="getHeightByInconvenience(ep.inconvenience)"></div>
             </div>
           }
         </div>

@@ -27,7 +27,7 @@ mgl-map{
     background: linear-gradient(0deg, #fd9a77, #fb827a);
     border-color: #e96c63;
   }
-  &:hover{
+  &:hover, &.preview{
     background: linear-gradient(0deg, #348ac7, #7474bf);
     border-color: #6666c2;
   }
