@@ -1,9 +1,10 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Cone } from '../../../../models/cone';
 import { Point } from 'chart.js';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Episode, StudyZone } from '../../../../models/study-zone';
-import { GeoJSONSourceComponent } from 'ngx-mapbox-gl';
+import { MapComponent } from 'ngx-mapbox-gl';
+import { MenuService } from '../../../../layout/components/menu/app.menu.service';
 
 @Component({
   selector: 'app-episodes-map',
@@ -11,6 +12,8 @@ import { GeoJSONSourceComponent } from 'ngx-mapbox-gl';
   styleUrl: './episodes-map.component.scss'
 })
 export class EpisodesMapComponent {
+
+  @ViewChild('map') map!: MapComponent;
 
   public cone!: Cone;
   public points!: Point[];
@@ -22,11 +25,19 @@ export class EpisodesMapComponent {
   public studyZone: StudyZone | null = null;
   public episode: Episode| null = null;
   public previewEpisode: Episode| null = null;
-  public APEGMOpoints: Point[] = [];
-  public APEGMOpolygon: any[] = [];
+  public APGEMOpoints: Point[] = [];
+  public APGEMOpolygon: any[] = [];
+  public APGEMOpolygonStyle: {} =
+    {
+      'fill-outline-color': '#363c69',
+      'fill-color': '#348ac7',
+      'fill-opacity': 0.8
+    }
+  ;
 
   public canvasHeight: number = 1800;
   public canvasWidth: number = 1800;
+
 
   public context!: CanvasRenderingContext2D;
 
@@ -36,13 +47,22 @@ export class EpisodesMapComponent {
     id: number,
   }[] = [];
 
-  constructor(private studyZoneService: StudyZoneService) {}
+  constructor(
+    private studyZoneService: StudyZoneService,
+    private menuService: MenuService
+    ) {}
 
   ngOnInit() {
 
   }
 
   ngAfterViewInit(): void {
+
+    this.menuService.sidebarMenuIsOpen.subscribe(state => {
+        setTimeout(() => {
+          this.map.mapInstance.resize();
+        },250);
+    });
 
     this.studyZoneService.studyZone.subscribe(studyZone => {
       if (studyZone) {
@@ -58,14 +78,13 @@ export class EpisodesMapComponent {
                 coordinates: [point.map(pt => [pt.x, pt.y])]
               }
             };
-            this.APEGMOpolygon.push(polygon);
+            this.APGEMOpolygon.push(polygon);
 
           }
           else {
-            this.APEGMOpoints.push(point);
+            this.APGEMOpoints.push(point);
           }
         });
-        console.log(this.APEGMOpolygon);
 
         //obtener media de las coordenadas
         let averageX = 0;
@@ -92,6 +111,7 @@ export class EpisodesMapComponent {
       this.selectedObservation = observation;
       this.leaveObservation();
     });
+
     this.studyZoneService.previewObservation.subscribe(previewObservation => {
       this.previewObservation = previewObservation;
       this.overObservation(this.previewObservation);
@@ -148,6 +168,7 @@ export class EpisodesMapComponent {
           }
 
         });
+
       }
     });
   }
@@ -222,6 +243,19 @@ export class EpisodesMapComponent {
     }
     else{
       //this.drawConvexHull();
+    }
+
+    let layerId = 'APEGMOpolygons';
+    if (this.map.mapInstance.getLayer(layerId)) {
+      setTimeout(() => {
+        this.map.mapInstance.moveLayer('APEGMOpolygons');
+        //TODO centrar en el mapa teniendo en cuenta el modal
+        // let bounds = this.map.mapInstance.getBounds();
+        // const bbox = [[2.1489061353499856, 41.37519155998778], [2.149347728186642, 41.3748158213479]];
+        // this.map.mapInstance.fitBounds(null, {
+        //   padding: {top: 50, bottom:200, left: 50, right: 500}
+        // });
+      });
     }
   }
 

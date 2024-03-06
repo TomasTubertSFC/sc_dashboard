@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export interface MenuChangeEvent {
     key: string;
@@ -14,6 +14,15 @@ export class MenuService {
 
     private menuSource = new Subject<MenuChangeEvent>();
     private resetSource = new Subject();
+    private _sidebarMenuIsOpen = new Subject<boolean>();
+
+    get sidebarMenuIsOpen():Observable<boolean> {
+        return this._sidebarMenuIsOpen.asObservable();
+    }
+    set sidebarMenuIsOpen(value: boolean) {
+        this._sidebarMenuIsOpen.next(value);
+    }
+
 
     menuSource$ = this.menuSource.asObservable();
     resetSource$ = this.resetSource.asObservable();
