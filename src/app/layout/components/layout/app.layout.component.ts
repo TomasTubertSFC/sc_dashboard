@@ -9,6 +9,7 @@ import { filter, Subject, Subscription } from 'rxjs';
 
 import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
 import { AppTopBarComponent } from '../topbar/app.topbar.component';
+import { MenuService } from '../menu/app.menu.service';
 
 interface LayoutState {
   staticMenuDesktopInactive: boolean;
@@ -41,7 +42,11 @@ export class AppLayoutComponent implements OnDestroy {
 
   @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
 
-  constructor(public renderer: Renderer2, public router: Router) {
+  constructor(
+    public renderer: Renderer2,
+    public router: Router,
+    private menuService: MenuService,
+    ) {
     this.overlayMenuOpenSubscription = this.overlayOpen$.subscribe(() => {
       if (!this.menuOutsideClickListener) {
         this.menuOutsideClickListener = this.renderer.listen(
@@ -81,6 +86,7 @@ export class AppLayoutComponent implements OnDestroy {
   //Toggle sidebar menu
   toggleSidebarMenu() {
     this.sidebarMenuIsOpen = !this.sidebarMenuIsOpen;
+    this.menuService.sidebarMenuIsOpen = this.sidebarMenuIsOpen;
     if (this.isDesktop()) {
       this.state.staticMenuDesktopInactive =
         !this.state.staticMenuDesktopInactive;
