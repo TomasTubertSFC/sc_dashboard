@@ -5,6 +5,7 @@ import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Episode, StudyZone } from '../../../../models/study-zone';
 import { MapComponent } from 'ngx-mapbox-gl';
 import { MenuService } from '../../../../layout/components/menu/app.menu.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-episodes-map',
@@ -47,6 +48,13 @@ export class EpisodesMapComponent {
     id: number,
   }[] = [];
 
+  private sidebarMenuIsOpen$! : Subscription;
+  private studyZone$! : Subscription;
+  private episode$! : Subscription;
+  private previewEpisode$! : Subscription;
+  private observation$! : Subscription;
+  private previewObservation$! : Subscription;
+
   constructor(
     private studyZoneService: StudyZoneService,
     private menuService: MenuService
@@ -58,13 +66,13 @@ export class EpisodesMapComponent {
 
   ngAfterViewInit(): void {
 
-    this.menuService.sidebarMenuIsOpen.subscribe(state => {
+    this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe(state => {
         setTimeout(() => {
           this.map.mapInstance.resize();
         },250);
     });
 
-    this.studyZoneService.studyZone.subscribe(studyZone => {
+    this.studyZone$ = this.studyZoneService.studyZone.subscribe(studyZone => {
       if (studyZone) {
 
         this.points = studyZone.APGEMO.flat();
@@ -96,9 +104,18 @@ export class EpisodesMapComponent {
         this.observation = { x: averageX, y: averageY };
 
       }
+
+
+      setTimeout(() => {
+        const bbox = this.getBboxFromPoints();
+        this.map.mapInstance.fitBounds(bbox, {
+          padding: {top: 50, bottom:200, left: 50, right: 500}
+        });
+      });
+
     });
 
-    this.studyZoneService.previewEpisode.subscribe(episode => {
+    this.episode$ = this.studyZoneService.previewEpisode.subscribe(episode => {
       if (episode) {
         this.previewEpisode = episode;
       }
@@ -107,12 +124,12 @@ export class EpisodesMapComponent {
       }
     });
 
-    this.studyZoneService.observation.subscribe(observation => {
+    this.observation$ = this.studyZoneService.observation.subscribe(observation => {
       this.selectedObservation = observation;
       this.leaveObservation();
     });
 
-    this.studyZoneService.previewObservation.subscribe(previewObservation => {
+    this.previewObservation$ = this.studyZoneService.previewObservation.subscribe(previewObservation => {
       this.previewObservation = previewObservation;
       this.overObservation(this.previewObservation);
       if(previewObservation === null){
@@ -120,7 +137,7 @@ export class EpisodesMapComponent {
       }
     });
 
-    this.studyZoneService.episode.subscribe(episode => {
+    this.episode$ = this.studyZoneService.episode.subscribe(episode => {
 
       this.cones.map(cone => {
         cone.canvas.remove();
@@ -170,6 +187,14 @@ export class EpisodesMapComponent {
         });
 
       }
+
+      setTimeout(() => {
+        const bbox = this.getBboxFromPointsAndObservations();
+        this.map.mapInstance.fitBounds(bbox, {
+          padding: {top: 50, bottom:200, left: 50, right: 500}
+        });
+      });
+
     });
   }
 
@@ -249,14 +274,67 @@ export class EpisodesMapComponent {
     if (this.map.mapInstance.getLayer(layerId)) {
       setTimeout(() => {
         this.map.mapInstance.moveLayer('APEGMOpolygons');
-        //TODO centrar en el mapa teniendo en cuenta el modal
-        // let bounds = this.map.mapInstance.getBounds();
-        // const bbox = [[2.1489061353499856, 41.37519155998778], [2.149347728186642, 41.3748158213479]];
-        // this.map.mapInstance.fitBounds(null, {
-        //   padding: {top: 50, bottom:200, left: 50, right: 500}
-        // });
+
+
       });
     }
+  }
+
+  private getBboxFromPointsAndObservations(): [[number,number], [number, number]] {
+
+    let points = this.points;
+    let observations = this.episode?.observations.map(observation => ({x: observation.longitude, y: observation.latitude})) || [];
+
+    let minX:number = 0, maxX:number = 0, minY:number = 0, maxY:number = 0;
+
+    points.forEach((p, i) => {
+      if (i === 0) {
+        minX = maxX = p.x;
+        minY = maxY = p.y;
+      } else {
+        minX = Math.min(p.x, minX);
+        minY = Math.min(p.y, minY);
+        maxX = Math.max(p.x, maxX);
+        maxY = Math.max(p.y, maxY);
+      }
+    });
+
+    observations.forEach((p, i) => {
+      if (i === 0) {
+        minX = maxX = p.x;
+        minY = maxY = p.y;
+      } else {
+        minX = Math.min(p.x, minX);
+        minY = Math.min(p.y, minY);
+        maxX = Math.max(p.x, maxX);
+        maxY = Math.max(p.y, maxY);
+      }
+    });
+
+    return [[minX, minY], [maxX, maxY]];
+
+  }
+
+  private getBboxFromPoints(): [[number,number], [number, number]] {
+
+    let points = this.points;
+
+    let minX:number = 0, maxX:number = 0, minY:number = 0, maxY:number = 0;
+
+    points.forEach((p, i) => {
+      if (i === 0) {
+        minX = maxX = p.x;
+        minY = maxY = p.y;
+      } else {
+        minX = Math.min(p.x, minX);
+        minY = Math.min(p.y, minY);
+        maxX = Math.max(p.x, maxX);
+        maxY = Math.max(p.y, maxY);
+      }
+    });
+
+    return [[minX, minY], [maxX, maxY]];
+
   }
 
   private drawConvexHull() {
@@ -341,4 +419,17 @@ export class EpisodesMapComponent {
     });
   }
 
+  ngOnDestroy() {
+    this.cones.map(cone => {
+      cone.canvas.remove();
+      return;
+    });
+    this.sidebarMenuIsOpen$?.unsubscribe();
+    this.studyZone$?.unsubscribe();
+    this.previewEpisode$?.unsubscribe();
+    this.observation$?.unsubscribe();
+    this.previewObservation$?.unsubscribe();
+    this.episode$?.unsubscribe();
+
+  }
 }

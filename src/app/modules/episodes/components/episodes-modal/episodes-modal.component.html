@@ -3,19 +3,115 @@
     <i class="pi pi-bars"></i>
   </button>
 }
+
+<p-overlayPanel #plausibilityInfo>
+  <div>
+  <h6>
+    <b>Plausibility criteria</b>
+  </h6>
+  <p>
+    The episode is plausible if the following criteria are met:<br/>
+    - <b>One or more</b> of observations are plausible.
+  </p>
+  <p>
+    The observation is plausible if:<br/>
+    - The observer is less than <b>350m</b> from the source.<br/>
+    - The wind speed is less than <b>0.5m/s</b>.<br/>
+    If the observation is not under <b>350m</b> of the source and the wind is faster than <b>0.5m/s</b>:<br/>
+    - The wind is blowing from the source to the receptor passing through the observer's cone.
+  </p>
+</div>
+</p-overlayPanel>
+
 <div id="episodesModal" #episodesModal></div>
-<p-sidebar [(visible)]="episdoesSidebarVisible" [appendTo]="episodesModal" [position]="'right'" [styleClass]="'floatSidebar lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
-  <ng-template pTemplate="header">Episodios de olor:</ng-template>
+<p-sidebar [(visible)]="episdoesSidebarVisible" [appendTo]="episodesModal" [position]="'right'" [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
+  <ng-template pTemplate="header">
+    <div class="flex flex-1 justify-content-between">
+      <span>Episodies</span>
+      <span class="counter">{{studyZone?.episodes?.length}}</span>
+    </div>
+  </ng-template>
   @if(studyZone){
     <p-accordion [activeIndex]="episode?.id">
       @for( ep of studyZone.episodes; track ep; let index = $index){
         <p-accordionTab
         [classList]="'position-sticky'"
         [ngClass]="{'preview': index === previewEpisode?.id}"
-        header="{{'Episodio ' + (index + 1)}}"
         (click)="selectEpisode(ep)"
         >
-          <h6>Observaciones</h6>
+          <ng-template pTemplate="header">
+            Episode {{(index + 1)}}
+            <span class="severance">{{ep.date | date:'d MMMM'}}</span>
+            <span class="severance flex flex-1">{{ep.observations[0].relationships.odourSubType.relationships?.odourType?.name}}</span>
+            <span class="severance">
+              {{ep.inconvenience * 100 / 8}}%
+              <span class="gm"><span [style]="{opacity: ep.inconvenience / 8}"></span></span>
+            </span>
+          </ng-template>
+
+          <div class="flex flex-column">
+
+            <h6 class="flex gap-2">
+              Plausibility
+              <i class="pi pi-info-circle flex-1" (click)="plausibilityInfo.toggle($event)"></i>
+            </h6>
+
+            <div class="flex justify-content-center align-items-center gap-2">
+              @if(ep.plausible){
+                <i class="pi pi-check"></i>
+                <span>Plausible</span>
+              }
+              @else {
+                <i class="pi pi-times"></i>
+                <span>Not plausible</span>
+              }
+            </div>
+
+
+            <h6>
+              Data
+            </h6>
+            <div class="flex justify-content-between">
+              <span>
+                Start
+              </span>
+              <span>
+                {{ep.observations[0].createdAt | date:'MMMM d - HH:mm'}}
+              </span>
+            </div>
+            <div class="flex justify-content-between">
+              <span>
+                End
+              </span>
+              <span>
+                {{ep.observations[ep.observations.length - 1].createdAt | date:'MMMM d - HH:mm'}}
+              </span>
+            </div>
+            <div class="flex justify-content-between">
+              <span>
+                Episode length
+              </span>
+              <span>
+                {{getEpisodeLength(ep.observations[0].createdAt, ep.observations[ep.observations.length - 1].createdAt)}}
+              </span>
+            </div>
+
+            <div class="flex justify-content-between">
+             <span>Different users</span>
+             <span>{{ep.differentUsers}}</span>
+            </div>
+
+            <div class="flex justify-content-between">
+              <span>Type</span>
+              <span>{{ep.observations[0].relationships.odourSubType.relationships?.odourType?.name}}</span>
+            </div>
+
+          </div>
+
+
+          <h6>
+            <b>{{ep.observations.length}} observations</b>
+          </h6>
           <div class="flex flex-wrap gap-1">
             @for(obs of ep.observations; track obs; let index = $index){
               <div
@@ -26,9 +122,13 @@
               (mouseleave)="[ol.hide(), observationPreview(null)]"
               [ngClass]="{ 'active' : obs.id === observation , 'preview' : obs.id === previewObservation && obs.id !== observation}"
               >
-                <div>
-                  <b>{{obs.createdAt| date:'HH:mm'}}h.</b>
-                </div>
+                @if(obs.plausible){
+                  <i class="pi pi-check"></i>
+                }
+                @else {
+                  <i class="pi pi-times"></i>
+                }
+                <b>{{obs.createdAt| date:'HH:mm'}}h.</b>
               </div>
               <p-overlayPanel #ol>
                 <b>Date:</b> {{obs.createdAt| date:'dd/MM/yyyy HH:mm'}}<br/>

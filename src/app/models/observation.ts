@@ -18,6 +18,7 @@ export interface Observation {
   origin: null | string;
   createdAt: string;
   updatedAt: string;
+  plausible: boolean;
 }
 
 export interface ObservationRelationships {

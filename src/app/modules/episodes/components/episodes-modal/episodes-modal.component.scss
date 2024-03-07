@@ -20,6 +20,8 @@
   }
 }
 #episodesModal{
+  position: absolute;
+  z-index: 100;
   .floatSidebar{
     max-height: calc(100vh - 24rem);
     margin-top: auto;
@@ -27,6 +29,10 @@
   }
 }
 .observation{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
   box-sizing: border-box;
   transition: all .3s ease;
   background-color: transparent;
@@ -54,6 +60,8 @@
     height: fit-content;
     max-height: calc(100vh - 24rem);
     margin: 8rem 3rem auto;
+    width: calc(100% - 6rem);
+    max-width: 450px;
     border-radius: 12px;
     box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
     .p-sidebar-header{
@@ -63,17 +71,69 @@
       padding: 0;
     }
   }
+  .counter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    background-color: #8edead;
+    border: 1px solid rgba(0, 129, 86, 0.2);
+  }
+  .severance{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    padding-left: 10px;
+    margin-left: 10px;
+    &::before{
+      content: '';
+      position: absolute;
+      top:-13px;
+      left: 0;
+      width: 1px;
+      background-color: #00000033;
+      height: 45px;
+      transform: rotate(20deg);
+    }
+    .gm{
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      height: 10px;
+      width: 10px;
+      background: #8edead;
+      span{
+        border-radius: 50%;
+        height: 10px;
+        width: 10px;
+        background-color: #c23838;
+      }
+    }
+  }
   .p-accordion-header{
     position: sticky;
     top: 0;
+    overflow: hidden;
     .p-accordion-header-link{
       background-color:#FFF;
       color: var(--text-color);
+      padding: .8rem .5rem;
+      min-width: max-content;
       &:hover{
         background-color:#e4e6ff
       }
+      *{
+        min-width: max-content;
+      }
     }
-
+  }
+  .p-accordion-content{
+    padding: 1rem .5rem .5rem;
   }
   .p-accordion-tab-active{
     .p-accordion-header-link{
