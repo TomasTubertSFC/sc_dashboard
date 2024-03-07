@@ -57,7 +57,7 @@
             </h6>
 
             <div class="flex justify-content-center align-items-center gap-2">
-              @if(!ep.plausible){
+              @if(ep.plausible){
                 <i class="pi pi-check"></i>
                 <span>Plausible</span>
               }
@@ -140,7 +140,7 @@
               (mouseleave)="[ol.hide(), observationPreview(null)]"
               [ngClass]="{ 'active' : obs.id === observation , 'preview' : obs.id === previewObservation && obs.id !== observation, 'plausible' : !obs.plausible, 'not-plausible' : obs.plausible}"
               >
-                @if(!obs.plausible){
+                @if(obs.plausible){
                   <i class="pi pi-check"></i>
                 }
                 @else {
@@ -151,7 +151,7 @@
               <p-overlayPanel #ol>
                 <div class="flex gap-2">
                   <p class="max-w-24rem gap-2">
-                    @if(!obs.plausible){
+                    @if(obs.plausible){
                       <i class="pi pi-check"></i>
                       <b><span>Plausible</span></b>
                     }
