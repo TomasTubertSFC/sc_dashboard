@@ -19,30 +19,18 @@ export interface Observation {
   createdAt: string;
   updatedAt: string;
   plausible: boolean;
+  APGEMOdistance: number;
 }
 
 export interface ObservationRelationships {
   odourSubType: OdourSubType;
   odourIntensity?: OdourIntensity;
   odourHedonicTone?: OdourHedonicTone;
-  comments?: Comment[];
   user?: User;
+  wind: Wind;
 }
 
-export interface Geometry {
-  type: string;
-  coordinates: number[];
-}
-
-export interface UserRelationships {
-  profile: Profile;
-}
-
-export interface Comment {
-  id: number;
-  body: string;
-  user_id: number | undefined;
-  odour_observation_id: number;
-  created_at: Date;
-  user_avatar_id: number;
+export interface Wind {
+  deg: number,
+  speed: number,
 }

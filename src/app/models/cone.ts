@@ -16,6 +16,10 @@ interface Angle{
   initialSidePosition: Point;
   terminalSidePosition: Point;
 }
+interface Wind{
+  deg: number;
+  speed: number;
+}
 
 export class Cone {
 
@@ -23,6 +27,8 @@ export class Cone {
   public observationCone!: Angle;
   public terminalAdjacentAngle!: Angle;
   public completeConeCoordinates!: Angle;
+  public wind!: Wind;
+
   public coneSize!: number;
   public convexHull!: Point[];
   private minX: number = 0;
@@ -35,15 +41,20 @@ export class Cone {
   private mapCenterY: number = 0;
   private scale: number = 0;
 
+
   public imageCoordinates!: number[][];
 
 
-  constructor(public points: Point[], public observation: Point, toDraw:boolean = false, canvasHeight:number = 0, canvasWidth:number = 0) {
+  constructor(public points: Point[], public observation: Point, toDraw:boolean = false, canvasHeight:number = 0, canvasWidth:number = 0, wind:Wind = {deg: 0, speed: 0}) {
     if (!points.find(point => point === observation)) {
         points.push(observation);
     }
+    
+    this.wind = wind;
+
     this.convexHull = this.getCompleteConvexHull(this.points);
     this.coneSize = this.getConeSize(this.convexHull, observation);
+
     let observationConvexHull = this.getObservationConvexHull(this.convexHull, this.observation);
 
     if(toDraw && canvasHeight && canvasWidth){

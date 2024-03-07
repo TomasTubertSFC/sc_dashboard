@@ -138,7 +138,7 @@
               (mouseenter)="[ol.show($event), observationPreview(obs.id)]"
               (mouseover)="ol.show($event)"
               (mouseleave)="[ol.hide(), observationPreview(null)]"
-              [ngClass]="{ 'active' : obs.id === observation , 'preview' : obs.id === previewObservation && obs.id !== observation, 'plausible' : !obs.plausible, 'not-plausible' : obs.plausible}"
+              [ngClass]="{ 'active' : obs.id === observation , 'preview' : obs.id === previewObservation && obs.id !== observation, 'plausible' : obs.plausible, 'not-plausible' : !obs.plausible}"
               >
                 @if(obs.plausible){
                   <i class="pi pi-check"></i>

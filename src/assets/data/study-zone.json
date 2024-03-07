@@ -23,6 +23,7 @@
             "longitude": 2.148942318412885,
             "latitude": 41.37703282758233,
             "color": 3,
+            "APGEMOdistance": 150,
             "relationships": {
                 "odourSubType": {
                     "id": 51,
@@ -49,6 +50,10 @@
                     "index": 4,
                     "name": "Extremadamente agradable",
                     "slug": "extremadamente-agradable"
+                },
+                "wind": {
+                  "deg": 90,
+                  "speed": 5
                 }
             },
             "likes": 0,
@@ -63,6 +68,7 @@
             "longitude": 2.15038586687726,
             "latitude": 41.37449842064499,
             "color": 4,
+            "APGEMOdistance": 200,
             "relationships": {
                 "odourSubType": {
                     "id": 89,
@@ -89,6 +95,10 @@
                     "index": 0,
                     "name": "Neutral",
                     "slug": "neutral"
+                },
+                "wind": {
+                  "deg": 90,
+                  "speed": 5
                 }
             },
             "likes": 0,
@@ -103,6 +113,7 @@
             "longitude": 2.1475582193484346,
             "latitude":41.37404198794295,
             "color": 6,
+            "APGEMOdistance": 400,
             "relationships": {
                 "odourSubType": {
                     "id": 92,
@@ -129,6 +140,10 @@
                     "index": -4,
                     "name": "Extremadamente desagradable",
                     "slug": "extremadamente-desagradable"
+                },
+                "wind": {
+                  "deg": 250,
+                  "speed": 0.3
                 }
             },
             "likes": 0,
@@ -143,6 +158,7 @@
             "longitude": 2.149355098812565,
             "latitude": 41.37630321476795,
             "color": 7,
+            "APGEMOdistance": 600,
             "relationships": {
                 "odourSubType": {
                     "id": 19,
@@ -169,6 +185,10 @@
                     "index": -4,
                     "name": "Extremadamente desagradable",
                     "slug": "extremadamente-desagradable"
+                },
+                "wind": {
+                  "deg": 38,
+                  "speed": 0.5
                 }
             },
             "likes": 0,
@@ -183,6 +203,7 @@
             "longitude":  2.1482732566545746,
             "latitude": 41.37542869722843,
             "color": 7,
+            "APGEMOdistance": 200,
             "relationships": {
                 "odourSubType": {
                     "id": 76,
@@ -209,6 +230,10 @@
                     "index": -4,
                     "name": "Extremadamente desagradable",
                     "slug": "extremadamente-desagradable"
+                },
+                "wind": {
+                  "deg": 200,
+                  "speed": 1.5
                 }
             },
             "likes": 0,
@@ -230,6 +255,7 @@
             "longitude": 2.148049318492885,
             "latitude": 41.377939827982330,
             "color": 3,
+            "APGEMOdistance": 100,
             "relationships": {
                 "odourSubType": {
                     "id": 51,
@@ -256,6 +282,10 @@
                     "index": 4,
                     "name": "Extremadamente agradable",
                     "slug": "extremadamente-agradable"
+                },
+                "wind": {
+                  "deg": 338,
+                  "speed": 9.5
                 }
             },
             "likes": 0,
@@ -270,6 +300,7 @@
             "longitude": 2.15018586687726,
             "latitude": 41.37499842064499,
             "color": 4,
+            "APGEMOdistance": 500,
             "relationships": {
                 "odourSubType": {
                     "id": 89,
@@ -296,6 +327,10 @@
                     "index": 0,
                     "name": "Neutral",
                     "slug": "neutral"
+                },
+                "wind": {
+                  "deg": 38,
+                  "speed": 0
                 }
             },
             "likes": 0,
@@ -310,6 +345,7 @@
             "longitude": 2.1476582193484346,
             "latitude":41.37403198794295,
             "color": 6,
+            "APGEMOdistance": 300,
             "relationships": {
                 "odourSubType": {
                     "id": 92,
@@ -336,6 +372,10 @@
                     "index": -4,
                     "name": "Extremadamente desagradable",
                     "slug": "extremadamente-desagradable"
+                },
+                "wind": {
+                  "deg": 318,
+                  "speed": 1.5
                 }
             },
             "likes": 0,
@@ -350,6 +390,7 @@
             "longitude": 2.149325098812565,
             "latitude": 41.37638321476795,
             "color": 7,
+            "APGEMOdistance": 600,
             "relationships": {
                 "odourSubType": {
                     "id": 19,
@@ -376,6 +417,10 @@
                     "index": -4,
                     "name": "Extremadamente desagradable",
                     "slug": "extremadamente-desagradable"
+                },
+                "wind": {
+                  "deg": 80,
+                  "speed": 2
                 }
             },
             "likes": 0,
@@ -390,6 +435,7 @@
             "longitude":  2.1482772566545746,
             "latitude": 41.37546869722843,
             "color": 7,
+            "APGEMOdistance": 350,
             "relationships": {
                 "odourSubType": {
                     "id": 76,
@@ -416,6 +462,10 @@
                     "index": -4,
                     "name": "Extremadamente desagradable",
                     "slug": "extremadamente-desagradable"
+                },
+                "wind": {
+                  "deg": 38,
+                  "speed": 0.5
                 }
             },
             "likes": 0,
