@@ -43,16 +43,18 @@
   border: 1px solid  #d8d8d8;
   text-align: center;
   cursor: pointer;
+  &.plausible{
+    background-color: #c5fad9;
+    border: 1px solid  #85b983;
+  }
   &.active, &.active:hover{
     cursor: default;
     background-color: #ffe7e0;
     border: 1px solid  #fd9a77;
-    border-radius: 5px;
   }
   &:hover, &.preview{
     background-color: #ebebff;
     border: 1px solid  #7474bf;
-    border-radius: 5px;
   }
 }
 :host ::ng-deep {
@@ -100,20 +102,6 @@
       height: 45px;
       transform: rotate(20deg);
     }
-    .gm{
-      border-radius: 50%;
-      position: relative;
-      display: flex;
-      height: 10px;
-      width: 10px;
-      background: #8edead;
-      span{
-        border-radius: 50%;
-        height: 10px;
-        width: 10px;
-        background-color: #c23838;
-      }
-    }
   }
   .p-accordion-header{
     position: sticky;
@@ -143,6 +131,26 @@
   &.preview{
     .p-accordion-header-link{
       background-color:#e4e6ff
+    }
+  }
+
+  .gm{
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    height: 10px;
+    width: 10px;
+    &.color-1{
+      background: #8edead;
+    }
+    &.color-2{
+      background: #f3d250;
+    }
+    &.color-3{
+      background: #ff7f50;
+    }
+    &.color-4{
+      background: #ff5050;
     }
   }
 }

@@ -53,8 +53,19 @@ export class StudyZoneService {
       map((studyZone: StudyZone) => {
         studyZone.episodes.map((episode: Episode, index:number) => {
           episode.id = index
+
+          if(!episode.inconvenience){
+            episode.inconvenience = 0;
+            episode.observations.forEach((observation) => {
+              episode.inconvenience += observation.color/episode.observations.length;
+            })
+          }
+
+          if(!episode.participation) episode.participation = 3;
+
+          episode.inconvenienceColor = this.getColorOfInconvenience(episode.inconvenience);
           episode.plausible = episode.plausible || false;
-          episode.observations.map((observation, index) => {
+          episode.observations.map((observation) => {
             observation.plausible = observation.plausible || false;
           });
           return episode;
@@ -64,5 +75,15 @@ export class StudyZoneService {
     ).subscribe(data => {
       this.studyZone = data;
     });
+  }
+
+  private getColorOfInconvenience(inconvenience: number): number {
+    let base100 = Math.round(inconvenience / 7 * 100);
+    switch (true) {
+      case(base100 <= 18) : return 1;
+      case(base100 > 18 && base100 <= 35 ) : return 2;
+      case(base100 > 35 && base100 <= 68) : return 3;
+      default: return 4;
+    }
   }
 }
