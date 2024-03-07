@@ -3,6 +3,7 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Episode, StudyZone } from '../../../../models/study-zone';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Button } from 'primeng/button';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-episodes-timeline',
@@ -30,10 +31,14 @@ export class EpisodesTimelineComponent {
   public galleryTotalWidth!:number;
   public currentScroll!:number;
 
+  private studyZone$! : Subscription;
+  private episode$! : Subscription;
+  private episodePreview$! : Subscription;
+
   constructor(private studyZoneService: StudyZoneService) { }
 
   ngOnInit() {
-    this.studyZoneService.studyZone.subscribe(data => {
+    this.studyZone$ = this.studyZoneService.studyZone.subscribe(data => {
       if(!data) return;
       this.studyZone = data;
       this.studyZone.episodes.forEach((episode,index) => {
@@ -126,4 +131,11 @@ export class EpisodesTimelineComponent {
     this.currentScroll = this.galleryElementWidth * this.currentElement;
     termsSlider.scrollLeft = this.currentScroll;
   }
+
+  ngOnDestroy() {
+    this.studyZone$?.unsubscribe();
+    this.episode$?.unsubscribe();
+    this.episodePreview$?.unsubscribe();
+  }
+
 }

@@ -14,6 +14,7 @@
     ],
     "episodes":[
       {
+        "differentUsers": 3,
         "date": "2023-06-01",
         "inconvenience": 3,
         "observations":[
@@ -220,6 +221,7 @@
         ]
       },
       {
+        "differentUsers": 2,
         "date": "2023-07-01",
         "inconvenience": 8,
         "observations":[

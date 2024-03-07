@@ -35,11 +35,11 @@
     <div id="terms" #termsSlider class="flex">
       @for(term of terms; track term; let tIndex = $index){
         <div class="term">
-          <span>{{term.year}}/{{term.month}}</span>
+          <span>{{term.episodes[0].date | date:"M/yyyy"}}</span>
           @for(ep of term.episodes; track ep; let epIndex = $index){
             <div
             class="episode"
-            pTooltip="{{ep.date}}"
+            pTooltip="{{ep.date | date:'MMMM d'}}"
             [autoHide]="false"
             [ngClass]="{'active' : ep.id === episode?.id, 'preview' : ep.id === episodePreview?.id && ep.id !== episode?.id}"
             [positionTop]="-10" tooltipPosition="top"

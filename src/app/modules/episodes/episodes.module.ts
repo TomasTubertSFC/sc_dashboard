@@ -8,6 +8,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { AccordionModule } from 'primeng/accordion';
 import { SidebarModule } from 'primeng/sidebar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TagModule } from 'primeng/tag';
 
 import { EpisodesRoutingModule } from './episodes-routing.module';
 import { EpisodesPageComponent } from './episodes-page/episodes-page.component';
@@ -37,6 +38,7 @@ import { EpisodesModalComponent } from './components/episodes-modal/episodes-mod
     CommonModule,
     EpisodesRoutingModule,
     OverlayPanelModule,
+    TagModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoibmV0aWZpZzM1MiIsImEiOiJjbHN4Yzcyc3AwMW8xMmtwMnVlenEyaGQ0In0.SMd509FY7jcvLxBPpbw0pA',
     })

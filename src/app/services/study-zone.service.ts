@@ -53,6 +53,10 @@ export class StudyZoneService {
       map((studyZone: StudyZone) => {
         studyZone.episodes.map((episode: Episode, index:number) => {
           episode.id = index
+          episode.plausible = episode.plausible || false;
+          episode.observations.map((observation, index) => {
+            observation.plausible = observation.plausible || false;
+          });
           return episode;
         })
         return studyZone;

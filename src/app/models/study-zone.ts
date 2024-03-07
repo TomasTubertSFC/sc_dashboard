@@ -6,8 +6,10 @@ export interface StudyZone {
   episodes: Episode[];
 }
 export interface Episode {
+  id: number;
+  differentUsers: number;
   date: Date;
   inconvenience: number;
+  plausible: boolean;
   observations: Observation[];
-  id: number
 }
