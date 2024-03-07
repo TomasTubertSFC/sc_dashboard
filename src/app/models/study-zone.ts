@@ -10,6 +10,8 @@ export interface Episode {
   differentUsers: number;
   date: Date;
   inconvenience: number;
+  inconvenienceColor: number;
+  participation: number;
   plausible: boolean;
   observations: Observation[];
 }

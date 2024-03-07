@@ -55,6 +55,10 @@ export class EpisodesModalComponent {
 
   }
 
+  public getInconvenienceInBase100(inconvenience: number): number {
+    return Math.round(inconvenience / 7 * 100);
+  }
+
   public getEpisodeLength(start: string, end: string): string {
     const epStart = new Date(start);
     const epEnd = new Date(end);
@@ -62,7 +66,9 @@ export class EpisodesModalComponent {
     const diff = (epEnd.getTime() - epStart.getTime()) / 1000;
     const days = Math.floor(diff / 86400);
     const hours = Math.floor(diff / 3600) % 24;
-    return days > 0 ? `${days}d` : `${hours}h`;
+    let dayText = days > 1 ? 'days' : 'day';
+    let hourText = hours > 1 ? 'hours' : 'hour';
+    return days > 0 ? `${days} ${dayText}` : `${hours} ${hourText}`;
 
 
   }

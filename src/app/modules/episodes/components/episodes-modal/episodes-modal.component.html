@@ -41,11 +41,11 @@
         >
           <ng-template pTemplate="header">
             Episode {{(index + 1)}}
-            <span class="severance">{{ep.date | date:'d MMMM'}}</span>
+            <span class="severance">{{ep.date | date:'dd/MM/Y'}}</span>
             <span class="severance flex flex-1">{{ep.observations[0].relationships.odourSubType.relationships?.odourType?.name}}</span>
-            <span class="severance">
-              {{ep.inconvenience * 100 / 8}}%
-              <span class="gm"><span [style]="{opacity: ep.inconvenience / 8}"></span></span>
+            <span class="severance" >
+              {{getInconvenienceInBase100(ep.inconvenience)}}
+                <span class="gm color-{{ep.inconvenienceColor}}"></span>
             </span>
           </ng-template>
 
@@ -76,7 +76,7 @@
                 Start
               </span>
               <span>
-                {{ep.observations[0].createdAt | date:'MMMM d - HH:mm'}}
+                {{ep.observations[0].createdAt | date:'dd/MM/Y - HH:mm'}}
               </span>
             </div>
             <div class="flex justify-content-between">
@@ -84,7 +84,7 @@
                 End
               </span>
               <span>
-                {{ep.observations[ep.observations.length - 1].createdAt | date:'MMMM d - HH:mm'}}
+                {{ep.observations[ep.observations.length - 1].createdAt | date:'dd/MM/Y - HH:mm'}}
               </span>
             </div>
             <div class="flex justify-content-between">
@@ -96,18 +96,36 @@
               </span>
             </div>
 
+            <!-- <div class="flex justify-content-between">
+              <span>Type</span>
+              <span>{{ep.observations[0].relationships.odourSubType.relationships?.odourType?.name}}</span>
+            </div> -->
+
             <div class="flex justify-content-between">
-             <span>Different users</span>
+              <span>
+                Degree of participation
+              </span>
+              <span>
+                {{ep.participation}}
+              </span>
+            </div>
+
+            <!-- <div class="flex justify-content-between">
+              <span>
+                Degree of inconvenience
+              </span>
+              <div class="flex justify-content-between align-items-center gap-1">
+                <span class="gm color-{{ep.inconvenienceColor}}"></span>
+                {{getInconvenienceInBase100(ep.inconvenience)}}
+              </div>
+            </div> -->
+
+            <div class="flex justify-content-between">
+             <span>Participating citizenship number</span>
              <span>{{ep.differentUsers}}</span>
             </div>
 
-            <div class="flex justify-content-between">
-              <span>Type</span>
-              <span>{{ep.observations[0].relationships.odourSubType.relationships?.odourType?.name}}</span>
-            </div>
-
           </div>
-
 
           <h6>
             <b>{{ep.observations.length}} observations</b>
@@ -120,7 +138,7 @@
               (mouseenter)="[ol.show($event), observationPreview(obs.id)]"
               (mouseover)="ol.show($event)"
               (mouseleave)="[ol.hide(), observationPreview(null)]"
-              [ngClass]="{ 'active' : obs.id === observation , 'preview' : obs.id === previewObservation && obs.id !== observation}"
+              [ngClass]="{ 'active' : obs.id === observation , 'preview' : obs.id === previewObservation && obs.id !== observation, 'plausible' : !obs.plausible, 'not-plausible' : obs.plausible}"
               >
                 @if(obs.plausible){
                   <i class="pi pi-check"></i>
@@ -131,7 +149,23 @@
                 <b>{{obs.createdAt| date:'HH:mm'}}h.</b>
               </div>
               <p-overlayPanel #ol>
-                <b>Date:</b> {{obs.createdAt| date:'dd/MM/yyyy HH:mm'}}<br/>
+                <div class="flex gap-2">
+                  <p class="max-w-24rem gap-2">
+                    @if(obs.plausible){
+                      <i class="pi pi-check"></i>
+                      <b><span>Plausible</span></b>
+                    }
+                    @else {
+                      <i class="pi pi-times"></i>
+                      <b><span>Not plausible</span></b>
+                    }
+                    <br/>
+                    The observation is plausible because the observer is less than <b>350m</b> from the source and the wind speed is less than <b>0.5m/s</b>.
+                    <br/>
+                    <br/>
+                  </p>
+                </div>
+                <b>Date:</b> {{obs.createdAt| date:'dd/MM/Y HH:mm'}}<br/>
                 <b>Type:</b> {{obs.relationships.odourSubType.relationships?.odourType?.name}}<br/>
                 <b>Subtype:</b> {{obs.relationships.odourSubType.name}}<br/>
                 <b>Hedonic Tone:</b> {{obs.relationships.odourHedonicTone?.name}}<br/>
