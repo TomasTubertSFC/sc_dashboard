@@ -166,13 +166,18 @@
                       @else if (obs.APGEMOdistance < plausibilityDistance && obs.relationships.wind.speed < plausibilityWindSpeed) {
                         the observer is less than <b>{{plausibilityDistance}}m</b> from the source and the wind speed is less than <b>{{plausibilityWindSpeed}}m/s</b>.
                       }
+                      @else {
+                        the wind is blowing from the source to the receptor passing through the observer's cone.
+                      }
                     }
                     @else {
                       <div class="flex justify-content-start align-items-center gap-2 mb-1">
                         <i class="pi pi-times"></i>
                         <b><span>Not plausible</span></b>
                       </div>
-                      The observation is not plausible because the observer is more than <b>{{plausibilityDistance}}m</b> from the source and the wind speed is faster than <b>{{plausibilityWindSpeed}}m/s</b>.
+                      The observation is not plausible because the observer is more than <b>{{plausibilityDistance}}m.</b>
+                      from the source, the wind speed is faster than <b>{{plausibilityWindSpeed}}m/s</b>
+                      and the wind is not blowing from the source to the receptor passing through the observer's cone.
                     }
                   </div>
                 </div>
