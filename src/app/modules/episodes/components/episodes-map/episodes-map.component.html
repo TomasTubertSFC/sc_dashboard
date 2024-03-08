@@ -23,7 +23,7 @@
 
       <mgl-marker [lngLat]="[obs.longitude, obs.latitude]">
         <div
-        [ngClass]="{ 'active' : obs.id === selectedObservation, 'preview' : obs.id === previewObservation}"
+        [ngClass]="{ 'active' : obs.id === selectedObservation, 'preview' : obs.id === previewObservation, 'plausible' : obs.plausible, 'not-plausible' : !obs.plausible}"
         (mouseover)="overObservation(obs.id)"
         (mouseleave)="leaveObservation()"
         (click)="observationSelected($event, obs.id)"
