@@ -28,6 +28,7 @@ export class Cone {
   public terminalAdjacentAngle!: Angle;
   public completeConeCoordinates!: Angle;
   public wind!: Wind;
+  public plausibleCone: boolean = false;
 
   public coneSize!: number;
   public convexHull!: Point[];
@@ -45,11 +46,17 @@ export class Cone {
   public imageCoordinates!: number[][];
 
 
-  constructor(public points: Point[], public observation: Point, toDraw:boolean = false, canvasHeight:number = 0, canvasWidth:number = 0, wind:Wind = {deg: 0, speed: 0}) {
+  constructor(
+    public points: Point[],
+    public observation: Point,
+    toDraw:boolean = false,
+    canvasHeight:number = 0,
+    canvasWidth:number = 0,
+    wind:Wind = {deg: 0, speed: 0}) {
     if (!points.find(point => point === observation)) {
         points.push(observation);
     }
-    
+
     this.wind = wind;
 
     this.convexHull = this.getCompleteConvexHull(this.points);
@@ -328,17 +335,18 @@ export class Cone {
     const initialAnglePoint = this.calculateAngle({ x: convexHull.observation.x + 1000, y: convexHull.observation.y }, convexHull.observation, convexHull.prevPoint) * (Math.PI / 180);
     const initialAnglePointInRadians = initialAnglePoint + (- adjacentDegrees * (Math.PI / 180));
     const pointRadiusInitialCone = {
-        x: convexHull.observation.x + coneSize * Math.cos(initialAnglePointInRadians),
-        y: convexHull.observation.y + coneSize * Math.sin(initialAnglePointInRadians)
+      x: convexHull.observation.x + coneSize * Math.cos(initialAnglePointInRadians),
+      y: convexHull.observation.y + coneSize * Math.sin(initialAnglePointInRadians)
     };
 
     // Calculo de la posicion lado externo del cono terminal de 30 grados a partir del lado terminal del angulo de observación
     const terminalAnglePoint = this.calculateAngle({ x: convexHull.observation.x + 1000, y: convexHull.observation.y }, convexHull.observation, convexHull.nextPoint) * (Math.PI / 180);
     const terminalAnglePointInRadians = terminalAnglePoint + (adjacentDegrees * (Math.PI / 180));
     const pointRadiusTerminalCone = {
-        x: convexHull.observation.x + coneSize * Math.cos(terminalAnglePointInRadians),
-        y: convexHull.observation.y + coneSize * Math.sin(terminalAnglePointInRadians)
+      x: convexHull.observation.x + coneSize * Math.cos(terminalAnglePointInRadians),
+      y: convexHull.observation.y + coneSize * Math.sin(terminalAnglePointInRadians)
     };
+
 
     this.observationCone = {
         angle: angle,
@@ -367,6 +375,13 @@ export class Cone {
       initialSidePosition: pointRadiusInitialCone,
       terminalSidePosition: pointRadiusTerminalCone
     };
+
+    // Comprobar si el viento esta dentro del cono de plausibilidad
+    let windDegFromEast = this.wind.deg <= 90 ? this.wind.deg + 270 : this.wind.deg - 90;
+    let startConeDegrees =  this.calculateAngle({ x: convexHull.observation.x + 1000, y: convexHull.observation.y }, convexHull.observation, convexHull.prevPoint) - 30;
+    let endConeDegrees =  this.calculateAngle({ x: convexHull.observation.x + 1000, y: convexHull.observation.y }, convexHull.observation, convexHull.nextPoint) + 30;
+
+    if(startConeDegrees <= windDegFromEast && endConeDegrees >= windDegFromEast) this.plausibleCone = true;
 
   }
 

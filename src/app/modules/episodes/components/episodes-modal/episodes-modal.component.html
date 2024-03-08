@@ -5,22 +5,22 @@
 }
 
 <p-overlayPanel #plausibilityInfo>
-  <div>
-  <h6>
-    <b>Plausibility criteria</b>
-  </h6>
-  <p>
-    The episode is plausible if the following criteria are met:<br/>
-    - <b>One or more</b> of observations are plausible.
-  </p>
-  <p>
-    The observation is plausible if:<br/>
-    - The observer is less than <b>350m</b> from the source.<br/>
-    - The wind speed is less than <b>0.5m/s</b>.<br/>
-    If the observation is not under <b>350m</b> of the source and the wind is faster than <b>0.5m/s</b>:<br/>
-    - The wind is blowing from the source to the receptor passing through the observer's cone.
-  </p>
-</div>
+  <div class="max-w-30rem">
+    <h6>
+      <b>Plausibility criteria</b>
+    </h6>
+    <p>
+      The episode is plausible if the following criteria are met:<br/>
+      - <b>{{plausibilityMinOKObservations}} or more</b> of observations are plausible.
+    </p>
+    <p>
+      The observation is plausible if:<br/>
+      - The observer is less than <b>{{plausibilityDistance}}m</b> from the source.<br/>
+      - The wind speed is less than <b>{{plausibilityWindSpeed}}m/s</b>.<br/>
+      If the observation is not under <b>{{plausibilityDistance}}m</b> of the source and the wind is faster than <b>{{plausibilityWindSpeed}}m/s</b>:<br/>
+      - The wind is blowing from the source to the receptor passing through the observer's cone.
+    </p>
+  </div>
 </p-overlayPanel>
 
 <div id="episodesModal" #episodesModal></div>
@@ -150,22 +150,35 @@
               </div>
               <p-overlayPanel #ol>
                 <div class="flex gap-2">
-                  <p class="max-w-24rem gap-2">
+                  <div class="max-w-24rem gap-2 mb-3">
                     @if(obs.plausible){
-                      <i class="pi pi-check"></i>
-                      <b><span>Plausible</span></b>
+                      <div class="flex justify-content-start align-items-center gap-2 mb-1">
+                        <i class="pi pi-check"></i>
+                        <b><span>Plausible</span></b>
+                      </div>
+                      The observation is plausible because
+                      @if(obs.APGEMOdistance < plausibilityDistance && obs.relationships.wind.speed > plausibilityWindSpeed){
+                        the observer is less than <b>{{plausibilityDistance}}m</b> from the source.
+                      }
+                      @else if (obs.APGEMOdistance > plausibilityDistance && obs.relationships.wind.speed < plausibilityWindSpeed){
+                        the wind speed is less than <b>{{plausibilityWindSpeed}}m/s</b>.
+                      }
+                      @else if (obs.APGEMOdistance < plausibilityDistance && obs.relationships.wind.speed < plausibilityWindSpeed) {
+                        the observer is less than <b>{{plausibilityDistance}}m</b> from the source and the wind speed is less than <b>{{plausibilityWindSpeed}}m/s</b>.
+                      }
                     }
                     @else {
-                      <i class="pi pi-times"></i>
-                      <b><span>Not plausible</span></b>
+                      <div class="flex justify-content-start align-items-center gap-2 mb-1">
+                        <i class="pi pi-times"></i>
+                        <b><span>Not plausible</span></b>
+                      </div>
+                      The observation is not plausible because the observer is more than <b>{{plausibilityDistance}}m</b> from the source and the wind speed is faster than <b>{{plausibilityWindSpeed}}m/s</b>.
                     }
-                    <br/>
-                    The observation is plausible because the observer is less than <b>350m</b> from the source and the wind speed is less than <b>0.5m/s</b>.
-                    <br/>
-                    <br/>
-                  </p>
+                  </div>
                 </div>
                 <b>Date:</b> {{obs.createdAt| date:'dd/MM/Y HH:mm'}}<br/>
+                <b>Wind speed:</b> {{obs.relationships.wind.speed}}m/s<br/>
+                <b>Distance from APGEMO:</b> {{obs.APGEMOdistance}}m<br/>
                 <b>Type:</b> {{obs.relationships.odourSubType.relationships?.odourType?.name}}<br/>
                 <b>Subtype:</b> {{obs.relationships.odourSubType.name}}<br/>
                 <b>Hedonic Tone:</b> {{obs.relationships.odourHedonicTone?.name}}<br/>

@@ -187,7 +187,7 @@
                     "slug": "extremadamente-desagradable"
                 },
                 "wind": {
-                  "deg": 38,
+                  "deg": 150,
                   "speed": 0.5
                 }
             },
@@ -233,7 +233,7 @@
                 },
                 "wind": {
                   "deg": 200,
-                  "speed": 1.5
+                  "speed": 0.3
                 }
             },
             "likes": 0,
@@ -329,7 +329,7 @@
                     "slug": "neutral"
                 },
                 "wind": {
-                  "deg": 38,
+                  "deg": 200,
                   "speed": 0
                 }
             },
@@ -419,7 +419,7 @@
                     "slug": "extremadamente-desagradable"
                 },
                 "wind": {
-                  "deg": 80,
+                  "deg": 235,
                   "speed": 2
                 }
             },
@@ -464,7 +464,7 @@
                     "slug": "extremadamente-desagradable"
                 },
                 "wind": {
-                  "deg": 38,
+                  "deg":120,
                   "speed": 0.5
                 }
             },
