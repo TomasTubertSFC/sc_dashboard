@@ -23,10 +23,17 @@ export class EpisodesModalComponent {
   private observation$! : Subscription;
   private previewObservation$! : Subscription;
 
+  public plausibilityWindSpeed!: number;
+  public plausibilityDistance!: number;
+  public plausibilityMinOKObservations!: number;
 
   constructor(private studyZoneService: StudyZoneService) { }
 
   ngOnInit() {
+
+    this.plausibilityWindSpeed = this.studyZoneService.plausibilityWindSpeed;
+    this.plausibilityDistance = this.studyZoneService.plausibilityDistance;
+    this.plausibilityMinOKObservations = this.studyZoneService.plausibilityMinOKObservations;
 
     this.studyZone$ = this.studyZoneService.studyZone.subscribe(studyZone => {
       if (studyZone) {

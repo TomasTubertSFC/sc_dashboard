@@ -9,9 +9,9 @@ import { Observation } from '../models/observation';
 })
 export class StudyZoneService {
 
-
   public plausibilityDistance: number = 350;
   public plausibilityWindSpeed: number = 0.5;
+  public plausibilityMinOKObservations: number = 1;
 
   private dataAPIweather: any;
 

@@ -160,30 +160,35 @@ export class EpisodesMapComponent {
         this.episode = episode;
 
         episode.observations.forEach(observation => {
-          //create canvas for each observation
 
-          let canvas:HTMLCanvasElement = document.createElement('canvas') as HTMLCanvasElement;
-          let id:number = observation.id;
-          let points = [...this.points];
+          //crear canvas para cada cono si la observacion no es plausible
+          if(observation.plausible === false){
+            let canvas:HTMLCanvasElement = document.createElement('canvas') as HTMLCanvasElement;
+            let id:number = observation.id;
+            let points = [...this.points];
 
-          canvas.width = this.canvasWidth;
-          canvas.height = this.canvasHeight;
-          canvas.id = `cone-${id}`;
-          canvas.style.display = 'none';
+            canvas.width = this.canvasWidth;
+            canvas.height = this.canvasHeight;
+            canvas.id = `cone-${id}`;
+            canvas.style.display = 'none';
 
-          document.body.appendChild(canvas);
+            document.body.appendChild(canvas);
 
-          this.coneCanvas = canvas;
-          this.context = new ElementRef(canvas).nativeElement.getContext('2d') as CanvasRenderingContext2D;
-          this.cone = new Cone(points, {x: observation.longitude, y: observation.latitude, id: observation.id}, true, this.canvasHeight, this.canvasWidth);
-          let cone = this.cone;
+            this.coneCanvas = canvas;
+            this.context = new ElementRef(canvas).nativeElement.getContext('2d') as CanvasRenderingContext2D;
+            this.cone = new Cone(points, {x: observation.longitude, y: observation.latitude, id: observation.id}, true, this.canvasHeight, this.canvasWidth, observation.relationships.wind);
+            let cone = this.cone;
 
-          this.cones.push({cone, canvas, id});
+            if(this.cone.plausibleCone){
+              observation.plausible = true;
+            }
 
-          if(this.cone.observationCone && this.cone.observationCone.angle){
-            this.drawCone(undefined, undefined, 0.10);
+            this.cones.push({cone, canvas, id});
+
+            if(this.cone.observationCone && this.cone.observationCone.angle){
+              this.drawCone(undefined, undefined, 0.10);
+            }
           }
-
         });
 
       }
@@ -232,39 +237,72 @@ export class EpisodesMapComponent {
   }
 
   private drawCone(adjacentColor:string = '#14b8a6', observationColor:string = '#c93d82', alpha:number = 0.2) {
+    //pasamos grados de viento a grados de dibujo en canvas
+    if(this.cone.wind.deg <= 90){
+      var windDegrees = this.cone.wind.deg + 270;
+    }
+    else{
+      var windDegrees = this.cone.wind.deg - 90;
+    }
+
     if(this.cone.observationCone?.vertexPosition){
-    // Dibujar el arco del angulo de observacion abarcando todos los puntos
-    const initialAnglePoint = this.calculateAngle({ x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y }, this.cone.observationCone.vertexPosition, this.cone.observationCone.initialSidePosition) * (Math.PI / 180);
-    const finalAnglePoint = this.calculateAngle({ x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y }, this.cone.observationCone.vertexPosition, this.cone.observationCone.terminalSidePosition) * (Math.PI / 180);
+      // Dibujar el arco del angulo de observacion abarcando todos los puntos
+      const initialAnglePoint = this.calculateAngle({ x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y }, this.cone.observationCone.vertexPosition, this.cone.observationCone.initialSidePosition) * (Math.PI / 180);
+      const finalAnglePoint = this.calculateAngle({ x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y }, this.cone.observationCone.vertexPosition, this.cone.observationCone.terminalSidePosition) * (Math.PI / 180);
 
-    this.context.strokeStyle = this.hexToRGBA(observationColor, alpha * 2);
-    this.context.lineWidth = 1;
-    this.context.fillStyle = this.hexToRGBA(observationColor, alpha);
-    this.context.beginPath();
-    this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, finalAnglePoint, false);
-    this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
-    this.context.closePath();
-    this.context.stroke();
-    this.context.fill();
+      this.context.strokeStyle = this.hexToRGBA(observationColor, alpha * 2);
+      this.context.lineWidth = 1;
+      this.context.fillStyle = this.hexToRGBA(observationColor, alpha);
+      this.context.beginPath();
+      this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, finalAnglePoint, false);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
+      this.context.closePath();
+      this.context.stroke();
+      this.context.fill();
 
-    // Dibujar 30º de angulo desde el punto previo
-    this.context.strokeStyle = this.hexToRGBA(adjacentColor, alpha * 2);
-    this.context.lineWidth = 1;
-    this.context.fillStyle = this.hexToRGBA(adjacentColor, alpha);
-    this.context.beginPath();
-    this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, initialAnglePoint + (- this.cone.initialAdjacentAngle.angle * (Math.PI / 180)), true);
-    this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
-    this.context.closePath();
-    this.context.stroke();
-    this.context.fill();
+      // Dibujar 30º de angulo desde el punto previo
+      this.context.strokeStyle = this.hexToRGBA(adjacentColor, alpha * 2);
+      this.context.lineWidth = 1;
+      this.context.fillStyle = this.hexToRGBA(adjacentColor, alpha);
+      this.context.beginPath();
+      this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, initialAnglePoint + (- this.cone.initialAdjacentAngle.angle * (Math.PI / 180)), true);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
+      this.context.closePath();
+      this.context.stroke();
+      this.context.fill();
 
-    // Dibujar ángulo adyacente final
-    this.context.beginPath();
-    this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, finalAnglePoint, finalAnglePoint + (this.cone.terminalAdjacentAngle.angle * (Math.PI / 180)), false);
-    this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
-    this.context.closePath();
-    this.context.stroke();
-    this.context.fill();
+      // Dibujar ángulo adyacente final
+      this.context.beginPath();
+      this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, finalAnglePoint, finalAnglePoint + (this.cone.terminalAdjacentAngle.angle * (Math.PI / 180)), false);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
+      this.context.closePath();
+      this.context.stroke();
+      this.context.fill();
+
+      // Dibujar dirección del viento
+
+      let initialDistanceArrow =  this.canvasHeight / 5;
+      let finalDistanceArrow =  (this.canvasHeight / 2) - 2;
+      let initialTriangleArrow = initialDistanceArrow - 20;
+      let finalTriangleArrow = initialTriangleArrow + 21;
+
+      this.context.strokeStyle = this.hexToRGBA('#000', alpha * 2);
+      this.context.lineWidth = 10;
+      this.context.beginPath();
+      this.context.moveTo(this.cone.observationCone.vertexPosition.x + (Math.cos(windDegrees * (Math.PI / 180)) * initialDistanceArrow), this.cone.observationCone.vertexPosition.y + (Math.sin(windDegrees * (Math.PI / 180)) * initialDistanceArrow));
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos(windDegrees * (Math.PI / 180)) * finalDistanceArrow), this.cone.observationCone.vertexPosition.y + (Math.sin(windDegrees * (Math.PI / 180)) * finalDistanceArrow));
+      this.context.stroke();
+      this.context.closePath();
+
+      //dibujar triangulo para la direccion del viento
+      this.context.fillStyle = this.hexToRGBA('#000', alpha*2);
+      this.context.beginPath();
+      this.context.moveTo(this.cone.observationCone.vertexPosition.x + (Math.cos(windDegrees * (Math.PI / 180)) * initialTriangleArrow), this.cone.observationCone.vertexPosition.y + (Math.sin(windDegrees * (Math.PI / 180)) * initialTriangleArrow));
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos((windDegrees + 1.5) * (Math.PI / 180)) * finalTriangleArrow), this.cone.observationCone.vertexPosition.y + (Math.sin((windDegrees + 2) * (Math.PI / 180)) * finalTriangleArrow));
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos((windDegrees - 1.5) * (Math.PI / 180)) * finalTriangleArrow), this.cone.observationCone.vertexPosition.y + (Math.sin((windDegrees - 2) * (Math.PI / 180)) * finalTriangleArrow));
+      this.context.fill();
+      this.context.closePath();
+
     }
     else{
       //this.drawConvexHull();
@@ -274,8 +312,6 @@ export class EpisodesMapComponent {
     if (this.map.mapInstance.getLayer(layerId)) {
       setTimeout(() => {
         this.map.mapInstance.moveLayer('APEGMOpolygons');
-
-
       });
     }
   }
