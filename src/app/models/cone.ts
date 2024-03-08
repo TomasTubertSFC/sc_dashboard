@@ -382,6 +382,7 @@ export class Cone {
     let endConeDegrees =  this.calculateAngle({ x: convexHull.observation.x + 1000, y: convexHull.observation.y }, convexHull.observation, convexHull.nextPoint) + 30;
 
     if(startConeDegrees <= windDegFromEast && endConeDegrees >= windDegFromEast) this.plausibleCone = true;
+    
 
   }
 
