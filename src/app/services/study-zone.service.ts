@@ -2,11 +2,18 @@ import { Injectable } from '@angular/core';
 import { Episode, StudyZone } from '../models/study-zone';
 import { BehaviorSubject, Subject, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Observation } from '../models/observation';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudyZoneService {
+
+
+  public plausibilityDistance: number = 350;
+  public plausibilityWindSpeed: number = 0.5;
+
+  private dataAPIweather: any;
 
   private _studyZone: BehaviorSubject<StudyZone | null> = new BehaviorSubject<StudyZone | null>(null);
   public get studyZone(): BehaviorSubject<StudyZone | null> {
@@ -60,7 +67,7 @@ export class StudyZoneService {
               episode.inconvenience += observation.color/episode.observations.length;
             })
           }
-
+          this.calculateEpisodePlausibility(episode);
           if(!episode.participation) episode.participation = 3;
 
           episode.inconvenienceColor = this.getColorOfInconvenience(episode.inconvenience);
@@ -70,12 +77,24 @@ export class StudyZoneService {
           });
           return episode;
         })
+        console.log(studyZone);
         return studyZone;
       })
     ).subscribe(data => {
       this.studyZone = data;
     });
+    this.getDataAPIweather(2, 41);
+    console.log(this.dataAPIweather);
   }
+
+  private getDataAPIweather(latitude: number, longitude: number) {
+    let APIkey = '1c1d95b41745d75a14ef0bf37040c0ad';
+    this.http.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${APIkey}`).subscribe(data => {
+        this.dataAPIweather = data;
+      }
+    );
+  }
+
 
   private getColorOfInconvenience(inconvenience: number): number {
     let base100 = Math.round(inconvenience / 7 * 100);
@@ -86,4 +105,24 @@ export class StudyZoneService {
       default: return 4;
     }
   }
+
+  private calculateEpisodePlausibility(episode: Episode): void{
+    let plausible = false;
+    episode.observations.forEach((observation) => {
+      this.calculateObservationPlausibility(observation);
+      if(observation.plausible){
+        plausible = true;
+      }
+
+    });
+    episode.plausible = plausible;
+  }
+
+  private calculateObservationPlausibility(observation: Observation): void{
+    if(observation.APGEMOdistance < this.plausibilityDistance || observation.relationships.wind.speed < this.plausibilityWindSpeed) observation.plausible = true;
+    else observation.plausible = false;
+  }
+
+
+
 }
