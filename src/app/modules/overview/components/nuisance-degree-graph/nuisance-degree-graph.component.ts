@@ -103,6 +103,9 @@ export class NuisanceDegreeGraphComponent implements OnInit {
             },
           },
         },
+        tooltip: {
+          enabled: false,
+        },
       },
       scales: {
         y: {
