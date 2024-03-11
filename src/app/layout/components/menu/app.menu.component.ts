@@ -30,7 +30,7 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Registros de olor',
             icon: '',
-            routerLink: ['/dashboard/registros'],
+            routerLink: ['/dashboard/registers'],
           },
           {
             label: 'Informes',
