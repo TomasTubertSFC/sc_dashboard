@@ -34,6 +34,13 @@ const routes: Routes = [
             (m) => m.EpisodesModule
           ),
       },
+      {
+        path: 'registers',
+        loadChildren: () =>
+          import('./modules/registers/registers.module').then(
+            (m) => m.RegistersModule
+          ),
+      },
     ],
   },
   {

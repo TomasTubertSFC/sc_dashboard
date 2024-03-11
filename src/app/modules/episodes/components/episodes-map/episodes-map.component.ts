@@ -93,7 +93,6 @@ export class EpisodesMapComponent  implements OnDestroy, AfterViewInit {
 
         }
 
-
         setTimeout(() => {
           if(this.points){
             const bbox = this.getBboxFromPoints();
@@ -118,7 +117,6 @@ export class EpisodesMapComponent  implements OnDestroy, AfterViewInit {
           this.map.mapInstance.resize();
         },250);
     });
-
 
     this.episode$ = this.studyZoneService.previewEpisode.subscribe(episode => {
       if (episode) {
