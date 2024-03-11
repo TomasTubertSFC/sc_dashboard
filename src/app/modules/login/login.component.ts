@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -50,12 +50,12 @@ export class LoginComponent {
   });
 
   constructor(
-    private authService: AuthService,
+    @Inject(AuthService) private authService: AuthService,
     private messageService: MessageService,
     private router: Router
   ) {
     this.authService.isLoggedIn.value && this.router.navigate(['/']);
-    
+
     this.router.events
       .pipe(
         filter(

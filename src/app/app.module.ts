@@ -7,13 +7,13 @@ import { SharedComponentsModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { authInterceptorProviders } from './interceptor/auth.interceptor';
-import { LoginModule } from './modules/login/login.module';
 import { initializeInterceptorProvider } from './helpers/intializeApp';
 import { RecoverPasswordModule } from './modules/recover-password/recover-password.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { LandingModule } from './modules/landing/landing.module';
 import { OverviewModule } from './modules/overview/overview.module';
+import { LoginModule } from './modules/login/login.module';
 
 @NgModule({
   declarations: [AppComponent],

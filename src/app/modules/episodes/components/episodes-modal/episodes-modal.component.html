@@ -133,7 +133,8 @@
           <div class="flex flex-wrap gap-1">
             @for(obs of ep.observations; track obs; let index = $index){
               <div
-              class="observation"
+              [id]="'obsButton' + obs.id"
+              class="observation obsButton"
               (click)="[ol.show($event), observationSelected(obs.id)]"
               (mouseenter)="[ol.show($event), observationPreview(obs.id)]"
               (mouseover)="ol.show($event)"
@@ -148,6 +149,7 @@
                 }
                 <b>{{obs.createdAt| date:'HH:mm'}}h.</b>
               </div>
+
               <p-overlayPanel #ol>
                 <div class="flex gap-2">
                   <div class="max-w-24rem gap-2 mb-3">
@@ -157,13 +159,13 @@
                         <b><span>Plausible</span></b>
                       </div>
                       The observation is plausible because
-                      @if(obs.APGEMOdistance < plausibilityDistance && obs.relationships.wind.speed > plausibilityWindSpeed){
+                      @if(obs.APGEMOdistance <= plausibilityDistance && obs.relationships.wind.speed > plausibilityWindSpeed){
                         the observer is less than <b>{{plausibilityDistance}}m</b> from the source.
                       }
-                      @else if (obs.APGEMOdistance > plausibilityDistance && obs.relationships.wind.speed < plausibilityWindSpeed){
+                      @else if (obs.APGEMOdistance > plausibilityDistance && obs.relationships.wind.speed <= plausibilityWindSpeed){
                         the wind speed is less than <b>{{plausibilityWindSpeed}}m/s</b>.
                       }
-                      @else if (obs.APGEMOdistance < plausibilityDistance && obs.relationships.wind.speed < plausibilityWindSpeed) {
+                      @else if (obs.APGEMOdistance <= plausibilityDistance && obs.relationships.wind.speed <= plausibilityWindSpeed) {
                         the observer is less than <b>{{plausibilityDistance}}m</b> from the source and the wind speed is less than <b>{{plausibilityWindSpeed}}m/s</b>.
                       }
                       @else {
@@ -189,6 +191,7 @@
                 <b>Hedonic Tone:</b> {{obs.relationships.odourHedonicTone?.name}}<br/>
                 <b>Intensity:</b> {{obs.relationships.odourIntensity?.name}}<br/>
               </p-overlayPanel>
+
             }
           </div>
         </p-accordionTab>
