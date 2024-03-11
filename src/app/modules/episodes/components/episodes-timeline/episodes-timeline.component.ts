@@ -73,7 +73,7 @@ export class EpisodesTimelineComponent {
   }
 
   public getHeightByInconvenience(inconvenience: number): string {
-    return `height: ${((inconvenience + 1) * 10)-2}px`;
+    return `height: calc(${ Math.round((inconvenience *100)/7) }% - 2px)`;
   }
 
   public selectEpisode(event: Event, id: number): void {

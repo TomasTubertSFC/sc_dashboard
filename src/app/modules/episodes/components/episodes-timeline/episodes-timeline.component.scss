@@ -28,6 +28,19 @@
       background-image: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1));
       z-index: 10;
     }
+    #timeline-legend{
+      font-size: 10px;
+      z-index: 10;
+      writing-mode: vertical-lr;
+      height: 100%;
+      width: 30px;
+      margin-top: -3px;
+      color: rgba(0, 0, 0, 0.5);
+      transform: rotate(180deg);
+      display: flex;
+      justify-content: end;
+      align-items: end;
+    }
     #inconvenience-chart{
       position: absolute;
       flex-direction: column;
@@ -43,7 +56,7 @@
         height: calc(100% + 20px);
         background-color: rgba(0,0,0,.2);
         top: -5px;
-        left: 10px;
+        left: 40px;
         z-index: 0;
       }
       .inconvenience-level{
@@ -63,11 +76,12 @@
           left: 0;
           padding: 0 5px 0 0 ;
           background-color: white;
+          line-height: 10px;
           color: rgba(0,0,0,.3);
           font-weight: 500;
           font-size: 9px;
-          text-align: start;
-          width: 10px;
+          width: 40px;
+          text-align: end;
         }
       }
 
