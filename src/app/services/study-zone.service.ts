@@ -27,7 +27,7 @@ export class StudyZoneService {
   public get episode(): BehaviorSubject<Episode | null> {
     return this._episode;
   }
-  public set episode(value: Episode) {
+  public set episode(value: Episode | null) {
     this._episode.next(value);
   }
 
@@ -35,7 +35,7 @@ export class StudyZoneService {
   public get previewEpisode(): BehaviorSubject<Episode | null> {
     return this._previewEpisode;
   }
-  public set previewEpisode(value: Episode|null) {
+  public set previewEpisode(value: Episode | null) {
     this._previewEpisode.next(value);
   }
 
@@ -77,14 +77,12 @@ export class StudyZoneService {
           });
           return episode;
         })
-        console.log(studyZone);
         return studyZone;
       })
     ).subscribe(data => {
       this.studyZone = data;
     });
     this.getDataAPIweather(2, 41);
-    console.log(this.dataAPIweather);
   }
 
   private getDataAPIweather(latitude: number, longitude: number) {
