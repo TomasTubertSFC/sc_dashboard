@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Episode, StudyZone } from '../../../../models/study-zone';
 import { Point } from 'chart.js';
@@ -10,7 +10,7 @@ import { withHttpTransferCacheOptions } from '@angular/platform-browser';
   templateUrl: './episodes-modal.component.html',
   styleUrl: './episodes-modal.component.scss'
 })
-export class EpisodesModalComponent {
+export class EpisodesModalComponent implements OnDestroy {
 
 
 
@@ -49,6 +49,7 @@ export class EpisodesModalComponent {
     this.episode$ = this.studyZoneService.episode.subscribe(episode => {
       if (episode) {
         this.episode = episode;
+        if (!this.episdoesSidebarVisible ) this.onToggleEpisodesModal();
       }
     });
 
@@ -58,7 +59,7 @@ export class EpisodesModalComponent {
 
     this.observation$ = this.studyZoneService.observation.subscribe(observation => {
       this.observation = observation;
-      if (!this.episdoesSidebarVisible) this.onToggleEpisodesModal();
+      if (!this.episdoesSidebarVisible && this.observation) this.onToggleEpisodesModal();
     });
 
     this.previewObservation$ = this.studyZoneService.previewObservation.subscribe(previewObservation => {
@@ -116,7 +117,7 @@ export class EpisodesModalComponent {
     this.studyZoneService.previewEpisode = this.studyZone ? this.studyZone.episodes[id] : null;
   }
 
-  ngOnDestory() {
+  ngOnDestroy() {
     this.studyZone$?.unsubscribe();
     this.episode$?.unsubscribe();
     this.previewEpisode$?.unsubscribe();

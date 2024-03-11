@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Cone } from '../../../../models/cone';
 import { Point } from 'chart.js';
 import { StudyZoneService } from '../../../../services/study-zone.service';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './episodes-map.component.html',
   styleUrl: './episodes-map.component.scss'
 })
-export class EpisodesMapComponent {
+export class EpisodesMapComponent  implements OnDestroy {
 
   @ViewChild('map') map!: MapComponent;
 
