@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { Episode, StudyZone } from '../../../../models/study-zone';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Button } from 'primeng/button';
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './episodes-timeline.component.html',
   styleUrl: './episodes-timeline.component.scss'
 })
-export class EpisodesTimelineComponent {
+export class EpisodesTimelineComponent  implements OnDestroy {
 
   public terms  : {
     year: number;

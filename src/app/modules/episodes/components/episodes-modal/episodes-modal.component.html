@@ -27,11 +27,11 @@
 <p-sidebar [(visible)]="episdoesSidebarVisible" [appendTo]="episodesModal" [position]="'right'" [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
   <ng-template pTemplate="header">
     <div class="flex flex-1 justify-content-between">
-      <span>Episodies</span>
-      <span class="counter">{{studyZone?.episodes?.length}}</span>
+      <span>Episodies: {{studyZone?.episodes?.length}}</span>
     </div>
   </ng-template>
-  @if(studyZone){
+
+  @if(studyZone && episdoesSidebarVisible){
     <p-accordion [activeIndex]="episode?.id">
       @for( ep of studyZone.episodes; track ep; let index = $index){
         <p-accordionTab
@@ -106,7 +106,7 @@
                 Degree of participation
               </span>
               <span>
-                {{ep.participation}}
+                {{ep.participation}}%
               </span>
             </div>
 
