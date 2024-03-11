@@ -119,7 +119,7 @@ export class StudyZoneService {
   }
 
   private calculateObservationPlausibility(observation: Observation): void{
-    if(observation.APGEMOdistance < this.plausibilityDistance || observation.relationships.wind.speed < this.plausibilityWindSpeed) observation.plausible = true;
+    if(observation.APGEMOdistance <= this.plausibilityDistance || observation.relationships.wind.speed <= this.plausibilityWindSpeed) observation.plausible = true;
     else observation.plausible = false;
   }
 

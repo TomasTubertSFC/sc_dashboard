@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Episode, StudyZone } from '../../../../models/study-zone';
 import { Point } from 'chart.js';
 import { Subscription } from 'rxjs';
+import { withHttpTransferCacheOptions } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-episodes-modal',
@@ -10,6 +11,9 @@ import { Subscription } from 'rxjs';
   styleUrl: './episodes-modal.component.scss'
 })
 export class EpisodesModalComponent {
+
+
+
   public episdoesSidebarVisible: boolean = false;
   public studyZone: StudyZone | null = null;
   public episode: Episode | null = null;
@@ -22,6 +26,7 @@ export class EpisodesModalComponent {
   private previewEpisode$! : Subscription;
   private observation$! : Subscription;
   private previewObservation$! : Subscription;
+  private observationButtonPreview: HTMLElement | null = null;
 
   public plausibilityWindSpeed!: number;
   public plausibilityDistance!: number;
@@ -57,7 +62,12 @@ export class EpisodesModalComponent {
     });
 
     this.previewObservation$ = this.studyZoneService.previewObservation.subscribe(previewObservation => {
+
       this.previewObservation = previewObservation;
+      if(this.observationButtonPreview) this.observationButtonPreview.dispatchEvent( new Event('mouseleave'));
+      this.observationButtonPreview = document.getElementById(`obsButton${previewObservation}`) as HTMLElement;
+      if(this.observationButtonPreview) this.observationButtonPreview.dispatchEvent( new Event('mouseover'));
+
     });
 
   }
@@ -90,6 +100,7 @@ export class EpisodesModalComponent {
   }
 
   public observationPreview(id:number | null = null):void {
+    if(id === null) this.observationButtonPreview = null;
     if(this.studyZoneService.previewObservation.value !== id) this.studyZoneService.previewObservation = id;
   }
 

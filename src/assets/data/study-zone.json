@@ -188,7 +188,7 @@
                 },
                 "wind": {
                   "deg": 150,
-                  "speed": 0.5
+                  "speed": 0.7
                 }
             },
             "likes": 0,
@@ -435,7 +435,7 @@
             "longitude":  2.1482772566545746,
             "latitude": 41.37546869722843,
             "color": 7,
-            "APGEMOdistance": 350,
+            "APGEMOdistance": 351,
             "relationships": {
                 "odourSubType": {
                     "id": 76,
@@ -465,7 +465,7 @@
                 },
                 "wind": {
                   "deg":120,
-                  "speed": 0.5
+                  "speed": 0.6
                 }
             },
             "likes": 0,

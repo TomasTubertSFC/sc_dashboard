@@ -162,7 +162,7 @@ export class EpisodesMapComponent {
         episode.observations.forEach(observation => {
 
           //crear canvas para cada cono si la observacion no es plausible
-          if(observation.plausible === false){
+          if(observation.APGEMOdistance > this.studyZoneService.plausibilityDistance && observation.relationships.wind.speed > this.studyZoneService.plausibilityWindSpeed){
             let canvas:HTMLCanvasElement = document.createElement('canvas') as HTMLCanvasElement;
             let id:number = observation.id;
             let points = [...this.points];
@@ -282,26 +282,25 @@ export class EpisodesMapComponent {
       // Dibujar dirección del viento
 
       let initialDistanceArrow =  this.canvasHeight / 5;
-      let finalDistanceArrow =  (this.canvasHeight / 2) - 2;
-      let initialTriangleArrow = initialDistanceArrow - 20;
-      let finalTriangleArrow = initialTriangleArrow + 21;
+      let finalDistanceArrow =  (this.canvasHeight / 2.2);
+      let initialTriangleArrow = initialDistanceArrow - 30;
+      let finalTriangleArrow = initialTriangleArrow + 35;
 
-      this.context.strokeStyle = this.hexToRGBA('#000', alpha * 2);
-      this.context.lineWidth = 10;
+      this.context.strokeStyle = this.hexToRGBA('#64110b', alpha * 2);
+      this.context.fillStyle = this.hexToRGBA('#e96c63', alpha * 2);
+      this.context.lineWidth = 1;
       this.context.beginPath();
-      this.context.moveTo(this.cone.observationCone.vertexPosition.x + (Math.cos(windDegrees * (Math.PI / 180)) * initialDistanceArrow), this.cone.observationCone.vertexPosition.y + (Math.sin(windDegrees * (Math.PI / 180)) * initialDistanceArrow));
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos(windDegrees * (Math.PI / 180)) * finalDistanceArrow), this.cone.observationCone.vertexPosition.y + (Math.sin(windDegrees * (Math.PI / 180)) * finalDistanceArrow));
-      this.context.stroke();
+      this.context.moveTo(this.cone.observationCone.vertexPosition.x + (Math.cos((windDegrees - 5)  * (Math.PI / 180)) * finalTriangleArrow), this.cone.observationCone.vertexPosition.y + (Math.sin((windDegrees - 5) * (Math.PI / 180)) * finalTriangleArrow));
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos(windDegrees * (Math.PI / 180)) * initialTriangleArrow ), this.cone.observationCone.vertexPosition.y + (Math.sin(windDegrees * (Math.PI / 180)) * initialTriangleArrow));
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos((windDegrees + 5)  * (Math.PI / 180)) * finalTriangleArrow), this.cone.observationCone.vertexPosition.y + (Math.sin((windDegrees + 5) * (Math.PI / 180)) * finalTriangleArrow));
+
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos((windDegrees + 2)  * (Math.PI / 180)) * initialDistanceArrow), this.cone.observationCone.vertexPosition.y + (Math.sin((windDegrees + 2) * (Math.PI / 180)) * initialDistanceArrow));
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos(windDegrees  * (Math.PI / 180)) * finalDistanceArrow), this.cone.observationCone.vertexPosition.y + (Math.sin(windDegrees * (Math.PI / 180)) * finalDistanceArrow));
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos((windDegrees - 2)  * (Math.PI / 180)) * initialDistanceArrow), this.cone.observationCone.vertexPosition.y + (Math.sin((windDegrees - 2) * (Math.PI / 180)) * initialDistanceArrow));
       this.context.closePath();
-
-      //dibujar triangulo para la direccion del viento
-      this.context.fillStyle = this.hexToRGBA('#000', alpha*2);
-      this.context.beginPath();
-      this.context.moveTo(this.cone.observationCone.vertexPosition.x + (Math.cos(windDegrees * (Math.PI / 180)) * initialTriangleArrow), this.cone.observationCone.vertexPosition.y + (Math.sin(windDegrees * (Math.PI / 180)) * initialTriangleArrow));
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos((windDegrees + 1.5) * (Math.PI / 180)) * finalTriangleArrow), this.cone.observationCone.vertexPosition.y + (Math.sin((windDegrees + 2) * (Math.PI / 180)) * finalTriangleArrow));
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x + (Math.cos((windDegrees - 1.5) * (Math.PI / 180)) * finalTriangleArrow), this.cone.observationCone.vertexPosition.y + (Math.sin((windDegrees - 2) * (Math.PI / 180)) * finalTriangleArrow));
       this.context.fill();
-      this.context.closePath();
+      this.context.stroke();
+
 
     }
     else{
