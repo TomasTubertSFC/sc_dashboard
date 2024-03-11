@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Cone } from '../../../../models/cone';
 import { Point } from 'chart.js';
 import { StudyZoneService } from '../../../../services/study-zone.service';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './episodes-map.component.html',
   styleUrl: './episodes-map.component.scss'
 })
-export class EpisodesMapComponent  implements OnDestroy {
+export class EpisodesMapComponent  implements OnDestroy, AfterViewInit {
 
   @ViewChild('map') map!: MapComponent;
 
@@ -58,7 +58,54 @@ export class EpisodesMapComponent  implements OnDestroy {
   constructor(
     private studyZoneService: StudyZoneService,
     private menuService: MenuService
-    ) {}
+    ) {
+
+      this.studyZone$ = this.studyZoneService.studyZone.subscribe(studyZone => {
+        if (studyZone) {
+
+          this.points = studyZone.APGEMO.flat();
+
+          //separamos puntos y poligonos de APEGMO
+          studyZone.APGEMO.forEach(point => {
+            if (Array.isArray(point)) {
+              let polygon:any = {
+                geometry: {
+                  type: 'Polygon',
+                  coordinates: [point.map(pt => [pt.x, pt.y])]
+                }
+              };
+              this.APGEMOpolygon.push(polygon);
+
+            }
+            else {
+              this.APGEMOpoints.push(point);
+            }
+          });
+
+          //obtener media de las coordenadas
+          let averageX = 0;
+          let averageY = 0;
+          this.points.map(point => {
+            averageX += point.x/this.points.length;
+            averageY += point.y/this.points.length;
+          });
+          this.observation = { x: averageX, y: averageY };
+
+        }
+
+
+        setTimeout(() => {
+          if(this.points){
+            const bbox = this.getBboxFromPoints();
+            this.map.mapInstance.fitBounds(bbox, {
+              padding: {top: 50, bottom:200, left: 50, right: 500}
+            });
+          }
+        });
+
+      });
+
+    }
 
   ngOnInit() {
 
@@ -72,48 +119,6 @@ export class EpisodesMapComponent  implements OnDestroy {
         },250);
     });
 
-    this.studyZone$ = this.studyZoneService.studyZone.subscribe(studyZone => {
-      if (studyZone) {
-
-        this.points = studyZone.APGEMO.flat();
-
-        //separamos puntos y poligonos de APEGMO
-        studyZone.APGEMO.forEach(point => {
-          if (Array.isArray(point)) {
-            let polygon:any = {
-              geometry: {
-                type: 'Polygon',
-                coordinates: [point.map(pt => [pt.x, pt.y])]
-              }
-            };
-            this.APGEMOpolygon.push(polygon);
-
-          }
-          else {
-            this.APGEMOpoints.push(point);
-          }
-        });
-
-        //obtener media de las coordenadas
-        let averageX = 0;
-        let averageY = 0;
-        this.points.map(point => {
-          averageX += point.x/this.points.length;
-          averageY += point.y/this.points.length;
-        });
-        this.observation = { x: averageX, y: averageY };
-
-      }
-
-
-      setTimeout(() => {
-        const bbox = this.getBboxFromPoints();
-        this.map.mapInstance.fitBounds(bbox, {
-          padding: {top: 50, bottom:200, left: 50, right: 500}
-        });
-      });
-
-    });
 
     this.episode$ = this.studyZoneService.previewEpisode.subscribe(episode => {
       if (episode) {
@@ -351,7 +356,6 @@ export class EpisodesMapComponent  implements OnDestroy {
   }
 
   private getBboxFromPoints(): [[number,number], [number, number]] {
-
     let points = this.points;
 
     let minX:number = 0, maxX:number = 0, minY:number = 0, maxY:number = 0;
@@ -466,5 +470,9 @@ export class EpisodesMapComponent  implements OnDestroy {
     this.previewObservation$?.unsubscribe();
     this.episode$?.unsubscribe();
 
+    this.studyZoneService.observation = null;
+    this.studyZoneService.previewObservation = null;
+    this.studyZoneService.episode = null;
+    this.studyZoneService.previewEpisode = null;
   }
 }
