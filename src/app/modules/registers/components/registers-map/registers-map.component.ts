@@ -42,6 +42,8 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
 
   public earthquakes: any;
 
+  public heatmapLayer:boolean = false;
+
 
   constructor(
     private studyZoneService: StudyZoneService,
@@ -158,6 +160,7 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
         id: observation.id,
         properties: {
           id: observation.id,
+          color: observation.color? observation.color : 0,
         },
         geometry: {
           type: "Point",

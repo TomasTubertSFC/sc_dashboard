@@ -643,7 +643,7 @@
           "id": 13726,
           "latitude": "51.45840",
           "longitude": "-0.46130",
-          "color": 6,
+          "color": 1,
           "relationships": {
               "odourSubType": {
                   "id": 92,
@@ -683,7 +683,7 @@
           "id": 13727,
           "latitude": "39.32490",
           "longitude": "-0.45440",
-          "color": 7,
+          "color": 2,
           "relationships": {
               "odourSubType": {
                   "id": 19,
@@ -763,7 +763,7 @@
           "id": 13737,
           "latitude": "41.42170",
           "longitude": "2.22470",
-          "color": 7,
+          "color": 2,
           "relationships": {
               "odourSubType": {
                   "id": 76,
@@ -803,7 +803,7 @@
           "id": 13740,
           "latitude": "41.40070",
           "longitude": "2.20950",
-          "color": 7,
+          "color": 4,
           "relationships": {
               "odourSubType": {
                   "id": 78,
@@ -883,7 +883,7 @@
           "id": 13745,
           "latitude": "41.42180",
           "longitude": "2.22470",
-          "color": 7,
+          "color": 6,
           "relationships": {
               "odourSubType": {
                   "id": 76,
@@ -923,7 +923,7 @@
           "id": 13746,
           "latitude": "41.42190",
           "longitude": "2.22510",
-          "color": 7,
+          "color": 5,
           "relationships": {
               "odourSubType": {
                   "id": 76,
@@ -1043,7 +1043,7 @@
           "id": 13750,
           "latitude": "41.42190",
           "longitude": "2.22540",
-          "color": 7,
+          "color": 1,
           "relationships": {
               "odourSubType": {
                   "id": 89,
@@ -1083,7 +1083,7 @@
           "id": 13753,
           "latitude": "41.42180",
           "longitude": "2.22470",
-          "color": 7,
+          "color":2,
           "relationships": {
               "odourSubType": {
                   "id": 76,
@@ -1203,7 +1203,7 @@
           "id": 13757,
           "latitude": "41.42170",
           "longitude": "2.22480",
-          "color": 7,
+          "color": 3,
           "relationships": {
               "odourSubType": {
                   "id": 76,
@@ -1323,7 +1323,7 @@
           "id": 13760,
           "latitude": "41.40670",
           "longitude": "2.21674",
-          "color": 5,
+          "color": 6,
           "relationships": {
               "odourSubType": {
                   "id": 77,
