@@ -66,11 +66,11 @@
 
       <mgl-marker [lngLat]="[point.longitude, point.latitude]">
         <div
-        (mouseover)="overObservation(point.id)"
-        (mouseleave)="leaveObservation()"
-        (click)="observationSelected($event, point.id)"
-        class="pi pi-user btn-observation">
-      </div>
+          (mouseover)="overObservation(point.id)"
+          (mouseleave)="leaveObservation()"
+          (click)="observationSelected($event, point.id)"
+          class="pi pi-user btn-observation">
+        </div>
 
       </mgl-marker>
 

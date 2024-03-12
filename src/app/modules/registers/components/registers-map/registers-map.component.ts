@@ -7,6 +7,8 @@ import { StudyZone } from '../../../../models/study-zone';
 import { Point } from 'chart.js';
 import { Observation } from '../../../../models/observation';
 import { Polygon } from '../../../../models/polygon';
+import { HttpClient } from '@angular/common/http';
+import { GeoJSONSourceComponent } from "ngx-mapbox-gl";
 
 @Component({
   selector: 'app-registers-map',
@@ -33,12 +35,20 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
     };
 
   public observations: Observation[] = [];
+  public restObservations: Observation[] = [];
+
+  public geoJsonObservation: any;
+  public geoJsonRestObservation: any;
+
+  public earthquakes: any;
 
 
   constructor(
     private studyZoneService: StudyZoneService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private http:  HttpClient
     ) {
+
       this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe((isOpen) => {
         setTimeout(() => {
           this.map.mapInstance.resize();
@@ -61,6 +71,7 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
             };
           });
 
+
           studyZone.APGEMO.forEach(point => {
             if (Array.isArray(point)) {
               let polygon:Polygon = {
@@ -69,7 +80,7 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
                   coordinates: [point.map(pt => [pt.x, pt.y])]
                 }
               };
-              this.points = this.points.concat(point);
+
               this.APGEMOpolygon.push(polygon);
 
             }
@@ -78,8 +89,13 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
             }
           });
 
-
           this.points = this.points.concat(this.APGEMOpoints);
+
+          this.restObservations = this.studyZone.restObservations;
+
+          this.geoJsonObservation = this.passToGeoJsonPoints(this.observations);
+          this.geoJsonRestObservation = this.passToGeoJsonPoints(this.restObservations);
+
 
         }
       });
@@ -96,7 +112,12 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
     }
 
   ngOnInit() {
-
+  this.earthquakes = this.updateCluster(10); // { features: [], type: "FeatureCollection" };
+    let index = 20;
+    setInterval(() => {
+      index++;
+      this.earthquakes = this.updateCluster(index);
+    }, 1000);
   }
 
   ngAfterViewInit() {
@@ -127,5 +148,44 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
   ngOnDestroy() {
     this.sidebarMenuIsOpen$.unsubscribe();
     this.studyZone$.unsubscribe();
+  }
+
+  private passToGeoJsonPoints(observations: Observation[]): any {
+
+    let features = observations.map((observation, index) => {
+      return {
+        type: "Feature",
+        id: observation.id,
+        properties: {
+          id: observation.id,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [observation.longitude, observation.latitude]
+        }
+      };
+    });
+
+    return { features: features, type: "FeatureCollection" };
+  }
+
+  private updateCluster(index: number) {
+    let center = [-103.59179687498357, 40.66995747013945];
+    let features = [];
+    for (let i = 0; i < index; i++) {
+      features.push({
+        type: "Point",
+        id: i,
+        properties: {
+          id: i,
+          "Secondary ID": "Secondary ID",
+          "Primary ID": "Primary ID"
+        },
+        geometry: {
+          coordinates: [center[0] + i / 1000.0, center[1]]
+        }
+      });
+    }
+    return { features: features, type: "FeatureCollection" };
   }
 }
