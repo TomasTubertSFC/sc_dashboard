@@ -1,3 +1,6 @@
+<p-button (onClick)="heatmapLayer=!heatmapLayer">
+  Heatmap
+</p-button>
 <mgl-map #map class="card"
     [style]="'mapbox://styles/mapbox/light-v11'"
     [zoom]="[17]"
@@ -5,15 +8,6 @@
     [projection]="'globe'"
   >
 
-  @if(observations){
-    @for(point of observations; track point){
-
-      <mgl-marker [lngLat]="[point.longitude, point.latitude]">
-        <div class="observationMarker"><i class="pi pi-map-marker"></i></div>
-      </mgl-marker>
-
-    }
-  }
 
   @if(APGEMOpoints.length > 0){
     @for(point of APGEMOpoints; track point){
@@ -25,6 +19,63 @@
     }
   }
 
+
+@if(heatmapLayer){
+  <ng-container *ngIf="geoJsonRestObservation">
+    <mgl-geojson-source
+      #clusterComponent
+      id="geoJsonRestObservation"
+      [data]="geoJsonRestObservation"
+    ></mgl-geojson-source>
+    <mgl-layer
+      id="rest-obs-heat"
+      type="heatmap"
+      source="geoJsonRestObservation"
+      [paint]="{
+        'heatmap-weight': [
+          'interpolate',
+          ['linear'],
+          ['get', 'color'],
+          0, 0,
+          7, 1
+        ],
+        'heatmap-intensity': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          0, 1,
+          9, 3
+        ],
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0, 'rgba(33,102,172,0)',
+          0.2, 'rgb(103,169,207)',
+          0.4, 'rgb(209,229,240)',
+          0.6, 'rgb(253,219,199)',
+          0.8, 'rgb(239,138,98)',
+          1, 'rgb(178,24,43)'
+        ],
+        'heatmap-radius': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          0, 2,
+          9, 20
+        ],
+        'heatmap-opacity': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          18, 1,
+          20, 0
+        ]
+      }"
+    ></mgl-layer>
+  </ng-container>
+}
+@else{
   @if(APGEMOpolygon.length > 0){
     <mgl-geojson-source id="APEGMOpolygons">
       <mgl-feature
@@ -40,4 +91,156 @@
       [paint]="APGEMOpolygonStyle"
     ></mgl-layer>
   }
+
+  <!-- <mgl-geojson-source
+    id="symbols-source"
+    [data]="earthquakes"
+    [cluster]="true"
+    [clusterMaxZoom]="14"
+    [clusterRadius]="50"
+  ></mgl-geojson-source> -->
+  <ng-container *ngIf="geoJsonRestObservation">
+    <mgl-geojson-source
+      #clusterComponent
+      id="geoJsonRestObservation"
+      [data]="geoJsonRestObservation"
+      [cluster]="true"
+      [clusterRadius]="20"
+      [clusterMaxZoom]="15"
+    ></mgl-geojson-source>
+    <mgl-layer
+      id="rest-obs-clusters"
+      type="circle"
+      source="geoJsonRestObservation"
+      [filter]="['has', 'point_count']"
+      [paint]="{
+        'circle-color': [
+            'step',
+            ['get', 'point_count'],
+            '#627BC1',
+            10,
+            '#f1f075',
+            20,
+            '#f28cb1'
+        ],
+        'circle-radius': [
+            'step',
+            ['get', 'point_count'],
+            20,
+            100,
+            30,
+            750,
+            40
+        ]
+        }">
+    </mgl-layer>
+    <mgl-layer
+      id="rest-obs-cluster-count"
+      type="symbol"
+      source="geoJsonRestObservation"
+      [filter]="['has', 'point_count']"
+      [layout]="{
+          'text-field': ['get', 'point_count_abbreviated'],
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 12
+      }">
+    </mgl-layer>
+    <mgl-layer
+      id="rest-obs-unclustered-point"
+      type="circle"
+      source="geoJsonRestObservation"
+      [filter]="['!', ['has', 'point_count']]"
+      [paint]="{
+        'circle-color': '#11b4da',
+        'circle-radius': 4,
+        'circle-stroke-width': 1,
+        'circle-stroke-color': '#fff'
+        }">
+    </mgl-layer>
+  </ng-container>
+    <!-- estos cluseters funcionan -->
+    <!-- <mgl-markers-for-clusters source="earthquakes">
+      <ng-template mglPoint let-feature>
+        <div class="marker">
+          <div class="observationMarker"><i class="pi pi-map-marker">
+
+
+          </i> {{ feature.properties.id }}</div>
+        </div>
+      </ng-template>
+      <ng-template mglClusterPoint let-feature >
+        <div
+          class="marker-cluster"
+        >
+          <div class="observationMarker rest" [style]="{
+            'width': feature.properties?.point_count * 10 + 'px',
+            'height': feature.properties?.point_count * 10 + 'px'
+          }
+            ">
+            {{ feature.properties?.point_count }}
+          </div>
+        </div>
+      </ng-template>
+    </mgl-markers-for-clusters> -->
+    <ng-container *ngIf="geoJsonObservation">
+      <mgl-geojson-source
+        #clusterComponent
+        id="geoJsonObservation"
+        [data]="geoJsonObservation"
+        [cluster]="true"
+        [clusterRadius]="20"
+        [clusterMaxZoom]="17"
+      ></mgl-geojson-source>
+      <mgl-layer
+        id="obs-clusters"
+        type="circle"
+        source="geoJsonObservation"
+        [filter]="['has', 'point_count']"
+        [paint]="{
+          'circle-color': [
+              'step',
+              ['get', 'point_count'],
+              '#627BC1',
+              10,
+              '#f1f075',
+              20,
+              '#f28cb1'
+          ],
+          'circle-radius': [
+              'step',
+              ['get', 'point_count'],
+              20,
+              100,
+              30,
+              750,
+              40
+          ]
+          }">
+      </mgl-layer>
+      <mgl-layer
+        id="obs-cluster-count"
+        type="symbol"
+        source="geoJsonObservation"
+        [filter]="['has', 'point_count']"
+        [layout]="{
+            'text-field': ['get', 'point_count_abbreviated'],
+            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-size': 12
+        }">
+      </mgl-layer>
+      <mgl-layer
+        id="unclustered-point"
+        type="circle"
+        source="geoJsonObservation"
+        [filter]="['!', ['has', 'point_count']]"
+        [paint]="{
+          'circle-color': '#11b4da',
+          'circle-radius': 4,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#fff'
+          }">
+      </mgl-layer>
+    </ng-container>
+  }
 </mgl-map>
+

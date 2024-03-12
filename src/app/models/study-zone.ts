@@ -4,6 +4,7 @@ import { Observation } from "./observation";
 export interface StudyZone {
   APGEMO: (Point | Point[])[];
   episodes: Episode[];
+  restObservations: Observation[];
 }
 export interface Episode {
   id: number;
