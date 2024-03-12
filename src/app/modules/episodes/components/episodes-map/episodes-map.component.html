@@ -7,7 +7,23 @@
     [projection]="'globe'"
   >
 
-  @if(points){
+  @if(APGEMOpolygon.length > 0){
+    <mgl-geojson-source id="APEGMOpolygons">
+      <mgl-feature
+          *ngFor="let polygon of APGEMOpolygon"
+          [geometry]="polygon.geometry"
+        ></mgl-feature>
+    </mgl-geojson-source>
+
+    <mgl-layer
+      id="APEGMOpolygons"
+      type="fill"
+      source="APEGMOpolygons"
+      [paint]="APGEMOpolygonStyle"
+    ></mgl-layer>
+  }
+
+  @if(APGEMOpoints.length > 0){
     @for(point of APGEMOpoints; track point){
 
       <mgl-marker [lngLat]="[point.x, point.y]">
@@ -61,19 +77,6 @@
     }
   }
 
-  <mgl-geojson-source id="APEGMOpolygons">
-    <mgl-feature
-        *ngFor="let polygon of APGEMOpolygon"
-        [geometry]="polygon.geometry"
-      ></mgl-feature>
-  </mgl-geojson-source>
-
-  <mgl-layer
-    id="APEGMOpolygons"
-    type="fill"
-    source="APEGMOpolygons"
-    [paint]="APGEMOpolygonStyle"
-  ></mgl-layer>
 
 </mgl-map>
 

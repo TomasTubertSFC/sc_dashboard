@@ -4,4 +4,40 @@
     [center]="[intialPoint.x, intialPoint.y]"
     [projection]="'globe'"
   >
+
+  @if(observations){
+    @for(point of observations; track point){
+
+      <mgl-marker [lngLat]="[point.longitude, point.latitude]">
+        <div class="observationMarker"><i class="pi pi-map-marker"></i></div>
+      </mgl-marker>
+
+    }
+  }
+
+  @if(APGEMOpoints.length > 0){
+    @for(point of APGEMOpoints; track point){
+
+      <mgl-marker [lngLat]="[point.x, point.y]">
+        <div class="apgemo-point"></div>
+      </mgl-marker>
+
+    }
+  }
+
+  @if(APGEMOpolygon.length > 0){
+    <mgl-geojson-source id="APEGMOpolygons">
+      <mgl-feature
+          *ngFor="let polygon of APGEMOpolygon"
+          [geometry]="polygon.geometry"
+        ></mgl-feature>
+    </mgl-geojson-source>
+
+    <mgl-layer
+      id="APEGMOpolygons"
+      type="fill"
+      source="APEGMOpolygons"
+      [paint]="APGEMOpolygonStyle"
+    ></mgl-layer>
+  }
 </mgl-map>

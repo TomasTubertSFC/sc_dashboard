@@ -121,6 +121,12 @@ export class StudyZoneService {
     else observation.plausible = false;
   }
 
+  public getStudyZoneFromLocalStorage(): void {
+    let studyZone = localStorage.getItem('studyZone');
+    if(studyZone){
+      this.studyZone = JSON.parse(studyZone);
+    }
+  }
 
 
 }

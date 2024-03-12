@@ -14,6 +14,7 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { LandingModule } from './modules/landing/landing.module';
 import { OverviewModule } from './modules/overview/overview.module';
 import { LoginModule } from './modules/login/login.module';
+import { StudyZoneService } from './services/study-zone.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +39,13 @@ import { LoginModule } from './modules/login/login.module';
     }),
   ],
   providers: [
+    StudyZoneService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (studyZoneService: StudyZoneService) => () => studyZoneService.getStudyZoneFromLocalStorage(),
+      deps: [StudyZoneService],
+      multi: true,
+    },
     initializeInterceptorProvider,
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     authInterceptorProviders,

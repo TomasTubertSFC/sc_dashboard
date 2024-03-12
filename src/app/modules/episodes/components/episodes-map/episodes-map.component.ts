@@ -6,6 +6,7 @@ import { Episode, StudyZone } from '../../../../models/study-zone';
 import { MapComponent } from 'ngx-mapbox-gl';
 import { MenuService } from '../../../../layout/components/menu/app.menu.service';
 import { Subscription } from 'rxjs';
+import { Polygon } from '../../../../models/polygon';
 
 @Component({
   selector: 'app-episodes-map',
@@ -27,7 +28,7 @@ export class EpisodesMapComponent  implements OnDestroy, AfterViewInit {
   public episode: Episode| null = null;
   public previewEpisode: Episode| null = null;
   public APGEMOpoints: Point[] = [];
-  public APGEMOpolygon: any[] = [];
+  public APGEMOpolygon: Polygon[] = [];
   public APGEMOpolygonStyle: {} =
     {
       'fill-outline-color': '#363c69',
@@ -68,7 +69,7 @@ export class EpisodesMapComponent  implements OnDestroy, AfterViewInit {
           //separamos puntos y poligonos de APEGMO
           studyZone.APGEMO.forEach(point => {
             if (Array.isArray(point)) {
-              let polygon:any = {
+              let polygon:Polygon = {
                 geometry: {
                   type: 'Polygon',
                   coordinates: [point.map(pt => [pt.x, pt.y])]
