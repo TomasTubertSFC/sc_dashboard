@@ -5,6 +5,8 @@ import { MapComponent } from 'ngx-mapbox-gl';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { StudyZone } from '../../../../models/study-zone';
 import { Point } from 'chart.js';
+import { Observation } from '../../../../models/observation';
+import { Polygon } from '../../../../models/polygon';
 
 @Component({
   selector: 'app-registers-map',
@@ -20,7 +22,17 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
 
   public studyZone!: StudyZone;
   public points!: Point[];
-  public intialPoint!: Point;
+  public intialPoint: Point = {x: 0, y: 0};
+  public APGEMOpoints: Point[] = [];
+  public APGEMOpolygon: Polygon[] = [];
+  public APGEMOpolygonStyle: {} =
+    {
+      'fill-outline-color': '#363c69',
+      'fill-color': '#348ac7',
+      'fill-opacity': 0.8
+    };
+
+  public observations: Observation[] = [];
 
 
   constructor(
@@ -34,16 +46,51 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
       });
       this.studyZone$ = this.studyZoneService.studyZone.subscribe((studyZone) => {
         if (studyZone) {
-          this.studyZone = studyZone;
 
-          this.points = studyZone.APGEMO.flat();
-          let averageX = 0;
-          let averageY = 0;
-          this.points.map(point => {
-            averageX += point.x/this.points.length;
-            averageY += point.y/this.points.length;
+          this.studyZone = studyZone;
+          this.studyZone.episodes.forEach(episode => this.observations = this.observations.concat(episode.observations));
+          this.observations.forEach(observation => {
+            this.intialPoint.x += observation.longitude/this.observations.length;
+            this.intialPoint.y += observation.latitude/this.observations.length;
           });
-          this.intialPoint = { x: averageX, y: averageY };
+
+          this.points = this.observations.map(observation => {
+            return {
+              x: observation.longitude,
+              y: observation.latitude
+            };
+          });
+
+          studyZone.APGEMO.forEach(point => {
+            if (Array.isArray(point)) {
+              let polygon:Polygon = {
+                geometry: {
+                  type: 'Polygon',
+                  coordinates: [point.map(pt => [pt.x, pt.y])]
+                }
+              };
+              this.points = this.points.concat(point);
+              this.APGEMOpolygon.push(polygon);
+
+            }
+            else {
+              this.APGEMOpoints.push(point);
+            }
+          });
+
+
+          this.points = this.points.concat(this.APGEMOpoints);
+
+        }
+      });
+
+
+      setTimeout(() => {
+        if(this.points){
+          const bbox = this.getBboxFromPoints();
+          this.map.mapInstance.fitBounds(bbox, {
+            padding: {top: 50, bottom:50, left: 50, right: 50}
+          });
         }
       });
     }
@@ -53,6 +100,27 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
   }
 
   ngAfterViewInit() {
+
+  }
+
+  private getBboxFromPoints(): [[number,number], [number, number]] {
+    let points = this.points;
+
+    let minX:number = 0, maxX:number = 0, minY:number = 0, maxY:number = 0;
+
+    points.forEach((p, i) => {
+      if (i === 0) {
+        minX = maxX = p.x;
+        minY = maxY = p.y;
+      } else {
+        minX = Math.min(p.x, minX);
+        minY = Math.min(p.y, minY);
+        maxX = Math.max(p.x, maxX);
+        maxY = Math.max(p.y, maxY);
+      }
+    });
+
+    return [[minX, minY], [maxX, maxY]];
 
   }
 

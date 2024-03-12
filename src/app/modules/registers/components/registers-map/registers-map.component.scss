@@ -1,3 +1,4 @@
+$randomNumber: random(3);
 :host{
   display: flex;
   flex: 1 1 auto;
@@ -12,4 +13,32 @@ mgl-map{
   padding: 0;
   height: calc(100vh - 9rem);
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.08);
+  .observationMarker{
+    color: red;
+    opacity: 0;
+    animation: obsMarkerAnimation 0.2s cubic-bezier(0,.60,.25,1) forwards 0.8s;
+    i{
+      font-size: 1.5rem;
+    }
+  }
+  .apgemo-point{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: #348ac7;
+    border: 1px solid #363c69;
+  }
 }
+
+@keyframes obsMarkerAnimation {
+  0% {
+    transform: translate(0, -500px) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 0.7rem) scale(1);
+    opacity: 1;
+  }
+}
+
+
