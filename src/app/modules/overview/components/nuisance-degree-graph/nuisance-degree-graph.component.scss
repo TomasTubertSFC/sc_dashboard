@@ -1,0 +1,35 @@
+.title {
+  div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    div {
+      width: 10px;
+      height: 10px;
+    }
+  }
+  div:nth-child(1) {
+    div {
+      background-color: var(--blue-transparency);
+      border: 1px solid var(--blue);
+    }
+  }
+  div:nth-child(2) {
+    div {
+      background-color: var(--green-transparency);
+      border: 1px solid var(--green);
+    }
+  }
+  div:nth-child(3) {
+    div {
+      background-color: var(--yellow-transparency);
+      border: 1px solid var(--yellow);
+    }
+  }
+  div:nth-child(4) {
+    div {
+      background-color: var(--orange-transparency);
+      border: 1px solid var(--orange);
+    }
+  }
+}
