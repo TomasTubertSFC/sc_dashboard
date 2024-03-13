@@ -1,10 +1,29 @@
 <div class="card mb-0">
+  <div class="flex title gap-3 justify-content-center mb-3">
+    <div>
+      <div></div>
+      <p>Ótpima</p>
+    </div>
+    <div>
+      <div></div>
+      <p>Mejorable</p>
+    </div>
+    <div>
+      <div></div>
+      <p>Grave</p>
+    </div>
+    <div>
+      <div></div>
+      <p>Crítica</p>
+    </div>
+  </div>
   <p-chart
     type="bar"
     [data]="basicData"
     [options]="basicOptions"
     (onDataSelect)="showDialog()"
   ></p-chart>
+  <p class="text-xl text-center">Grado de molestia</p>
 </div>
 <p-dialog
   header="Información semaforo"
