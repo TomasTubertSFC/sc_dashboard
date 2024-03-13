@@ -43,18 +43,18 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
   public earthquakes: any;
 
   public heatmapLayer:boolean = false;
+  public filters:boolean = false;
 
 
   constructor(
     private studyZoneService: StudyZoneService,
     private menuService: MenuService,
-    private http:  HttpClient
     ) {
 
       this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe((isOpen) => {
         setTimeout(() => {
           this.map.mapInstance.resize();
-        },250);
+        },300);
       });
       this.studyZone$ = this.studyZoneService.studyZone.subscribe((studyZone) => {
         if (studyZone) {
@@ -107,7 +107,7 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
         if(this.points){
           const bbox = this.getBboxFromPoints();
           this.map.mapInstance.fitBounds(bbox, {
-            padding: {top: 50, bottom:50, left: 50, right: 50}
+            padding: {top: 100, bottom:50, left: 50, right: 50}
           });
         }
       });
@@ -170,6 +170,14 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
     });
 
     return { features: features, type: "FeatureCollection" };
+  }
+
+  public toggleHeatmapLayer(status: boolean | undefined = undefined) {
+    this.heatmapLayer = status===undefined? !this.heatmapLayer : status;
+  }
+
+  public toggleFilters(status: boolean | undefined = undefined) {
+    this.filters = status===undefined? !this.filters : status;
   }
 
   private updateCluster(index: number) {
