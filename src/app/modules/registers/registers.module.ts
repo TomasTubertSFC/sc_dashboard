@@ -12,6 +12,9 @@ import { AccordionModule } from 'primeng/accordion';
 import { SidebarModule } from 'primeng/sidebar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TagModule } from 'primeng/tag';
+import { ToolbarModule } from 'primeng/toolbar';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -23,12 +26,15 @@ import { TagModule } from 'primeng/tag';
     CommonModule,
     NgxMapboxGLModule,
     ButtonModule,
+    SelectButtonModule,
     SplitButtonModule,
     TooltipModule,
     AccordionModule,
     SidebarModule,
     OverlayPanelModule,
-    TagModule
+    TagModule,
+    ToolbarModule,
+    InputTextModule
   ]
 })
 export class RegistersModule { }

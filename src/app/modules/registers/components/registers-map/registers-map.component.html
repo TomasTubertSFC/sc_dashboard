@@ -1,6 +1,25 @@
-<p-button (onClick)="heatmapLayer=!heatmapLayer">
-  Heatmap
-</p-button>
+
+<p-toolbar styleClass="shadow-6">
+  <ng-template pTemplate="start">
+    <p-button (onClick)="toggleHeatmapLayer(false)" [ngClass]="{'active' : !heatmapLayer}" pTooltip="Mark map" tooltipPosition="bottom">
+      <i class="pi pi-map-marker text-2xl"></i>
+    </p-button>
+    <p-button (onClick)="toggleHeatmapLayer(true)" [ngClass]="{'active' : heatmapLayer}" pTooltip="Heatmap" tooltipPosition="bottom">
+      <i class="pi pi-sun text-2xl"></i>
+    </p-button>
+  </ng-template>
+  <ng-template pTemplate="center">
+      <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input type="text" pInputText />
+      </span>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <p-button (onClick)="toggleFilters()"  (click)="filtersPanel.toggle($event)" [ngClass]="{'active' : filters}" pTooltip="Activate filters" tooltipPosition="bottom">
+      <i class="pi text-2xl" [ngClass]="{'pi-filter': filters,'pi-filter-slash': !filters}"></i>
+    </p-button>
+  </ng-template>
+</p-toolbar>
 <mgl-map #map class="card"
     [style]="'mapbox://styles/mapbox/light-v11'"
     [zoom]="[17]"
@@ -244,3 +263,7 @@
   }
 </mgl-map>
 
+
+<p-overlayPanel #filtersPanel >
+  filters
+</p-overlayPanel>

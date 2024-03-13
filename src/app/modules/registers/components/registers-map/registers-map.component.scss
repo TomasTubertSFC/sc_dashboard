@@ -55,3 +55,90 @@ mgl-map{
 }
 
 
+:host ::ng-deep {
+  .p-toolbar{
+    display: flex;
+    flex-wrap: nowrap;
+    border-radius: 12px;
+    position: absolute;
+    z-index: 100;
+    width: calc(100% - 1rem);
+    margin: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    padding: 0.5rem;
+    transition: all 0.3s cubic-bezier(0,.60,.25,1);
+    .p-toolbar-group-center{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      .p-input-icon-left{
+        width: 100%;
+        i{
+          pointer-events: none;
+        }
+        input{
+          transition: all 0.3s cubic-bezier(0,.60,.25,1);
+          border: 1px solid #CCC2;
+          background-color: #00000020;
+          width: 5%;
+          border-radius: 50px;
+          box-shadow:  0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.08);
+          height: 40px;
+          &:focus,
+          &:hover{
+            max-width: none;
+            width: 50%;
+            border: 1px solid #0002;
+            background-color: #FFF2;
+          }
+
+        }
+      }
+    }
+    p-button{
+      .p-button{
+        backdrop-filter: blur(8px);
+        background-color: transparent;
+        height: 40px;
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #00000020;
+        border: 1px solid #CCC2;
+        border-radius: 8px;
+        &:hover{
+          background: #348ac790;
+          border-color: #75bdf090
+
+        }
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.08);
+        i{
+          pointer-events: none;
+        }
+      }
+      &.active .p-button{
+        background-color: #fd9a7790;
+        border-color: #ffbda5;
+      }
+    }
+    .p-toolbar-group-start{
+      p-button{
+        &:first-of-type .p-button{
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          border-right-width: 0.5px;
+        }
+        &:last-of-type .p-button{
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          border-left-width: 0.5px;
+        }
+      }
+    }
+  }
+}
