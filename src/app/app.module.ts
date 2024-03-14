@@ -40,15 +40,15 @@ import { StudyZoneService } from './services/study-zone.service';
   ],
   providers: [
     StudyZoneService,
+    initializeInterceptorProvider,
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    authInterceptorProviders,
     {
       provide: APP_INITIALIZER,
       useFactory: (studyZoneService: StudyZoneService) => () => studyZoneService.getStudyZoneFromLocalStorage(),
       deps: [StudyZoneService],
       multi: true,
     },
-    initializeInterceptorProvider,
-    { provide: LocationStrategy, useClass: PathLocationStrategy },
-    authInterceptorProviders,
   ],
   bootstrap: [AppComponent],
 })

@@ -13,7 +13,6 @@ export interface RecoverPasswords {
   email?: String | null;
 }
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -22,7 +21,7 @@ export class AuthService {
   private _isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
-  private lastUrl!: string | null;
+  public lastUrl!: string | null;
 
   get isLoggedIn(): BehaviorSubject<boolean> {
     return this._isLoggedIn;
@@ -64,7 +63,7 @@ export class AuthService {
             this.router.navigate([this.lastUrl]);
             this.lastUrl = null;
           } else {
-            this.router.navigate(['/']);
+            this.router.navigate(['/dashboard']);
           }
 
           this._isLoggedIn.next(true);
