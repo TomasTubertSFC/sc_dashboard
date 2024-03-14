@@ -29,7 +29,7 @@ export class AppLayoutComponent implements OnDestroy {
   overlayOpen$ = this.overlayOpen.asObservable();
 
   studyZone$!: Subscription;
-  studyZoneid!: number;
+  studyZoneid!: number | null;
 
   overlayMenuOpenSubscription: Subscription;
 
@@ -88,7 +88,8 @@ export class AppLayoutComponent implements OnDestroy {
       });
 
     this.studyZone$ = this.studyZoneService.studyZone.subscribe((studyZone) => {
-      if (studyZone) {
+      if(!studyZone) this.studyZoneid = null;
+      if (studyZone && this.studyZoneService.studyZoneId) {
         this.studyZoneid = this.studyZoneService.studyZoneId;
       }
     });

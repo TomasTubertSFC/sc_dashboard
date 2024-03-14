@@ -1,14 +1,17 @@
-<p-dialog  header="Select a study zone" [(visible)]="visible" [maskStyle]="'background:#F00'" [dismissableMask]="false" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-  <p-button (onClick)="selectStudyZone()">
+<p-dialog  header="Select a study zone" [(visible)]="visible" [maskStyle]="'background:#F00'" [dismissableMask]="dissmissable" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+  <p-button (onClick)="selectStudyZone(1)">
     <i class="pi pi-map-marker"></i> Study zone 1
   </p-button>
-  <p-button (onClick)="selectStudyZone()">
+  <p-button (onClick)="selectStudyZone(2)">
     <i class="pi pi-map-marker"></i> Study zone 2
   </p-button>
-  <p-button (onClick)="selectStudyZone()">
+  <p-button (onClick)="selectStudyZone(3)">
     <i class="pi pi-map-marker"></i> Study zone 3
   </p-button>
-  <p-button (onClick)="selectStudyZone()">
+  <p-button (onClick)="selectStudyZone(4)">
     <i class="pi pi-map-marker"></i> Study zone 4
+  </p-button>
+  <p-button (onClick)="selectStudyZone(5)">
+    <i class="pi pi-map-marker"></i> Study zone 5
   </p-button>
 </p-dialog>

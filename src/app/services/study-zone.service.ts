@@ -10,7 +10,7 @@ import { AuthService } from './auth/auth.service';
 })
 export class StudyZoneService {
 
-  public studyZoneId!: number;
+  public studyZoneId: number | undefined | null;
   private isLoggedIn!: boolean;
 
   public plausibilityDistance: number = 350;
@@ -30,7 +30,7 @@ export class StudyZoneService {
   public get studyZone(): BehaviorSubject<StudyZone | null> {
     return this._studyZone;
   }
-  public set studyZone(value: StudyZone) {
+  public set studyZone(value: StudyZone | null) {
     this._studyZone.next(value);
   }
 
@@ -124,7 +124,7 @@ export class StudyZoneService {
     }
 
     if(this.isLoggedIn){
-      
+
       if(this.studyZoneId){
         this.getStudyZone(id);
         this.studyZoneModal = false;
@@ -138,8 +138,7 @@ export class StudyZoneService {
 
   public getStudyZoneById(id:number): void {
 
-    localStorage.setItem('studyZoneId', id.toString());
-    this.studyZoneId = id;
+    this.studyZoneId = undefined;
     this.getStudyZone(id);
     this.studyZoneModal = false;
 
@@ -147,31 +146,43 @@ export class StudyZoneService {
 
   private getStudyZone(id: number): void {
 
-    this.http.get<StudyZone>('/assets/data/study-zone.json').pipe<StudyZone>(
-      map((studyZone: StudyZone) => {
-        studyZone.episodes.map((episode: Episode, index:number) => {
-          episode.id = index
+    if(this.studyZone !== null) this.studyZone = null;
 
-          if(!episode.inconvenience){
-            episode.inconvenience = 0;
-            episode.observations.forEach((observation) => {
-              episode.inconvenience += observation.color/episode.observations.length;
-            })
-          }
-          this.calculateEpisodePlausibility(episode);
-          if(!episode.participation) episode.participation = 3;
+    setTimeout(() => {
 
-          episode.inconvenienceColor = this.getColorOfInconvenience(episode.inconvenience);
-          episode.plausible = episode.plausible || false;
-          episode.observations.map((observation) => {
-            observation.plausible = observation.plausible || false;
-          });
-          return episode;
+      this.http.get<StudyZone>(`/assets/data/study-zone${id}.json`).pipe<StudyZone>(
+        map((studyZone: StudyZone) => {
+
+          studyZone.episodes.map((episode: Episode, index:number) => {
+
+            episode.id = index
+
+            if(!episode.inconvenience){
+              episode.inconvenience = 0;
+              episode.observations.forEach((observation) => {
+                episode.inconvenience += observation.color/episode.observations.length;
+              })
+            }
+            this.calculateEpisodePlausibility(episode);
+            if(!episode.participation) episode.participation = 3;
+            episode.inconvenienceColor = this.getColorOfInconvenience(episode.inconvenience);
+            episode.plausible = episode.plausible || false;
+            episode.observations.map((observation) => {
+              observation.plausible = observation.plausible || false;
+            });
+            return episode;
+          })
+
+          this.studyZoneId = id;
+          localStorage.setItem('studyZoneId', id.toString());
+
+          return studyZone;
+
         })
-        return studyZone;
-      })
-    ).subscribe(data => {
-      this.studyZone = data;
-    });
+      ).subscribe(data => {
+        this.studyZone = data;
+      });
+
+    }, 2000);
   }
 }

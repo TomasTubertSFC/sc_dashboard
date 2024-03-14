@@ -3,24 +3,29 @@
   <div class="flex gap-4 align-items-center">
     @if(studyZoneId){
       <h1 class="m-0 d-none hidden lg:block">Zona de estudio {{studyZoneId}}</h1>
+      <button
+        pButton
+        type="button"
+        class="p-button-rounded p-button-secondary hidden lg:block"
+      >
+        Filtro tiempo
+      </button>
+      <button
+        pButton
+        type="button"
+        class="p-button-rounded p-button-secondary hidden lg:block"
+        (click)="openStudyZoneModal()"
+      >
+        Cambiar zona de estudio
+      </button>
     }
     @else {
       <p-skeleton height="2rem" styleClass="h-3rem sm:w-15rem md:w-30rem"/>
+
+      <p-skeleton height="2rem" styleClass="h-3rem sm:w-15rem md:w-8rem" borderRadius="50px"/>
+
+      <p-skeleton height="2rem" styleClass="h-3rem sm:w-15rem md:w-12rem" borderRadius="50px"/>
     }
-    <button
-      pButton
-      type="button"
-      class="p-button-rounded p-button-secondary hidden lg:block"
-    >
-      Filtro tiempo
-    </button>
-    <button
-      pButton
-      type="button"
-      class="p-button-rounded p-button-secondary hidden lg:block"
-    >
-      Cambiar zona de estudio
-    </button>
     <button
       (click)="profileMenu.toggle($event)"
       class="m-0 p-link layout-menu-button layout-topbar-button hidden lg:flex"

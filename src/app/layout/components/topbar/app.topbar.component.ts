@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 
 import { AuthService } from '../../../services/auth/auth.service';
+import { StudyZoneService } from '../../../services/study-zone.service';
 
 import { MenuItem } from 'primeng/api';
 
@@ -16,14 +17,18 @@ import { MenuItem } from 'primeng/api';
   templateUrl: './app.topbar.component.html',
 })
 export class AppTopBarComponent {
-  @Input() studyZoneId: number | undefined;
+  @Input() studyZoneId: number | undefined | null;
   @Output() toggleSidebar = new EventEmitter<void>();
 
   @ViewChild('menubutton') menuButton!: ElementRef;
 
   profileItems: MenuItem[] | undefined;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private studyZoneService: StudyZoneService
+
+  ) {}
 
   ngOnInit() {
     this.profileItems = [
@@ -45,4 +50,9 @@ export class AppTopBarComponent {
   onToggleSidebar() {
     this.toggleSidebar.emit();
   }
+
+  openStudyZoneModal() {
+    this.studyZoneService.studyZoneModal = true;
+  }
+
 }
