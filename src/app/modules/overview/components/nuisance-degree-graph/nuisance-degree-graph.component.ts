@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
-import 'chartjs-plugin-datalabels';
+
 @Component({
   selector: 'app-nuisance-degree-graph',
   templateUrl: './nuisance-degree-graph.component.html',
@@ -231,22 +231,24 @@ export class NuisanceDegreeGraphComponent implements OnInit {
         y: {
           max: 100,
           beginAtZero: true,
-          grace:10,
+          grace: 15,
           ticks: {
             display: false,
-            color: 'transparent',
           },
           grid: {
             display: false,
           },
         },
         x: {
+          // This will only display labels where the value is a multiple of 10
+          afterBuildTicks: function (scale: any) {
+            scale.ticks = [];
+            for (let i = 0; i <= 100; i += 10) {
+              scale.ticks.push({ value: i });
+            }
+          },
           ticks: {
             color: textColorSecondary,
-            // This will only display labels where the value is a multiple of 10
-            callback: function (value: any, index: any, values: any) {
-              return value % 10 === 0 ? value : '';
-            },
           },
           grid: {
             color: surfaceBorder,
