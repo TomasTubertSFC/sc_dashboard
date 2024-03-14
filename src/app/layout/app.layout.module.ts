@@ -15,6 +15,9 @@ import { SidebarModule } from 'primeng/sidebar';
 import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import { SkeletonModule } from 'primeng/skeleton';
+
+
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import { MenuModule } from 'primeng/menu';
     RouterModule,
     SharedComponentsModule,
     SidebarModule,
+    SkeletonModule,
   ],
   exports: [AppLayoutComponent],
 })

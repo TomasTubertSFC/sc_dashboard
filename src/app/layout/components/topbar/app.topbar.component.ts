@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -15,6 +16,7 @@ import { MenuItem } from 'primeng/api';
   templateUrl: './app.topbar.component.html',
 })
 export class AppTopBarComponent {
+  @Input() studyZoneId: number | undefined;
   @Output() toggleSidebar = new EventEmitter<void>();
 
   @ViewChild('menubutton') menuButton!: ElementRef;

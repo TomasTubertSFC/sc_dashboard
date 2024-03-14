@@ -1,7 +1,12 @@
 <div class="layout-topbar">
   <icon-odour-logo [iconClass]="'w-full'" />
   <div class="flex gap-4 align-items-center">
-    <h1 class="m-0 d-none hidden lg:block">Zona de estudio 1</h1>
+    @if(studyZoneId){
+      <h1 class="m-0 d-none hidden lg:block">Zona de estudio {{studyZoneId}}</h1>
+    }
+    @else {
+      <p-skeleton height="2rem" styleClass="h-3rem sm:w-15rem md:w-30rem"/>
+    }
     <button
       pButton
       type="button"

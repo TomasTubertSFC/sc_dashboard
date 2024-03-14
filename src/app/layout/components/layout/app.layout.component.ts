@@ -10,6 +10,7 @@ import { filter, Subject, Subscription } from 'rxjs';
 import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
 import { AppTopBarComponent } from '../topbar/app.topbar.component';
 import { MenuService } from '../menu/app.menu.service';
+import { StudyZoneService } from '../../../services/study-zone.service';
 
 interface LayoutState {
   staticMenuDesktopInactive: boolean;
@@ -26,6 +27,9 @@ export class AppLayoutComponent implements OnDestroy {
   sidebarMenuIsOpen: boolean = false;
 
   overlayOpen$ = this.overlayOpen.asObservable();
+
+  studyZone$!: Subscription;
+  studyZoneid!: number;
 
   overlayMenuOpenSubscription: Subscription;
 
@@ -46,6 +50,7 @@ export class AppLayoutComponent implements OnDestroy {
     public renderer: Renderer2,
     public router: Router,
     private menuService: MenuService,
+    private studyZoneService: StudyZoneService
     ) {
     this.overlayMenuOpenSubscription = this.overlayOpen$.subscribe(() => {
       if (!this.menuOutsideClickListener) {
@@ -81,6 +86,12 @@ export class AppLayoutComponent implements OnDestroy {
       .subscribe(() => {
         this.hideMenu();
       });
+
+    this.studyZone$ = this.studyZoneService.studyZone.subscribe((studyZone) => {
+      if (studyZone) {
+        this.studyZoneid = this.studyZoneService.studyZoneId;
+      }
+    });
   }
 
   //Toggle sidebar menu
@@ -145,6 +156,9 @@ export class AppLayoutComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.studyZone$) {
+      this.studyZone$.unsubscribe();
+    }
     if (this.overlayMenuOpenSubscription) {
       this.overlayMenuOpenSubscription.unsubscribe();
     }
