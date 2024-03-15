@@ -13,6 +13,8 @@ export class StudyZoneSelectModalComponent {
 
   public visible: boolean = false;
   public dissmissable: boolean = false;
+  public selectedStudyZone!: number;
+  public studyZonesList: any[] = [];
 
   constructor(
     private studyZoneService: StudyZoneService,
@@ -20,20 +22,31 @@ export class StudyZoneSelectModalComponent {
     private router: Router,
     ) {
     this.studyZoneService.studyZoneModal.subscribe((open:boolean) => {
-        if(this.studyZoneService.studyZoneId) this.dissmissable = true;
+        if(this.studyZoneService.studyZoneId){
+          this.dissmissable = true;
+          this.selectedStudyZone = this.studyZoneService.studyZoneId;
+        }
         this.visible = open;
+    });
+    this.studyZoneService.getStudyZoneList().subscribe((data: any) => {
+      this.studyZonesList = data.studyZonesList;
+      console.log(this.studyZonesList);
     });
   }
 
   public selectStudyZone(id: number) {
-    this.studyZoneService.getStudyZoneById(id);
-    this.visible = false;
-    if (this.authService.lastUrl) {
-      this.router.navigate([this.authService.lastUrl]);
-      this.authService.lastUrl = null;
-    } else if(this.router.url === '/login'){
-      this.router.navigate(['/dashboard']);
+    if(this.selectedStudyZone !== id){
+      this.selectedStudyZone = id;
+      this.studyZoneService.getStudyZoneById(id);
+      if (this.authService.lastUrl) {
+        this.router.navigate([this.authService.lastUrl]);
+        this.authService.lastUrl = null;
+      } else if(this.router.url === '/login'){
+        this.router.navigate(['/dashboard']);
+      }
     }
+    this.visible = false;
+
   }
 
 }
