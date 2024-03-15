@@ -145,3 +145,12 @@ mgl-map{
     }
   }
 }
+:host :host ::ng-deep {
+
+  p-overlayPanel{
+    display: hidden;
+  }
+}
+
+
+

@@ -1,0 +1,44 @@
+<div id="episodesModal" #episodesModal></div>
+<p-sidebar [(visible)]="filterSidebarVisible" [appendTo]="episodesModal" [position]="'right'" [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
+  <ng-template pTemplate="header">
+    <div class="flex flex-1 justify-content-between">
+      <h5 class="mb-0">Filtros</h5>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="body">
+    <div class="flex flex-column">
+      <div class="flex flex-column">
+        <p-checkbox label="Tipo de olor" [(ngModel)]="filterOptions.type" [binary]="true" [class]="'flex justify-content-between'" />
+        <div class="filter" *ngIf="filterOptions.type" >
+          Tipo {{filterOptions.type}}
+        </div>
+      </div>
+      <div class="flex flex-column">
+        <p-checkbox label="Tono Hedónico" [(ngModel)]="filterOptions.hedonicTone" [binary]="true" [class]="'flex justify-content-between'" />
+        <div class="filter" *ngIf="filterOptions.hedonicTone">
+          Tono Hedónico
+        </div>
+      </div>
+      <div class="flex flex-column">
+        <p-checkbox label="Intensidad" [(ngModel)]="filterOptions.intensity" [binary]="true" [class]="'flex justify-content-between'" />
+        <div *ngIf="filterOptions.intensity">
+          Intensidad
+        </div>
+      </div>
+      <div class="flex flex-column">
+        <p-checkbox label="Tiempo diario" [(ngModel)]="filterOptions.days" [binary]="true" [class]="'flex justify-content-between'" />
+        <div *ngIf="filterOptions.days">
+          Días
+        </div>
+      </div>
+      <div class="flex flex-column">
+        <p-checkbox label="Tiempo horario" [(ngModel)]="filterOptions.hours" [binary]="true" [class]="'flex justify-content-between'" />
+        <div *ngIf="filterOptions.hours">
+          Horas
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-sidebar>
+
+
