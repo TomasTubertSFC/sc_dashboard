@@ -185,4 +185,9 @@ export class StudyZoneService {
 
     }, 2000);
   }
+
+  public getStudyZoneList(): Observable<any[]> {
+    return this.http.get<any[]>('/assets/data/study-zone-list.json');
+  }
+  
 }
