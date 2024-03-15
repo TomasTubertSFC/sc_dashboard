@@ -15,13 +15,18 @@ import { TagModule } from 'primeng/tag';
 import { ToolbarModule } from 'primeng/toolbar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FormsModule } from '@angular/forms';
+import { RegistersFilterModalComponent } from './components/registers-filter-modal/registers-filter-modal.component';
 
 @NgModule({
   declarations: [
     RegistersPageComponent,
-    RegistersMapComponent
+    RegistersMapComponent,
+    RegistersFilterModalComponent
   ],
   imports: [
+    FormsModule,
     RegistersRoutingModule,
     CommonModule,
     NgxMapboxGLModule,
@@ -34,7 +39,9 @@ import { InputTextModule } from 'primeng/inputtext';
     OverlayPanelModule,
     TagModule,
     ToolbarModule,
-    InputTextModule
+    InputTextModule,
+    CheckboxModule
+
   ]
 })
 export class RegistersModule { }

@@ -15,7 +15,7 @@ import { GeoJSONSourceComponent } from "ngx-mapbox-gl";
   templateUrl: './registers-map.component.html',
   styleUrl: './registers-map.component.scss'
 })
-export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
+export class RegistersMapComponent implements OnDestroy{
 
   @ViewChild('map') map!: MapComponent;
 
@@ -40,89 +40,71 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
   public geoJsonObservation: any;
   public geoJsonRestObservation: any;
 
-  public earthquakes: any;
-
   public heatmapLayer:boolean = false;
   public filters:boolean = false;
-
 
   constructor(
     private studyZoneService: StudyZoneService,
     private menuService: MenuService,
     ) {
 
-      this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe((isOpen) => {
-        setTimeout(() => {
-          this.map.mapInstance.resize();
-        },300);
-      });
-      this.studyZone$ = this.studyZoneService.studyZone.subscribe((studyZone) => {
-        if (studyZone) {
-
-          this.studyZone = studyZone;
-          this.studyZone.episodes.forEach(episode => this.observations = this.observations.concat(episode.observations));
-          this.observations.forEach(observation => {
-            this.intialPoint.x += observation.longitude/this.observations.length;
-            this.intialPoint.y += observation.latitude/this.observations.length;
-          });
-
-          this.points = this.observations.map(observation => {
-            return {
-              x: observation.longitude,
-              y: observation.latitude
-            };
-          });
-
-
-          studyZone.APGEMO.forEach(point => {
-            if (Array.isArray(point)) {
-              let polygon:Polygon = {
-                geometry: {
-                  type: 'Polygon',
-                  coordinates: [point.map(pt => [pt.x, pt.y])]
-                }
-              };
-
-              this.APGEMOpolygon.push(polygon);
-
-            }
-            else {
-              this.APGEMOpoints.push(point);
-            }
-          });
-
-          this.points = this.points.concat(this.APGEMOpoints);
-
-          this.restObservations = this.studyZone.restObservations;
-
-          this.geoJsonObservation = this.passToGeoJsonPoints(this.observations);
-          this.geoJsonRestObservation = this.passToGeoJsonPoints(this.restObservations);
-
-
-        }
-      });
-
-
+    this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe((isOpen) => {
       setTimeout(() => {
-        if(this.points){
-          const bbox = this.getBboxFromPoints();
-          this.map.mapInstance.fitBounds(bbox, {
-            padding: {top: 100, bottom:50, left: 50, right: 50}
-          });
-        }
-      });
-    }
+        this.map.mapInstance.resize();
+      },300);
+    });
 
-  ngOnInit() {
-  this.earthquakes = this.updateCluster(10); // { features: [], type: "FeatureCollection" };
-    let index = 20;
-    setInterval(() => {
-      index++;
-      this.earthquakes = this.updateCluster(index);
-    }, 1000);
-  }
+    this.studyZone$ = this.studyZoneService.studyZone.subscribe((studyZone) => {
 
-  ngAfterViewInit() {
+      if (studyZone) {
+
+        this.studyZone = studyZone;
+        this.studyZone.episodes.forEach(episode => this.observations = this.observations.concat(episode.observations));
+        this.observations.forEach(observation => {
+          this.intialPoint.x += observation.longitude/this.observations.length;
+          this.intialPoint.y += observation.latitude/this.observations.length;
+        });
+
+        this.points = this.observations.map(observation => {
+          return {
+            x: observation.longitude,
+            y: observation.latitude
+          };
+        });
+
+        studyZone.APGEMO.forEach(point => {
+          if (Array.isArray(point)) {
+            let polygon:Polygon = {
+              geometry: {
+                type: 'Polygon',
+                coordinates: [point.map(pt => [pt.x, pt.y])]
+              }
+            };
+
+            this.APGEMOpolygon.push(polygon);
+
+          }
+          else {
+            this.APGEMOpoints.push(point);
+          }
+        });
+
+        this.points = this.points.concat(this.APGEMOpoints);
+        this.restObservations = this.studyZone.restObservations;
+        this.geoJsonObservation = this.passToGeoJsonPoints(this.observations);
+        this.geoJsonRestObservation = this.passToGeoJsonPoints(this.restObservations);
+
+      }
+    });
+
+    setTimeout(() => {
+      if(this.points){
+        const bbox = this.getBboxFromPoints();
+        this.map.mapInstance.fitBounds(bbox, {
+          padding: {top: 100, bottom:50, left: 50, right: 50}
+        });
+      }
+    });
 
   }
 
@@ -180,23 +162,4 @@ export class RegistersMapComponent implements OnInit, AfterViewInit, OnDestroy{
     this.filters = status===undefined? !this.filters : status;
   }
 
-  private updateCluster(index: number) {
-    let center = [-103.59179687498357, 40.66995747013945];
-    let features = [];
-    for (let i = 0; i < index; i++) {
-      features.push({
-        type: "Point",
-        id: i,
-        properties: {
-          id: i,
-          "Secondary ID": "Secondary ID",
-          "Primary ID": "Primary ID"
-        },
-        geometry: {
-          coordinates: [center[0] + i / 1000.0, center[1]]
-        }
-      });
-    }
-    return { features: features, type: "FeatureCollection" };
-  }
 }
