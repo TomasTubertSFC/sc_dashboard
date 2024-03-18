@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { Episode, OdourType } from '../../../../models/study-zone';
 
+
 @Component({
   selector: 'app-nuisance-degree-graph',
   templateUrl: './nuisance-degree-graph.component.html',
@@ -11,6 +12,8 @@ export class NuisanceDegreeGraphComponent implements OnInit {
   @Input() episodes: Episode[] = [];
   @Input() types: OdourType[] = [];
   @Input() subtypes: OdourType[] = [];
+
+  selectedEpisode!: Episode;
 
   typeValue!: number;
 
@@ -32,10 +35,13 @@ export class NuisanceDegreeGraphComponent implements OnInit {
       let episodes = ep.map((e) => ({
         degree: this.getInconvenienceInBase100(e.inconvenience),
         date: e.date,
+        id: e.id,
       }));
       return arr.map((_, i) => {
         const episode = episodes.find((e) => e.degree === i);
-        return episode ? { value: 98, date: new Date(episode.date) } : null;
+        return episode
+          ? { value: 98, date: new Date(episode.date), id: episode.id }
+          : null;
       });
     };
 
@@ -45,6 +51,7 @@ export class NuisanceDegreeGraphComponent implements OnInit {
         {
           data: data().map((d) => (d ? d.value : null)),
           date: data().map((d) => (d ? d.date : null)),
+          id: data().map((d) => (d ? d.id : null)),
           backgroundColor: 'black',
           borderWidth: 0.5,
         },
@@ -73,6 +80,17 @@ export class NuisanceDegreeGraphComponent implements OnInit {
       return e;
     });
     this.updateData(filteredEpisodes);
+  }
+
+  public getEpisodeLength(start: string, end: string): string {
+    const epStart = new Date(start);
+    const epEnd = new Date(end);
+    const diff = (epEnd.getTime() - epStart.getTime()) / 1000;
+    const days = Math.floor(diff / 86400);
+    const hours = Math.floor(diff / 3600) % 24;
+    let dayText = days > 1 ? 'days' : 'day';
+    let hourText = hours > 1 ? 'hours' : 'hour';
+    return days > 0 ? `${days} ${dayText}` : `${hours} ${hourText}`;
   }
 
   ngOnInit(): void {
@@ -296,7 +314,10 @@ export class NuisanceDegreeGraphComponent implements OnInit {
     };
   }
 
-  showDialog() {
+  showDialog({ element }: any) {
+    const episodeId = this.basicData.datasets[0].id[element.index]
+    const episode = this.episodes.find((e) => e.id === episodeId);
+    if(episode) this.selectedEpisode = episode;
     this.visible = true;
   }
 }
