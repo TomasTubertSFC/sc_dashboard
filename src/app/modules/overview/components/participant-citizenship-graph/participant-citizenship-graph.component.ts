@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-participant-citizenship-graph',
@@ -8,14 +8,17 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 export class ParticipantCitizenshipGraphComponent implements OnInit {
   value: number = 0;
 
-  totalUsers: number = 1000;
+  @Input() totalUsers: number = 1000;
 
-  activeUsers: number = 500;
+  @Input() activeUsers: number = 500;
 
   percentageOfActiveUsers: number = this.activeUsers / this.totalUsers;
 
   backgroundColor!: string;
 
+  get usersPercentage(): number {
+    return Math.round((this.value / 100) * this.totalUsers * 10) / 10;
+  }
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {

@@ -5,7 +5,10 @@
       [types]="studyZone.types"
       [subtypes]="studyZone.subtypes"
     />
-    <app-participant-citizenship-graph />
+    <app-participant-citizenship-graph
+      [activeUsers]="studyZone.activeUsers"
+      [totalUsers]="studyZone.totalUsers"
+    />
     <app-odour-episode-graph />
   </div>
 </section>

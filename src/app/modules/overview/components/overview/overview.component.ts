@@ -5,9 +5,6 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-  WritableSignal,
-  effect,
-  signal,
 } from '@angular/core';
 import { PdfService } from '../../../../services/pdf/pdf.service';
 import { StudyZoneService } from '../../../../services/study-zone.service';
@@ -31,10 +28,8 @@ interface OverviewStudyZone {
 export class OverviewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('dataToExport', { static: false }) dataToExport!: ElementRef;
   private studyZone$!: Subscription;
-  //Seguir con los filtros
 
   public studyZone!: OverviewStudyZone;
-  // public _episodes!: WritableSignal<Episode[]>;
   public episodes!: Episode[];
 
   constructor(
@@ -85,10 +80,8 @@ export class OverviewComponent implements OnInit, AfterViewInit, OnDestroy {
         subtypes: subtypes,
       } as OverviewStudyZone;
 
-      //Mapeare desde el initDate hasta el endDate los meses para obtenerlos.
       this.studyZone = studyZoneOverview;
       this.episodes = studyZone.episodes;
-      // this._episodes = signal(studyZone.episodes);
     });
   }
 

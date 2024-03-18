@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, effect } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { Episode, OdourType } from '../../../../models/study-zone';
 
@@ -21,8 +21,6 @@ export class NuisanceDegreeGraphComponent implements OnInit {
   basicOptions: any;
 
   visible: boolean = false;
-
-  constructor() {}
 
   public getInconvenienceInBase100(inconvenience: number): number {
     return Math.round((inconvenience / 7) * 100);

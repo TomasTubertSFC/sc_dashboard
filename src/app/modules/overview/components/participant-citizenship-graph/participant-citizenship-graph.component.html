@@ -5,7 +5,7 @@
   </h2>
   <p-progressBar [value]="value" [color]="backgroundColor">
     <ng-template pTemplate="content" let-value>
-      <span>{{ (value / 100) * totalUsers }}/{{ totalUsers }}</span>
+      <span>{{ usersPercentage }}/{{ totalUsers }}</span>
     </ng-template>
   </p-progressBar>
 </div>
