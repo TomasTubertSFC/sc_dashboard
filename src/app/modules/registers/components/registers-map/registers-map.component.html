@@ -1,11 +1,11 @@
-<app-registers-filter-modal [filterSidebarVisible]="filters"/>
+<app-registers-filter-modal [filterSidebarVisible]="showFilters"/>
 <p-toolbar styleClass="shadow-6" #toolBar>
   <ng-template pTemplate="start">
-    <p-button (onClick)="toggleHeatmapLayer(false)" [ngClass]="{'active' : !heatmapLayer}" pTooltip="Mark map"
+    <p-button (onClick)="toggleHeatmapLayer(false)" [ngClass]="{'active' : !heatmapLayer}" pTooltip="Marcadores"
       tooltipPosition="bottom">
       <i class="pi pi-map-marker"></i>
     </p-button>
-    <p-button (onClick)="toggleHeatmapLayer(true)" [ngClass]="{'active' : heatmapLayer}" pTooltip="Heatmap"
+    <p-button (onClick)="toggleHeatmapLayer(true)" [ngClass]="{'active' : heatmapLayer}" pTooltip="Mapa de calor"
       tooltipPosition="bottom">
       <i class="pi pi-sun"></i>
     </p-button>
@@ -17,10 +17,16 @@
     </span>
   </ng-template>
   <ng-template pTemplate="end" #filterButton>
-    <p-button (onClick)="toggleFilters()" [ngClass]="{'active' : filters}"
-      pTooltip="Activate filters" tooltipPosition="bottom">
-      <i class="pi" [ngClass]="{'pi-filter': filters,'pi-filter-slash': !filters}"></i>
-    </p-button>
+    <div class="flex gap-2">
+      <p-button (onClick)="toggleFilters()" [ngClass]="{'active' : filters}"
+        pTooltip="{{filters? 'Desactivar filtros' : 'Aplicar filtros' }}" tooltipPosition="bottom">
+        <i class="pi" [ngClass]="{'pi-filter': filters,'pi-filter-slash': !filters}"></i>
+      </p-button>
+      <p-button (onClick)="toggleShowFilters()" [ngClass]="{'active' : showFilters}"
+        pTooltip="{{filters? 'Editar filtros' : 'Ocutar filtros' }}" tooltipPosition="bottom">
+        <i class="pi pi-sliders-h"></i>
+      </p-button>
+    </div>
   </ng-template>
 </p-toolbar>
 

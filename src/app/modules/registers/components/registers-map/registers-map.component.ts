@@ -41,7 +41,11 @@ export class RegistersMapComponent implements OnDestroy{
   public geoJsonRestObservation: any;
 
   public heatmapLayer:boolean = false;
+
   public filters:boolean = false;
+  public showFilters:boolean = false;
+
+
 
   constructor(
     private studyZoneService: StudyZoneService,
@@ -160,6 +164,10 @@ export class RegistersMapComponent implements OnDestroy{
 
   public toggleFilters(status: boolean | undefined = undefined) {
     this.filters = status===undefined? !this.filters : status;
+  }
+
+  public toggleShowFilters(status: boolean | undefined = undefined) {
+    this.showFilters = !this.showFilters;
   }
 
 }
