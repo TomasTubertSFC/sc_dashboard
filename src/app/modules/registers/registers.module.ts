@@ -12,7 +12,7 @@ import { TagModule } from 'primeng/tag';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistersFilterModalComponent } from './components/registers-filter-modal/registers-filter-modal.component';
 import { SliderModule } from 'primeng/slider';
 import { CalendarModule } from 'primeng/calendar';
@@ -25,6 +25,7 @@ import { CalendarModule } from 'primeng/calendar';
   ],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     RegistersRoutingModule,
     CommonModule,
     NgxMapboxGLModule,

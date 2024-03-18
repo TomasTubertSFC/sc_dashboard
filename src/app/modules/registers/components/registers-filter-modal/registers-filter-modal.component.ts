@@ -2,6 +2,7 @@ import { Component, Input} from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { StudyZone } from '../../../../models/study-zone';
 import { OdourTypeData } from '../../../../models/odour-related-data';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-registers-filter-modal',
@@ -29,7 +30,6 @@ export class RegistersFilterModalComponent {
     hours: false,
   };
   public odourTypes!:OdourTypeData[]
-  public hedonicTone: number[] = [1, 7];
   public hedonicToneTitle: string[] = [
     'Extremadamente desagradable',
     'Muy desagradable',
@@ -41,7 +41,6 @@ export class RegistersFilterModalComponent {
     'Muy agradable',
     'Extremadamente agradable'
   ];
-  public intensity: number[] = [1, 5];
   public intensityTitle: string[] = [
     'Imperceptible',
     'Muy débil',
@@ -53,6 +52,20 @@ export class RegistersFilterModalComponent {
   ];
   public days: Date[] = [new Date(), new Date()];
   public hours: Date = new Date();
+
+  filtersForm: FormGroup = new FormGroup({
+    type: new FormControl(false, []),
+    typeFilter: new FormControl([], []),
+    hedonicTone: new FormControl(false, []),
+    hedonicToneFilter: new FormControl([1, 7], []),
+    intensity: new FormControl(false, []),
+    intensityFilter: new FormControl([1, 5], []),
+    days: new FormControl(false, []),
+    daysFilter: new FormControl([new Date(), new Date()], []),
+    hours: new FormControl(false, []),
+    hoursFilter: new FormControl(new Date(), []),
+  });
+
 
   constructor(private studyZoneService: StudyZoneService) {
     this.studyZoneService.studyZone.subscribe((studyZone) => {
