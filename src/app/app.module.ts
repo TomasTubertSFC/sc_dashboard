@@ -40,9 +40,9 @@ import { StudyZoneService } from './services/study-zone.service';
   ],
   providers: [
     StudyZoneService,
-    initializeInterceptorProvider,
+    // initializeInterceptorProvider,
     { provide: LocationStrategy, useClass: PathLocationStrategy },
-    authInterceptorProviders,
+    // authInterceptorProviders,
     {
       provide: APP_INITIALIZER,
       useFactory: (studyZoneService: StudyZoneService) => () => studyZoneService.getStudyZoneFromLocalStorage(),

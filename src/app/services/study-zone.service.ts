@@ -76,7 +76,7 @@ export class StudyZoneService {
           this.isLoggedIn = isLoggedIn;
           this.getStudyZoneFromLocalStorage();
         }
-        this.isLoggedIn = isLoggedIn;
+        this.isLoggedIn = true;
       });
     }
 

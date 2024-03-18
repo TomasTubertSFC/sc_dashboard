@@ -87,8 +87,6 @@ export class EpisodesModalComponent implements OnDestroy {
     let dayText = days > 1 ? 'days' : 'day';
     let hourText = hours > 1 ? 'hours' : 'hour';
     return days > 0 ? `${days} ${dayText}` : `${hours} ${hourText}`;
-
-
   }
 
 

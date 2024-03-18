@@ -1,3 +1,23 @@
+<section class="mb-3 flex justify-content-end">
+  <div style="width: fit-content" class="card flex gap-3">
+    <p-dropdown
+      [options]="types"
+      optionLabel="name"
+      optionValue="id"
+      [showClear]="true"
+      placeholder="Tipos"
+      (onChange)="filterByTypes($event.value,'type')"
+    />
+    <p-dropdown
+      [options]="subtypes"
+      optionLabel="name"
+      optionValue="id"
+      [showClear]="true"
+      placeholder="Subtipos"
+      (onChange)="filterByTypes($event.value,'subtype')"
+    />
+  </div>
+</section>
 <div class="card mb-0">
   <div class="flex title gap-3 justify-content-center mb-3">
     <div>
