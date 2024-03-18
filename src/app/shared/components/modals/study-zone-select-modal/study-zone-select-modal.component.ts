@@ -30,7 +30,6 @@ export class StudyZoneSelectModalComponent {
     });
     this.studyZoneService.getStudyZoneList().subscribe((data: any) => {
       this.studyZonesList = data.studyZonesList;
-      console.log(this.studyZonesList);
     });
   }
 

@@ -1,3 +1,4 @@
+<app-registers-filter-modal [filterSidebarVisible]="filters"/>
 <p-toolbar styleClass="shadow-6" #toolBar>
   <ng-template pTemplate="start">
     <p-button (onClick)="toggleHeatmapLayer(false)" [ngClass]="{'active' : !heatmapLayer}" pTooltip="Mark map"
@@ -209,4 +210,3 @@
   }
 </mgl-map>
 
-<app-registers-filter-modal [filterSidebarVisible]="filters"/>
