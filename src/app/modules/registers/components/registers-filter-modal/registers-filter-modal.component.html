@@ -6,36 +6,54 @@
     </div>
   </ng-template>
   <ng-template pTemplate="body">
-    <div class="flex flex-column">
+    <div class="flex flex-column p-1 pt-4 gap-2">
       <div class="flex flex-column">
         <p-checkbox label="Tipo de olor" [(ngModel)]="filterOptions.type" [binary]="true" [class]="'flex justify-content-between'" />
-        <div class="filter" *ngIf="filterOptions.type" >
-          Tipo {{filterOptions.type}}
+        <div class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter" *ngIf="filterOptions.type">
+          @if(odourTypes) {
+            @for (odourType of odourTypes; track odourType) {
+              <p-checkbox [label]="odourType.name" [binary]="true" [class]="'flex justify-content-start'" />
+            }
+          }
         </div>
       </div>
+
       <div class="flex flex-column">
         <p-checkbox label="Tono Hedónico" [(ngModel)]="filterOptions.hedonicTone" [binary]="true" [class]="'flex justify-content-between'" />
-        <div class="filter" *ngIf="filterOptions.hedonicTone">
-          Tono Hedónico
+        <div class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter" *ngIf="filterOptions.hedonicTone">
+          <small class="text-center mb-2">
+            @if(hedonicTone[0] === hedonicTone[1]){
+              {{hedonicToneTitle[hedonicTone[0]]}}
+            }
+            @else {
+              {{hedonicToneTitle[hedonicTone[0]]}} - {{hedonicToneTitle[hedonicTone[1]]}}
+            }
+          </small>
+          <p-slider [(ngModel)]="hedonicTone" [min]="0" [max]="8" [range]="true" [className]="'ml-2 mb-2 mr-2'"></p-slider>
         </div>
       </div>
+
       <div class="flex flex-column">
         <p-checkbox label="Intensidad" [(ngModel)]="filterOptions.intensity" [binary]="true" [class]="'flex justify-content-between'" />
-        <div *ngIf="filterOptions.intensity">
-          Intensidad
+        <div class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter" *ngIf="filterOptions.intensity">
+          <small class="text-center mb-2">
+            @if(intensity[0] === intensity[1]){
+              {{intensityTitle[intensity[0]]}}
+            }
+            @else {
+              {{intensityTitle[intensity[0]]}} - {{intensityTitle[intensity[1]]}}
+            }
+          </small>
+          <p-slider [(ngModel)]="intensity" [min]="0" [max]="6" [range]="true" [className]="'ml-2 mb-2 mr-2'"></p-slider>
         </div>
       </div>
       <div class="flex flex-column">
         <p-checkbox label="Tiempo diario" [(ngModel)]="filterOptions.days" [binary]="true" [class]="'flex justify-content-between'" />
-        <div *ngIf="filterOptions.days">
-          Días
-        </div>
+        <p-calendar class="mt-3 mb-4 w-100  flex flex-column" [panelStyleClass]="'card p-0'" [(ngModel)]="days" [inline]="true" [selectionMode]="'range'" *ngIf="filterOptions.days" />
       </div>
       <div class="flex flex-column">
         <p-checkbox label="Tiempo horario" [(ngModel)]="filterOptions.hours" [binary]="true" [class]="'flex justify-content-between'" />
-        <div *ngIf="filterOptions.hours">
-          Horas
-        </div>
+        <p-calendar class="mt-3 mb-4 w-100  flex flex-column" [panelStyleClass]="'card p-0'" [(ngModel)]="hours" [timeOnly]="true" [inline]="true" *ngIf="filterOptions.hours" />
       </div>
     </div>
   </ng-template>
