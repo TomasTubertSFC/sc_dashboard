@@ -12,8 +12,8 @@ import { OdourType, Episode } from '../../../../models/study-zone';
 import { Subscription } from 'rxjs';
 
 interface OverviewStudyZone {
-  initDate: string;
-  endDate: string;
+  initDate: Date;
+  endDate: Date;
   totalUsers: number;
   activeUsers: number;
   types: OdourType[];
@@ -72,8 +72,8 @@ export class OverviewComponent implements OnInit, AfterViewInit, OnDestroy {
         }, [] as OdourType[]);
 
       studyZoneOverview = {
-        initDate: studyZone.initDate,
-        endDate: studyZone.endDate,
+        initDate: new Date(studyZone.initDate),
+        endDate: new Date(studyZone.endDate),
         totalUsers: totalUsers,
         activeUsers: totalActiveUsers,
         types: types,

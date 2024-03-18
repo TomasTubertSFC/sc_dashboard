@@ -9,6 +9,10 @@
       [activeUsers]="studyZone.activeUsers"
       [totalUsers]="studyZone.totalUsers"
     />
-    <app-odour-episode-graph />
+    <app-odour-episode-graph
+      [endDate]="studyZone.endDate"
+      [initDate]="studyZone.initDate"
+      [episodes]="episodes"
+    />
   </div>
 </section>
