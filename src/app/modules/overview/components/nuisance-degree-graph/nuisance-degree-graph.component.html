@@ -1,3 +1,23 @@
+<section class="mb-3 flex justify-content-end">
+  <div style="width: fit-content" class="card flex gap-3">
+    <p-dropdown
+      [options]="types"
+      optionLabel="name"
+      optionValue="id"
+      [showClear]="true"
+      placeholder="Tipos"
+      (onChange)="filterByTypes($event.value, 'type')"
+    />
+    <p-dropdown
+      [options]="subtypes"
+      optionLabel="name"
+      optionValue="id"
+      [showClear]="true"
+      placeholder="Subtipos"
+      (onChange)="filterByTypes($event.value, 'subtype')"
+    />
+  </div>
+</section>
 <div class="card mb-0">
   <div class="flex title gap-3 justify-content-center mb-3">
     <div>
@@ -21,10 +41,11 @@
     type="bar"
     [data]="basicData"
     [options]="basicOptions"
-    (onDataSelect)="showDialog()"
+    (onDataSelect)="showDialog($event)"
   ></p-chart>
   <p class="text-xl text-center">Grado de molestia</p>
 </div>
+@if (selectedEpisode) {
 <p-dialog
   header="Información semaforo"
   [modal]="true"
@@ -35,22 +56,38 @@
 >
   <ul class="p-0">
     <li class="flex justify-content-between">
-      <strong>Fecha de inicio:</strong> dd/mm/yyyy hh:mm
+      <strong>Fecha de inicio:</strong>
+      {{ selectedEpisode.date | date : "dd/MM/Y - HH:mm" }}
     </li>
     <li class="flex justify-content-between">
-      <strong>Fecha final:</strong> dd/mm/yyyy hh:mm
+      <strong>Fecha final:</strong>
+      {{
+        selectedEpisode.observations[selectedEpisode.observations.length - 1]
+          .createdAt | date : "dd/MM/Y - HH:mm"
+      }}
     </li>
     <li class="flex justify-content-between">
-      <strong>Duración episodio:</strong> 12h
+      <strong>Duración episodio:</strong>
+      {{
+        getEpisodeLength(
+          selectedEpisode.observations[0].createdAt,
+          selectedEpisode.observations[selectedEpisode.observations.length - 1]
+            .createdAt
+        )
+      }}
     </li>
     <li class="flex justify-content-between">
-      <strong>Grado de molestia:</strong> 58
+      <strong>Grado de molestia:</strong
+      >{{ getInconvenienceInBase100(selectedEpisode.inconvenience) }}
     </li>
     <li class="flex justify-content-between">
-      <strong>Grado de participación:</strong> 20%
+      <strong>Grado de participación:</strong>
+      {{ selectedEpisode.participation }}%
     </li>
     <li class="flex justify-content-between">
-      <strong>Número de ciudadanía participante:</strong> 20
+      <strong>Número de ciudadanía participante:</strong
+      >{{ selectedEpisode.differentUsers }}
     </li>
   </ul>
 </p-dialog>
+}

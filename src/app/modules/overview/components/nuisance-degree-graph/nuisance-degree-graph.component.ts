@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
+import { Episode, OdourType } from '../../../../models/study-zone';
+
 
 @Component({
   selector: 'app-nuisance-degree-graph',
@@ -7,11 +9,89 @@ import { Chart } from 'chart.js';
   styleUrl: './nuisance-degree-graph.component.scss',
 })
 export class NuisanceDegreeGraphComponent implements OnInit {
+  @Input() episodes: Episode[] = [];
+  @Input() types: OdourType[] = [];
+  @Input() subtypes: OdourType[] = [];
+
+  selectedEpisode!: Episode;
+
+  typeValue!: number;
+
+  subtypeValue!: number;
+
   basicData: any;
 
   basicOptions: any;
 
   visible: boolean = false;
+
+  public getInconvenienceInBase100(inconvenience: number): number {
+    return Math.round((inconvenience / 7) * 100);
+  }
+
+  private updateData(ep: Episode[]) {
+    const data = () => {
+      const arr = Array.from({ length: 101 }, (_, i) => i);
+      let episodes = ep.map((e) => ({
+        degree: this.getInconvenienceInBase100(e.inconvenience),
+        date: e.date,
+        id: e.id,
+      }));
+      return arr.map((_, i) => {
+        const episode = episodes.find((e) => e.degree === i);
+        return episode
+          ? { value: 98, date: new Date(episode.date), id: episode.id }
+          : null;
+      });
+    };
+
+    this.basicData = {
+      labels: Array.from({ length: 101 }, (_, i) => i),
+      datasets: [
+        {
+          data: data().map((d) => (d ? d.value : null)),
+          date: data().map((d) => (d ? d.date : null)),
+          id: data().map((d) => (d ? d.id : null)),
+          backgroundColor: 'black',
+          borderWidth: 0.5,
+        },
+      ],
+    };
+  }
+
+  filterByTypes(id: number, key: string) {
+    if (key === 'type') {
+      this.typeValue = id;
+    } else {
+      this.subtypeValue = id;
+    }
+    const filteredEpisodes = this.episodes.filter((e) => {
+      if (this.typeValue && this.subtypeValue) {
+        return (
+          e.type.id === this.typeValue && e.subtype.id === this.subtypeValue
+        );
+      }
+      if (this.typeValue) {
+        return e.type.id === this.typeValue;
+      }
+      if (this.subtypeValue) {
+        return e.subtype.id === this.subtypeValue;
+      }
+      return e;
+    });
+    this.updateData(filteredEpisodes);
+  }
+
+  public getEpisodeLength(start: string, end: string): string {
+    const epStart = new Date(start);
+    const epEnd = new Date(end);
+    const diff = (epEnd.getTime() - epStart.getTime()) / 1000;
+    const days = Math.floor(diff / 86400);
+    const hours = Math.floor(diff / 3600) % 24;
+    let dayText = days > 1 ? 'days' : 'day';
+    let hourText = hours > 1 ? 'hours' : 'hour';
+    return days > 0 ? `${days} ${dayText}` : `${hours} ${hourText}`;
+  }
 
   ngOnInit(): void {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -159,7 +239,6 @@ export class NuisanceDegreeGraphComponent implements OnInit {
         } = chart;
 
         const dataset = chart.data.datasets[args.index];
-        console.log('dataset', dataset);
         dataset.data.forEach((value: any, index: any) => {
           ctx.save();
           ctx.font = '1rem Space Grotesk';
@@ -190,31 +269,7 @@ export class NuisanceDegreeGraphComponent implements OnInit {
     // Register the plugin globally
     Chart.register(customDataLabels);
 
-    const data = () => {
-      const arr = Array.from({ length: 101 }, (_, i) => i);
-      let episodes = [
-        { degree: 15, date: new Date(2022, 0, 1) },
-        { degree: 20, date: new Date(2022, 1, 1) },
-        { degree: 40, date: new Date(2022, 2, 1) },
-        { degree: 60, date: new Date(2022, 3, 1) },
-      ];
-      return arr.map((_, i) => {
-        const episode = episodes.find((e) => e.degree === i);
-        return episode ? { value: 98, date: episode.date } : null;
-      });
-    };
-
-    this.basicData = {
-      labels: Array.from({ length: 101 }, (_, i) => i),
-      datasets: [
-        {
-          data: data().map((d) => (d ? d.value : null)),
-          date: data().map((d) => (d ? d.date : null)),
-          backgroundColor: 'black',
-          borderWidth: 0.5,
-        },
-      ],
-    };
+    this.updateData(this.episodes);
 
     this.basicOptions = {
       plugins: {
@@ -259,7 +314,10 @@ export class NuisanceDegreeGraphComponent implements OnInit {
     };
   }
 
-  showDialog() {
+  showDialog({ element }: any) {
+    const episodeId = this.basicData.datasets[0].id[element.index]
+    const episode = this.episodes.find((e) => e.id === episodeId);
+    if(episode) this.selectedEpisode = episode;
     this.visible = true;
   }
 }

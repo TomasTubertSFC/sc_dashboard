@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OverviewComponent } from './components/overview/overview.component';
 import { NuisanceDegreeGraphComponent } from './components/nuisance-degree-graph/nuisance-degree-graph.component';
+import { ParticipantCitizenshipGraphComponent } from './components/participant-citizenship-graph/participant-citizenship-graph.component';
+import { OdourEpisodeGraphComponent } from './components/odour-episode-graph/odour-episode-graph.component';
 import { ChartModule } from 'primeng/chart';
 import { DialogModule } from 'primeng/dialog';
-import { ParticipantCitizenshipGraphComponent } from './components/participant-citizenship-graph/participant-citizenship-graph.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ToastModule } from 'primeng/toast';
-import { OdourEpisodeGraphComponent } from './components/odour-episode-graph/odour-episode-graph.component';
+import { DropdownModule } from 'primeng/dropdown';
+
 @NgModule({
   declarations: [
     OverviewComponent,
@@ -21,6 +23,7 @@ import { OdourEpisodeGraphComponent } from './components/odour-episode-graph/odo
     DialogModule,
     ProgressBarModule,
     ToastModule,
+    DropdownModule,
   ],
 })
 export class OverviewModule {}
