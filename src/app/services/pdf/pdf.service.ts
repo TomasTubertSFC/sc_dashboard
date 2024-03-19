@@ -68,9 +68,9 @@ export class PdfService {
         backgroundColor: null,
       });
       const imgLogo = new Image();
-      const imgMap = new Image();
+      const imgElement = new Image();
 
-      imgMap.src = canvas.toDataURL();
+      imgElement.src = canvas.toDataURL();
       imgLogo.src = logoOcCanvas.toDataURL();
 
       const width = element.clientWidth;
@@ -127,7 +127,7 @@ export class PdfService {
       pdf.text(moment().format('ll'), 25, 115);
 
       //Imagen del informe descargado
-      pdf.addImage(imgMap, 'PNG', 25, 185, width, height);
+      pdf.addImage(imgElement, 'PNG', 25, 185, width, height);
       pdf.save('file_name' + '.pdf');
     } catch (err) {
       console.error('err', err);
