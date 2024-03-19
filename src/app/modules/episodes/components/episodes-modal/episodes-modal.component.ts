@@ -80,7 +80,6 @@ export class EpisodesModalComponent implements OnDestroy {
   public getEpisodeLength(start: string, end: string): string {
     const epStart = new Date(start);
     const epEnd = new Date(end);
-    //devolvemos la diferencia entre las dos fechas en horas o dias dependiendo del tiempo que haya pasado
     const diff = (epEnd.getTime() - epStart.getTime()) / 1000;
     const days = Math.floor(diff / 86400);
     const hours = Math.floor(diff / 3600) % 24;
