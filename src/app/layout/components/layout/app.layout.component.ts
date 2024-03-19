@@ -1,6 +1,7 @@
 import {
   Component,
   OnDestroy,
+  OnInit,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -11,6 +12,7 @@ import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
 import { AppTopBarComponent } from '../topbar/app.topbar.component';
 import { MenuService } from '../menu/app.menu.service';
 import { StudyZoneService } from '../../../services/study-zone.service';
+import { PdfService } from '../../../services/pdf/pdf.service';
 
 interface LayoutState {
   staticMenuDesktopInactive: boolean;
@@ -21,8 +23,10 @@ interface LayoutState {
   selector: 'app-layout',
   templateUrl: './app.layout.component.html',
 })
-export class AppLayoutComponent implements OnDestroy {
+export class AppLayoutComponent implements OnInit, OnDestroy {
   private overlayOpen = new Subject<any>();
+
+  loading: boolean = false;
 
   sidebarMenuIsOpen: boolean = false;
 
@@ -50,8 +54,9 @@ export class AppLayoutComponent implements OnDestroy {
     public renderer: Renderer2,
     public router: Router,
     private menuService: MenuService,
-    private studyZoneService: StudyZoneService
-    ) {
+    private studyZoneService: StudyZoneService,
+    private pdfService: PdfService
+  ) {
     this.overlayMenuOpenSubscription = this.overlayOpen$.subscribe(() => {
       if (!this.menuOutsideClickListener) {
         this.menuOutsideClickListener = this.renderer.listen(
@@ -88,9 +93,21 @@ export class AppLayoutComponent implements OnDestroy {
       });
 
     this.studyZone$ = this.studyZoneService.studyZone.subscribe((studyZone) => {
-      if(!studyZone) this.studyZoneid = null;
+      if (!studyZone) this.studyZoneid = null;
       if (studyZone && this.studyZoneService.studyZoneId) {
         this.studyZoneid = this.studyZoneService.studyZoneId;
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.pdfService.loading.subscribe((res) => {
+      if (!res) {
+        setTimeout(() => {
+          this.loading = res;
+        }, 1000);
+      } else {
+        this.loading = res;
       }
     });
   }

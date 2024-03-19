@@ -18,7 +18,6 @@ import { MenuModule } from 'primeng/menu';
 import { SkeletonModule } from 'primeng/skeleton';
 
 
-
 @NgModule({
   declarations: [
     AppFooterComponent,

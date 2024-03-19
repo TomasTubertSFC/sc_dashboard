@@ -7,5 +7,9 @@ import { PdfService } from '../../../../services/pdf/pdf.service';
   styleUrl: './reports.component.scss',
 })
 export class ReportsComponent {
-  constructor(private pdfService: PdfService) {}
+  imgElements!: string[];
+
+  constructor(private pdfService: PdfService) {
+    this.imgElements = Object.values(this.pdfService.reportsElementsImg.getValue()).filter((element) => element);
+  }
 }

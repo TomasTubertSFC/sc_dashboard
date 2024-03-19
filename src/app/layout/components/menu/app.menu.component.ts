@@ -39,10 +39,10 @@ export class AppMenuComponent implements OnInit {
             routerLink: ['/dashboard/informes'],
           },
           {
-            label: 'Descargar PDF',
+            label: 'Añadir a Informe',
             icon: '',
             command: () => {
-              this.downloadAsPdf();
+              this.saveView();
             },
           },
           {
@@ -64,7 +64,8 @@ export class AppMenuComponent implements OnInit {
     ];
   }
 
-  downloadAsPdf(): void {
-    this.pdfService.downloadAsPdf();
+  saveView(): void {
+    this.pdfService.saveView();
+    //Cada componente actualizará el id al servicio y utilizaré eso.
   }
 }

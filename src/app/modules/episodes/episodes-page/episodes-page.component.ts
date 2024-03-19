@@ -7,11 +7,16 @@ import { PdfService } from '../../../services/pdf/pdf.service';
   styleUrl: './episodes-page.component.scss',
 })
 export class EpisodesPageComponent {
-  @ViewChild('dataToExport', { static: false }) dataToExport!: ElementRef;
+  @ViewChild('episodesMap', { static: false }) episodesMap!: ElementRef;
 
   constructor(private pdfService: PdfService) {}
 
   ngAfterViewInit(): void {
-    this.pdfService.elementToPdfRef.next(this.dataToExport);
+    const reportsElements = this.pdfService.reportsElements.getValue();
+
+    this.pdfService.reportsElements.next({
+      ...reportsElements,
+      3: this.episodesMap,
+    });
   }
 }

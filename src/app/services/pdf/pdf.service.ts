@@ -1,22 +1,77 @@
-import { ElementRef, Injectable } from '@angular/core';
-import domToImage from 'dom-to-image';
+import { ElementRef, Injectable, WritableSignal, signal } from '@angular/core';
 import jsPDF from 'jspdf';
 import moment from 'moment';
 import html2canvas from 'html2canvas';
-import { MapComponent } from 'ngx-mapbox-gl';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+
+interface reportElements {
+  0: ElementRef;
+  1: ElementRef;
+  2: ElementRef;
+  3: ElementRef;
+  4: ElementRef;
+}
+interface reportImages {
+  0: string;
+  1: string;
+  2: string;
+  3: string;
+  4: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class PdfService {
+  loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   elementToPdfRef: BehaviorSubject<ElementRef | null> =
     new BehaviorSubject<ElementRef | null>(null);
 
-  mapToPdfRef: BehaviorSubject<MapComponent | null> =
-    new BehaviorSubject<MapComponent | null>(null);
+  reportsElements: BehaviorSubject<reportElements | {}> = new BehaviorSubject<
+    reportElements | {}
+  >({ 0: null, 1: null, 2: null, 3: null, 4: null });
 
-  constructor() {}
+  reportsElementsImg: BehaviorSubject<reportImages | {}> = new BehaviorSubject<
+    reportImages | {}
+  >({ 0: null, 1: null, 2: null, 3: null, 4: null });
+
+  constructor() {
+    this.loading.subscribe((res) => {
+      console.log('loading...', res);
+    });
+  }
+
+  public async saveView() {
+    try {
+      this.loading.next(true);
+
+      const elements = Object.values(this.reportsElements.getValue());
+
+      const arrOfPromises = Object.values(elements).map(async (element) => {
+        if (element) {
+          const url = await this.elementToImgUrl(element);
+          return url;
+        }
+        return null;
+      });
+
+      await Promise.all(arrOfPromises).then((res) => {
+        res.forEach((url, idx) => {
+          if (!url) return;
+          this.reportsElementsImg.next({
+            ...this.reportsElementsImg.getValue(),
+            [idx]: url,
+          });
+        });
+      });
+      this.loading.next(false);
+    } catch (err) {
+      this.loading.next(false);
+      console.log('err', err);
+    }
+  }
 
   private boxGardient() {
     const canvas = document.createElement('canvas');
@@ -55,6 +110,22 @@ export class PdfService {
     const gradientImageUrl = canvas.toDataURL('image/jpeg');
 
     return gradientImageUrl;
+  }
+
+  private async elementToImgUrl(e: ElementRef): Promise<string | null> {
+    try {
+      const element = e.nativeElement;
+      console.log('element', element);
+      const canvas = await html2canvas(element, {
+        logging: false,
+        backgroundColor: null,
+        useCORS: true,
+      });
+      return canvas.toDataURL();
+    } catch (err) {
+      console.error('err', err);
+      return null;
+    }
   }
 
   public async downloadAsPdf() {
