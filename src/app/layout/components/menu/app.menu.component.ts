@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 import { AuthService } from '../../../services/auth/auth.service';
 import { PdfService } from '../../../services/pdf/pdf.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -35,9 +36,7 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Informes',
             icon: '',
-            command: () => {
-              console.log('command');
-            },
+            routerLink: ['/dashboard/informes'],
           },
           {
             label: 'Descargar PDF',

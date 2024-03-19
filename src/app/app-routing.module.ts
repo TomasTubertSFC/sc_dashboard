@@ -8,6 +8,7 @@ import { CreatePasswordComponent } from './modules/recover-password/components/c
 import { ProfileComponent } from './modules/profile/components/profile/profile.component';
 import { LandingComponent } from './modules/landing/components/landing/landing.component';
 import { OverviewComponent } from './modules/overview/components/overview/overview.component';
+import { ReportsComponent } from './modules/reports/components/reports/reports.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
+      },
+      {
+        path: 'informes',
+        component: ReportsComponent,
       },
       {
         path: 'episodes',
