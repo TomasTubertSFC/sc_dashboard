@@ -167,11 +167,16 @@ export class StudyZoneService {
             if(!episode.participation) episode.participation = 3;
             episode.inconvenienceColor = this.getColorOfInconvenience(episode.inconvenience);
             episode.plausible = episode.plausible || false;
-            episode.observations.map((observation) => {
+            episode.observations = episode.observations.map((observation) => {
               observation.plausible = observation.plausible || false;
+              return new Observation(observation);
             });
             return episode;
+
           })
+          studyZone.restObservations = studyZone.restObservations.map((observation) => {
+            return new Observation(observation);
+          });
 
           this.studyZoneId = id;
           localStorage.setItem('studyZoneId', id.toString());

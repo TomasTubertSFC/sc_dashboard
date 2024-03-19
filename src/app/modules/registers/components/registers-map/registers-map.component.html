@@ -1,4 +1,4 @@
-<app-registers-filter-modal [filterSidebarVisible]="showFilters"/>
+<app-registers-filter-modal (filtersOutput)="handleFilters($event)" [filterSidebarVisible]="showFilters"/>
 <p-toolbar styleClass="shadow-6" #toolBar>
   <ng-template pTemplate="start">
     <p-button (onClick)="toggleHeatmapLayer(false)" [ngClass]="{'active' : !heatmapLayer}" pTooltip="Marcadores"
@@ -30,7 +30,9 @@
   </ng-template>
 </p-toolbar>
 
-<mgl-map #map class="card" [style]="'mapbox://styles/mapbox/light-v11'" [zoom]="[17]"
+<mgl-map #map class="card"
+[style]="'mapbox://styles/mapbox/light-v11'"
+[zoom]="[17]"
   [center]="[intialPoint.x, intialPoint.y]" [projection]="'globe'">
 
 
@@ -44,8 +46,58 @@
     }
   }
 
-
   @if(heatmapLayer){
+    <ng-container *ngIf="geoJsonObservation">
+      <mgl-geojson-source #clusterComponent id="geoJsonObservation"
+        [data]="geoJsonObservation" />
+      <mgl-layer id="obs-heat" type="heatmap" source="geoJsonObservation"
+
+      [filter]="registersFilter"
+
+
+      [paint]="{
+          'heatmap-weight': [
+            'interpolate',
+            ['linear'],
+            ['get', 'color'],
+            0, 0,
+            7, 1
+          ],
+          'heatmap-intensity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 1,
+            9, 3
+          ],
+          'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0, 'rgba(33,102,172,0)',
+            0.2, 'rgb(103,169,207)',
+            0.4, 'rgb(209,229,240)',
+            0.6, 'rgb(253,219,199)',
+            0.8, 'rgb(239,138,98)',
+            1, 'rgb(178,24,43)'
+          ],
+          'heatmap-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 2,
+            9, 20
+          ],
+          'heatmap-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            18, 1,
+            20, 0
+          ]
+        }"></mgl-layer>
+    </ng-container>
+
     <ng-container *ngIf="geoJsonRestObservation">
       <mgl-geojson-source #clusterComponent id="geoJsonRestObservation"
         [data]="geoJsonRestObservation"></mgl-geojson-source>
@@ -101,16 +153,13 @@
     <mgl-layer id="APEGMOpolygons" type="fill" source="APEGMOpolygons" [paint]="APGEMOpolygonStyle"></mgl-layer>
     }
 
-  <!-- <mgl-geojson-source
-    id="symbols-source"
-    [data]="earthquakes"
-    [cluster]="true"
-    [clusterMaxZoom]="14"
-    [clusterRadius]="50"
-  ></mgl-geojson-source> -->
   <ng-container *ngIf="geoJsonRestObservation">
-    <mgl-geojson-source #clusterComponent id="geoJsonRestObservation" [data]="geoJsonRestObservation" [cluster]="true"
-      [clusterRadius]="20" [clusterMaxZoom]="15"></mgl-geojson-source>
+    <mgl-geojson-source #clusterComponent id="geoJsonRestObservation"
+    [data]="geoJsonRestObservation"
+    [cluster]="true"
+    [clusterRadius]="20"
+    [clusterMaxZoom]="15"
+    />
     <mgl-layer id="rest-obs-clusters" type="circle" source="geoJsonRestObservation" [filter]="['has', 'point_count']"
       [paint]="{
         'circle-color': [
@@ -134,7 +183,8 @@
         }">
     </mgl-layer>
     <mgl-layer id="rest-obs-cluster-count" type="symbol" source="geoJsonRestObservation"
-      [filter]="['has', 'point_count']" [layout]="{
+      [filter]="['has', 'point_count']"
+      [layout]="{
           'text-field': ['get', 'point_count_abbreviated'],
           'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
           'text-size': 12
@@ -149,33 +199,14 @@
         }">
     </mgl-layer>
   </ng-container>
-  <!-- estos cluseters funcionan -->
-  <!-- <mgl-markers-for-clusters source="earthquakes">
-      <ng-template mglPoint let-feature>
-        <div class="marker">
-          <div class="observationMarker"><i class="pi pi-map-marker">
-
-
-          </i> {{ feature.properties.id }}</div>
-        </div>
-      </ng-template>
-      <ng-template mglClusterPoint let-feature >
-        <div
-          class="marker-cluster"
-        >
-          <div class="observationMarker rest" [style]="{
-            'width': feature.properties?.point_count * 10 + 'px',
-            'height': feature.properties?.point_count * 10 + 'px'
-          }
-            ">
-            {{ feature.properties?.point_count }}
-          </div>
-        </div>
-      </ng-template>
-    </mgl-markers-for-clusters> -->
   <ng-container *ngIf="geoJsonObservation">
-    <mgl-geojson-source #clusterComponent id="geoJsonObservation" [data]="geoJsonObservation" [cluster]="true"
-      [clusterRadius]="20" [clusterMaxZoom]="17"></mgl-geojson-source>
+    <mgl-geojson-source #clusterComponent
+    id="geoJsonObservation"
+    [data]="geoJsonObservation"
+    [cluster]="true"
+    [clusterRadius]="20"
+    [clusterMaxZoom]="17"
+    ></mgl-geojson-source>
     <mgl-layer id="obs-clusters" type="circle" source="geoJsonObservation" [filter]="['has', 'point_count']" [paint]="{
           'circle-color': [
               'step',
