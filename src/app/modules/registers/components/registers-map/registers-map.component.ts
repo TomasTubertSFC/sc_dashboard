@@ -45,6 +45,9 @@ export class RegistersMapComponent implements OnDestroy{
   public filters:boolean = false;
   public showFilters:boolean = false;
 
+  public registersFilter!: any;
+
+
 
 
   constructor(
@@ -94,9 +97,17 @@ export class RegistersMapComponent implements OnDestroy{
         });
 
         this.points = this.points.concat(this.APGEMOpoints);
-        this.restObservations = this.studyZone.restObservations;
-        this.geoJsonObservation = this.passToGeoJsonPoints(this.observations);
-        this.geoJsonRestObservation = this.passToGeoJsonPoints(this.restObservations);
+
+        this.geoJsonObservation = {
+          features: this.observations.map(observation => observation.geoJson),
+          type: "FeatureCollection"
+        };
+        console.log(this.geoJsonObservation);
+
+        this.geoJsonRestObservation = {
+          features: this.studyZone.restObservations.map(observation => observation.geoJson),
+          type: "FeatureCollection"
+        };
 
       }
     });
@@ -109,6 +120,7 @@ export class RegistersMapComponent implements OnDestroy{
         });
       }
     });
+
 
   }
 
@@ -138,26 +150,6 @@ export class RegistersMapComponent implements OnDestroy{
     this.studyZone$.unsubscribe();
   }
 
-  private passToGeoJsonPoints(observations: Observation[]): any {
-
-    let features = observations.map((observation, index) => {
-      return {
-        type: "Feature",
-        id: observation.id,
-        properties: {
-          id: observation.id,
-          color: observation.color? observation.color : 0,
-        },
-        geometry: {
-          type: "Point",
-          coordinates: [observation.longitude, observation.latitude]
-        }
-      };
-    });
-
-    return { features: features, type: "FeatureCollection" };
-  }
-
   public toggleHeatmapLayer(status: boolean | undefined = undefined) {
     this.heatmapLayer = status===undefined? !this.heatmapLayer : status;
   }
@@ -170,4 +162,13 @@ export class RegistersMapComponent implements OnDestroy{
     this.showFilters = !this.showFilters;
   }
 
+  public handleFilters(filters: any) {
+    this.registersFilter = ['all'];
+    if(filters.hedonicTone){
+      this.registersFilter.push(['<=', 'hedonicTone', filters.hedonicToneFilter[1]], ['>=', 'hedonicTone', filters.hedonicToneFilter[0]]);
+    }
+    if(filters.intensity){
+      this.registersFilter.push(['<=', 'intensity', filters.intensityFilter[1]], ['>=', 'intensity', filters.intensityFilter[0]]);
+    }
+  }
 }

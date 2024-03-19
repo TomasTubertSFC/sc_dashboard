@@ -25,13 +25,13 @@
         <div class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter" *ngIf="filtersForm.value.hedonicTone">
           <small class="text-center mb-2">
             @if(filtersForm.value.hedonicToneFilter[0] === filtersForm.value.hedonicToneFilter[1]){
-              {{hedonicToneTitle[filtersForm.value.hedonicToneFilter[0]]}}
+              {{hedonicToneTitle[filtersForm.value.hedonicToneFilter[0] + 4]}}
             }
             @else {
-              {{hedonicToneTitle[filtersForm.value.hedonicToneFilter[0]]}} - {{hedonicToneTitle[filtersForm.value.hedonicToneFilter[1]]}}
+              {{hedonicToneTitle[filtersForm.value.hedonicToneFilter[0] + 4]}} - {{hedonicToneTitle[filtersForm.value.hedonicToneFilter[1] + 4]}}
             }
           </small>
-          <p-slider formControlName="hedonicToneFilter" [min]="0" [max]="8" [range]="true" [className]="'ml-2 mb-2 mr-2'" />
+          <p-slider formControlName="hedonicToneFilter" [step]="1" [min]="-4" [max]="4" [range]="true" [className]="'ml-2 mb-2 mr-2'" />
         </div>
       </div>
 
@@ -46,7 +46,7 @@
               {{intensityTitle[filtersForm.value.intensityFilter[0]]}} - {{intensityTitle[filtersForm.value.intensityFilter[1]]}}
             }
           </small>
-          <p-slider formControlName="intensityFilter" [min]="0" [max]="6" [range]="true" [className]="'ml-2 mb-2 mr-2'" />
+          <p-slider formControlName="intensityFilter" [step]="1" [min]="0" [max]="6" [range]="true" [className]="'ml-2 mb-2 mr-2'" />
         </div>
       </div>
 
@@ -59,6 +59,7 @@
         <p-checkbox formControlName="hours" label="Tiempo horario" [binary]="true" [class]="'flex justify-content-between'" />
         <p-calendar formControlName="hoursFilter" class="mt-3 w-100 flex flex-column" [panelStyleClass]="'card p-0'" [timeOnly]="true" [inline]="true" *ngIf="filtersForm.value.hours" />
       </div>
+      {{filtersForm.value | json}}
 
     </form>
   </ng-template>

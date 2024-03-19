@@ -1,8 +1,8 @@
-import { Component, Input} from '@angular/core';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { StudyZone } from '../../../../models/study-zone';
 import { OdourTypeData } from '../../../../models/odour-related-data';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-registers-filter-modal',
@@ -12,6 +12,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class RegistersFilterModalComponent {
 
   @Input() filterSidebarVisible: boolean = false;
+
+  @Output('filtersOutput') filtersOutput: EventEmitter<any> = new EventEmitter<any>();
 
   private studyZone!:StudyZone;
 
@@ -53,11 +55,11 @@ export class RegistersFilterModalComponent {
   public days: Date[] = [new Date(), new Date()];
   public hours: Date = new Date();
 
-  filtersForm: FormGroup = new FormGroup({
+  public filtersForm: FormGroup = new FormGroup({
     type: new FormControl(false, []),
     typeFilter: new FormControl([], []),
     hedonicTone: new FormControl(false, []),
-    hedonicToneFilter: new FormControl([1, 7], []),
+    hedonicToneFilter: new FormControl([-3, 3], []),
     intensity: new FormControl(false, []),
     intensityFilter: new FormControl([1, 5], []),
     days: new FormControl(false, []),
@@ -74,6 +76,10 @@ export class RegistersFilterModalComponent {
         this.odourTypes = this.getStudyZoneTypes();
       }
     })
+
+    this.filtersForm.valueChanges.subscribe((value) => {
+      this.filtersOutput.emit(value);
+    });
   };
 
   public getStudyZoneTypes(): any[] {
