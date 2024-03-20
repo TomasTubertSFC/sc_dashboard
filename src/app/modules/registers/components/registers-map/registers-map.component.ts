@@ -34,7 +34,6 @@ export class RegistersMapComponent implements OnDestroy{
     };
 
   public observations: Observation[] = [];
-  public restObservations: Observation[] = [];
 
   public geoJsonObservation: any;
   public geoJsonRestObservation: any;
@@ -44,10 +43,7 @@ export class RegistersMapComponent implements OnDestroy{
   public filters:boolean = false;
   public showFilters:boolean = false;
 
-  public registersFilter!: any;
-
-
-
+  public sourceFilter!: any[];
 
   constructor(
     private studyZoneService: StudyZoneService,
@@ -98,15 +94,11 @@ export class RegistersMapComponent implements OnDestroy{
         this.points = this.points.concat(this.APGEMOpoints);
 
         this.geoJsonObservation = {
-          features: this.observations.map(observation => observation.geoJson),
+          features: this.observations.map(observation => observation.geoJson).concat(this.studyZone.restObservations.map(observation => observation.geoJson)),
           type: "FeatureCollection"
         };
-        console.log(this.geoJsonObservation);
 
-        this.geoJsonRestObservation = {
-          features: this.studyZone.restObservations.map(observation => observation.geoJson),
-          type: "FeatureCollection"
-        };
+        console.log(this.geoJsonObservation);
 
       }
     });
@@ -162,34 +154,44 @@ export class RegistersMapComponent implements OnDestroy{
   }
 
   public handleFilters(filters: any) {
-    this.registersFilter = ['all'];
+    this.sourceFilter = ['all'];
     if(filters.type){
-      this.registersFilter.push(['in', 'odourType', ...Object.keys(filters.typeFilter).filter( key => filters.typeFilter[key] ).map(id=> Number(id))]);
+      this.sourceFilter.push(
+        ['in', ['get', 'odourType'], ['literal',[...Object.keys(filters.typeFilter).filter( key => filters.typeFilter[key] ).map(id=> Number(id))]]]
+        );
     }
     if(filters.hedonicTone){
-      this.registersFilter.push(['<=', 'hedonicTone', filters.hedonicToneFilter[1]], ['>=', 'hedonicTone', filters.hedonicToneFilter[0]]);
+      this.sourceFilter.push(
+        ['<=', ['get', 'hedonicTone'], filters.hedonicToneFilter[1]],
+        ['>=', ['get', 'hedonicTone'], filters.hedonicToneFilter[0]]
+        );
     }
     if(filters.intensity){
-      this.registersFilter.push(['<=', 'intensity', filters.intensityFilter[1]], ['>=', 'intensity', filters.intensityFilter[0]]);
+      this.sourceFilter.push(
+        ['<=', ['get', 'intensity'], filters.intensityFilter[1]],
+        ['>=', ['get', 'intensity'], filters.intensityFilter[0]]
+        );
     }
     if(filters.days){
       var datePipe = new DatePipe('en-US');
       if(filters.daysFilter[0] && filters.daysFilter[1]){
-        this.registersFilter.push(
-          ['>=', 'date', datePipe.transform(filters.daysFilter[0],'yyyy-MM-dd')],
-          ['<=', 'date', datePipe.transform(filters.daysFilter[1],'yyyy-MM-dd')]
+        this.sourceFilter.push(
+          ['>=', ['get', 'date'], datePipe.transform(filters.daysFilter[0],'yyyy-MM-dd')],
+          ['<=', ['get', 'date'], datePipe.transform(filters.daysFilter[1],'yyyy-MM-dd')]
           );
       }
       else if(filters.daysFilter[0] && !filters.daysFilter[1]){
-        this.registersFilter.push(
-          ['==', 'date', datePipe.transform(filters.daysFilter[0],'yyyy-MM-dd')]
+        this.sourceFilter.push(
+          ['==', ['get', 'date'], datePipe.transform(filters.daysFilter[0],'yyyy-MM-dd')]
           );
 
       }
     }
     if(filters.hours){
-      console.log(filters.hoursFilter);
-      this.registersFilter.push(['>=', 'hour', filters.hoursFilter[0]], ['<=', 'hour', filters.hoursFilter[1]]);
+      this.sourceFilter.push(
+        ['>=', ['get', 'hour'], filters.hoursFilter[0]],
+        ['<=', ['get', 'hour'], filters.hoursFilter[1]]
+        );
     }
   }
 }
