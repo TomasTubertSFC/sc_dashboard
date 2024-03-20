@@ -27,13 +27,15 @@ export interface ObservationGeoJson {
   properties: {
     id: number;
     color: number;
+    odourType: number | null;
     plausible: boolean;
     APGEMOdistance: number;
     description: string | null;
     origin: string | null;
     hedonicTone: number;
     intensity: number;
-    createdAt: string;
+    date: string;
+    hour: number;
     userId: number | null | undefined;
     windDeg: number | null | undefined;
     windSpeed: number | null | undefined;
@@ -85,19 +87,23 @@ export class Observation {
 
   public getObservationGeoJson() {
 
+    let date = new Date(this.createdAt);
+
     this.geoJson = {
       type: "Feature",
       id: this.id,
       properties: {
         id: this.id,
         color: this.color,
+        odourType: this.relationships.odourSubType.relationships?.odourType.id ? this.relationships.odourSubType.relationships?.odourType.id : null,
         plausible: this.plausible,
         APGEMOdistance: this.APGEMOdistance,
         description: this.description,
         origin: this.origin,
         hedonicTone: this.relationships.odourHedonicTone?.index? this.relationships.odourHedonicTone.index : 0,
         intensity: this.relationships.odourIntensity?.power? this.relationships.odourIntensity.power : 0,
-        createdAt: this.createdAt,
+        date: date.toISOString().substring(0, 10),
+        hour: date.getHours(),
         userId: this.relationships.user? this.relationships.user.id : null,
         windDeg: this.relationships.wind?.deg,
         windSpeed: this.relationships.wind?.speed,
