@@ -1,9 +1,10 @@
-import { OnInit } from '@angular/core';
+import { OnInit, WritableSignal, signal } from '@angular/core';
 import { Component } from '@angular/core';
+import { NavigationEnd, Router, Event } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { AuthService } from '../../../services/auth/auth.service';
 import { PdfService } from '../../../services/pdf/pdf.service';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -11,13 +12,34 @@ import { RouterLink } from '@angular/router';
 })
 export class AppMenuComponent implements OnInit {
   model: any[] = [];
+  disabledAddToReports!: boolean;
+  loading: boolean = false;
 
   constructor(
     private authService: AuthService,
-    private pdfService: PdfService
+    private pdfService: PdfService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    this.router.events
+      .pipe(
+        filter(
+          (event: Event): event is NavigationEnd =>
+            event instanceof NavigationEnd
+        )
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.disabledAddToReports = event.url === '/dashboard/informes';
+      });
+    this.disabledAddToReports = this.router.url === '/dashboard/informes';
+
+    this.pdfService.loading.subscribe((res) => {
+      if(!res){
+        this.loading = false;
+      }
+    })
+
     this.model = [
       {
         label: '',
@@ -39,13 +61,6 @@ export class AppMenuComponent implements OnInit {
             routerLink: ['/dashboard/informes'],
           },
           {
-            label: 'Añadir a Informe',
-            icon: '',
-            command: () => {
-              this.saveView();
-            },
-          },
-          {
             label: 'Mi perfil',
             icon: '',
             routerLink: ['/mi-perfil'],
@@ -65,7 +80,7 @@ export class AppMenuComponent implements OnInit {
   }
 
   saveView(): void {
+    this.loading = true;
     this.pdfService.saveView();
-    //Cada componente actualizará el id al servicio y utilizaré eso.
   }
 }

@@ -1,9 +1,15 @@
-import { ElementRef, Injectable, WritableSignal, signal } from '@angular/core';
+import {
+  ElementRef,
+  Injectable,
+  WritableSignal,
+  signal,
+  inject,
+} from '@angular/core';
 import jsPDF from 'jspdf';
 import moment from 'moment';
 import html2canvas from 'html2canvas';
 import { BehaviorSubject } from 'rxjs';
-import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 interface reportElements {
   0: ElementRef;
@@ -37,16 +43,15 @@ export class PdfService {
     reportImages | {}
   >({ 0: null, 1: null, 2: null, 3: null, 4: null });
 
-  constructor() {
+  constructor(private messageService: MessageService) {
     this.loading.subscribe((res) => {
       console.log('loading...', res);
     });
   }
 
   public async saveView() {
+    this.loading.next(true);
     try {
-      this.loading.next(true);
-
       const elements = Object.values(this.reportsElements.getValue());
 
       const arrOfPromises = Object.values(elements).map(async (element) => {
@@ -67,8 +72,19 @@ export class PdfService {
         });
       });
       this.loading.next(false);
+      this.messageService.add({
+        severity: 'success',
+        summary: '¡Guardados!',
+        detail: 'Gráficos añadidos a informes con éxito!',
+      });
     } catch (err) {
       this.loading.next(false);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail:
+          'Los gráficos no se han podido añadir al informe. Inténtelo de nuevo.',
+      });
       console.log('err', err);
     }
   }

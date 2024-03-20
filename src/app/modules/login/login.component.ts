@@ -25,7 +25,6 @@ export interface UserLogin {
       }
     `,
   ],
-  providers: [MessageService],
 })
 export class LoginComponent {
   private user!: UserLogin;

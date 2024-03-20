@@ -1,5 +1,12 @@
 @for(img of imgElements; track $index){
 <img [src]="img" alt="image" class="w-full" />
 } @empty {
-<p>There are no items.</p>
+<section id="empty" class="flex justify-content-center align-items-center">
+  <div
+    class="card flex flex-column justify-content-evenly align-items-center border-dashed h-30rem"
+  >
+    <h1>No hay ningún informe añadido</h1>
+    <i class="pi pi-file-excel" style="font-size: 5rem"></i>
+  </div>
+</section>
 }

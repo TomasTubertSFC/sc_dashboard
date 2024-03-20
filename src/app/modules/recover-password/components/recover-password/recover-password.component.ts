@@ -10,7 +10,6 @@ import { MessageService } from 'primeng/api';
   selector: 'app-recover-password',
   templateUrl: './recover-password.component.html',
   styleUrl: './recover-password.component.scss',
-  providers: [MessageService],
 })
 export class RecoverPasswordComponent {
   valCheck: string[] = ['remember'];

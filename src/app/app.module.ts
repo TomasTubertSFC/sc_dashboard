@@ -15,6 +15,7 @@ import { LandingModule } from './modules/landing/landing.module';
 import { OverviewModule } from './modules/overview/overview.module';
 import { LoginModule } from './modules/login/login.module';
 import { StudyZoneService } from './services/study-zone.service';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,6 +40,7 @@ import { StudyZoneService } from './services/study-zone.service';
     }),
   ],
   providers: [
+    MessageService,
     StudyZoneService,
     initializeInterceptorProvider,
     { provide: LocationStrategy, useClass: PathLocationStrategy },

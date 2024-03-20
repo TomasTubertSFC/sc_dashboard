@@ -102,13 +102,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.pdfService.loading.subscribe((res) => {
-      if (!res) {
-        setTimeout(() => {
-          this.loading = res;
-        }, 1000);
-      } else {
-        this.loading = res;
-      }
+      this.loading = res;
     });
   }
 
