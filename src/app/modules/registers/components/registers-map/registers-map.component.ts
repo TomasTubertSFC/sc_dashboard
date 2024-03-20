@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MenuService } from '../../../../layout/components/menu/app.menu.service';
 import { MapComponent } from 'ngx-mapbox-gl';
@@ -7,8 +8,6 @@ import { StudyZone } from '../../../../models/study-zone';
 import { Point } from 'chart.js';
 import { Observation } from '../../../../models/observation';
 import { Polygon } from '../../../../models/polygon';
-import { HttpClient } from '@angular/common/http';
-import { GeoJSONSourceComponent } from "ngx-mapbox-gl";
 
 @Component({
   selector: 'app-registers-map',
@@ -164,11 +163,34 @@ export class RegistersMapComponent implements OnDestroy{
 
   public handleFilters(filters: any) {
     this.registersFilter = ['all'];
+    if(filters.type){
+      this.registersFilter.push(['in', 'odourType', ...Object.keys(filters.typeFilter).filter( key => filters.typeFilter[key] ).map(id=> Number(id))]);
+    }
     if(filters.hedonicTone){
       this.registersFilter.push(['<=', 'hedonicTone', filters.hedonicToneFilter[1]], ['>=', 'hedonicTone', filters.hedonicToneFilter[0]]);
     }
     if(filters.intensity){
       this.registersFilter.push(['<=', 'intensity', filters.intensityFilter[1]], ['>=', 'intensity', filters.intensityFilter[0]]);
     }
+    if(filters.days){
+      var datePipe = new DatePipe('en-US');
+      if(filters.daysFilter[0] && filters.daysFilter[1]){
+        this.registersFilter.push(
+          ['>=', 'date', datePipe.transform(filters.daysFilter[0],'yyyy-MM-dd')],
+          ['<=', 'date', datePipe.transform(filters.daysFilter[1],'yyyy-MM-dd')]
+          );
+      }
+      else if(filters.daysFilter[0] && !filters.daysFilter[1]){
+        this.registersFilter.push(
+          ['==', 'date', datePipe.transform(filters.daysFilter[0],'yyyy-MM-dd')]
+          );
+
+      }
+    }
+    if(filters.hours){
+      console.log(filters.hoursFilter);
+      this.registersFilter.push(['>=', 'hour', filters.hoursFilter[0]], ['<=', 'hour', filters.hoursFilter[1]]);
+    }
+    console.log(this.registersFilter);
   }
 }
