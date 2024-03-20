@@ -92,9 +92,14 @@ export class RegistersFilterModalComponent {
           observation => observation.relationships.odourSubType.relationships?.odourType
           )
       ).flat()
-      .filter(
-        (v, i, a) => a.findIndex(t => (t?.id === v?.id)) === i
-        );
+
+    types.push(...this.studyZone.restObservations.map(
+      observation => observation.relationships.odourSubType.relationships?.odourType
+      ));
+
+    types = types.filter(
+      (v, i, a) => a.findIndex(t => (t?.id === v?.id)) === i
+      )
 
     for(let type of types){
       this.typeFilter.addControl(String(type?.id), new FormControl(true, []) );
