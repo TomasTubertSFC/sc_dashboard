@@ -191,6 +191,5 @@ export class RegistersMapComponent implements OnDestroy{
       console.log(filters.hoursFilter);
       this.registersFilter.push(['>=', 'hour', filters.hoursFilter[0]], ['<=', 'hour', filters.hoursFilter[1]]);
     }
-    console.log(this.registersFilter);
   }
 }
