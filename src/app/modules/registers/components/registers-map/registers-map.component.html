@@ -1,4 +1,4 @@
-<app-registers-filter-modal (filtersOutput)="handleFilters($event)" [filterSidebarVisible]="showFilters"/>
+<app-registers-filter-modal (filtersOutput)="handleFilters($event)" (closeFilterSidebar)="showFilters = false" [filterSidebarVisible]="showFilters"/>
 <p-toolbar styleClass="shadow-6" #toolBar>
   <ng-template pTemplate="start">
     <p-button (onClick)="toggleHeatmapLayer(false)" [ngClass]="{'active' : !heatmapLayer}" pTooltip="Marcadores"
@@ -60,7 +60,7 @@
     [cluster]="!heatmapLayer"
     [clusterRadius]="20"
     [clusterMaxZoom]="17"
-    [filter]="sourceFilter"
+    [filter]="filters? sourceFilter : filters"
     ></mgl-geojson-source>
       @if(heatmapLayer){
       <mgl-layer
