@@ -130,16 +130,15 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       }
     );
 
-    this.previewObservation$ =
-      this.studyZoneService.previewObservation.subscribe(
-        (previewObservation) => {
-          this.previewObservation = previewObservation;
-          this.overObservation(this.previewObservation);
-          if (previewObservation === null) {
-            this.leaveObservation();
-          }
+    this.previewObservation$ = this.studyZoneService.previewObservation.subscribe(
+      (previewObservation) => {
+        this.previewObservation = previewObservation;
+        this.overObservation(this.previewObservation);
+        if (previewObservation === null) {
+          this.leaveObservation();
         }
-      );
+      }
+    );
 
     this.episode$ = this.studyZoneService.episode.subscribe((episode) => {
       this.cones.map((cone) => {

@@ -1,0 +1,23 @@
+<div class="flex flex-column lg:flex-row gap-2">
+  
+  <div class="card col-12 lg:col-7 xl:col-9 flex-order-1 lg:flex-order-0">
+    <div class="card-body">
+      @if(data && data.datasets && data.datasets.length > 0){
+        <p-chart type="line" [data]="data" [options]="options" />
+      }
+    </div>
+  </div>
+
+  <div class="card w-full flex-order-0 lg:flex-order-1">
+    <div class="card-body">
+      <div class="flex gap-2 justify-content-around mt-1 ml-1 mr-1">
+        <p-button class="btn btn-primary" (click)="getObservationOrderByTypeAndHourRange()">Horario</p-button>
+        <p-button class="btn btn-primary" (click)="getObservationOrderByTypeAndMonth()">Mensual</p-button>
+        <p-button class="btn btn-primary" (click)="getObservationOrderByTypeAndSeason()">Estaciones</p-button>
+        <p-button class="btn btn-primary" (click)="getObservationOrderByTypeAndYear()">Anual</p-button>
+      </div>
+      <p-divider></p-divider>
+    </div>
+  </div>
+
+</div>
