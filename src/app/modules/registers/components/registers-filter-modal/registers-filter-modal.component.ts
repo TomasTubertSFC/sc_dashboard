@@ -14,23 +14,10 @@ export class RegistersFilterModalComponent {
   @Input() filterSidebarVisible: boolean = false;
 
   @Output('filtersOutput') filtersOutput: EventEmitter<any> = new EventEmitter<any>();
+  @Output('closeFilterSidebar') closeFilterSidebar: EventEmitter<any> = new EventEmitter<any>();
 
   private studyZone!:StudyZone;
 
-  //FILTROS
-  public filterOptions: {
-    type: boolean,
-    hedonicTone: boolean,
-    intensity: boolean,
-    days: boolean,
-    hours: boolean,
-  } = {
-    type: false,
-    hedonicTone: false,
-    intensity: false,
-    days: false,
-    hours: false,
-  };
   public odourTypes!:OdourTypeData[]
   public hedonicToneTitle: string[] = [
     'Extremadamente desagradable',
@@ -70,9 +57,6 @@ export class RegistersFilterModalComponent {
     hoursFilter: new FormControl([0, 23], []),
   });
 
-
-
-
   constructor(private studyZoneService: StudyZoneService) {
     this.studyZoneService.studyZone.subscribe((studyZone) => {
       if (studyZone) {
@@ -106,6 +90,10 @@ export class RegistersFilterModalComponent {
     }
 
     return types;
+  }
+
+  public closeFilters(): void {
+    this.closeFilterSidebar.emit();
   }
 
 }

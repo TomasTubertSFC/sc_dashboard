@@ -1,6 +1,15 @@
 <div id="episodesModal" #episodesModal></div>
 
-<p-sidebar [(visible)]="filterSidebarVisible" [appendTo]="episodesModal" [position]="'right'" [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
+<p-sidebar
+[(visible)]="filterSidebarVisible"
+[appendTo]="episodesModal"
+[position]="'right'"
+[styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'"
+[modal]="false"
+[blockScroll]="false"
+[closeOnEscape]="true"
+(onHide)="closeFilters()"
+>
   <ng-template pTemplate="header">
     <div class="flex flex-1 justify-content-between">
       <h5 class="mb-0">Filtros</h5>

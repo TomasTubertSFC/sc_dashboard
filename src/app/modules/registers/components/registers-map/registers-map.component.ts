@@ -146,11 +146,14 @@ export class RegistersMapComponent implements OnDestroy{
   }
 
   public toggleFilters(status: boolean | undefined = undefined) {
+    if((!this.sourceFilter || this.sourceFilter.length < 2) && this.showFilters === false){
+      this.toggleShowFilters(true);
+    }
     this.filters = status===undefined? !this.filters : status;
   }
 
   public toggleShowFilters(status: boolean | undefined = undefined) {
-    this.showFilters = !this.showFilters;
+    this.showFilters = status===undefined? !this.showFilters : status;
   }
 
   public handleFilters(filters: any) {
@@ -193,5 +196,7 @@ export class RegistersMapComponent implements OnDestroy{
         ['<=', ['get', 'hour'], filters.hoursFilter[1]]
         );
     }
+    this.sourceFilter.length > 1? this.filters = true : this.filters = false;
+
   }
 }
