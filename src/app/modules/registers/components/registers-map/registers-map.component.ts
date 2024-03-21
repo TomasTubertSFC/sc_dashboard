@@ -98,14 +98,13 @@ export class RegistersMapComponent implements OnDestroy{
           type: "FeatureCollection"
         };
 
-        console.log(this.geoJsonObservation);
-
       }
     });
 
     setTimeout(() => {
       if(this.points){
         const bbox = this.getBboxFromPoints();
+
         this.map.mapInstance.fitBounds(bbox, {
           padding: {top: 100, bottom:50, left: 50, right: 50}
         });

@@ -16,12 +16,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistersFilterModalComponent } from './components/registers-filter-modal/registers-filter-modal.component';
 import { SliderModule } from 'primeng/slider';
 import { CalendarModule } from 'primeng/calendar';
+import { RegistersChartsComponent } from './components/registers-charts/registers-charts.component';
+import { ChartModule } from 'primeng/chart';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   declarations: [
     RegistersPageComponent,
     RegistersMapComponent,
-    RegistersFilterModalComponent
+    RegistersFilterModalComponent,
+    RegistersChartsComponent
   ],
   imports: [
     FormsModule,
@@ -38,7 +42,9 @@ import { CalendarModule } from 'primeng/calendar';
     InputTextModule,
     CheckboxModule,
     SliderModule,
-    CalendarModule
+    CalendarModule,
+    ChartModule,
+    DividerModule
 
   ]
 })

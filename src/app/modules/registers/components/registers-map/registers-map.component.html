@@ -31,12 +31,15 @@
 </p-toolbar>
 
 <mgl-map #map class="card"
-[style]="'mapbox://styles/mapbox/light-v11'"
-[zoom]="[17]"
-  [center]="[intialPoint.x, intialPoint.y]" [projection]="'globe'">
+  range="[-180, -90, 180, 90]"
+  [style]="'mapbox://styles/mapbox/light-v11'"
+  [zoom]="[17]"
+  [center]="[intialPoint.x, intialPoint.y]"
+  [projection]="'globe'"
+  *ngIf="intialPoint && intialPoint.x && intialPoint.y"
+  >
 
-
-  @if(APGEMOpoints.length > 0){
+  @if(APGEMOpoints && APGEMOpoints.length > 0){
     @for(point of APGEMOpoints; track point){
 
     <mgl-marker [lngLat]="[point.x, point.y]">
@@ -45,7 +48,7 @@
 
     }
   }
-  @if(APGEMOpolygon.length > 0){
+  @if(APGEMOpolygon && APGEMOpolygon.length > 0){
     <mgl-geojson-source id="APEGMOpolygons">
       <mgl-feature *ngFor="let polygon of APGEMOpolygon" [geometry]="polygon.geometry"></mgl-feature>
     </mgl-geojson-source>
@@ -60,57 +63,57 @@
     [cluster]="!heatmapLayer"
     [clusterRadius]="20"
     [clusterMaxZoom]="17"
-    [filter]="filters? sourceFilter : filters"
-    ></mgl-geojson-source>
-      @if(heatmapLayer){
+    [filter]="(sourceFilter && sourceFilter.length) > 1 && filters ? sourceFilter : null"
+    />
+    @if(heatmapLayer){
       <mgl-layer
-      id="obs-heat"
-      type="heatmap"
-      source="geoJsonObservation"
-      [paint]="{
-          'heatmap-weight': [
-            'interpolate',
-            ['linear'],
-            ['get', 'color'],
-            0, 0,
-            7, 1
-          ],
-          'heatmap-intensity': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            0, 1,
-            9, 3
-          ],
-          'heatmap-color': [
-            'interpolate',
-            ['linear'],
-            ['heatmap-density'],
-            0, 'rgba(33,102,172,0)',
-            0.2, 'rgb(103,169,207)',
-            0.4, 'rgb(209,229,240)',
-            0.6, 'rgb(253,219,199)',
-            0.8, 'rgb(239,138,98)',
-            1, 'rgb(178,24,43)'
-          ],
-          'heatmap-radius': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            0, 2,
-            9, 20
-          ],
-          'heatmap-opacity': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            18, 1,
-            20, 0
-          ]
-        }"></mgl-layer>
-
-  }
-  @else{
+        id="obs-heat"
+        type="heatmap"
+        source="geoJsonObservation"
+        [paint]="{
+            'heatmap-weight': [
+              'interpolate',
+              ['linear'],
+              ['get', 'color'],
+              0, 0,
+              7, 1
+            ],
+            'heatmap-intensity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              0, 1,
+              9, 3
+            ],
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0, 'rgba(33,102,172,0)',
+              0.2, 'rgb(103,169,207)',
+              0.4, 'rgb(209,229,240)',
+              0.6, 'rgb(253,219,199)',
+              0.8, 'rgb(239,138,98)',
+              1, 'rgb(178,24,43)'
+            ],
+            'heatmap-radius': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              0, 2,
+              9, 20
+            ],
+            'heatmap-opacity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              18, 1,
+              20, 0
+            ]
+          }"
+      />
+    }
+    @else{
     <mgl-layer id="obs-clusters" type="circle" source="geoJsonObservation"
       [filter]="['has', 'point_count']"
       [paint]="{
@@ -132,16 +135,18 @@
               750,
               40
           ]
-          }">
-    </mgl-layer>
+        }"
+    />
     <mgl-layer id="obs-cluster-count" type="symbol" source="geoJsonObservation"
       [filter]="['has', 'point_count']"
       [layout]="{
-            'text-field': ['get', 'point_count_abbreviated'],
-            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-            'text-size': 12
-        }">
-    </mgl-layer>
+          'text-field': ['get', 'point_count_abbreviated'],
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 12
+        }"
+
+
+    />
     <mgl-layer id="unclustered-point" type="circle" source="geoJsonObservation"
       [filter]="['!',['has', 'point_count']]"
       [paint]="{
@@ -149,8 +154,8 @@
           'circle-radius': 4,
           'circle-stroke-width': 1,
           'circle-stroke-color': '#fff'
-          }">
-    </mgl-layer>
+        }"
+    />
 
   }
 </ng-container>
