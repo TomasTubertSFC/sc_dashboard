@@ -32,9 +32,6 @@ interface reportImages {
 export class PdfService {
   loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  elementToPdfRef: BehaviorSubject<ElementRef | null> =
-    new BehaviorSubject<ElementRef | null>(null);
-
   reportsElements: BehaviorSubject<reportElements | {}> = new BehaviorSubject<
     reportElements | {}
   >({ 0: null, 1: null, 2: null, 3: null, 4: null });
@@ -43,17 +40,12 @@ export class PdfService {
     reportImages | {}
   >({ 0: null, 1: null, 2: null, 3: null, 4: null });
 
-  constructor(private messageService: MessageService) {
-    this.loading.subscribe((res) => {
-      console.log('loading...', res);
-    });
-  }
+  constructor(private messageService: MessageService) {}
 
   public async saveView() {
     this.loading.next(true);
     try {
       const elements = Object.values(this.reportsElements.getValue());
-
       const arrOfPromises = Object.values(elements).map(async (element) => {
         if (element) {
           const url = await this.elementToImgUrl(element);
@@ -85,7 +77,6 @@ export class PdfService {
         detail:
           'Los gráficos no se han podido añadir al informe. Inténtelo de nuevo.',
       });
-      console.log('err', err);
     }
   }
 
@@ -131,7 +122,6 @@ export class PdfService {
   private async elementToImgUrl(e: ElementRef): Promise<string | null> {
     try {
       const element = e.nativeElement;
-      console.log('element', element);
       const canvas = await html2canvas(element, {
         logging: false,
         backgroundColor: null,
@@ -153,7 +143,7 @@ export class PdfService {
       const height = pdf.internal.pageSize.getHeight();
 
       const totalPages = pdf.getNumberOfPages();
-      console.log('totalPages', totalPages);
+
       for (let i = 1; i <= totalPages; i++) {
         pdf.setPage(i);
         const logoOcCanvas = await html2canvas(ocLogo as HTMLElement, {
@@ -200,25 +190,15 @@ export class PdfService {
   public async downloadAsPdf(
     elementsToPdf: { value: string | null; key: string }[]
   ) {
+    this.loading.next(true);
     try {
       const elementsSelected = elementsToPdf.map((el) => Number(el.key));
-      const elementsImgSelected = elementsToPdf.map((el) => el.value);
-      console.log('elementsToPdf', elementsToPdf);
-      console.log('elementsSelected', elementsSelected);
-      console.log('elementsImgSelected', elementsImgSelected);
-
-      const isNuisanceDegreeGraph = elementsSelected.includes(0);
-      const isOdourEpisodeGraph = elementsSelected.includes(1);
-      const isCitizenshipGraph = elementsSelected.includes(2);
-      const isEpisodeMap = elementsSelected.includes(3);
-      const isRegistersMap = elementsSelected.includes(4);
 
       const firstPage = elementsSelected.filter((el) => el < 3);
       const restPages = elementsSelected
         .filter((el) => el >= 3)
         .map((el) => [el]);
       const pages = [firstPage, ...restPages];
-      console.log('pages', pages);
 
       const pdf = new jsPDF('l', 'pt', 'a4');
 
@@ -228,10 +208,11 @@ export class PdfService {
       const createPagesPromises = pages.map(async (page, idx) => {
         return new Promise<void>(async (resolve, reject) => {
           if (!pages[idx].length) return resolve();
-          //Create section for the elements
+
+          //Create section for the graphs
           const section = document.createElement('section');
           section.style.display = 'flex';
-          section.style.justifyItems = 'center';
+          section.style.justifyContent = 'center';
           section.style.alignItems = 'flex-end';
           section.style.alignContent = 'center';
           section.style.flexWrap = 'wrap';
@@ -241,9 +222,6 @@ export class PdfService {
           section.id = `sectionToPdf-${idx}`;
 
           if (idx === 0) {
-            //Creo la estructura para la primera página de los gráficos de resumen.
-            // section.style.gridTemplateColumns = 'repeat(2, 1fr)';
-
             pages[0].forEach((elementNum, idx) => {
               const img = document.createElement('img');
               const div = document.createElement('div');
@@ -259,6 +237,7 @@ export class PdfService {
               } else {
                 img.style.objectFit = 'contain';
                 img.style.width = '100%';
+                img.style.maxHeight = '490px';
               }
               div.appendChild(img);
               section.appendChild(div);
@@ -278,7 +257,7 @@ export class PdfService {
               section.appendChild(div);
             });
           }
-          //Añado cada seccion/página al dom
+          //Add section/page to dom
           document.body.appendChild(section);
 
           const sectionToCanvas = document.getElementById(
@@ -322,29 +301,16 @@ export class PdfService {
           const widthScale = (pageWidth - 50) / image.widthImg;
           const heightScale = (pageHeight - substratingValue) / image.heightImg;
 
-          console.log('image.heightImg', image.heightImg);
-          console.log('pageWidth', pageWidth);
-          console.log('pageHeight', pageHeight);
-
           // Use the smaller scale factor to ensure the image fits without stretching
           const scale = Math.min(widthScale, heightScale);
-
-          console.log('scale', scale);
 
           // Calculate the dimensions of the image after scaling
           const widthToPaint = image.widthImg * scale;
           const heightToPaint = image.heightImg * scale;
 
-          console.log('widthToPaint', widthToPaint);
-          console.log('heightToPaint', heightToPaint);
-
           const Xstart = (pageWidth - widthToPaint) / 2;
           const Ystart = (pageHeight - heightToPaint - 100) / 2 + 75;
 
-          console.log('Xstart', Xstart);
-          console.log('Ystart', Ystart);
-
-          //Aquí debería de valorar si añadir una página o no.
           if (idx > 0 && pages[0].length) {
             pdf.addPage();
           }
@@ -364,8 +330,12 @@ export class PdfService {
       await Promise.all(createPagesPromises);
       await this.addPageLayoutStyle(pdf);
 
-      // pdf.save('file_name' + '.pdf');
+      const date = new Date().toLocaleDateString('es-ES');
+
+      pdf.save('OC_Report_' + date + '.pdf');
+      this.loading.next(false);
     } catch (err) {
+      this.loading.next(false);
       console.error('err', err);
     }
   }

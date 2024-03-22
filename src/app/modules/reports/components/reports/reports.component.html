@@ -1,7 +1,12 @@
 @if(imgElements){
-<p-button class="p-button-rounded" (click)="downloadReport()">
+<button
+  pButton
+  class="p-button-rounded"
+  type="button"
+  (click)="downloadReport()"
+>
   Descargar informe
-</p-button>
+</button>
 } @for(img of imgElements; track $index){
 <div class="border-2 border-dashed surface-border p-4 shadow-2 border-round">
   <div class="flex justify-content-end mb-3">
@@ -9,7 +14,6 @@
       [(ngModel)]="img.checked"
       [styleClass]="'reports_checkbox'"
       [binary]="true"
-      (onChange)="onCheckboxChange($event, img.key)"
       inputId="binary"
     />
   </div>
@@ -25,5 +29,4 @@
     <i class="pi pi-file-excel" style="font-size: 5rem"></i>
   </div>
 </section>
-<!-- <app-report-card></app-report-card> -->
 }

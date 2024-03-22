@@ -13,7 +13,6 @@ interface imgElements {
 })
 export class ReportsComponent {
   imgElements!: imgElements[];
-  // printElements =
 
   constructor(private pdfService: PdfService) {
     const imgElements = this.pdfService.reportsElementsImg.getValue();
@@ -26,17 +25,6 @@ export class ReportsComponent {
       .filter(({ value }) => value);
 
     this.imgElements = imgElementsArr;
-  }
-
-  onCheckboxChange(event: any, idx: string) {
-    // console.log('event', event);
-    // console.log('idx', idx);
-
-    console.log('this.imgElements', this.imgElements);
-    console.log(
-      'this.imgElements',
-      this.imgElements.filter((el) => el.checked).map((el) => el.value)
-    );
   }
 
   downloadReport() {
