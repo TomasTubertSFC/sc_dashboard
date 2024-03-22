@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { Episode, OdourType } from '../../../../models/study-zone';
 
-
 @Component({
   selector: 'app-nuisance-degree-graph',
   templateUrl: './nuisance-degree-graph.component.html',
@@ -24,6 +23,8 @@ export class NuisanceDegreeGraphComponent implements OnInit {
   basicOptions: any;
 
   visible: boolean = false;
+
+  plugins!:any[];
 
   public getInconvenienceInBase100(inconvenience: number): number {
     return Math.round((inconvenience / 7) * 100);
@@ -264,10 +265,7 @@ export class NuisanceDegreeGraphComponent implements OnInit {
       },
     };
 
-    // Register the plugin globally
-    Chart.register(colorPlugin);
-    // Register the plugin globally
-    Chart.register(customDataLabels);
+    this.plugins = [colorPlugin, customDataLabels];
 
     this.updateData(this.episodes);
 
@@ -279,8 +277,8 @@ export class NuisanceDegreeGraphComponent implements OnInit {
         tooltip: {
           enabled: false,
         },
-        colorPlugin,
-        customDataLabels,
+        colorPulig: colorPlugin,
+        customDataLabels: customDataLabels,
       },
       scales: {
         y: {
@@ -315,9 +313,9 @@ export class NuisanceDegreeGraphComponent implements OnInit {
   }
 
   showDialog({ element }: any) {
-    const episodeId = this.basicData.datasets[0].id[element.index]
+    const episodeId = this.basicData.datasets[0].id[element.index];
     const episode = this.episodes.find((e) => e.id === episodeId);
-    if(episode) this.selectedEpisode = episode;
+    if (episode) this.selectedEpisode = episode;
     this.visible = true;
   }
 }
