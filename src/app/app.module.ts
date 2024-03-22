@@ -16,6 +16,7 @@ import { OverviewModule } from './modules/overview/overview.module';
 import { LoginModule } from './modules/login/login.module';
 import { StudyZoneService } from './services/study-zone.service';
 import { MessageService } from 'primeng/api';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,6 +31,7 @@ import { MessageService } from 'primeng/api';
     ProfileModule,
     LandingModule,
     OverviewModule,
+    ReportsModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',

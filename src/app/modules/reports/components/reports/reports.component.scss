@@ -1,3 +1,9 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
 #empty {
   min-height: calc(100dvh - 150px);
 }

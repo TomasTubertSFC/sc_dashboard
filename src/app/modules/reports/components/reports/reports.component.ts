@@ -1,15 +1,53 @@
 import { Component } from '@angular/core';
 import { PdfService } from '../../../../services/pdf/pdf.service';
 
+interface imgElements {
+  key: string;
+  value: null | string;
+  checked: boolean;
+}
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss',
 })
 export class ReportsComponent {
-  imgElements!: string[];
+  imgElements!: imgElements[];
+  // printElements =
 
   constructor(private pdfService: PdfService) {
-    this.imgElements = Object.values(this.pdfService.reportsElementsImg.getValue()).filter((element) => element);
+    const imgElements = this.pdfService.reportsElementsImg.getValue();
+    const imgElementsArr = Object.entries(imgElements)
+      .map(([key, value]) => ({
+        key,
+        value,
+        checked: true,
+      }))
+      .filter(({ value }) => value);
+
+    this.imgElements = imgElementsArr;
+  }
+
+  onCheckboxChange(event: any, idx: string) {
+    // console.log('event', event);
+    // console.log('idx', idx);
+
+    console.log('this.imgElements', this.imgElements);
+    console.log(
+      'this.imgElements',
+      this.imgElements.filter((el) => el.checked).map((el) => el.value)
+    );
+  }
+
+  downloadReport() {
+    const downloadReports = this.imgElements
+      .filter((el) => el.checked)
+      .map(({ value, key }) => {
+        return {
+          value,
+          key,
+        };
+      });
+    this.pdfService.downloadAsPdf(downloadReports);
   }
 }

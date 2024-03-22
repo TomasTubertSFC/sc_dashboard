@@ -144,78 +144,227 @@ export class PdfService {
     }
   }
 
-  public async downloadAsPdf() {
-    try {
-      const element = this.elementToPdfRef.getValue()?.nativeElement;
+  private async addPageLayoutStyle(pdf: jsPDF): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
       const ocLogo = document.querySelector('icon-odour-logo');
+      const resizeLogo = 0.5;
 
-      const canvas = await html2canvas(element, { logging: false });
-      const logoOcCanvas = await html2canvas(ocLogo as HTMLElement, {
-        logging: false,
-        backgroundColor: null,
-      });
-      const imgLogo = new Image();
-      const imgElement = new Image();
+      const width = pdf.internal.pageSize.getWidth();
+      const height = pdf.internal.pageSize.getHeight();
 
-      imgElement.src = canvas.toDataURL();
-      imgLogo.src = logoOcCanvas.toDataURL();
+      const totalPages = pdf.getNumberOfPages();
+      console.log('totalPages', totalPages);
+      for (let i = 1; i <= totalPages; i++) {
+        pdf.setPage(i);
+        const logoOcCanvas = await html2canvas(ocLogo as HTMLElement, {
+          logging: false,
+          backgroundColor: null,
+        });
+        const imgLogo = new Image();
 
-      const width = element.clientWidth;
-      const height = element.clientHeight + element.clientHeight * 0.1;
+        imgLogo.src = logoOcCanvas.toDataURL();
 
-      let orientation = '';
-      const imageUnit = 'pt';
-      if (width > height) {
-        orientation = 'l';
-      } else {
-        orientation = 'p';
+        const box = this.boxGardient();
+
+        //Layout
+        pdf.addImage(box as string, 'JPEG', 0, 0, width, 75);
+        pdf.addImage(box as string, 'JPEG', 0, height - 25, width, 25);
+
+        //Logo
+        pdf.addImage(
+          imgLogo,
+          'PNG',
+          width - 100,
+          10,
+          144.1 * resizeLogo,
+          110 * resizeLogo
+        );
+
+        //Title
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(24);
+        pdf.setTextColor('#fff');
+        pdf.text('OdourCollect Report', 25, 40);
+
+        //Date
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(20);
+        pdf.setTextColor('#fff');
+        pdf.text(moment().format('ll'), 25, 60);
       }
 
-      let jsPdfOptions = {
-        orientation: orientation as 'l' | 'p',
-        unit: imageUnit as 'pt' | 'mm' | 'cm' | 'in',
-        format: [width + 50, height + 320],
-      };
-      const pdf = new jsPDF(jsPdfOptions);
+      resolve();
+    });
+  }
 
-      const box = this.boxGardient();
+  public async downloadAsPdf(
+    elementsToPdf: { value: string | null; key: string }[]
+  ) {
+    try {
+      const elementsSelected = elementsToPdf.map((el) => Number(el.key));
+      const elementsImgSelected = elementsToPdf.map((el) => el.value);
+      console.log('elementsToPdf', elementsToPdf);
+      console.log('elementsSelected', elementsSelected);
+      console.log('elementsImgSelected', elementsImgSelected);
 
-      //Layout
-      pdf.addImage(
-        box as string,
-        'JPEG',
-        0,
-        0,
-        pdf.internal.pageSize.getWidth(),
-        150
-      );
-      pdf.addImage(
-        box as string,
-        'JPEG',
-        0,
-        pdf.internal.pageSize.getHeight() - 25,
-        pdf.internal.pageSize.getWidth(),
-        25
-      );
+      const isNuisanceDegreeGraph = elementsSelected.includes(0);
+      const isOdourEpisodeGraph = elementsSelected.includes(1);
+      const isCitizenshipGraph = elementsSelected.includes(2);
+      const isEpisodeMap = elementsSelected.includes(3);
+      const isRegistersMap = elementsSelected.includes(4);
 
-      //Logo
-      pdf.addImage(imgLogo, 'PNG', width - 125, 25, 144.1, 110);
+      const firstPage = elementsSelected.filter((el) => el < 3);
+      const restPages = elementsSelected
+        .filter((el) => el >= 3)
+        .map((el) => [el]);
+      const pages = [firstPage, ...restPages];
+      console.log('pages', pages);
 
-      //Informe titulo
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(32);
-      pdf.setTextColor('#fff');
-      pdf.text('OdourCollect Report', 25, 75);
+      const pdf = new jsPDF('l', 'pt', 'a4');
 
-      //Fecha
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(28);
-      pdf.setTextColor('#fff');
-      pdf.text(moment().format('ll'), 25, 115);
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
-      //Imagen del informe descargado
-      pdf.addImage(imgElement, 'PNG', 25, 185, width, height);
-      pdf.save('file_name' + '.pdf');
+      const createPagesPromises = pages.map(async (page, idx) => {
+        return new Promise<void>(async (resolve, reject) => {
+          if (!pages[idx].length) return resolve();
+          //Create section for the elements
+          const section = document.createElement('section');
+          section.style.display = 'flex';
+          section.style.justifyItems = 'center';
+          section.style.alignItems = 'flex-end';
+          section.style.alignContent = 'center';
+          section.style.flexWrap = 'wrap';
+          section.style.gap = '20px';
+          section.style.width = '841.89px';
+          section.style.height = '495.28px';
+          section.id = `sectionToPdf-${idx}`;
+
+          if (idx === 0) {
+            //Creo la estructura para la primera página de los gráficos de resumen.
+            // section.style.gridTemplateColumns = 'repeat(2, 1fr)';
+
+            pages[0].forEach((elementNum, idx) => {
+              const img = document.createElement('img');
+              const div = document.createElement('div');
+              const graph = elementsToPdf.find(
+                (el) => Number(el.key) === elementNum
+              );
+              img.src = graph?.value as string;
+              const moreThanOneGraph = pages[0].length > 1;
+              if (moreThanOneGraph) {
+                img.style.objectFit = 'contain';
+                img.style.width = '100%';
+                img.style.maxWidth = '410px';
+              } else {
+                img.style.objectFit = 'contain';
+                img.style.width = '100%';
+              }
+              div.appendChild(img);
+              section.appendChild(div);
+            });
+          } else {
+            pages[idx].forEach((elementNum, idx) => {
+              const graph = elementsToPdf.find(
+                (el) => Number(el.key) === elementNum
+              );
+              const img = document.createElement('img');
+              const div = document.createElement('div');
+              img.src = graph?.value as string;
+              img.style.objectFit = 'contain';
+              img.style.width = '100%';
+              img.style.maxHeight = '490px';
+              div.appendChild(img);
+              section.appendChild(div);
+            });
+          }
+          //Añado cada seccion/página al dom
+          document.body.appendChild(section);
+
+          const sectionToCanvas = document.getElementById(
+            `sectionToPdf-${idx}`
+          );
+
+          const elementToCanvas = await html2canvas(
+            sectionToCanvas as HTMLElement,
+            {
+              logging: false,
+              backgroundColor: null,
+              useCORS: true,
+            }
+          );
+
+          if (sectionToCanvas && sectionToCanvas.parentNode) {
+            sectionToCanvas.parentNode.removeChild(sectionToCanvas);
+          }
+
+          const imagePromise: () => Promise<{
+            img: HTMLImageElement;
+            widthImg: number;
+            heightImg: number;
+          }> = () => {
+            return new Promise((resolve, reject) => {
+              const img = new Image();
+              img.onload = () =>
+                resolve({ img, widthImg: img.width, heightImg: img.height });
+              img.onerror = reject;
+              img.src = elementToCanvas.toDataURL();
+            });
+          };
+
+          // Wait for the image to load
+          const image = await imagePromise();
+
+          //La altura que le resto
+          const substratingValue = 125;
+
+          // Calculate scale factors
+          const widthScale = (pageWidth - 50) / image.widthImg;
+          const heightScale = (pageHeight - substratingValue) / image.heightImg;
+
+          console.log('image.heightImg', image.heightImg);
+          console.log('pageWidth', pageWidth);
+          console.log('pageHeight', pageHeight);
+
+          // Use the smaller scale factor to ensure the image fits without stretching
+          const scale = Math.min(widthScale, heightScale);
+
+          console.log('scale', scale);
+
+          // Calculate the dimensions of the image after scaling
+          const widthToPaint = image.widthImg * scale;
+          const heightToPaint = image.heightImg * scale;
+
+          console.log('widthToPaint', widthToPaint);
+          console.log('heightToPaint', heightToPaint);
+
+          const Xstart = (pageWidth - widthToPaint) / 2;
+          const Ystart = (pageHeight - heightToPaint - 100) / 2 + 75;
+
+          console.log('Xstart', Xstart);
+          console.log('Ystart', Ystart);
+
+          //Aquí debería de valorar si añadir una página o no.
+          if (idx > 0 && pages[0].length) {
+            pdf.addPage();
+          }
+
+          pdf.addImage(
+            image.img,
+            'PNG',
+            Xstart,
+            Ystart,
+            widthToPaint,
+            heightToPaint
+          );
+          resolve();
+        });
+      });
+
+      await Promise.all(createPagesPromises);
+      await this.addPageLayoutStyle(pdf);
+
+      // pdf.save('file_name' + '.pdf');
     } catch (err) {
       console.error('err', err);
     }

@@ -1,5 +1,21 @@
-@for(img of imgElements; track $index){
-<img [src]="img" alt="image" class="w-full" />
+@if(imgElements){
+<p-button class="p-button-rounded" (click)="downloadReport()">
+  Descargar informe
+</p-button>
+} @for(img of imgElements; track $index){
+<div class="border-2 border-dashed surface-border p-4 shadow-2 border-round">
+  <div class="flex justify-content-end mb-3">
+    <p-checkbox
+      [(ngModel)]="img.checked"
+      [styleClass]="'reports_checkbox'"
+      [binary]="true"
+      (onChange)="onCheckboxChange($event, img.key)"
+      inputId="binary"
+    />
+  </div>
+  <img [src]="img.value" alt="image" class="w-full" />
+</div>
+
 } @empty {
 <section id="empty" class="flex justify-content-center align-items-center">
   <div
@@ -9,4 +25,5 @@
     <i class="pi pi-file-excel" style="font-size: 5rem"></i>
   </div>
 </section>
+<!-- <app-report-card></app-report-card> -->
 }
