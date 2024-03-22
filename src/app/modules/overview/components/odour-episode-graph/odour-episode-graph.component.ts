@@ -32,6 +32,17 @@ export class OdourEpisodeGraphComponent implements OnInit {
     });
   }
 
+  getDaysfromLastEpisode() {
+    const episodeDates = this.episodes
+      .map((episode) => new Date(episode.date))
+      .sort((a, b) => b.getTime() - a.getTime());
+    const lastEpisode = episodeDates[0];
+    const today = new Date();
+    const differenceInTime = today.getTime() - lastEpisode.getTime();
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    return Math.round(differenceInDays);
+  }
+
   calculateOdourEpisodesPerMonth(episodes: Episode[], months: number) {
     const episodeDates = episodes.map((episode) =>
       new Date(episode.date).getMonth()
