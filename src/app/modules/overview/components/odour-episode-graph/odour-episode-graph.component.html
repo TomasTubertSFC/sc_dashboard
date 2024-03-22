@@ -1,7 +1,7 @@
 <div class="card">
   <h2 class="title-l text-center">
     <i class="pi pi-check"></i>
-    Llevas <strong>30</strong> días sin episodios de olor
+    Llevas <strong>{{getDaysfromLastEpisode()}}</strong> días sin episodios de olor
   </h2>
   <div class="flex flex-wrap gap-2 justify-content-center">
     @for (episode of odourEpisodes; track $index) {
