@@ -1,0 +1,12 @@
+.reports_checkbox {
+  width: 40px;
+  height: 40px;
+  .p-checkbox-box {
+    width: 40px;
+    height: 40px;
+  }
+ .p-checkbox-box.p-highlight:hover {
+    border-color: var(--violet);
+    background: var(--violet-dark);
+  }
+}

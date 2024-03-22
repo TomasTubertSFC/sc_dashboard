@@ -1,12 +1,24 @@
-<app-registers-filter-modal (filtersOutput)="handleFilters($event)" (closeFilterSidebar)="showFilters = false" [filterSidebarVisible]="showFilters"/>
+<app-registers-filter-modal
+  (filtersOutput)="handleFilters($event)"
+  (closeFilterSidebar)="showFilters = false"
+  [filterSidebarVisible]="showFilters"
+/>
 <p-toolbar styleClass="shadow-6" #toolBar>
   <ng-template pTemplate="start">
-    <p-button (onClick)="toggleHeatmapLayer(false)" [ngClass]="{'active' : !heatmapLayer}" pTooltip="Marcadores"
-      tooltipPosition="bottom">
+    <p-button
+      (onClick)="toggleHeatmapLayer(false)"
+      [ngClass]="{ active: !heatmapLayer }"
+      pTooltip="Marcadores"
+      tooltipPosition="bottom"
+    >
       <i class="pi pi-map-marker"></i>
     </p-button>
-    <p-button (onClick)="toggleHeatmapLayer(true)" [ngClass]="{'active' : heatmapLayer}" pTooltip="Mapa de calor"
-      tooltipPosition="bottom">
+    <p-button
+      (onClick)="toggleHeatmapLayer(true)"
+      [ngClass]="{ active: heatmapLayer }"
+      pTooltip="Mapa de calor"
+      tooltipPosition="bottom"
+    >
       <i class="pi pi-sun"></i>
     </p-button>
   </ng-template>
@@ -18,146 +30,174 @@
   </ng-template>
   <ng-template pTemplate="end" #filterButton>
     <div class="flex gap-2">
-      <p-button (onClick)="toggleFilters()" [ngClass]="{'active' : filters}"
-        pTooltip="{{filters? 'Desactivar filtros' : 'Aplicar filtros' }}" tooltipPosition="bottom">
-        <i class="pi" [ngClass]="{'pi-filter': filters,'pi-filter-slash': !filters}"></i>
+      <p-button
+        (onClick)="toggleFilters()"
+        [ngClass]="{ active: filters }"
+        pTooltip="{{ filters ? 'Desactivar filtros' : 'Aplicar filtros' }}"
+        tooltipPosition="bottom"
+      >
+        <i
+          class="pi"
+          [ngClass]="{ 'pi-filter': filters, 'pi-filter-slash': !filters }"
+        ></i>
       </p-button>
-      <p-button (onClick)="toggleShowFilters()" [ngClass]="{'active' : showFilters}"
-        pTooltip="{{filters? 'Editar filtros' : 'Ocutar filtros' }}" tooltipPosition="bottom">
+      <p-button
+        (onClick)="toggleShowFilters()"
+        [ngClass]="{ active: showFilters }"
+        pTooltip="{{ filters ? 'Editar filtros' : 'Ocutar filtros' }}"
+        tooltipPosition="bottom"
+      >
         <i class="pi pi-sliders-h"></i>
       </p-button>
     </div>
   </ng-template>
 </p-toolbar>
-
-<mgl-map #map class="card"
-  range="[-180, -90, 180, 90]"
-  [style]="'mapbox://styles/mapbox/light-v11'"
-  [zoom]="[17]"
-  [center]="[intialPoint.x, intialPoint.y]"
-  [projection]="'globe'"
-  *ngIf="intialPoint && intialPoint.x && intialPoint.y"
+<div #mapContainer>
+  <mgl-map
+    #map
+    class="card"
+    range="[-180, -90, 180, 90]"
+    [style]="'mapbox://styles/mapbox/light-v11'"
+    [zoom]="[17]"
+    [center]="[intialPoint.x, intialPoint.y]"
+    [projection]="'globe'"
+    [preserveDrawingBuffer]="true"
+    *ngIf="intialPoint && intialPoint.x && intialPoint.y"
   >
-
-  @if(APGEMOpoints && APGEMOpoints.length > 0){
-    @for(point of APGEMOpoints; track point){
+    @if(APGEMOpoints && APGEMOpoints.length > 0){ @for(point of APGEMOpoints;
+    track point){
 
     <mgl-marker [lngLat]="[point.x, point.y]">
       <div class="apgemo-point"></div>
     </mgl-marker>
 
-    }
-  }
-  @if(APGEMOpolygon && APGEMOpolygon.length > 0){
+    } } @if(APGEMOpolygon && APGEMOpolygon.length > 0){
     <mgl-geojson-source id="APEGMOpolygons">
-      <mgl-feature *ngFor="let polygon of APGEMOpolygon" [geometry]="polygon.geometry"></mgl-feature>
+      <mgl-feature
+        *ngFor="let polygon of APGEMOpolygon"
+        [geometry]="polygon.geometry"
+      ></mgl-feature>
     </mgl-geojson-source>
 
-    <mgl-layer id="APEGMOpolygons" type="fill" source="APEGMOpolygons" [paint]="APGEMOpolygonStyle"></mgl-layer>
-  }
+    <mgl-layer
+      id="APEGMOpolygons"
+      type="fill"
+      source="APEGMOpolygons"
+      [paint]="APGEMOpolygonStyle"
+    ></mgl-layer>
+    }
 
-  <ng-container *ngIf="geoJsonObservation">
-    <mgl-geojson-source #clusterComponent
-    id="geoJsonObservation"
-    [data]="geoJsonObservation"
-    [cluster]="!heatmapLayer"
-    [clusterRadius]="20"
-    [clusterMaxZoom]="17"
-    [filter]="(sourceFilter && sourceFilter.length) > 1 && filters ? sourceFilter : null"
-    />
-    @if(heatmapLayer){
+    <ng-container *ngIf="geoJsonObservation">
+      <mgl-geojson-source
+        #clusterComponent
+        id="geoJsonObservation"
+        [data]="geoJsonObservation"
+        [cluster]="!heatmapLayer"
+        [clusterRadius]="20"
+        [clusterMaxZoom]="17"
+        [filter]="
+          (sourceFilter && sourceFilter.length) > 1 && filters
+            ? sourceFilter
+            : null
+        "
+      />
+      @if(heatmapLayer){
       <mgl-layer
         id="obs-heat"
         type="heatmap"
         source="geoJsonObservation"
         [paint]="{
-            'heatmap-weight': [
-              'interpolate',
-              ['linear'],
-              ['get', 'color'],
-              0, 0,
-              7, 1
-            ],
-            'heatmap-intensity': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              0, 1,
-              9, 3
-            ],
-            'heatmap-color': [
-              'interpolate',
-              ['linear'],
-              ['heatmap-density'],
-              0, 'rgba(33,102,172,0)',
-              0.2, 'rgb(103,169,207)',
-              0.4, 'rgb(209,229,240)',
-              0.6, 'rgb(253,219,199)',
-              0.8, 'rgb(239,138,98)',
-              1, 'rgb(178,24,43)'
-            ],
-            'heatmap-radius': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              0, 2,
-              9, 20
-            ],
-            'heatmap-opacity': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              18, 1,
-              20, 0
-            ]
-          }"
+          'heatmap-weight': [
+            'interpolate',
+            ['linear'],
+            ['get', 'color'],
+            0,
+            0,
+            7,
+            1
+          ],
+          'heatmap-intensity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0,
+            1,
+            9,
+            3
+          ],
+          'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0,
+            'rgba(33,102,172,0)',
+            0.2,
+            'rgb(103,169,207)',
+            0.4,
+            'rgb(209,229,240)',
+            0.6,
+            'rgb(253,219,199)',
+            0.8,
+            'rgb(239,138,98)',
+            1,
+            'rgb(178,24,43)'
+          ],
+          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 9, 20],
+          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 18, 1, 20, 0]
+        }"
       />
-    }
-    @else{
-    <mgl-layer id="obs-clusters" type="circle" source="geoJsonObservation"
-      [filter]="['has', 'point_count']"
-      [paint]="{
+      } @else{
+      <mgl-layer
+        id="obs-clusters"
+        type="circle"
+        source="geoJsonObservation"
+        [filter]="['has', 'point_count']"
+        [paint]="{
           'circle-color': [
-              'step',
-              ['get', 'point_count'],
-              '#627BC1',
-              10,
-              '#f1f075',
-              20,
-              '#f28cb1'
+            'step',
+            ['get', 'point_count'],
+            '#627BC1',
+            10,
+            '#f1f075',
+            20,
+            '#f28cb1'
           ],
           'circle-radius': [
-              'step',
-              ['get', 'point_count'],
-              20,
-              100,
-              30,
-              750,
-              40
+            'step',
+            ['get', 'point_count'],
+            20,
+            100,
+            30,
+            750,
+            40
           ]
         }"
-    />
-    <mgl-layer id="obs-cluster-count" type="symbol" source="geoJsonObservation"
-      [filter]="['has', 'point_count']"
-      [layout]="{
+      />
+      <mgl-layer
+        id="obs-cluster-count"
+        type="symbol"
+        source="geoJsonObservation"
+        [filter]="['has', 'point_count']"
+        [layout]="{
           'text-field': ['get', 'point_count_abbreviated'],
           'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
           'text-size': 12
         }"
-
-
-    />
-    <mgl-layer id="unclustered-point" type="circle" source="geoJsonObservation"
-      [filter]="['!',['has', 'point_count']]"
-      [paint]="{
+      />
+      <mgl-layer
+        id="unclustered-point"
+        type="circle"
+        source="geoJsonObservation"
+        [filter]="['!', ['has', 'point_count']]"
+        [paint]="{
           'circle-color': '#11b4da',
           'circle-radius': 4,
           'circle-stroke-width': 1,
           'circle-stroke-color': '#fff'
         }"
-    />
+      />
 
-  }
-</ng-container>
-</mgl-map>
-
+      }
+    </ng-container>
+  </mgl-map>
+</div>

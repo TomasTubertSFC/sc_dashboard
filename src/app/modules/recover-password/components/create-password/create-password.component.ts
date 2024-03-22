@@ -11,7 +11,6 @@ import { confirmPasswordValidator } from '../../../../validators/confirm-passwor
   selector: 'app-create-password',
   templateUrl: './create-password.component.html',
   styleUrl: './create-password.component.scss',
-  providers: [MessageService],
 })
 export class CreatePasswordComponent {
   valCheck: string[] = ['remember'];

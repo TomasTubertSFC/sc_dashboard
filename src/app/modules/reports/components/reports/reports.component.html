@@ -1,0 +1,32 @@
+@if(imgElements){
+<button
+  pButton
+  class="p-button-rounded"
+  type="button"
+  (click)="downloadReport()"
+>
+  Descargar informe
+</button>
+} @for(img of imgElements; track $index){
+<div class="border-2 border-dashed surface-border p-4 shadow-2 border-round">
+  <div class="flex justify-content-end mb-3">
+    <p-checkbox
+      [(ngModel)]="img.checked"
+      [styleClass]="'reports_checkbox'"
+      [binary]="true"
+      inputId="binary"
+    />
+  </div>
+  <img [src]="img.value" alt="image" class="w-full" />
+</div>
+
+} @empty {
+<section id="empty" class="flex justify-content-center align-items-center">
+  <div
+    class="card flex flex-column justify-content-evenly align-items-center border-dashed h-30rem"
+  >
+    <h1>No hay ningún informe añadido</h1>
+    <i class="pi pi-file-excel" style="font-size: 5rem"></i>
+  </div>
+</section>
+}

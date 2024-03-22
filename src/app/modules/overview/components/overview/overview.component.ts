@@ -26,7 +26,13 @@ interface OverviewStudyZone {
   styleUrl: './overview.component.scss',
 })
 export class OverviewComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('dataToExport', { static: false }) dataToExport!: ElementRef;
+  @ViewChild('nuisanceDegreeGraph', { static: false })
+  nuisanceDegreeGraph!: ElementRef;
+  @ViewChild('odourEpisodeGraph', { static: false })
+  odourEpisodeGraph!: ElementRef;
+  @ViewChild('participantCitizenshipGraph', { static: false })
+  participantCitizenshipGraph!: ElementRef;
+
   private studyZone$!: Subscription;
 
   public studyZone!: OverviewStudyZone;
@@ -86,7 +92,14 @@ export class OverviewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.pdfService.elementToPdfRef.next(this.dataToExport);
+    const reportsElements = this.pdfService.reportsElements.getValue();
+
+    this.pdfService.reportsElements.next({
+      ...reportsElements,
+      0: this.nuisanceDegreeGraph,
+      1: this.odourEpisodeGraph,
+      2: this.participantCitizenshipGraph,
+    });
   }
 
   ngOnDestroy(): void {

@@ -3,9 +3,9 @@
     <i class="pi pi-user"></i>
     Total de usuarios activos
   </h2>
-  <p-progressBar [value]="value" [color]="backgroundColor">
+  <p-progressBar [value]="percentageOfActiveUsers" [color]="backgroundColor">
     <ng-template pTemplate="content" let-value>
-      <span>{{ usersPercentage }}/{{ totalUsers }}</span>
+      <span>{{ activeUsers }}/{{ totalUsers }}</span>
     </ng-template>
   </p-progressBar>
 </div>
