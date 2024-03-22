@@ -19,6 +19,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { RegistersChartsComponent } from './components/registers-charts/registers-charts.component';
 import { ChartModule } from 'primeng/chart';
 import { DividerModule } from 'primeng/divider';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { DividerModule } from 'primeng/divider';
     SliderModule,
     CalendarModule,
     ChartModule,
-    DividerModule
+    DividerModule,
+    RadioButtonModule
 
   ]
 })

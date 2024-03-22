@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Observation } from '../../../../models/observation';
-import { OdourTypeData } from '../../../../models/odour-related-data';
+import { OdourHedonicTone, OdourIntensity, OdourTypeData } from '../../../../models/odour-related-data';
 
 interface dataset{
   type: string,
@@ -17,6 +17,9 @@ interface dataset{
 })
 export class RegistersChartsComponent {
 
+  public timeFilter: string = 'months'
+  public dataTypeFilter: string = 'type';
+
   public data: {
     labels: string[],
     datasets: dataset[]
@@ -26,6 +29,8 @@ export class RegistersChartsComponent {
 
   private observations: Observation[] = [];
   private types: (OdourTypeData | undefined)[] = [];
+  private intensities: (OdourIntensity | undefined)[] = [];
+  private hedonicTones: (OdourHedonicTone | undefined)[] = [];
   private firstYear: number = new Date().getFullYear();
   private lastYear: number = 0;
 
@@ -43,14 +48,24 @@ export class RegistersChartsComponent {
 
   ngOnInit() {
 
-    this.studyZoneService.studyZone.subscribe((studyZone) => {
-      this.observations = studyZone?.restObservations || [];
-      this.getStudyZoneTypes();
-    });
-
     this.getChartStylesAndData();
 
-    this.getObservationOrderByTypeAndMonth();
+    this.studyZoneService.studyZone.subscribe((studyZone) => {
+      this.observations = studyZone?.restObservations || [];
+      console.log(this.observations.length);
+
+      let episodeObs = studyZone?.episodes.map(
+        episode => episode.observations.map(
+          observation => observation
+        )
+      ).flat();
+      if(episodeObs) this.observations.push(...episodeObs);
+      console.log(this.observations.length);
+      this.getStudyZoneTypes();
+      this.getIntensities();
+      this.getHedonicTones();
+      this.getObservationOrderByTypeAndMonth();
+    });
 
   }
 
@@ -105,18 +120,29 @@ export class RegistersChartsComponent {
 
     let datasets: dataset[] = [];
 
-    for(let type of this.types){
-      if(!type) continue;
+    let dataType = this.dataTypeFilter === 'type' ? this.types : this.dataTypeFilter === 'intensity' ? this.intensities : this.hedonicTones;
+
+    for(let element of dataType){
+      if(!element) continue;
       let dataset: dataset = {
         type: 'bar',
-        label: type.name,
-        backgroundColor: this.colors[type.id],
+        label: element.name,
+        backgroundColor: this.colors[element.id],
         data: Array.from({length: 24}, (x, i) => (
           this.observations.filter(
-            observation => observation.relationships.odourSubType.relationships?.odourType?.id === type?.id
+            (observation) =>
+            {
+              if(this.dataTypeFilter === 'type')
+                return observation.relationships.odourSubType.relationships?.odourType?.id === element?.id
+              else if(this.dataTypeFilter === 'intensity')
+                return observation.relationships.odourIntensity?.id === element?.id
+              else if(this.dataTypeFilter === 'hedonicTone')
+                return observation.relationships.odourHedonicTone?.id === element?.id
+              return false;
+            }
             ).filter(
               observation => new Date(observation.updatedAt).getHours() === i
-              ).length
+            ).length
         ))
       }
       datasets.push(dataset);
@@ -135,15 +161,26 @@ export class RegistersChartsComponent {
 
     let datasets: dataset[] = [];
 
-    for(let type of this.types){
-      if(!type) continue;
+    let dataType = this.dataTypeFilter === 'type' ? this.types : this.dataTypeFilter === 'intensity' ? this.intensities : this.hedonicTones;
+
+    for(let element of dataType){
+      if(!element) continue;
       let dataset: dataset = {
         type: 'bar',
-        label: type.name,
-        backgroundColor: this.colors[type.id],
+        label: element.name,
+        backgroundColor: this.colors[element.id],
         data: Array.from([0,0,0,0,0,0,0,0,0,0,0,0], (x, i) => (
           this.observations.filter(
-            observation => observation.relationships.odourSubType.relationships?.odourType?.id === type?.id
+            (observation) =>
+            {
+              if(this.dataTypeFilter === 'type')
+                return observation.relationships.odourSubType.relationships?.odourType?.id === element?.id
+              else if(this.dataTypeFilter === 'intensity')
+                return observation.relationships.odourIntensity?.id === element?.id
+              else if(this.dataTypeFilter === 'hedonicTone')
+                return observation.relationships.odourHedonicTone?.id === element?.id
+              return false;
+            }
             ).filter(
               observation => new Date(observation.updatedAt).getMonth() === i + 1
               ).length
@@ -164,15 +201,26 @@ export class RegistersChartsComponent {
 
       let datasets: dataset[] = [];
 
-      for(let type of this.types){
-        if(!type) continue;
+      let dataType = this.dataTypeFilter === 'type' ? this.types : this.dataTypeFilter === 'intensity' ? this.intensities : this.hedonicTones;
+
+      for(let element of dataType){
+        if(!element) continue;
         let dataset: dataset = {
           type: 'bar',
-          label: type.name,
-          backgroundColor: this.colors[type.id],
+          label: element.name,
+          backgroundColor: this.colors[element.id],
           data: Array.from([0,0,0,0], (x, i) => (
             this.observations.filter(
-              observation => observation.relationships.odourSubType.relationships?.odourType?.id === type?.id
+              (observation) =>
+              {
+                if(this.dataTypeFilter === 'type')
+                  return observation.relationships.odourSubType.relationships?.odourType?.id === element?.id
+                else if(this.dataTypeFilter === 'intensity')
+                  return observation.relationships.odourIntensity?.id === element?.id
+                else if(this.dataTypeFilter === 'hedonicTone')
+                  return observation.relationships.odourHedonicTone?.id === element?.id
+                return false;
+              }
               ).filter(
                 (observation) => {
                   let date = new Date(observation.updatedAt);
@@ -190,7 +238,9 @@ export class RegistersChartsComponent {
               }).length
           ))
         }
+
         datasets.push(dataset);
+
       }
 
       this.data = {
@@ -205,21 +255,34 @@ export class RegistersChartsComponent {
 
     let datasets: dataset[] = [];
 
-    for(let type of this.types){
-      if(!type) continue;
+    let dataType = this.dataTypeFilter === 'type' ? this.types : this.dataTypeFilter === 'intensity' ? this.intensities : this.hedonicTones;
+
+    for(let element of dataType){
+      if(!element) continue;
       let dataset: dataset = {
         type: 'bar',
-        label: type.name,
-        backgroundColor: this.colors[type.id],
+        label: element.name,
+        backgroundColor: this.colors[element.id],
         data: Array.from({length : this.lastYear - (this.firstYear - 1)} , (x, i) => (
           this.observations.filter(
-              observation => observation.relationships.odourSubType.relationships?.odourType?.id === type?.id
+              (observation) =>
+              {
+                if(this.dataTypeFilter === 'type')
+                  return observation.relationships.odourSubType.relationships?.odourType?.id === element?.id
+                else if(this.dataTypeFilter === 'intensity')
+                  return observation.relationships.odourIntensity?.id === element?.id
+                else if(this.dataTypeFilter === 'hedonicTone')
+                  return observation.relationships.odourHedonicTone?.id === element?.id
+                return false;
+              }
             ).filter(
               observation => new Date(observation.updatedAt).getFullYear() === this.firstYear + i
             ).length
         ))
       }
+
       datasets.push(dataset);
+
     }
 
     this.data = {
@@ -246,5 +309,34 @@ export class RegistersChartsComponent {
 
   }
 
+  private getIntensities(): void {
+    this.intensities = this.observations.map(
+      ( observation )=> observation.relationships.odourIntensity
+    ).filter(
+      (v, i, a) => a.findIndex(t => (t?.id === v?.id)) === i
+    )
+  }
 
+  private getHedonicTones(): void {
+    this.hedonicTones = this.observations.map(
+      ( observation )=> observation.relationships.odourHedonicTone
+    ).filter(
+      (v, i, a) => a.findIndex(t => (t?.id === v?.id)) === i
+    )
+  }
+
+  public changeTimeFilter(): void {
+    if(this.timeFilter === 'hours'){
+      this.getObservationOrderByTypeAndHourRange();
+    }
+    else if(this.timeFilter === 'months'){
+      this.getObservationOrderByTypeAndMonth();
+    }
+    else if(this.timeFilter === 'seasons'){
+      this.getObservationOrderByTypeAndSeason();
+    }
+    else if(this.timeFilter === 'years'){
+      this.getObservationOrderByTypeAndYear();
+    }
+  }
 }
