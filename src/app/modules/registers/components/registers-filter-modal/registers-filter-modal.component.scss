@@ -1,5 +1,6 @@
 :host ::ng-deep {
   .floatSidebar {
+    z-index: 50!important;
     position: absolute;
     height: fit-content;
     max-height: calc(100vh - 14.5rem);

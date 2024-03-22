@@ -52,17 +52,16 @@
     </div>
   </ng-template>
 </p-toolbar>
-<div #mapContainer>
-  <mgl-map
-    #map
-    class="card"
-    range="[-180, -90, 180, 90]"
-    [style]="'mapbox://styles/mapbox/light-v11'"
-    [zoom]="[17]"
-    [center]="[intialPoint.x, intialPoint.y]"
-    [projection]="'globe'"
-    [preserveDrawingBuffer]="true"
-    *ngIf="intialPoint && intialPoint.x && intialPoint.y"
+
+<mgl-map #map class="card"
+  range="[-180, -90, 180, 90]"
+  [style]="'mapbox://styles/mapbox/light-v11'"
+  [zoom]="[17]"
+  [center]="[intialPoint.x, intialPoint.y]"
+  [cooperativeGestures]="true"
+  [projection]="'globe'"
+  *ngIf="intialPoint && intialPoint.x && intialPoint.y"
+
   >
     @if(APGEMOpoints && APGEMOpoints.length > 0){ @for(point of APGEMOpoints;
     track point){
@@ -200,4 +199,3 @@
       }
     </ng-container>
   </mgl-map>
-</div>
