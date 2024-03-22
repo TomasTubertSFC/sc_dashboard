@@ -1,8 +1,8 @@
-import { Component, Input} from '@angular/core';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
-import { StudyZone } from '../../../../models/study-zone';
+import { OdourType, StudyZone } from '../../../../models/study-zone';
 import { OdourTypeData } from '../../../../models/odour-related-data';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-registers-filter-modal',
@@ -13,22 +13,11 @@ export class RegistersFilterModalComponent {
 
   @Input() filterSidebarVisible: boolean = false;
 
+  @Output('filtersOutput') filtersOutput: EventEmitter<any> = new EventEmitter<any>();
+  @Output('closeFilterSidebar') closeFilterSidebar: EventEmitter<any> = new EventEmitter<any>();
+
   private studyZone!:StudyZone;
 
-  //FILTROS
-  public filterOptions: {
-    type: boolean,
-    hedonicTone: boolean,
-    intensity: boolean,
-    days: boolean,
-    hours: boolean,
-  } = {
-    type: false,
-    hedonicTone: false,
-    intensity: false,
-    days: false,
-    hours: false,
-  };
   public odourTypes!:OdourTypeData[]
   public hedonicToneTitle: string[] = [
     'Extremadamente desagradable',
@@ -53,19 +42,20 @@ export class RegistersFilterModalComponent {
   public days: Date[] = [new Date(), new Date()];
   public hours: Date = new Date();
 
-  filtersForm: FormGroup = new FormGroup({
+  public typeFilter: FormGroup = new FormGroup({});
+
+  public filtersForm: FormGroup = new FormGroup({
     type: new FormControl(false, []),
-    typeFilter: new FormControl([], []),
+    typeFilter: this.typeFilter,
     hedonicTone: new FormControl(false, []),
-    hedonicToneFilter: new FormControl([1, 7], []),
+    hedonicToneFilter: new FormControl([-4, 4], []),
     intensity: new FormControl(false, []),
-    intensityFilter: new FormControl([1, 5], []),
+    intensityFilter: new FormControl([0, 6], []),
     days: new FormControl(false, []),
     daysFilter: new FormControl([new Date(), new Date()], []),
     hours: new FormControl(false, []),
-    hoursFilter: new FormControl(new Date(), []),
+    hoursFilter: new FormControl([0, 23], []),
   });
-
 
   constructor(private studyZoneService: StudyZoneService) {
     this.studyZoneService.studyZone.subscribe((studyZone) => {
@@ -74,17 +64,36 @@ export class RegistersFilterModalComponent {
         this.odourTypes = this.getStudyZoneTypes();
       }
     })
+
+    this.filtersForm.valueChanges.subscribe((value) => {
+      this.filtersOutput.emit(value);
+    });
   };
 
   public getStudyZoneTypes(): any[] {
-    return this.studyZone.episodes.map(
+    let types = this.studyZone.episodes.map(
         episode => episode.observations.map(
           observation => observation.relationships.odourSubType.relationships?.odourType
           )
       ).flat()
-      .filter(
-        (v, i, a) => a.findIndex(t => (t?.id === v?.id)) === i
-        );
+
+    types.push(...this.studyZone.restObservations.map(
+      observation => observation.relationships.odourSubType.relationships?.odourType
+      ));
+
+    types = types.filter(
+      (v, i, a) => a.findIndex(t => (t?.id === v?.id)) === i
+      )
+
+    for(let type of types){
+      this.typeFilter.addControl(String(type?.id), new FormControl(true, []) );
+    }
+
+    return types;
+  }
+
+  public closeFilters(): void {
+    this.closeFilterSidebar.emit();
   }
 
 }

@@ -1,11 +1,11 @@
 import {
-  AfterViewInit,
   Component,
+  AfterViewInit,
   ElementRef,
   OnDestroy,
-  OnInit,
   ViewChild,
 } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MenuService } from '../../../../layout/components/menu/app.menu.service';
 import { MapComponent } from 'ngx-mapbox-gl';
@@ -42,15 +42,16 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
   };
 
   public observations: Observation[] = [];
-  public restObservations: Observation[] = [];
 
   public geoJsonObservation: any;
   public geoJsonRestObservation: any;
 
   public heatmapLayer: boolean = false;
 
-  public filters: boolean = false;
-  public showFilters: boolean = false;
+  public filters:boolean = false;
+  public showFilters:boolean = false;
+
+  public sourceFilter!: any[];
 
   constructor(
     private studyZoneService: StudyZoneService,
@@ -101,17 +102,19 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
         });
 
         this.points = this.points.concat(this.APGEMOpoints);
-        this.restObservations = this.studyZone.restObservations;
-        this.geoJsonObservation = this.passToGeoJsonPoints(this.observations);
-        this.geoJsonRestObservation = this.passToGeoJsonPoints(
-          this.restObservations
-        );
+
+        this.geoJsonObservation = {
+          features: this.observations.map(observation => observation.geoJson).concat(this.studyZone.restObservations.map(observation => observation.geoJson)),
+          type: "FeatureCollection"
+        };
+
       }
     });
 
     setTimeout(() => {
       if (this.points) {
         const bbox = this.getBboxFromPoints();
+
         this.map.mapInstance.fitBounds(bbox, {
           padding: { top: 100, bottom: 50, left: 50, right: 50 },
         });
@@ -159,34 +162,62 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
     this.studyZone$.unsubscribe();
   }
 
-  private passToGeoJsonPoints(observations: Observation[]): any {
-    let features = observations.map((observation, index) => {
-      return {
-        type: 'Feature',
-        id: observation.id,
-        properties: {
-          id: observation.id,
-          color: observation.color ? observation.color : 0,
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [observation.longitude, observation.latitude],
-        },
-      };
-    });
-
-    return { features: features, type: 'FeatureCollection' };
-  }
-
   public toggleHeatmapLayer(status: boolean | undefined = undefined) {
     this.heatmapLayer = status === undefined ? !this.heatmapLayer : status;
   }
 
   public toggleFilters(status: boolean | undefined = undefined) {
-    this.filters = status === undefined ? !this.filters : status;
+    if((!this.sourceFilter || this.sourceFilter.length < 2) && this.showFilters === false){
+      this.toggleShowFilters(true);
+    }
+    this.filters = status===undefined? !this.filters : status;
   }
 
   public toggleShowFilters(status: boolean | undefined = undefined) {
-    this.showFilters = !this.showFilters;
+    this.showFilters = status===undefined? !this.showFilters : status;
+  }
+
+  public handleFilters(filters: any) {
+    this.sourceFilter = ['all'];
+    if(filters.type){
+      this.sourceFilter.push(
+        ['in', ['get', 'odourType'], ['literal',[...Object.keys(filters.typeFilter).filter( key => filters.typeFilter[key] ).map(id=> Number(id))]]]
+        );
+    }
+    if(filters.hedonicTone){
+      this.sourceFilter.push(
+        ['<=', ['get', 'hedonicTone'], filters.hedonicToneFilter[1]],
+        ['>=', ['get', 'hedonicTone'], filters.hedonicToneFilter[0]]
+        );
+    }
+    if(filters.intensity){
+      this.sourceFilter.push(
+        ['<=', ['get', 'intensity'], filters.intensityFilter[1]],
+        ['>=', ['get', 'intensity'], filters.intensityFilter[0]]
+        );
+    }
+    if(filters.days){
+      var datePipe = new DatePipe('en-US');
+      if(filters.daysFilter[0] && filters.daysFilter[1]){
+        this.sourceFilter.push(
+          ['>=', ['get', 'date'], datePipe.transform(filters.daysFilter[0],'yyyy-MM-dd')],
+          ['<=', ['get', 'date'], datePipe.transform(filters.daysFilter[1],'yyyy-MM-dd')]
+          );
+      }
+      else if(filters.daysFilter[0] && !filters.daysFilter[1]){
+        this.sourceFilter.push(
+          ['==', ['get', 'date'], datePipe.transform(filters.daysFilter[0],'yyyy-MM-dd')]
+          );
+
+      }
+    }
+    if(filters.hours){
+      this.sourceFilter.push(
+        ['>=', ['get', 'hour'], filters.hoursFilter[0]],
+        ['<=', ['get', 'hour'], filters.hoursFilter[1]]
+        );
+    }
+    this.sourceFilter.length > 1? this.filters = true : this.filters = false;
+
   }
 }
