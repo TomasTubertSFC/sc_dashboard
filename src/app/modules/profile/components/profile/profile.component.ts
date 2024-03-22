@@ -11,7 +11,6 @@ import { MessageService } from 'primeng/api';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
-  providers: [MessageService],
 })
 export class ProfileComponent {
   visible: boolean = false;

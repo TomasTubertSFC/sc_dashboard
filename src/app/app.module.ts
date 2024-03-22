@@ -15,6 +15,8 @@ import { LandingModule } from './modules/landing/landing.module';
 import { OverviewModule } from './modules/overview/overview.module';
 import { LoginModule } from './modules/login/login.module';
 import { StudyZoneService } from './services/study-zone.service';
+import { MessageService } from 'primeng/api';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +31,7 @@ import { StudyZoneService } from './services/study-zone.service';
     ProfileModule,
     LandingModule,
     OverviewModule,
+    ReportsModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',
@@ -39,6 +42,7 @@ import { StudyZoneService } from './services/study-zone.service';
     }),
   ],
   providers: [
+    MessageService,
     StudyZoneService,
     initializeInterceptorProvider,
     { provide: LocationStrategy, useClass: PathLocationStrategy },

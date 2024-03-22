@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  .p-button-rounded{
+    width: fit-content;
+  }
+}
+
+#empty {
+  min-height: calc(100dvh - 150px);
+}

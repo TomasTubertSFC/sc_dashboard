@@ -1,18 +1,24 @@
 <section>
   <div #dataToExport class="flex flex-column gap-3">
-    <app-nuisance-degree-graph
-      [episodes]="episodes"
-      [types]="studyZone.types"
-      [subtypes]="studyZone.subtypes"
-    />
-    <app-participant-citizenship-graph
-      [activeUsers]="studyZone.activeUsers"
-      [totalUsers]="studyZone.totalUsers"
-    />
-    <app-odour-episode-graph
-      [endDate]="studyZone.endDate"
-      [initDate]="studyZone.initDate"
-      [episodes]="episodes"
-    />
+    <div #nuisanceDegreeGraph>
+      <app-nuisance-degree-graph
+        [episodes]="episodes"
+        [types]="studyZone.types"
+        [subtypes]="studyZone.subtypes"
+      />
+    </div>
+    <div #participantCitizenshipGraph>
+      <app-participant-citizenship-graph
+        [activeUsers]="studyZone.activeUsers"
+        [totalUsers]="studyZone.totalUsers"
+      />
+    </div>
+    <div #odourEpisodeGraph>
+      <app-odour-episode-graph
+        [endDate]="studyZone.endDate"
+        [initDate]="studyZone.initDate"
+        [episodes]="episodes"
+      />
+    </div>
   </div>
 </section>
