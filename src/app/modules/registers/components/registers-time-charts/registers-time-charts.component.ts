@@ -11,7 +11,7 @@ interface dataset{
 }
 
 @Component({
-  selector: 'app-registers-charts',
+  selector: 'app-registers-time-charts',
   templateUrl: './registers-time-charts.component.html',
   styleUrl: './registers-time-charts.component.scss'
 })
@@ -27,23 +27,7 @@ export class RegistersTimeChartsComponent implements OnDestroy {
 
   public options: any;
 
-  public doughnutData: any = {
-    labels: ['Agradable', 'Desagradable', 'Neutro', 'Otros'],
-    datasets: [
-        {
-            data: [300, 50, 100, 25],
-            backgroundColor: ['#b2301a', '#f4723e', '#73aea8', '#CCCCCC'],
-            hoverOffset: 5
-        }
-    ]
-  };
-  public doughnutOptions: any;
   public observations: Observation[] = [];
-
-  public intensityChartDoughnut:boolean = true;
-  public hedonicToneChartDoughnut:boolean = true;
-  public typeChartDoughnut:boolean = true;
-  public subtypeChartDoughnut:boolean = true;
 
   private types: (OdourTypeData | undefined)[] = [];
   private intensities: (OdourIntensity | undefined)[] = [];
@@ -93,17 +77,10 @@ export class RegistersTimeChartsComponent implements OnDestroy {
 
     this.getChartStylesAndData();
 
-    this.studyZoneService.studyZone.subscribe((studyZone) => {
-      this.observations = studyZone?.restObservations || [];
-      console.log(this.observations.length);
+    this.studyZoneService.allObservations.subscribe((allObservations) => {
 
-      let episodeObs = studyZone?.episodes.map(
-        episode => episode.observations.map(
-          observation => observation
-        )
-      ).flat();
-      if(episodeObs) this.observations.push(...episodeObs);
-      console.log(this.observations.length);
+      this.observations = allObservations;
+
       this.getStudyZoneTypes();
       this.getIntensities();
       this.getHedonicTones();
@@ -155,16 +132,7 @@ export class RegistersTimeChartsComponent implements OnDestroy {
               }
           }
       };
-      this.doughnutOptions = {
-        cutout: '60%',
-        plugins: {
-            legend: {
-                labels: {
-                    color: textColorSecondary
-                }
-            }
-        }
-      };
+      
   }
 
   public getObservationOrderByTypeAndHourRange() {
