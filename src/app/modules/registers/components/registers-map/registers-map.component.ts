@@ -1,10 +1,4 @@
-import {
-  Component,
-  AfterViewInit,
-  ElementRef,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import {Component, AfterViewInit, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MenuService } from '../../../../layout/components/menu/app.menu.service';
@@ -14,8 +8,6 @@ import { StudyZone } from '../../../../models/study-zone';
 import { Point } from 'chart.js';
 import { Observation } from '../../../../models/observation';
 import { Polygon } from '../../../../models/polygon';
-import { HttpClient } from '@angular/common/http';
-import { GeoJSONSourceComponent } from 'ngx-mapbox-gl';
 import { PdfService } from '../../../../services/pdf/pdf.service';
 
 @Component({
@@ -59,7 +51,7 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
     private pdfService: PdfService
   ) {
     this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe(
-      (isOpen) => {
+      () => {
         setTimeout(() => {
           this.map.mapInstance.resize();
         }, 300);
@@ -71,11 +63,10 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
         this.studyZone = studyZone;
         this.studyZone.episodes.forEach(
           (episode) =>
-            (this.observations = this.observations.concat(episode.observations))
+            (this.observations = episode.observations)
         );
         this.observations.forEach((observation) => {
-          this.intialPoint.x +=
-            observation.longitude / this.observations.length;
+          this.intialPoint.x += observation.longitude / this.observations.length;
           this.intialPoint.y += observation.latitude / this.observations.length;
         });
 

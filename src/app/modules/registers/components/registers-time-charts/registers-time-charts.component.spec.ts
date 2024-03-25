@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegistersChartsComponent } from './registers-charts.component';
+import { RegistersTimeChartsComponent } from './registers-time-charts.component';
 
 describe('RegistersChartsComponent', () => {
-  let component: RegistersChartsComponent;
-  let fixture: ComponentFixture<RegistersChartsComponent>;
+  let component: RegistersTimeChartsComponent;
+  let fixture: ComponentFixture<RegistersTimeChartsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RegistersChartsComponent]
+      declarations: [RegistersTimeChartsComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(RegistersChartsComponent);
+
+    fixture = TestBed.createComponent(RegistersTimeChartsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
