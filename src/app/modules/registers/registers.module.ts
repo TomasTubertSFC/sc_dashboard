@@ -16,17 +16,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistersFilterModalComponent } from './components/registers-filter-modal/registers-filter-modal.component';
 import { SliderModule } from 'primeng/slider';
 import { CalendarModule } from 'primeng/calendar';
-import { RegistersChartsComponent } from './components/registers-charts/registers-charts.component';
+import { RegistersTimeChartsComponent } from './components/registers-time-charts/registers-time-charts.component';
 import { ChartModule } from 'primeng/chart';
 import { DividerModule } from 'primeng/divider';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { RegistersTypologyChartsComponent } from './components/registers-typology-charts/registers-typology-charts.component';
 
 @NgModule({
   declarations: [
     RegistersPageComponent,
     RegistersMapComponent,
     RegistersFilterModalComponent,
-    RegistersChartsComponent
+    RegistersTimeChartsComponent,
+    RegistersTypologyChartsComponent
   ],
   imports: [
     FormsModule,

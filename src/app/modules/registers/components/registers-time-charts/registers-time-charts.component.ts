@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Observation } from '../../../../models/observation';
 import { OdourHedonicTone, OdourIntensity, OdourTypeData } from '../../../../models/odour-related-data';
@@ -12,10 +12,10 @@ interface dataset{
 
 @Component({
   selector: 'app-registers-charts',
-  templateUrl: './registers-charts.component.html',
-  styleUrl: './registers-charts.component.scss'
+  templateUrl: './registers-time-charts.component.html',
+  styleUrl: './registers-time-charts.component.scss'
 })
-export class RegistersChartsComponent {
+export class RegistersTimeChartsComponent implements OnDestroy {
 
   public timeFilter: string = 'months'
   public dataTypeFilter: string = 'type';
@@ -25,23 +25,66 @@ export class RegistersChartsComponent {
     datasets: dataset[]
   } | null = null;
 
-  options: any;
+  public options: any;
 
-  private observations: Observation[] = [];
+  public doughnutData: any = {
+    labels: ['Agradable', 'Desagradable', 'Neutro', 'Otros'],
+    datasets: [
+        {
+            data: [300, 50, 100, 25],
+            backgroundColor: ['#b2301a', '#f4723e', '#73aea8', '#CCCCCC'],
+            hoverOffset: 5
+        }
+    ]
+  };
+  public doughnutOptions: any;
+  public observations: Observation[] = [];
+
+  public intensityChartDoughnut:boolean = true;
+  public hedonicToneChartDoughnut:boolean = true;
+  public typeChartDoughnut:boolean = true;
+  public subtypeChartDoughnut:boolean = true;
+
   private types: (OdourTypeData | undefined)[] = [];
   private intensities: (OdourIntensity | undefined)[] = [];
   private hedonicTones: (OdourHedonicTone | undefined)[] = [];
   private firstYear: number = new Date().getFullYear();
   private lastYear: number = 0;
 
-  private colors: {[key: string]: string} = {
-    [0]: '#000000',
-    [1]: '#FF6633',
-    [2]: '#FFB399',
-    [3]: '#FF33FF',
-    [4]: '#FFFF99',
-    [5]: '#00B3E6',
-    [6]: '#E6B333',
+
+
+  private colors: {[filter: string]: {[key: number]:string}} = {
+    ['type']:{
+      [0]: '#000000',
+      [1]: '#daf299',
+      [2]: '#ffff9e',
+      [3]: '#dfc4f2',
+      [4]: '#ff8133',
+      [5]: '#a2daf9',
+      [6]: '#CCCCCC',
+      [7]: '#FFFFFF',
+    },
+    ['intensity']:{
+      [1]: "#b0f4f3",
+      [2]: "#97d5ec",
+      [3]: "#7eabe2",
+      [4]: "#697cd8",
+      [5]: "#5f53cf",
+      [6]: "#733fc5",
+      [7]: "#8a2dba",
+
+    },
+    ['hedonicTone']:{
+      [1]: '#b2301a',
+      [2]: '#cb351d',
+      [3]: '#f4723e',
+      [4]: '#fdaf6d',
+      [5]: '#fcddae',
+      [6]: '#73aea8',
+      [7]: '#008c99',
+      [8]: '#207793',
+      [9]: '#001f50',
+    }
   }
 
   constructor( private studyZoneService: StudyZoneService,) { }
@@ -112,6 +155,16 @@ export class RegistersChartsComponent {
               }
           }
       };
+      this.doughnutOptions = {
+        cutout: '60%',
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColorSecondary
+                }
+            }
+        }
+      };
   }
 
   public getObservationOrderByTypeAndHourRange() {
@@ -127,7 +180,7 @@ export class RegistersChartsComponent {
       let dataset: dataset = {
         type: 'bar',
         label: element.name,
-        backgroundColor: this.colors[element.id],
+        backgroundColor: this.colors[this.dataTypeFilter][element.id],
         data: Array.from({length: 24}, (x, i) => (
           this.observations.filter(
             (observation) =>
@@ -168,7 +221,7 @@ export class RegistersChartsComponent {
       let dataset: dataset = {
         type: 'bar',
         label: element.name,
-        backgroundColor: this.colors[element.id],
+        backgroundColor: this.colors[this.dataTypeFilter][element.id],
         data: Array.from([0,0,0,0,0,0,0,0,0,0,0,0], (x, i) => (
           this.observations.filter(
             (observation) =>
@@ -194,6 +247,7 @@ export class RegistersChartsComponent {
       datasets: datasets,
     }
 
+
   }
   public getObservationOrderByTypeAndSeason(){
 
@@ -208,7 +262,7 @@ export class RegistersChartsComponent {
         let dataset: dataset = {
           type: 'bar',
           label: element.name,
-          backgroundColor: this.colors[element.id],
+          backgroundColor: this.colors[this.dataTypeFilter][element.id],
           data: Array.from([0,0,0,0], (x, i) => (
             this.observations.filter(
               (observation) =>
@@ -262,7 +316,7 @@ export class RegistersChartsComponent {
       let dataset: dataset = {
         type: 'bar',
         label: element.name,
-        backgroundColor: this.colors[element.id],
+        backgroundColor: this.colors[this.dataTypeFilter][element.id],
         data: Array.from({length : this.lastYear - (this.firstYear - 1)} , (x, i) => (
           this.observations.filter(
               (observation) =>
@@ -307,6 +361,8 @@ export class RegistersChartsComponent {
       (v, i, a) => a.findIndex(t => (t?.id === v?.id)) === i
       )
 
+    this.types = this.types.sort((a, b) => (a?.id ?? 0) - (b?.id ?? 0));
+
   }
 
   private getIntensities(): void {
@@ -315,6 +371,8 @@ export class RegistersChartsComponent {
     ).filter(
       (v, i, a) => a.findIndex(t => (t?.id === v?.id)) === i
     )
+
+    this.intensities = this.intensities.sort((a, b) => (a?.id ?? 0) - (b?.id ?? 0));
   }
 
   private getHedonicTones(): void {
@@ -323,6 +381,8 @@ export class RegistersChartsComponent {
     ).filter(
       (v, i, a) => a.findIndex(t => (t?.id === v?.id)) === i
     )
+
+    this.hedonicTones = this.hedonicTones.sort((a, b) => (a?.id ?? 0) - (b?.id ?? 0));
   }
 
   public changeTimeFilter(): void {
@@ -339,4 +399,14 @@ export class RegistersChartsComponent {
       this.getObservationOrderByTypeAndYear();
     }
   }
+  public getPercents(data: number[]): number{
+    return Math.round((data.reduce((a, b) => a + b, 0) * 100) / this.observations.length);
+  }
+
+
+
+  ngOnDestroy(){
+
+  }
+
 }
