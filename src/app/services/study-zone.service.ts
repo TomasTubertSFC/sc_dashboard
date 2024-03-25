@@ -66,6 +66,16 @@ export class StudyZoneService {
     this._previewObservation.next(value);
   }
 
+  private _allObservations: BehaviorSubject<Observation[]> = new BehaviorSubject<Observation[]>([]);
+  public get allObservations(): BehaviorSubject<Observation[]> {
+    return this._allObservations;
+  }
+  public set allObservations(value: Observation[]) {
+    this._allObservations.next(value);
+  }
+
+
+
   constructor(
     private http: HttpClient,
     private authService: AuthService,
@@ -78,16 +88,8 @@ export class StudyZoneService {
         }
         this.isLoggedIn = true;
       });
+
     }
-
-  // private getDataAPIweather(latitude: number, longitude: number) {
-  //   let APIkey = '1c1d95b41745d75a14ef0bf37040c0ad';
-  //   this.http.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${APIkey}`).subscribe(data => {
-  //       this.dataAPIweather = data;
-  //     }
-  //   );
-  // }
-
 
   private getColorOfInconvenience(inconvenience: number): number {
     let base100 = Math.round(inconvenience / 7 * 100);
@@ -153,6 +155,13 @@ export class StudyZoneService {
       this.http.get<StudyZone>(`/assets/data/study-zone${id}.json`).pipe<StudyZone>(
         map((studyZone: StudyZone) => {
 
+          studyZone.restObservations = studyZone.restObservations.map((observation) => {
+            return new Observation(observation);
+          });
+
+          //cone restObservations on allObservation
+          let allObservations = studyZone.restObservations;
+
           studyZone.episodes.map((episode: Episode, index:number) => {
 
             episode.id = index
@@ -169,17 +178,23 @@ export class StudyZoneService {
             episode.plausible = episode.plausible || false;
             episode.observations = episode.observations.map((observation) => {
               observation.plausible = observation.plausible || false;
-              return new Observation(observation);
+              let obs = new Observation(observation);
+              allObservations.push(obs);
+              return obs;
             });
+
+
+            this.allObservations = allObservations;
+
             return episode;
 
           })
-          studyZone.restObservations = studyZone.restObservations.map((observation) => {
-            return new Observation(observation);
-          });
+
 
           this.studyZoneId = id;
           localStorage.setItem('studyZoneId', id.toString());
+
+          this.allObservations = allObservations;
 
           return studyZone;
 
@@ -194,5 +209,8 @@ export class StudyZoneService {
   public getStudyZoneList(): Observable<any[]> {
     return this.http.get<any[]>('/assets/data/study-zone-list.json');
   }
+
+
+
 
 }

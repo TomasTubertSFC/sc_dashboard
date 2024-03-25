@@ -62,8 +62,7 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
       if (studyZone) {
         this.studyZone = studyZone;
         this.studyZone.episodes.forEach(
-          (episode) =>
-            (this.observations = episode.observations)
+          (episode) => (this.observations = episode.observations)
         );
         this.observations.forEach((observation) => {
           this.intialPoint.x += observation.longitude / this.observations.length;
@@ -95,7 +94,7 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
         this.points = this.points.concat(this.APGEMOpoints);
 
         this.geoJsonObservation = {
-          features: this.observations.map(observation => observation.geoJson).concat(this.studyZone.restObservations.map(observation => observation.geoJson)),
+          features: this.studyZone.restObservations.map(observation => observation.geoJson),
           type: "FeatureCollection"
         };
 
@@ -111,6 +110,7 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
         });
       }
     });
+
   }
 
   ngAfterViewInit(): void {

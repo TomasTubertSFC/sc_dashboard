@@ -1,1 +1,117 @@
-<p>registers-typology-charts works!</p>
+
+<div class="card flex flex-column flex-nowrap gap-2 grid">
+  <div class="card-header w-full"><h3>Gráficas de tipología</h3></div>
+  <div class="card-body m-0 flex w-full flex-wrap flex gap-2 grid">
+    <div class="card flex-grow-1">
+      <div class="card-header flex justify-content-between">
+        <h6>Intensidad</h6>
+        <div class="flex">
+          <p-button
+            (onClick)="intensityChartDoughnut = true"
+            [ngClass]="{ active: intensityChartDoughnut }"
+            pTooltip="Gráfico dona"
+            tooltipPosition="top"
+          >
+            <i class="pi pi-chart-pie"></i>
+          </p-button>
+          <p-button
+            (onClick)="intensityChartDoughnut = false"
+            [ngClass]="{ active: !intensityChartDoughnut }"
+            pTooltip="Gráfico de barras"
+            tooltipPosition="top"
+          >
+            <i class="pi pi-chart-bar"></i>
+          </p-button>
+        </div>
+      </div>
+      @if(intensityChartDoughnut){
+        <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions"/>
+      }
+    </div>
+
+    <div class="card flex-grow-1">
+      <div class="card-header flex justify-content-between">
+        <h6>Tono hedónico</h6>
+        <div class="flex">
+          <p-button
+            (onClick)="hedonicToneChartDoughnut = true"
+            [ngClass]="{ active: hedonicToneChartDoughnut }"
+            pTooltip="Gráfico dona"
+            tooltipPosition="top"
+          >
+            <i class="pi pi-chart-pie"></i>
+          </p-button>
+          <p-button
+            (onClick)="hedonicToneChartDoughnut = false"
+            [ngClass]="{ active: !hedonicToneChartDoughnut }"
+            pTooltip="Gráfico de barras"
+            tooltipPosition="top"
+          >
+            <i class="pi pi-chart-bar"></i>
+          </p-button>
+        </div>
+      </div>
+      @if(hedonicToneChartDoughnut){
+        <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions"/>
+      }
+    </div>
+
+    <div class="card flex-grow-1">
+      <div class="card-header flex justify-content-between">
+        <h6>Tipo</h6>
+        <div class="flex">
+          <p-button
+            (onClick)="typeChartDoughnut = true"
+            [ngClass]="{ active: typeChartDoughnut }"
+            pTooltip="Gráfico dona"
+            tooltipPosition="top"
+          >
+            <i class="pi pi-chart-pie"></i>
+          </p-button>
+          <p-button
+            (onClick)="typeChartDoughnut = false"
+            [ngClass]="{ active: !typeChartDoughnut }"
+            pTooltip="Gráfico de barras"
+            tooltipPosition="top"
+          >
+            <i class="pi pi-chart-bar"></i>
+          </p-button>
+        </div>
+      </div>
+      @if(typeChartDoughnut){
+        <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions"/>
+      }
+    </div>
+
+    <div class="card flex-grow-1">
+      <div class="card-header flex justify-content-between">
+        <h6>Subtipo</h6>
+        <div class="flex">
+          <p-button
+            (onClick)="subtypeChartDoughnut = true"
+            [ngClass]="{ active: subtypeChartDoughnut }"
+            pTooltip="Gráfico dona"
+            tooltipPosition="top"
+          >
+            <i class="pi pi-chart-pie"></i>
+          </p-button>
+          <p-button
+            (onClick)="subtypeChartDoughnut = false"
+            [ngClass]="{ active: !subtypeChartDoughnut }"
+            pTooltip="Gráfico de barras"
+            tooltipPosition="top"
+          >
+            <i class="pi pi-chart-bar"></i>
+          </p-button>
+        </div>
+      </div>
+      @if(subtypeChartDoughnut){
+        <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions"/>
+      }
+      @else {
+        <p-chart type="bar" [data]="barData" [options]="barOptions"/>
+      }
+    </div>
+  </div>
+</div>
+
