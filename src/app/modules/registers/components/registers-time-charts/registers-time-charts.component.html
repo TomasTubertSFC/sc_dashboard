@@ -13,9 +13,9 @@
 
     <div class="w-full mb-4 lg:mb-0 lg:ml-2 lg:mr-2 flex-order-0 lg:flex-order-1">
       <div class="card-body flex flex-column h-full">
-        <div class="flex flex-column md:flex-row gap-2 mt-1 ml-1 mr-1">
+        <div class="flex flex-column md:flex-row gap-2 ml-1 mr-1">
 
-          <div class="flex md:flex-column flex-wrap w-full gap-4 md:gap-2">
+          <div class="flex lg:flex-column flex-wrap w-full gap-4 md:gap-2">
             <h6 class="w-full ml-1 mt-1 mr-1 mb-0 md:mb-3" >Filtrar por:</h6>
             <div class="flex field-checkbox mb-1">
                 <p-radioButton [inputId]="'timeFilter1'" [(ngModel)]="timeFilter" name="timeFilter" [value]="'hours'" (click)="getObservationOrderByTypeAndHourRange()"></p-radioButton>
@@ -38,7 +38,7 @@
           <p-divider class="block md:hidden" />
           <p-divider layout="vertical" class="hidden md:block"/>
 
-          <div class="flex md:flex-column flex-wrap w-full gap-4 md:gap-2">
+          <div class="flex lg:flex-column flex-wrap w-full gap-4 md:gap-2">
             <h6 class="w-full ml-1 mt-0 md:mt-1 mr-1 mb-0 md:mb-3" >Mostrar:</h6>
             <div class="flex field-checkbox mb-1">
                 <p-radioButton [inputId]="'dataTypeFilter1'" [(ngModel)]="dataTypeFilter" name="dataTypeFilter" [value]="'type'" (click)="changeTimeFilter()"></p-radioButton>

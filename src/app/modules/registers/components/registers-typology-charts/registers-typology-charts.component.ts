@@ -10,24 +10,14 @@ import { withHttpTransferCacheOptions } from '@angular/platform-browser';
   styleUrl: './registers-typology-charts.component.scss'
 })
 export class RegistersTypologyChartsComponent {
+  public typeFilter: string = 'intensity';
   public doughnutData: any;
   public barData: any;
   public doughnutOptions: any;
   public barOptions: any;
   public observations: Observation[] = [];
 
-  public intensityChartDoughnut:boolean = true;
-  public intensityDoughnutData: any;
-  public intensityBarData: any;
-  public hedonicToneChartDoughnut:boolean = true;
-  public hedonicToneDoughnutData: any;
-  public hedonicToneBarData: any;
-  public typeChartDoughnut:boolean = true;
-  public typeDoughnutData: any;
-  public typeBarData: any;
-  public subtypeChartDoughnut:boolean = true;
-  public subtypeDoughnutData: any;
-  public subtypeBarData: any;
+  public chartDoughnut:boolean = true;
 
   private colors: {[filter: string]: {[key: number]:string}} = {
     ['type']:{
@@ -74,6 +64,8 @@ export class RegistersTypologyChartsComponent {
 
     this.doughnutOptions = {
 
+      maintainAspectRatio: false,
+      aspectRatio: 0.54,
       cutout: '60%',
       plugins: {
           legend: {
@@ -84,6 +76,8 @@ export class RegistersTypologyChartsComponent {
       }
     };
     this.barOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.54,
       plugins: {
         legend: {
           labels: {
@@ -121,9 +115,6 @@ export class RegistersTypologyChartsComponent {
       this.observations = allObservations;
 
       this.getIntensityCharts();
-      this.getHedonicToneCharts();
-      this.getTypeCharts();
-      this.getSubtypeCharts();
 
     });
   }
@@ -148,7 +139,7 @@ export class RegistersTypologyChartsComponent {
     doughnutData.push(barData.slice(3).reduce((acc:any, data:any) => acc + data[1]['value'], 0));
     doughnutColors.push('#CCCCCC');
 
-    this.intensityDoughnutData = {
+    this.doughnutData = {
       labels: barData.map((data:any) => data[1]['label']).slice(0, 3).concat(['Otros']),
       datasets: [
           {
@@ -158,7 +149,7 @@ export class RegistersTypologyChartsComponent {
           }
       ]
     };
-    this.intensityBarData = {
+    this.barData = {
       labels: barData.map((data:any) => data[1]['label']),
       datasets: [
           {
@@ -181,7 +172,7 @@ export class RegistersTypologyChartsComponent {
       acc[hedonicTone.id].value ++;
       return acc;
     }, {})).sort((a:any, b:any) => b[1]['value'] - a[1]['value']);
-    
+
     const barColors = barData.map((data:any) => this.colors['hedonicTone'][data[0]]);
 
     const doughnutData = barData.slice(0, 3).map((data:any) => data[1]['value']);
@@ -189,7 +180,7 @@ export class RegistersTypologyChartsComponent {
     doughnutData.push(barData.slice(3).reduce((acc:any, data:any) => acc + data[1]['value'], 0));
     doughnutColors.push('#CCCCCC');
 
-    this.hedonicToneDoughnutData = {
+    this.doughnutData = {
       labels: barData.map((data:any) => data[1]['label']).slice(0, 3).concat(['Otros']),
       datasets: [
           {
@@ -199,7 +190,7 @@ export class RegistersTypologyChartsComponent {
           }
       ]
     };
-    this.hedonicToneBarData = {
+    this.barData = {
       labels: barData.map((data:any) => data[1]['label']),
       datasets: [
           {
@@ -230,7 +221,7 @@ export class RegistersTypologyChartsComponent {
     doughnutData.push(barData.slice(3).reduce((acc:any, data:any) => acc + data[1]['value'], 0));
     doughnutColors.push('#CCCCCC');
 
-    this.typeDoughnutData = {
+    this.doughnutData = {
       labels: barData.map((data:any) => data[1]['label']).slice(0, 3).concat(['Otros']),
       datasets: [
           {
@@ -240,7 +231,7 @@ export class RegistersTypologyChartsComponent {
           }
       ]
     };
-    this.typeBarData = {
+    this.barData = {
       labels: barData.map((data:any) => data[1]['label']),
       datasets: [
           {
@@ -271,7 +262,7 @@ export class RegistersTypologyChartsComponent {
     doughnutData.push(barData.slice(3).reduce((acc:any, data:any) => acc + data[1]['value'], 0));
     doughnutColors.push('#CCCCCC');
 
-    this.subtypeDoughnutData = {
+    this.doughnutData = {
       labels: barData.map((data:any) => data[1]['label']).slice(0, 3).concat(['Otros']),
       datasets: [
           {
@@ -281,7 +272,7 @@ export class RegistersTypologyChartsComponent {
           }
       ]
     };
-    this.subtypeBarData = {
+    this.barData = {
       labels: barData.map((data:any) => data[1]['label']),
       datasets: [
           {
@@ -293,4 +284,13 @@ export class RegistersTypologyChartsComponent {
     };
   }
 
+  public changeTypeFilter(): void {
+    this.doughnutData = null;
+    this.barData = null;
+    if(this.typeFilter === 'intensity') this.getIntensityCharts();
+    else if(this.typeFilter === 'hedonicTone') this.getHedonicToneCharts();
+    else if(this.typeFilter === 'type')  this.getTypeCharts();
+    else this.getSubtypeCharts();
+
+  }
 }

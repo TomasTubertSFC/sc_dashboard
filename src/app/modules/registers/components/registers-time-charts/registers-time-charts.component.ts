@@ -132,7 +132,7 @@ export class RegistersTimeChartsComponent implements OnDestroy {
               }
           }
       };
-      
+
   }
 
   public getObservationOrderByTypeAndHourRange() {
