@@ -40,8 +40,8 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     'fill-opacity': 0.8,
   };
 
-  public canvasHeight: number = 1800;
-  public canvasWidth: number = 1800;
+  public canvasHeight: number = 2100;
+  public canvasWidth: number = 2100;
 
   public context!: CanvasRenderingContext2D;
 
@@ -120,6 +120,12 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
         } else {
           this.previewEpisode = null;
         }
+        let layerId = 'APEGMOpolygons';
+        if (this.map.mapInstance.getLayer(layerId)) {
+          setTimeout(() => {
+            this.map.mapInstance.moveLayer(layerId);
+          });
+        }
       }
     );
 
@@ -182,9 +188,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
             document.body.appendChild(canvas);
 
             this.coneCanvas = canvas;
-            this.context = new ElementRef(canvas).nativeElement.getContext(
-              '2d'
-            ) as CanvasRenderingContext2D;
+            this.context = new ElementRef(canvas).nativeElement.getContext('2d') as CanvasRenderingContext2D;
             this.cone = new Cone(
               points,
               {
@@ -359,8 +363,10 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       let initialTriangleArrow = initialDistanceArrow - 30;
       let finalTriangleArrow = initialTriangleArrow + 35;
 
-      this.context.strokeStyle = this.hexToRGBA('#64110b', alpha * 2);
-      this.context.fillStyle = this.hexToRGBA('#e96c63', alpha * 2);
+      let windColor = this.cone.plausibleCone ? '#FFF' : '#e96c63';
+      let windStrokeColor = this.cone.plausibleCone ? '#DDD' : '#64110b';
+      this.context.strokeStyle = this.hexToRGBA(windStrokeColor, alpha * 2);
+      this.context.fillStyle = this.hexToRGBA(windColor, alpha * 2);
       this.context.lineWidth = 1;
       this.context.beginPath();
       this.context.moveTo(
@@ -410,9 +416,10 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     let layerId = 'APEGMOpolygons';
     if (this.map.mapInstance.getLayer(layerId)) {
       setTimeout(() => {
-        this.map.mapInstance.moveLayer('APEGMOpolygons');
+        this.map.mapInstance.moveLayer(layerId);
       });
     }
+
   }
 
   private getBboxFromPointsAndObservations(): [
