@@ -181,7 +181,7 @@ export class RegistersTypologyChartsComponent {
       acc[hedonicTone.id].value ++;
       return acc;
     }, {})).sort((a:any, b:any) => b[1]['value'] - a[1]['value']);
-    console.log(barData);
+    
     const barColors = barData.map((data:any) => this.colors['hedonicTone'][data[0]]);
 
     const doughnutData = barData.slice(0, 3).map((data:any) => data[1]['value']);
