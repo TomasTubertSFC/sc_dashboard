@@ -25,7 +25,10 @@
         </div>
       </div>
       @if(intensityChartDoughnut){
-        <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions"/>
+        <p-chart type="doughnut" [data]="intensityDoughnutData" [options]="doughnutOptions"/>
+      }
+      @else {
+        <p-chart type="bar" [data]="intensityBarData" [options]="barOptions"/>
       }
     </div>
 
@@ -52,7 +55,10 @@
         </div>
       </div>
       @if(hedonicToneChartDoughnut){
-        <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions"/>
+        <p-chart type="doughnut" [data]="hedonicToneDoughnutData" [options]="doughnutOptions"/>
+      }
+      @else {
+        <p-chart type="bar" [data]="hedonicToneBarData" [options]="barOptions"/>
       }
     </div>
 
@@ -79,7 +85,10 @@
         </div>
       </div>
       @if(typeChartDoughnut){
-        <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions"/>
+        <p-chart type="doughnut" [data]="typeDoughnutData" [options]="doughnutOptions"/>
+      }
+      @else {
+        <p-chart type="bar" [data]="typeBarData" [options]="barOptions"/>
       }
     </div>
 
@@ -106,10 +115,10 @@
         </div>
       </div>
       @if(subtypeChartDoughnut){
-        <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions"/>
+        <p-chart type="doughnut" [data]="subtypeDoughnutData" [options]="doughnutOptions"/>
       }
       @else {
-        <p-chart type="bar" [data]="barData" [options]="barOptions"/>
+        <p-chart type="bar" [data]="subtypeBarData" [options]="barOptions"/>
       }
     </div>
   </div>
