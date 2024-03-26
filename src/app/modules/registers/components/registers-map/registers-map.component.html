@@ -63,27 +63,31 @@
   *ngIf="intialPoint && intialPoint.x && intialPoint.y"
 
   >
-    @if(APGEMOpoints && APGEMOpoints.length > 0){ @for(point of APGEMOpoints;
-    track point){
+    @if(APGEMOpoints && APGEMOpoints.length > 0){
+      @for(point of APGEMOpoints; track point){
 
-    <mgl-marker [lngLat]="[point.x, point.y]">
-      <div class="apgemo-point"></div>
-    </mgl-marker>
+        <mgl-marker [lngLat]="[point.x, point.y]">
+          <div class="apgemo-point"></div>
+        </mgl-marker>
 
-    } } @if(APGEMOpolygon && APGEMOpolygon.length > 0){
-    <mgl-geojson-source id="APEGMOpolygons">
-      <mgl-feature
-        *ngFor="let polygon of APGEMOpolygon"
-        [geometry]="polygon.geometry"
-      ></mgl-feature>
-    </mgl-geojson-source>
+      }
+    }
+    @if(APGEMOpolygon && APGEMOpolygon.length > 0){
 
-    <mgl-layer
-      id="APEGMOpolygons"
-      type="fill"
-      source="APEGMOpolygons"
-      [paint]="APGEMOpolygonStyle"
-    ></mgl-layer>
+      <mgl-geojson-source id="APEGMOpolygons">
+        <mgl-feature
+          *ngFor="let polygon of APGEMOpolygon"
+          [geometry]="polygon.geometry"
+        />
+      </mgl-geojson-source>
+
+      <mgl-layer
+        id="APEGMOpolygons"
+        type="fill"
+        source="APEGMOpolygons"
+        [paint]="APGEMOpolygonStyle"
+      />
+
     }
 
     <ng-container *ngIf="geoJsonObservation">
@@ -110,39 +114,38 @@
             'interpolate',
             ['linear'],
             ['get', 'color'],
-            0,
-            0,
-            7,
-            1
+            0, 0,
+            12, 1
           ],
           'heatmap-intensity': [
             'interpolate',
             ['linear'],
             ['zoom'],
-            0,
-            1,
-            9,
-            3
+            0,0 ,
+            9,1
           ],
           'heatmap-color': [
             'interpolate',
             ['linear'],
             ['heatmap-density'],
-            0,
-            'rgba(33,102,172,0)',
-            0.2,
-            'rgb(103,169,207)',
-            0.4,
-            'rgb(209,229,240)',
-            0.6,
-            'rgb(253,219,199)',
-            0.8,
-            'rgb(239,138,98)',
-            1,
-            'rgb(178,24,43)'
+            0,    'rgba(58,136,185,0)',
+            0.1,  'rgba(58,136,185,.2)',
+            0.2,  'rgba(73,143,184,.4)',
+            0.3,  'rgb(96,156,181)',
+            0.4,  'rgb(127,180,175)',
+            0.5,  'rgb(168,218,165)',
+            0.6,  'rgb(255,234,166)',
+            0.7,  'rgb(253,176,100)',
+            0.8,  'rgb(236,111,60)',
+            0.9,  'rgb(223,64,38)',
+            1,    'rgb(216,34,30)'
           ],
-          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 9, 20],
-          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 18, 1, 20, 0]
+          'heatmap-radius': ['interpolate', ['linear'], ['zoom'],
+          0, 20,
+          20, 50],
+          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'],
+          1, 1,
+          20, 1]
         }"
       />
       } @else{
@@ -155,19 +158,15 @@
           'circle-color': [
             'step',
             ['get', 'point_count'],
-            '#627BC1',
-            10,
-            '#f1f075',
-            20,
+            '#627BC1',  10,
+            '#f1f075',  20,
             '#f28cb1'
           ],
           'circle-radius': [
             'step',
             ['get', 'point_count'],
-            20,
-            100,
-            30,
-            750,
+            20, 100,
+            30, 750,
             40
           ]
         }"
