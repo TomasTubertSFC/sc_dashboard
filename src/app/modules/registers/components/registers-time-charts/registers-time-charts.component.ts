@@ -97,7 +97,7 @@ export class RegistersTimeChartsComponent implements OnDestroy {
 
       this.options = {
           maintainAspectRatio: false,
-          aspectRatio: 0.6,
+          aspectRatio: 0.5044,
           plugins: {
               tooltip: {
                   mode: 'index',
