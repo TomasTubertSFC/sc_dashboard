@@ -95,27 +95,11 @@ export class PdfService {
     // Create a linear gradient
     const linearGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
     linearGradient.addColorStop(0, '#d7b1f2');
-    linearGradient.addColorStop(1, '#ff6200');
-
-    // Create a radial gradient
-    const radialGradient = ctx.createRadialGradient(
-      canvas.width * 0.7736,
-      canvas.height * 0.5752,
-      0,
-      canvas.width * 0.7736,
-      canvas.height * 0.5752,
-      canvas.width * 0.7736
-    );
-    radialGradient.addColorStop(0, '#ff6200');
-    radialGradient.addColorStop(1, '#d7b1f2');
+    linearGradient.addColorStop(0.75, '#ff6200');
 
     // Draw the linear gradient
     ctx.fillStyle = linearGradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Draw the radial gradient on top of the linear gradient
-    // ctx.fillStyle = radialGradient;
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Convert the canvas to a data URL
     const gradientImageUrl = canvas.toDataURL('image/jpeg');
@@ -204,9 +188,6 @@ export class PdfService {
         .map((el) => [el]);
       const pages = [firstPage, ...restPages];
 
-      console.log('restPages', restPages, restPages.length);
-      console.log('pages', pages);
-
       const pdf = new jsPDF('l', 'pt', 'a4');
 
       const pageWidth = pdf.internal.pageSize.getWidth();
@@ -222,8 +203,8 @@ export class PdfService {
           section.style.justifyContent = 'center';
           section.style.alignItems = 'flex-end';
           section.style.alignContent = 'center';
+          section.style.gap = '5px';
           section.style.flexWrap = 'wrap';
-          section.style.gap = '20px';
           section.style.width = '841.89px';
           section.style.height = '495.28px';
           section.id = `sectionToPdf-${idx}`;
@@ -240,10 +221,23 @@ export class PdfService {
               if (moreThanOneGraph) {
                 img.style.objectFit = 'contain';
                 img.style.width = '100%';
-                img.style.maxWidth = '410px';
+                switch (idx) {
+                  case 0:
+                    div.style.width = '100%';
+                    div.style.textAlign = 'center';
+                    img.style.maxWidth = '490px';
+                    img.style.maxHeight = '365px';
+                    break;
+                  case 1:
+                    img.style.maxWidth = '465px';
+                    img.style.maxHeight = '120px';
+                    break;
+                  case 2:
+                    img.style.maxWidth = '345px';
+                    img.style.maxHeight = '120px';
+                    break;
+                }
               } else {
-                img.style.objectFit = 'contain';
-                img.style.width = '100%';
                 img.style.maxHeight = '490px';
               }
               div.appendChild(img);
@@ -344,8 +338,18 @@ export class PdfService {
 
       pdf.save('OC_Report_' + date + '.pdf');
       this.loading.next(false);
+      this.messageService.add({
+        severity: 'success',
+        summary: '¡Descargado!',
+        detail: 'Informe descargado con éxito!',
+      });
     } catch (err) {
       this.loading.next(false);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'El informe no se ha podido descargar. Inténtelo de nuevo.',
+      });
       console.error('err', err);
     }
   }
