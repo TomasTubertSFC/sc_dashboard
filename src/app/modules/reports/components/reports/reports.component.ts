@@ -27,15 +27,19 @@ export class ReportsComponent {
     this.imgElements = imgElementsArr;
   }
 
-  downloadReport() {
-    const downloadReports = this.imgElements
-      .filter((el) => el.checked)
-      .map(({ value, key }) => {
-        return {
-          value,
-          key,
-        };
-      });
-    this.pdfService.downloadAsPdf(downloadReports);
+  async downloadReport() {
+    try {
+      const downloadReports = this.imgElements
+        .filter((el) => el.checked)
+        .map(({ value, key }) => {
+          return {
+            value,
+            key,
+          };
+        });
+      this.pdfService.downloadAsPdf(downloadReports);
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
