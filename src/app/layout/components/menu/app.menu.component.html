@@ -1,5 +1,5 @@
 <ul class="layout-menu">
-  <ng-container *ngFor="let item of model; let i = index">
+  <!-- <ng-container *ngFor="let item of model; let i = index">
     <li
       app-menuitem
       *ngIf="!item.separator"
@@ -8,7 +8,41 @@
       [root]="true"
     ></li>
     <li *ngIf="item.separator" class="menu-separator"></li>
-  </ng-container>
+  </ng-container> -->
+  <li>
+    <a
+      pRipple
+      routerLink="/dashboard"
+      [routerLinkActiveOptions]="{
+        paths: 'exact',
+        queryParams: 'ignored',
+        matrixParams: 'ignored',
+        fragment: 'ignored'
+      }"
+      routerLinkActive="active-route"
+    >
+      <icon-bar-chart [iconClass]="'mr-2'" />
+      <span class="menu-item"> Resumen </span>
+    </a>
+  </li>
+  <li>
+    <a routerLink="/dashboard/episodes" routerLinkActive="active-route">
+      <icon-transition-fade [iconClass]="'mr-2'" />
+      <span class="menu-item"> Episodios de olor </span>
+    </a>
+  </li>
+  <li>
+    <a routerLink="/dashboard/registers" routerLinkActive="active-route">
+      <icon-odour-registers [iconClass]="'mr-2'" />
+      <span class="menu-item"> Registros de olor </span>
+    </a>
+  </li>
+  <li>
+    <a routerLink="/dashboard/reports" routerLinkActive="active-route">
+      <icon-rubric [iconClass]="'mr-2'" />
+      <span class="menu-item"> Informes </span>
+    </a>
+  </li>
   <button
     (click)="saveView()"
     [loading]="loading"

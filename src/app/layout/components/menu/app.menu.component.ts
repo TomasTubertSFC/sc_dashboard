@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 
 import { AuthService } from '../../../services/auth/auth.service';
 import { PdfService } from '../../../services/pdf/pdf.service';
+import { OdourCollectComponent } from '../../../shared/icons/odour-icon/odour-icon.component';
 
 @Component({
   selector: 'app-menu',
@@ -30,21 +31,26 @@ export class AppMenuComponent implements OnInit {
         )
       )
       .subscribe((event: NavigationEnd) => {
-        this.disabledAddToReports = event.url === '/dashboard/informes';
+        this.disabledAddToReports = event.url === '/dashboard/reports';
       });
-    this.disabledAddToReports = this.router.url === '/dashboard/informes';
+    this.disabledAddToReports = this.router.url === '/dashboard/reports';
 
     this.pdfService.loading.subscribe((res) => {
-      if(!res){
+      if (!res) {
         this.loading = false;
       }
-    })
+    });
 
     this.model = [
       {
         label: '',
         items: [
-          { label: 'Resumen', icon: '', routerLink: ['/dashboard'] },
+          {
+            label: 'Resumen',
+            routerLink: ['/dashboard'],
+            icon: '',
+            customIcon: OdourCollectComponent,
+          },
           {
             label: 'Episodios de olor',
             icon: '',
@@ -58,7 +64,7 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Informes',
             icon: '',
-            routerLink: ['/dashboard/informes'],
+            routerLink: ['/dashboard/reports'],
           },
           {
             label: 'Mi perfil',
