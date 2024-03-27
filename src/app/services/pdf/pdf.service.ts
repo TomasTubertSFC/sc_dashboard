@@ -17,6 +17,8 @@ interface reportElements {
   2: ElementRef;
   3: ElementRef;
   4: ElementRef;
+  5: ElementRef;
+  6: ElementRef;
 }
 interface reportImages {
   0: string;
@@ -24,6 +26,8 @@ interface reportImages {
   2: string;
   3: string;
   4: string;
+  5: string;
+  6: string;
 }
 
 @Injectable({
@@ -34,11 +38,11 @@ export class PdfService {
 
   reportsElements: BehaviorSubject<reportElements | {}> = new BehaviorSubject<
     reportElements | {}
-  >({ 0: null, 1: null, 2: null, 3: null, 4: null });
+  >({ 0: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null });
 
   reportsElementsImg: BehaviorSubject<reportImages | {}> = new BehaviorSubject<
     reportImages | {}
-  >({ 0: null, 1: null, 2: null, 3: null, 4: null });
+  >({ 0: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null });
 
   constructor(private messageService: MessageService) {}
 
@@ -200,6 +204,9 @@ export class PdfService {
         .map((el) => [el]);
       const pages = [firstPage, ...restPages];
 
+      console.log('restPages', restPages, restPages.length);
+      console.log('pages', pages);
+
       const pdf = new jsPDF('l', 'pt', 'a4');
 
       const pageWidth = pdf.internal.pageSize.getWidth();
@@ -207,7 +214,7 @@ export class PdfService {
 
       const createPagesPromises = pages.map(async (page, idx) => {
         return new Promise<void>(async (resolve, reject) => {
-          if (!pages[idx].length) return resolve();
+          if (!page.length) return resolve();
 
           //Create section for the graphs
           const section = document.createElement('section');
@@ -243,7 +250,7 @@ export class PdfService {
               section.appendChild(div);
             });
           } else {
-            pages[idx].forEach((elementNum, idx) => {
+            page.forEach((elementNum, idx) => {
               const graph = elementsToPdf.find(
                 (el) => Number(el.key) === elementNum
               );
@@ -311,7 +318,10 @@ export class PdfService {
           const Xstart = (pageWidth - widthToPaint) / 2;
           const Ystart = (pageHeight - heightToPaint - 100) / 2 + 75;
 
-          if (idx > 0 && pages[0].length) {
+          const pagesToCreate = pages.filter((page) => page.length > 0);
+
+          //Check if the first page is not the first page to create
+          if (idx > 0 && pagesToCreate[0] !== page) {
             pdf.addPage();
           }
 
