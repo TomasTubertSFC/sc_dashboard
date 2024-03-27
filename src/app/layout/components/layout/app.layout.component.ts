@@ -15,7 +15,7 @@ import { StudyZoneService } from '../../../services/study-zone.service';
 import { PdfService } from '../../../services/pdf/pdf.service';
 
 interface LayoutState {
-  staticMenuDesktopInactive: boolean;
+  overlayMenuActive: boolean;
   staticMenuMobileActive: boolean;
 }
 
@@ -39,10 +39,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
   menuOutsideClickListener: any;
 
-  menuMode: string = 'static';
-
   state: LayoutState = {
-    staticMenuDesktopInactive: false,
+    // overlayMenuActive: false,
+    overlayMenuActive: false,
     staticMenuMobileActive: false,
   };
 
@@ -111,8 +110,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     this.sidebarMenuIsOpen = !this.sidebarMenuIsOpen;
     this.menuService.sidebarMenuIsOpen = this.sidebarMenuIsOpen;
     if (this.isDesktop()) {
-      this.state.staticMenuDesktopInactive =
-        !this.state.staticMenuDesktopInactive;
+      this.state.overlayMenuActive = !this.state.overlayMenuActive;
     } else {
       this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
 
@@ -161,8 +159,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   //Toggle classes to show or not sidebar menu
   get containerClass() {
     return {
-      'layout-static-inactive':
-        this.state.staticMenuDesktopInactive && this.menuMode,
+      'layout-overlay-active': this.state.overlayMenuActive,
       'layout-mobile-active': this.state.staticMenuMobileActive,
     };
   }
