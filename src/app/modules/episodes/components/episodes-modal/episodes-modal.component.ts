@@ -12,8 +12,6 @@ import { withHttpTransferCacheOptions } from '@angular/platform-browser';
 })
 export class EpisodesModalComponent implements OnDestroy {
 
-
-
   public episdoesSidebarVisible: boolean = false;
   public studyZone: StudyZone | null = null;
   public episode: Episode | null = null;
@@ -32,6 +30,8 @@ export class EpisodesModalComponent implements OnDestroy {
   public plausibilityDistance!: number;
   public plausibilityMinOKObservations!: number;
 
+  @ViewChild('episodesContainer') episodesContainer!: ElementRef;
+
   constructor(private studyZoneService: StudyZoneService) { }
 
   ngOnInit() {
@@ -47,14 +47,15 @@ export class EpisodesModalComponent implements OnDestroy {
     });
 
     this.episode$ = this.studyZoneService.episode.subscribe(episode => {
-      if (episode) {
+      if (episode){
         this.episode = episode;
-        if (!this.episdoesSidebarVisible ) this.onToggleEpisodesModal();
+        this.episodesContainer.nativeElement.scrollTop = this.episode.id * 40;
       }
     });
 
     this.previewEpisode$ = this.studyZoneService.previewEpisode.subscribe(episode => {
       this.previewEpisode = episode;
+      this.episodesContainer.nativeElement.scrollTop = this.previewEpisode? this.previewEpisode.id * 40 : this.episode? this.episode.id *40 : 0;
     });
 
     this.observation$ = this.studyZoneService.observation.subscribe(observation => {
@@ -68,6 +69,8 @@ export class EpisodesModalComponent implements OnDestroy {
       if(this.observationButtonPreview) this.observationButtonPreview.dispatchEvent( new Event('mouseleave'));
       this.observationButtonPreview = document.getElementById(`obsButton${previewObservation}`) as HTMLElement;
       if(this.observationButtonPreview) this.observationButtonPreview.dispatchEvent( new Event('mouseover'));
+
+      this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : this.episodesContainer.nativeElement.scrollTop;
 
     });
 
@@ -91,10 +94,15 @@ export class EpisodesModalComponent implements OnDestroy {
 
   public onToggleEpisodesModal() {
     this.episdoesSidebarVisible = !this.episdoesSidebarVisible;
+    setTimeout(() => {
+      this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : 0;
+    }, 300);
   }
 
   public observationSelected(id:number | null = null):void {
-    if(id !== null) this.studyZoneService.observation = id;
+    if(id !== null){
+      this.studyZoneService.observation = id;
+    }
   }
 
   public observationPreview(id:number | null = null):void {
