@@ -87,23 +87,20 @@
   </li>
   <div class="h-full flex flex-column justify-content-end gap-3">
     <li>
-      <button
-        (click)="saveView()"
-        [loading]="loading"
-        [disabled]="loading || disabledAddToReports"
+      <a
+        routerLink="/dashboard/profile"
+        routerLinkActive="active-route"
         pButton
         type="button"
         class="p-button-rounded p-button-outlined w-full"
       >
         <icon-user />
         <span class="menu-item"> Mi perfil </span>
-      </button>
+      </a>
     </li>
     <li>
       <button
-        (click)="saveView()"
-        [loading]="loading"
-        [disabled]="loading || disabledAddToReports"
+        (click)="logout()"
         pButton
         type="button"
         class="p-button-rounded p-button-outlined w-full"

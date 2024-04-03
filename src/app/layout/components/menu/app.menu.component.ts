@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { AuthService } from '../../../services/auth/auth.service';
 import { PdfService } from '../../../services/pdf/pdf.service';
 import { OdourCollectComponent } from '../../../shared/icons/odour-icon/odour-icon.component';
+import { StudyZoneService } from '../../../services/study-zone.service';
 
 @Component({
   selector: 'app-menu',
@@ -19,6 +20,7 @@ export class AppMenuComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private pdfService: PdfService,
+    private studyZoneService: StudyZoneService,
     private router: Router
   ) {}
 
@@ -88,5 +90,13 @@ export class AppMenuComponent implements OnInit {
   saveView(): void {
     this.loading = true;
     this.pdfService.saveView();
+  }
+
+  openStudyZoneModal() {
+    this.studyZoneService.studyZoneModal = true;
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
