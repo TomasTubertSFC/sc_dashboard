@@ -1,9 +1,10 @@
 @media screen and (min-width: 1960px) {
   .layout-main,
   .landing-wrapper {
-    width: 1504px;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    // width: 1504px;
+    width: 100%;
+    // margin-left: 80px !important;
+    // margin-right: auto !important;
   }
 }
 
@@ -11,7 +12,7 @@
   .layout-wrapper {
     &.layout-overlay {
       .layout-main-container {
-        margin-left: 0;
+        margin-left: 80px;
         padding-left: 0.5rem;
       }
 
@@ -20,12 +21,14 @@
         height: 90vh;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-        li{
-           display: flex;
-           height: 49px;
+        li {
+          display: flex;
+          height: 49px;
         }
-        .layout-menu a {
-          width: fit-content;
+        .layout-menu {
+          a {
+            width: 100%;
+          }
         }
       }
 
@@ -33,7 +36,7 @@
         .layout-sidebar {
           width: 250px;
           .menu-item {
-            transition: opacity 0.1s ease;
+            transition: opacity 0.1s 0.3s ease;
             opacity: 1;
             width: 100%;
           }

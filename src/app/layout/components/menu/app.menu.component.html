@@ -10,6 +10,13 @@
     <li *ngIf="item.separator" class="menu-separator"></li>
   </ng-container> -->
   <li>
+    <a>
+      <icon-odour-icon-logo [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
+      <span class="menu-item"> ZONA DE ESTUDIO 1</span>
+    </a>
+  </li>
+  <p-divider />
+  <li>
     <a
       pRipple
       routerLink="/dashboard"
@@ -43,14 +50,67 @@
       <span class="menu-item"> Informes </span>
     </a>
   </li>
-  <button
-    (click)="saveView()"
-    [loading]="loading"
-    [disabled]="loading || disabledAddToReports"
-    pButton
-    type="button"
-    class="p-button-rounded"
-  >
-    Añadir al informe
-  </button>
+  <p-divider />
+  <li class="mb-3">
+    <button
+      pButton
+      type="button"
+      class="p-button-rounded p-button-outlined w-full"
+    >
+      <icon-date-range />
+      <span class="menu-item"> Filtro tiempo </span>
+    </button>
+  </li>
+  <li>
+    <button
+      pButton
+      type="button"
+      class="p-button-rounded p-button-outlined w-full"
+    >
+      <icon-change-circle />
+      <span class="menu-item"> Cambiar zona </span>
+    </button>
+  </li>
+  <p-divider />
+  <li>
+    <button
+      (click)="saveView()"
+      [loading]="loading"
+      [disabled]="loading || disabledAddToReports"
+      pButton
+      type="button"
+      class="p-button-rounded p-button-outlined w-full"
+    >
+      <icon-add-to-chart />
+      <span class="menu-item"> Añadir al informe </span>
+    </button>
+  </li>
+  <div class="h-full flex flex-column justify-content-end gap-3">
+    <li>
+      <button
+        (click)="saveView()"
+        [loading]="loading"
+        [disabled]="loading || disabledAddToReports"
+        pButton
+        type="button"
+        class="p-button-rounded p-button-outlined w-full"
+      >
+        <icon-user />
+        <span class="menu-item"> Mi perfil </span>
+      </button>
+    </li>
+    <li>
+      <button
+        (click)="saveView()"
+        [loading]="loading"
+        [disabled]="loading || disabledAddToReports"
+        pButton
+        type="button"
+        class="p-button-rounded p-button-outlined w-full"
+      >
+        <icon-logout />
+        <span class="menu-item"> Cerrar sesión </span>
+      </button>
+    </li>
+  </div>
 </ul>

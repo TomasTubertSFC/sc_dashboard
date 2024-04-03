@@ -10,6 +10,9 @@ import { RubricComponent } from './rubric/rubric.component';
 import { OdourRegistersComponent } from './odour-registers/odour-registers.components';
 import { TransitionFadeComponent } from './transition-fade/transition-fade.components';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { OdourIconLogoComponent } from './odour-icon-logo/odour-icon-logo.component';
+import { UserIconComponent } from './user-icon/user-icon.components';
+import { LogoutIconComponent } from './logout-icon/logout-icon.components';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
     OdourRegistersComponent,
     TransitionFadeComponent,
     BarChartComponent,
+    OdourIconLogoComponent,
+    UserIconComponent,
+    LogoutIconComponent
   ],
   exports: [
     OdourLogoComponent,
@@ -33,6 +39,9 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
     OdourRegistersComponent,
     TransitionFadeComponent,
     BarChartComponent,
+    OdourIconLogoComponent,
+    UserIconComponent,
+    LogoutIconComponent
   ],
   imports: [CommonModule],
 })
