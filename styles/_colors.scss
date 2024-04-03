@@ -35,13 +35,14 @@ $yellow-transparency: rgba(255, 255, 125, 0.2);
 //GREYSCALE
 
 $white: #f8f9f5;
-$grey-lighter: #EDEEF1;
-$grey-light: #DCDCDA;
-$grey: #A0A19F;
+$grey-lighter: #edeef1;
+$grey-light: #dcdcda;
+$grey: #a0a19f;
 $grey-dark: #626260;
 $black: #191919;
 
 //OTHERS
-$red: #D33F3F;
-$error: #D33F3F;
+$red: #d33f3f;
+$error: #d33f3f;
 
+$focus-ring: 0 0 0 0.2rem $orange-transparency !important;

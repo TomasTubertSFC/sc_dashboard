@@ -7,6 +7,9 @@
   }
 }
 nav {
+  max-width: 1440px;
+  left: 50%;
+  transform: translateX(-50%);
   .btn-primary {
     border: $black 1px solid;
     background-color: transparent;

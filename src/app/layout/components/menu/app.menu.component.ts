@@ -1,23 +1,29 @@
-import { OnInit, WritableSignal, signal } from '@angular/core';
+import { OnDestroy, OnInit, WritableSignal, signal } from '@angular/core';
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '../../../services/auth/auth.service';
 import { PdfService } from '../../../services/pdf/pdf.service';
+import { OdourCollectComponent } from '../../../shared/icons/odour-icon/odour-icon.component';
+import { StudyZoneService } from '../../../services/study-zone.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './app.menu.component.html',
 })
-export class AppMenuComponent implements OnInit {
+export class AppMenuComponent implements OnInit, OnDestroy {
   model: any[] = [];
   disabledAddToReports!: boolean;
   loading: boolean = false;
+  subscriptions$: Subscription = new Subscription();
+  studyZoneid!: number | null;
 
   constructor(
     private authService: AuthService,
     private pdfService: PdfService,
+    private studyZoneService: StudyZoneService,
     private router: Router
   ) {}
 
@@ -30,21 +36,28 @@ export class AppMenuComponent implements OnInit {
         )
       )
       .subscribe((event: NavigationEnd) => {
-        this.disabledAddToReports = event.url === '/dashboard/informes';
+        this.disabledAddToReports = event.url === '/dashboard/reports';
       });
-    this.disabledAddToReports = this.router.url === '/dashboard/informes';
+    this.disabledAddToReports = this.router.url === '/dashboard/reports';
 
-    this.pdfService.loading.subscribe((res) => {
-      if(!res){
-        this.loading = false;
-      }
-    })
+    this.subscriptions$.add(
+      this.pdfService.loading.subscribe((res) => {
+        if (!res) {
+          this.loading = false;
+        }
+      })
+    );
 
     this.model = [
       {
         label: '',
         items: [
-          { label: 'Resumen', icon: '', routerLink: ['/dashboard'] },
+          {
+            label: 'Resumen',
+            routerLink: ['/dashboard'],
+            icon: '',
+            customIcon: OdourCollectComponent,
+          },
           {
             label: 'Episodios de olor',
             icon: '',
@@ -58,7 +71,7 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Informes',
             icon: '',
-            routerLink: ['/dashboard/informes'],
+            routerLink: ['/dashboard/reports'],
           },
           {
             label: 'Mi perfil',
@@ -77,10 +90,33 @@ export class AppMenuComponent implements OnInit {
         ],
       },
     ];
+
+    console.log('ngOninit');
+    this.subscriptions$.add(
+      this.studyZoneService.studyZone.subscribe((studyZone) => {
+        console.log('studyZone', studyZone);
+        if (!studyZone) this.studyZoneid = null;
+        if (studyZone && this.studyZoneService.studyZoneId) {
+          this.studyZoneid = this.studyZoneService.studyZoneId;
+        }
+      })
+    );
   }
 
   saveView(): void {
     this.loading = true;
     this.pdfService.saveView();
+  }
+
+  openStudyZoneModal() {
+    this.studyZoneService.studyZoneModal = true;
+  }
+
+  logout(): void {
+    this.authService.logout();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions$.unsubscribe();
   }
 }

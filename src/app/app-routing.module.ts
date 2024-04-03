@@ -29,7 +29,7 @@ const routes: Routes = [
         component: ProfileComponent,
       },
       {
-        path: 'informes',
+        path: 'reports',
         component: ReportsComponent,
       },
       {

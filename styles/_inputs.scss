@@ -6,7 +6,33 @@
     height: 40px;
   }
  .p-checkbox-box.p-highlight:hover {
-    border-color: var(--violet);
-    background: var(--violet-dark);
+    border-color: var(--orange);
+    background: var(--orange-dark);
+  }
+}
+
+.password-input-group {
+  input {
+    border-right: 0;
+  }
+  button {
+    background-color: transparent;
+    border: 1px solid #ced4da;
+    border-left: 0;
+    span {
+      font-size: 1rem;
+      color: #495057;
+    }
+  }
+
+  .invalid-input {
+    border: 1px solid #dc3545;
+    border-left: 0;
+  }
+}
+
+p-dropdownitem {
+  li {
+    padding: 0.5rem 0.5rem !important;
   }
 }

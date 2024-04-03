@@ -17,6 +17,7 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ToastModule } from 'primeng/toast';
+import { DividerModule } from 'primeng/divider';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { ToastModule } from 'primeng/toast';
     SharedComponentsModule,
     SidebarModule,
     SkeletonModule,
-    ToastModule
+    ToastModule,
+    DividerModule
   ],
   exports: [AppLayoutComponent],
 })
