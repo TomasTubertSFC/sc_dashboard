@@ -4,7 +4,7 @@
 # build the docker image with 'docker build -t oc_dash .'
 # run the container from the image 'docker run -p 80:4200 oc_dash'
 # while this container is alive go into it 'docker exec -ti 8 bash'
-# comment three lines of code within file 'cd node_modules/ngx-mapbox-gl/fesm2022/ngx-mapbox-gl.mjs'
+# comment three lines of code within file 'nano node_modules/ngx-mapbox-gl/fesm2022/ngx-mapbox-gl.mjs'
 # comment lines '       //if (options.customMapboxApiUrl) {
                         # //    MapboxGl.baseApiUrl = options.customMapboxApiUrl;
                         # //}'
