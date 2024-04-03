@@ -16,15 +16,13 @@
       }
 
       .layout-sidebar {
-        transform: translate(-70%, -47%);
         left: 0;
-        top: 50%;
         height: 90vh;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
         li{
            display: flex;
-           justify-content: flex-end;
+           height: 49px;
         }
         .layout-menu a {
           width: fit-content;
@@ -33,12 +31,10 @@
 
       &.layout-overlay-active {
         .layout-sidebar {
-          transform: translate(0, -47%);
-          li{
-            display: flex;
-            justify-content: flex-start;
-         }
+          width: 250px;
           .menu-item {
+            transition: opacity 0.1s ease;
+            opacity: 1;
             width: 100%;
           }
         }

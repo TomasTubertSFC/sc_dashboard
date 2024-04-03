@@ -1,13 +1,14 @@
 .layout-sidebar {
   position: fixed;
-  width: 250px;
+  width: 80px;
   height: calc(100vh - 6rem);
   z-index: 999;
   overflow-y: auto;
   user-select: none;
   top: 5.5rem;
   left: 0.5rem;
-  transition: transform $transitionDuration, left $transitionDuration;
+  transition: transform $transitionDuration, left $transitionDuration,
+    width $transitionDuration;
   background-color: var(--surface-overlay);
   border-radius: $borderRadius;
   padding: 0.5rem 1rem;
@@ -69,8 +70,7 @@
     }
 
     .menu-item {
-      transition: all 0.2s ease;
-      width: 0;
+      transition: opacity 0.2s ease;
       opacity: 0;
     }
 
