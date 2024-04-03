@@ -5,7 +5,7 @@
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width:700px) {
   .layout-wrapper {
     &.layout-overlay {
       .layout-main-container {
@@ -74,9 +74,7 @@
     }
 
     .layout-sidebar {
-      transform: translateX(-100%);
       left: 0;
-      top: 0;
       height: 100vh;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;

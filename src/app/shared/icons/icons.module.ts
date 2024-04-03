@@ -13,6 +13,7 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { OdourIconLogoComponent } from './odour-icon-logo/odour-icon-logo.component';
 import { UserIconComponent } from './user-icon/user-icon.components';
 import { LogoutIconComponent } from './logout-icon/logout-icon.components';
+import { DownloadIconComponent } from './download/download.components';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { LogoutIconComponent } from './logout-icon/logout-icon.components';
     BarChartComponent,
     OdourIconLogoComponent,
     UserIconComponent,
-    LogoutIconComponent
+    LogoutIconComponent,
+    DownloadIconComponent,
   ],
   exports: [
     OdourLogoComponent,
@@ -41,7 +43,8 @@ import { LogoutIconComponent } from './logout-icon/logout-icon.components';
     BarChartComponent,
     OdourIconLogoComponent,
     UserIconComponent,
-    LogoutIconComponent
+    LogoutIconComponent,
+    DownloadIconComponent,
   ],
   imports: [CommonModule],
 })

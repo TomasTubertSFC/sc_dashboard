@@ -49,7 +49,7 @@
     </a>
   </li>
   <p-divider />
-  <li class="mb-3">
+  <li>
     <button
       pButton
       type="button"
@@ -74,8 +74,7 @@
   <li>
     <button
       (click)="saveView()"
-      [loading]="loading"
-      [disabled]="loading || disabledAddToReports"
+      [disabled]="disabledAddToReports"
       pButton
       type="button"
       class="p-button-rounded p-button-outlined w-full"

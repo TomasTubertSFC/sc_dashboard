@@ -18,7 +18,7 @@ export class ParticipantCitizenshipGraphComponent implements OnInit {
 
   ngOnInit(): void {
     const documentStyle = getComputedStyle(document.documentElement);
-    this.backgroundColor = documentStyle.getPropertyValue('--violet');
+    this.backgroundColor = documentStyle.getPropertyValue('--orange');
     this.percentageOfActiveUsers = (this.totalUsers / this.activeUsers) * 100;
   }
 }
