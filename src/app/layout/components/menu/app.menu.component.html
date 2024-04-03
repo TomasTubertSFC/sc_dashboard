@@ -10,10 +10,8 @@
     <li *ngIf="item.separator" class="menu-separator"></li>
   </ng-container> -->
   <li>
-    <a>
-      <icon-odour-icon-logo [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
-      <span class="menu-item"> ZONA DE ESTUDIO 1</span>
-    </a>
+    <icon-odour-icon-logo [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
+    <span class="menu-item"> ZONA DE ESTUDIO {{ studyZoneid }}</span>
   </li>
   <p-divider />
   <li>
@@ -63,6 +61,7 @@
   </li>
   <li>
     <button
+      (click)="openStudyZoneModal()"
       pButton
       type="button"
       class="p-button-rounded p-button-outlined w-full"

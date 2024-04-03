@@ -1,4 +1,4 @@
-import { OnInit, WritableSignal, signal } from '@angular/core';
+import { OnDestroy, OnInit, WritableSignal, signal } from '@angular/core';
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -7,15 +7,18 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { PdfService } from '../../../services/pdf/pdf.service';
 import { OdourCollectComponent } from '../../../shared/icons/odour-icon/odour-icon.component';
 import { StudyZoneService } from '../../../services/study-zone.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './app.menu.component.html',
 })
-export class AppMenuComponent implements OnInit {
+export class AppMenuComponent implements OnInit, OnDestroy {
   model: any[] = [];
   disabledAddToReports!: boolean;
   loading: boolean = false;
+  subscriptions$: Subscription = new Subscription();
+  studyZoneid!: number | null;
 
   constructor(
     private authService: AuthService,
@@ -37,11 +40,13 @@ export class AppMenuComponent implements OnInit {
       });
     this.disabledAddToReports = this.router.url === '/dashboard/reports';
 
-    this.pdfService.loading.subscribe((res) => {
-      if (!res) {
-        this.loading = false;
-      }
-    });
+    this.subscriptions$.add(
+      this.pdfService.loading.subscribe((res) => {
+        if (!res) {
+          this.loading = false;
+        }
+      })
+    );
 
     this.model = [
       {
@@ -85,6 +90,17 @@ export class AppMenuComponent implements OnInit {
         ],
       },
     ];
+
+    console.log('ngOninit');
+    this.subscriptions$.add(
+      this.studyZoneService.studyZone.subscribe((studyZone) => {
+        console.log('studyZone', studyZone);
+        if (!studyZone) this.studyZoneid = null;
+        if (studyZone && this.studyZoneService.studyZoneId) {
+          this.studyZoneid = this.studyZoneService.studyZoneId;
+        }
+      })
+    );
   }
 
   saveView(): void {
@@ -98,5 +114,9 @@ export class AppMenuComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions$.unsubscribe();
   }
 }

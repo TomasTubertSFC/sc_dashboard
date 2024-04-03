@@ -179,3 +179,7 @@ button.close {
     transform: rotate(45deg);
   }
 }
+
+.p-button.p-button-outlined:not(:disabled):active {
+  background-color: $orange-light;
+}
