@@ -59,7 +59,7 @@
 :host ::ng-deep {
   .floatSidebar {
     height: fit-content;
-    max-height: calc(100vh - 24rem);
+    max-height: calc(100vh - 17rem);
     margin: 6rem 1rem auto;
     width: calc(100% - 2rem);
     max-width: 450px;
@@ -70,6 +70,11 @@
     }
     .p-sidebar-content{
       padding: 0;
+      #episodesContainer{
+        max-height: calc(100vh - 22rem);
+        overflow-y: auto;
+        scroll-behavior: smooth;
+      }
     }
   }
   .severance{
@@ -80,6 +85,10 @@
     position: relative;
     padding-left: 10px;
     margin-left: 10px;
+    width: min-content;
+    text-align: center;
+    line-height: 13px;
+    height: 22px;
     &::before{
       content: '';
       position: absolute;
@@ -96,15 +105,15 @@
     top: 0;
     overflow: hidden;
     .p-accordion-header-link{
+      display: flex;
+      justify-content: space-between;
       background-color:#FFF;
       color: var(--text-color);
-      padding: .8rem .5rem;
+      padding: 0 .5rem;
       min-width: max-content;
+      height: 40px;
       &:hover{
         background-color:#e4e6ff
-      }
-      *{
-        min-width: max-content;
       }
     }
   }
