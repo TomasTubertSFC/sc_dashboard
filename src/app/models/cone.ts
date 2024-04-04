@@ -388,16 +388,6 @@ export class Cone {
     else{
       if(startConeDegrees <= windDegFromEast || endConeDegrees >= windDegFromEast) this.plausibleCone = true;
     }
-
-    console.log('plausibleCone', this.plausibleCone);
-
-    console.log(
-      'startConeDegrees', startConeDegrees,
-      'windDebFromEast',  windDegFromEast,
-      'endConeDegrees',   endConeDegrees,
-      );
-
-
   }
 
   /**
