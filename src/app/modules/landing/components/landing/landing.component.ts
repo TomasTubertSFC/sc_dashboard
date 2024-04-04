@@ -12,14 +12,19 @@ export class LandingComponent {
 
   company_icons: { src: string; alt: string; id: number }[] = [
     {
-      src: '../assets/images/icon-fecyt.png',
-      alt: 'icono Fecyt',
+      src: '../assets/images/logo-sfc.png',
+      alt: 'icono Science for change',
       id: 1,
     },
     {
-      src: '../assets/images/logo-ministerio-innovacion.svg',
-      alt: 'ministerio de innovación',
+      src: '../assets/images/cdti_min.jpg',
+      alt: 'NEOTEC',
       id: 2,
+    },
+    {
+      src: '../assets/images/NextGeneration.jpg',
+      alt: 'Next Generation EU',
+      id: 3,
     },
   ];
 

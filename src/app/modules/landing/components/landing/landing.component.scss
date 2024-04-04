@@ -22,8 +22,8 @@ header {
       rgba(255, 255, 255, 0.2)
     ),
     radial-gradient(77.36% 256.97% at 77.36% 57.52%, #ff6200 0%, #d7b1f2 100%);
-  clip-path: ellipse(150% 87% at 93% 13%);
-  min-height: 725px;
+  clip-path: ellipse(200% 87% at 93% 13%);
+  min-height: 850px;
   padding-top: 100px !important;
   img {
     aspect-ratio: 29/20;
@@ -42,6 +42,10 @@ header {
   }
   .surface-card {
     background-color: var(--surface-ground) !important;
+    img {
+      object-fit: contain;
+      border-radius: 0.5rem;
+    }
   }
   .overlay-logo {
     background: linear-gradient(
