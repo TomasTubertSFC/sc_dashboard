@@ -21,6 +21,7 @@ import { ChartModule } from 'primeng/chart';
 import { DividerModule } from 'primeng/divider';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { RegistersTypologyChartsComponent } from './components/registers-typology-charts/registers-typology-charts.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { RegistersTypologyChartsComponent } from './components/registers-typolog
     CalendarModule,
     ChartModule,
     DividerModule,
-    RadioButtonModule
+    RadioButtonModule,
+    SkeletonModule,
 
   ]
 })
