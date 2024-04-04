@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ProgressBarModule,
     ToastModule,
     DropdownModule,
+    SkeletonModule
   ],
 })
 export class OverviewModule {}

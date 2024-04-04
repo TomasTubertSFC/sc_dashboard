@@ -4,8 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppMenuComponent } from './components/menu/app.menu.component';
-import { AppMenuitemComponent } from './components/menuItem/app.menuitem.component';
-import { AppTopBarComponent } from './components/topbar/app.topbar.component';
 import { AppFooterComponent } from './components/footer/app.footer.component';
 import { AppSidebarComponent } from './components/sidebar/app.sidebar.component';
 import { AppLayoutComponent } from './components/layout/app.layout.component';
@@ -15,7 +13,6 @@ import { SidebarModule } from 'primeng/sidebar';
 import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
-import { SkeletonModule } from 'primeng/skeleton';
 import { ToastModule } from 'primeng/toast';
 import { DividerModule } from 'primeng/divider';
 
@@ -25,9 +22,7 @@ import { DividerModule } from 'primeng/divider';
     AppFooterComponent,
     AppLayoutComponent,
     AppMenuComponent,
-    AppMenuitemComponent,
     AppSidebarComponent,
-    AppTopBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +33,6 @@ import { DividerModule } from 'primeng/divider';
     RouterModule,
     SharedComponentsModule,
     SidebarModule,
-    SkeletonModule,
     ToastModule,
     DividerModule
   ],

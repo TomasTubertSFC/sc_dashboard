@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
   templateUrl: './app.menu.component.html',
 })
 export class AppMenuComponent implements OnInit, OnDestroy {
-  model: any[] = [];
   disabledAddToReports!: boolean;
   loading: boolean = false;
   subscriptions$: Subscription = new Subscription();
@@ -48,50 +47,6 @@ export class AppMenuComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.model = [
-      {
-        label: '',
-        items: [
-          {
-            label: 'Resumen',
-            routerLink: ['/dashboard'],
-            icon: '',
-            customIcon: OdourCollectComponent,
-          },
-          {
-            label: 'Episodios de olor',
-            icon: '',
-            routerLink: ['/dashboard/episodes'],
-          },
-          {
-            label: 'Registros de olor',
-            icon: '',
-            routerLink: ['/dashboard/registers'],
-          },
-          {
-            label: 'Informes',
-            icon: '',
-            routerLink: ['/dashboard/reports'],
-          },
-          {
-            label: 'Mi perfil',
-            icon: '',
-            routerLink: ['/mi-perfil'],
-            class: 'block md:hidden',
-          },
-          {
-            label: 'Cerrar sesión',
-            icon: '',
-            command: () => {
-              this.authService.logout();
-            },
-            class: 'block md:hidden',
-          },
-        ],
-      },
-    ];
-
-    console.log('ngOninit');
     this.subscriptions$.add(
       this.studyZoneService.studyZone.subscribe((studyZone) => {
         console.log('studyZone', studyZone);

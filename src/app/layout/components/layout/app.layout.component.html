@@ -12,7 +12,12 @@
   <div class="layout-main-container">
     <div class="layout-main">
       @if(studyZoneid){
+
       <router-outlet />
+      } @else {
+      <app-spinner />
+      }
+      <!-- @if(studyZoneid){
       }
       @else {
       <div class="card">
@@ -30,11 +35,11 @@
           <p-skeleton width="4rem" height="2rem"></p-skeleton>
         </div>
       </div>
-      }
+      } -->
     </div>
   </div>
   <div class="layout-mask"></div>
 </div>
-<app-spinner [loading]="loading"/>
+<app-spinner [loading]="loading" />
 <p-toast position="top-center" />
 <app-study-zone-select-modal />
