@@ -168,7 +168,7 @@
   --primary-300: #61adff;
   --primary-400: #3094ff;
   --primary-500: #007bff;
-  --primary-600: #0069d9;
+  --primary-600: var(--orange-light);
   --primary-700: #0056b3;
   --primary-800: #00448c;
   --primary-900: #003166;
@@ -1905,8 +1905,8 @@
     background: var(--orange);
   }
   .p-slider:not(.p-disabled) .p-slider-handle:hover {
-    background: #0069d9;
-    border-color: #0069d9;
+    background: var(--orange-light);
+    border-color: var(--orange-light);
   }
   .p-slider.p-slider-animate.p-slider-horizontal .p-slider-handle {
     transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s,
@@ -2112,9 +2112,9 @@
     border-radius: 4px;
   }
   .p-button:not(:disabled):hover {
-    background: #0069d9;
+    background: var(--orange-light);
     color: #ffffff;
-    border-color: #0069d9;
+    border-color: var(--orange-light);
   }
   .p-button:not(:disabled):active {
     background: var(--orange);
@@ -2708,7 +2708,7 @@
   }
   .p-button.p-button-link:not(:disabled):hover {
     background: transparent;
-    color: #0069d9;
+    color: var(--orange-light);
     border-color: transparent;
   }
   .p-button.p-button-link:not(:disabled):hover .p-button-label {
@@ -4883,7 +4883,7 @@
     right: -1rem;
   }
   .p-overlaypanel .p-overlaypanel-close:enabled:hover {
-    background: #0069d9;
+    background: var(--orange-light);
     color: #ffffff;
   }
   .p-overlaypanel:after {
@@ -5005,9 +5005,9 @@
   }
 
   .p-fileupload-choose:not(.p-disabled):hover {
-    background: #0069d9;
+    background: var(--orange-light);
     color: #ffffff;
-    border-color: #0069d9;
+    border-color: var(--orange-light);
   }
   .p-fileupload-choose:not(.p-disabled):active {
     background: var(--orange);

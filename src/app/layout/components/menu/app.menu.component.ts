@@ -49,7 +49,6 @@ export class AppMenuComponent implements OnInit, OnDestroy {
 
     this.subscriptions$.add(
       this.studyZoneService.studyZone.subscribe((studyZone) => {
-        console.log('studyZone', studyZone);
         if (!studyZone) this.studyZoneid = null;
         if (studyZone && this.studyZoneService.studyZoneId) {
           this.studyZoneid = this.studyZoneService.studyZoneId;
