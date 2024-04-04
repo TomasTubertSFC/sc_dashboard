@@ -380,9 +380,23 @@ export class Cone {
     let windDegFromEast = this.wind.deg <= 90 ? this.wind.deg + 270 : this.wind.deg - 90;
     let startConeDegrees =  this.calculateAngle({ x: convexHull.observation.x + 1000, y: convexHull.observation.y }, convexHull.observation, convexHull.prevPoint) - 30;
     let endConeDegrees =  this.calculateAngle({ x: convexHull.observation.x + 1000, y: convexHull.observation.y }, convexHull.observation, convexHull.nextPoint) + 30;
+    if(endConeDegrees > 360) endConeDegrees = endConeDegrees - 360;
 
-    if(startConeDegrees <= windDegFromEast && endConeDegrees >= windDegFromEast) this.plausibleCone = true;
-    
+    if(startConeDegrees <= endConeDegrees){
+      if(startConeDegrees <= windDegFromEast && endConeDegrees >= windDegFromEast) this.plausibleCone = true;
+    }
+    else{
+      if(startConeDegrees <= windDegFromEast || endConeDegrees >= windDegFromEast) this.plausibleCone = true;
+    }
+
+    console.log('plausibleCone', this.plausibleCone);
+
+    console.log(
+      'startConeDegrees', startConeDegrees,
+      'windDebFromEast',  windDegFromEast,
+      'endConeDegrees',   endConeDegrees,
+      );
+
 
   }
 
