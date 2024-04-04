@@ -15,6 +15,7 @@ import { EpisodesPageComponent } from './episodes-page/episodes-page.component';
 import { EpisodesMapComponent } from './components/episodes-map/episodes-map.component';
 import { EpisodesTimelineComponent } from './components/episodes-timeline/episodes-timeline.component';
 import { EpisodesModalComponent } from './components/episodes-modal/episodes-modal.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { EpisodesModalComponent } from './components/episodes-modal/episodes-mod
     EpisodesRoutingModule,
     OverlayPanelModule,
     TagModule,
+    SkeletonModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoibmV0aWZpZzM1MiIsImEiOiJjbHN4Yzcyc3AwMW8xMmtwMnVlenEyaGQ0In0.SMd509FY7jcvLxBPpbw0pA',
     })
