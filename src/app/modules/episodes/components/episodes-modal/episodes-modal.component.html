@@ -27,7 +27,7 @@
 <p-sidebar [(visible)]="episdoesSidebarVisible" [appendTo]="episodesModal" [position]="'right'" [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
   <ng-template pTemplate="header">
     <div class="flex flex-1 justify-content-between">
-      <span>Episodies: {{studyZone?.episodes?.length}}</span>
+      <span>Episodios: {{studyZone?.episodes?.length}}</span>
     </div>
   </ng-template>
 
@@ -39,10 +39,10 @@
           [classList]="'position-sticky'"
           [ngClass]="{'preview': index === previewEpisode?.id}"
           (click)="selectEpisode(ep)"
-          
+
           >
             <ng-template pTemplate="header">
-              Episode {{(index + 1)}}
+              Ep. {{(index + 1)}}
               <span class="severance">{{ep.date | date:'dd/MM/Y'}}</span>
               <span class="severance flex flex-1">{{ep.observations[0].relationships.odourSubType.relationships?.odourType?.name}}</span>
               <span class="severance" >

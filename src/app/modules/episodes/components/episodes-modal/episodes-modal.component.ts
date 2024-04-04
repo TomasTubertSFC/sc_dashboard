@@ -49,13 +49,13 @@ export class EpisodesModalComponent implements OnDestroy {
     this.episode$ = this.studyZoneService.episode.subscribe(episode => {
       if (episode){
         this.episode = episode;
-        this.episodesContainer.nativeElement.scrollTop = this.episode.id * 40;
+        if(this.episdoesSidebarVisible) this.episodesContainer.nativeElement.scrollTop = this.episode.id * 40;
       }
     });
 
     this.previewEpisode$ = this.studyZoneService.previewEpisode.subscribe(episode => {
       this.previewEpisode = episode;
-      this.episodesContainer.nativeElement.scrollTop = this.previewEpisode? this.previewEpisode.id * 40 : this.episode? this.episode.id *40 : 0;
+      if(this.episdoesSidebarVisible) this.episodesContainer.nativeElement.scrollTop = this.previewEpisode? this.previewEpisode.id * 40 : this.episode? this.episode.id *40 : 0;
     });
 
     this.observation$ = this.studyZoneService.observation.subscribe(observation => {
@@ -70,7 +70,7 @@ export class EpisodesModalComponent implements OnDestroy {
       this.observationButtonPreview = document.getElementById(`obsButton${previewObservation}`) as HTMLElement;
       if(this.observationButtonPreview) this.observationButtonPreview.dispatchEvent( new Event('mouseover'));
 
-      this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : this.episodesContainer.nativeElement.scrollTop;
+      if(this.episdoesSidebarVisible) this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : this.episodesContainer.nativeElement.scrollTop;
 
     });
 
@@ -95,7 +95,7 @@ export class EpisodesModalComponent implements OnDestroy {
   public onToggleEpisodesModal() {
     this.episdoesSidebarVisible = !this.episdoesSidebarVisible;
     setTimeout(() => {
-      this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : 0;
+      if(this.episdoesSidebarVisible) this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : 0;
     }, 300);
   }
 

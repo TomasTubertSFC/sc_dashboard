@@ -169,10 +169,8 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
         episode.observations.forEach((observation) => {
           //crear canvas para cada cono si la observacion no es plausible
           if (
-            observation.APGEMOdistance >
-              this.studyZoneService.plausibilityDistance &&
-            observation.relationships.wind.speed >
-              this.studyZoneService.plausibilityWindSpeed
+            observation.APGEMOdistance > this.studyZoneService.plausibilityDistance &&
+            observation.relationships.wind.speed > this.studyZoneService.plausibilityWindSpeed
           ) {
             let canvas: HTMLCanvasElement = document.createElement(
               'canvas'

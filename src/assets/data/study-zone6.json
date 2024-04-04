@@ -1,6 +1,6 @@
 {
-  "initDate": "2019-07-10",
-  "endDate": "2021-07-",
+  "initDate": "2019-01-01",
+  "endDate": "2021-12-31",
   "APGEMO": [
     [
       {
@@ -66,7 +66,7 @@
     ]
   ],
   "restObservations":[],
-  "episodes": [
+  "episodes":[
     {
       "type": {
         "id": 5,
@@ -78,7 +78,7 @@
       },
       "differentUsers": 5,
       "date": "2019-07-10",
-      "inconvenience": 3,
+      "inconvenience": 4,
       "observations": [
         {
           "id": 455,
@@ -86,14 +86,14 @@
           "odour_sub_type_id": 76,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.22050",
-          "latitude": "41.40770",
+          "longitude": 2.2205,
+          "latitude": 41.4077,
           "description": null,
           "origin": "Huele a animal muerto",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-10T17:26:28.000000Z",
           "updatedAt": "2019-07-10T18:01:19.000000Z",
-          "APGEMOdistance": 202,
+          "APGEMOdistance": 426,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -122,8 +122,8 @@
               }
             },
             "wind": {
-              "deg": 113,
-              "speed": 8.4
+              "deg": 152,
+              "speed": 2.3
             }
           },
           "odour_sub_type": {
@@ -144,14 +144,14 @@
           "odour_sub_type_id": 78,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.21150",
-          "latitude": "41.41630",
+          "longitude": 2.2115,
+          "latitude": 41.4163,
           "description": null,
           "origin": "Depuradora y Tersa",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-10T17:26:49.000000Z",
           "updatedAt": "2019-07-10T18:01:19.000000Z",
-          "APGEMOdistance": 240,
+          "APGEMOdistance": 340,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -180,8 +180,19 @@
               }
             },
             "wind": {
-              "deg": 15,
-              "speed": 8.8
+              "deg": 271,
+              "speed": 3.2
+            }
+          },
+          "odour_sub_type": {
+            "id": 78,
+            "odour_type_id": 5,
+            "name": "Huevos podridos",
+            "slug": "rotten-eggs",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -191,14 +202,14 @@
           "odour_sub_type_id": 28,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 3,
-          "longitude": "2.21310",
-          "latitude": "41.41600",
+          "longitude": 2.2131,
+          "latitude": 41.416,
           "description": null,
           "origin": "Cloaca",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-10T18:10:08.000000Z",
           "updatedAt": "2019-07-10T19:01:14.000000Z",
-          "APGEMOdistance": 360,
+          "APGEMOdistance": 164,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -227,8 +238,19 @@
               }
             },
             "wind": {
-              "deg": 154,
-              "speed": 2.6
+              "deg": 174,
+              "speed": 0.7
+            }
+          },
+          "odour_sub_type": {
+            "id": 28,
+            "odour_type_id": 2,
+            "name": "Alcantarilla",
+            "slug": "sewage-system",
+            "odour_type": {
+              "id": 2,
+              "name": "Urbano",
+              "slug": "urban"
             }
           }
         },
@@ -238,14 +260,14 @@
           "odour_sub_type_id": 79,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 3,
-          "longitude": "2.21880",
-          "latitude": "41.41170",
+          "longitude": 2.2188,
+          "latitude": 41.4117,
           "description": null,
           "origin": "Metrofang",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-10T20:12:30.000000Z",
           "updatedAt": "2019-07-10T20:12:30.000000Z",
-          "APGEMOdistance": 100,
+          "APGEMOdistance": 482,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -274,8 +296,19 @@
               }
             },
             "wind": {
-              "deg": 136,
-              "speed": 10.3
+              "deg": 174,
+              "speed": 0.4
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -285,14 +318,14 @@
           "odour_sub_type_id": 77,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 5,
-          "longitude": "2.21590",
-          "latitude": "41.41270",
+          "longitude": 2.2159,
+          "latitude": 41.4127,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-11T13:17:14.000000Z",
           "updatedAt": "2019-07-11T14:01:42.000000Z",
-          "APGEMOdistance": 589,
+          "APGEMOdistance": 431,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -321,8 +354,19 @@
               }
             },
             "wind": {
-              "deg": 289,
-              "speed": 7.1
+              "deg": 297,
+              "speed": 2.7
+            }
+          },
+          "odour_sub_type": {
+            "id": 77,
+            "odour_type_id": 5,
+            "name": "Residuo fresco",
+            "slug": "fresh-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -332,14 +376,14 @@
           "odour_sub_type_id": 49,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-3.96740",
-          "latitude": "40.49750",
+          "longitude": -3.9674,
+          "latitude": 40.4975,
           "description": null,
           "origin": "ABN SPAIN",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-11T20:03:12.000000Z",
           "updatedAt": "2019-07-11T21:01:18.000000Z",
-          "APGEMOdistance": 266,
+          "APGEMOdistance": 151,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -368,8 +412,19 @@
               }
             },
             "wind": {
-              "deg": 300,
-              "speed": 0.4
+              "deg": 284,
+              "speed": 9.4
+            }
+          },
+          "odour_sub_type": {
+            "id": 49,
+            "odour_type_id": 3,
+            "name": "Malta o lúpulo",
+            "slug": "malt-or-hop",
+            "odour_type": {
+              "id": 3,
+              "name": "Comida",
+              "slug": "food"
             }
           }
         }
@@ -386,7 +441,7 @@
       },
       "differentUsers": 3,
       "date": "2019-07-13",
-      "inconvenience": 1,
+      "inconvenience": 5,
       "observations": [
         {
           "id": 474,
@@ -394,14 +449,14 @@
           "odour_sub_type_id": 49,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-3.96310",
-          "latitude": "40.49660",
+          "longitude": -3.9631,
+          "latitude": 40.4966,
           "description": null,
           "origin": "Poligono",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-13T20:41:09.000000Z",
           "updatedAt": "2019-07-13T20:41:09.000000Z",
-          "APGEMOdistance": 192,
+          "APGEMOdistance": 366,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -430,8 +485,8 @@
               }
             },
             "wind": {
-              "deg": 208,
-              "speed": 7.7
+              "deg": 82,
+              "speed": 9.1
             }
           },
           "odour_sub_type": {
@@ -452,14 +507,14 @@
           "odour_sub_type_id": 89,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.21760",
-          "latitude": "41.41130",
+          "longitude": 2.2176,
+          "latitude": 41.4113,
           "description": "Necesitamos respirar. Los vecinos no podemos ni abrir las ventanas, ni tender,...toda nuestra casa esta impregnada de este desagradable olor. Solucion ya!!",
           "origin": "Tersa y fabricas",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-13T21:25:57.000000Z",
           "updatedAt": "2019-07-13T21:25:57.000000Z",
-          "APGEMOdistance": 400,
+          "APGEMOdistance": 360,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -488,8 +543,19 @@
               }
             },
             "wind": {
-              "deg": 169,
-              "speed": 2.8
+              "deg": 248,
+              "speed": 1.9
+            }
+          },
+          "odour_sub_type": {
+            "id": 89,
+            "odour_type_id": 5,
+            "name": "Otros",
+            "slug": "other",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -499,14 +565,14 @@
           "odour_sub_type_id": 68,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 1,
-          "longitude": "-3.96910",
-          "latitude": "40.49960",
+          "longitude": -3.9691,
+          "latitude": 40.4996,
           "description": null,
           "origin": "Villanueva del Pardillo",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-13T22:47:24.000000Z",
           "updatedAt": "2019-07-13T22:47:24.000000Z",
-          "APGEMOdistance": 264,
+          "APGEMOdistance": 207,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -535,8 +601,19 @@
               }
             },
             "wind": {
-              "deg": 265,
-              "speed": 7
+              "deg": 114,
+              "speed": 4.5
+            }
+          },
+          "odour_sub_type": {
+            "id": 68,
+            "odour_type_id": 4,
+            "name": "Industria alimentaria animal",
+            "slug": "animal-food-industry",
+            "odour_type": {
+              "id": 4,
+              "name": "Industrial",
+              "slug": "industry"
             }
           }
         },
@@ -546,14 +623,14 @@
           "odour_sub_type_id": 89,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.21760",
-          "latitude": "41.41130",
+          "longitude": 2.2176,
+          "latitude": 41.4113,
           "description": "És toxico y ya no podemos ni ventilar nuestra casa.",
           "origin": "Tersa y fabricas que no cumple normativa",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-14T15:34:35.000000Z",
           "updatedAt": "2019-07-14T16:01:15.000000Z",
-          "APGEMOdistance": 411,
+          "APGEMOdistance": 563,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -582,8 +659,19 @@
               }
             },
             "wind": {
-              "deg": 170,
-              "speed": 2
+              "deg": 330,
+              "speed": 9.2
+            }
+          },
+          "odour_sub_type": {
+            "id": 89,
+            "odour_type_id": 5,
+            "name": "Otros",
+            "slug": "other",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -600,7 +688,7 @@
       },
       "differentUsers": 3,
       "date": "2019-07-19",
-      "inconvenience": 9,
+      "inconvenience": 4,
       "observations": [
         {
           "id": 494,
@@ -608,14 +696,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.21410",
-          "latitude": "41.40470",
+          "longitude": 2.2141,
+          "latitude": 41.4047,
           "description": null,
           "origin": "EDAR",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-19T17:22:14.000000Z",
           "updatedAt": "2019-07-19T18:00:57.000000Z",
-          "APGEMOdistance": 574,
+          "APGEMOdistance": 422,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -644,8 +732,8 @@
               }
             },
             "wind": {
-              "deg": 216,
-              "speed": 1.9
+              "deg": 104,
+              "speed": 7.4
             }
           },
           "odour_sub_type": {
@@ -666,14 +754,14 @@
           "odour_sub_type_id": 49,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-3.97090",
-          "latitude": "40.49730",
+          "longitude": -3.9709,
+          "latitude": 40.4973,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-19T18:48:21.000000Z",
           "updatedAt": "2019-07-19T19:18:32.000000Z",
-          "APGEMOdistance": 555,
+          "APGEMOdistance": 438,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -702,8 +790,19 @@
               }
             },
             "wind": {
-              "deg": 200,
-              "speed": 10.4
+              "deg": 105,
+              "speed": 4.1
+            }
+          },
+          "odour_sub_type": {
+            "id": 49,
+            "odour_type_id": 3,
+            "name": "Malta o lúpulo",
+            "slug": "malt-or-hop",
+            "odour_type": {
+              "id": 3,
+              "name": "Comida",
+              "slug": "food"
             }
           }
         },
@@ -713,14 +812,14 @@
           "odour_sub_type_id": 78,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.21400",
-          "latitude": "41.40460",
+          "longitude": 2.214,
+          "latitude": 41.4046,
           "description": null,
           "origin": "EDAR",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-22T20:44:25.000000Z",
           "updatedAt": "2019-07-22T20:44:25.000000Z",
-          "APGEMOdistance": 27,
+          "APGEMOdistance": 351,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -749,8 +848,19 @@
               }
             },
             "wind": {
-              "deg": 335,
-              "speed": 4.9
+              "deg": 68,
+              "speed": 9
+            }
+          },
+          "odour_sub_type": {
+            "id": 78,
+            "odour_type_id": 5,
+            "name": "Huevos podridos",
+            "slug": "rotten-eggs",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -760,14 +870,14 @@
           "odour_sub_type_id": 79,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.21810",
-          "latitude": "41.42850",
+          "longitude": 2.2181,
+          "latitude": 41.4285,
           "description": "Es insoportable",
           "origin": "Agua estancada",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-07-23T16:58:56.000000Z",
           "updatedAt": "2019-07-23T17:01:04.000000Z",
-          "APGEMOdistance": 112,
+          "APGEMOdistance": 372,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -796,8 +906,19 @@
               }
             },
             "wind": {
-              "deg": 339,
-              "speed": 8.3
+              "deg": 68,
+              "speed": 8.9
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -814,7 +935,7 @@
       },
       "differentUsers": 3,
       "date": "2019-10-27",
-      "inconvenience": 2,
+      "inconvenience": 0,
       "observations": [
         {
           "id": 886,
@@ -822,14 +943,14 @@
           "odour_sub_type_id": 76,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 1,
-          "longitude": "1.90680",
-          "latitude": "41.25570",
+          "longitude": 1.9068,
+          "latitude": 41.2557,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-10-27T11:08:09.000000Z",
           "updatedAt": "2019-10-27T12:02:59.000000Z",
-          "APGEMOdistance": 269,
+          "APGEMOdistance": 390,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -858,8 +979,8 @@
               }
             },
             "wind": {
-              "deg": 137,
-              "speed": 3.9
+              "deg": 342,
+              "speed": 9.6
             }
           },
           "odour_sub_type": {
@@ -880,14 +1001,14 @@
           "odour_sub_type_id": 76,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 2,
-          "longitude": "1.90580",
-          "latitude": "41.25490",
+          "longitude": 1.9058,
+          "latitude": 41.2549,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-10-27T11:09:08.000000Z",
           "updatedAt": "2019-10-27T12:03:00.000000Z",
-          "APGEMOdistance": 509,
+          "APGEMOdistance": 130,
           "color": 6,
           "relationships": {
             "odourIntensity": {
@@ -916,8 +1037,19 @@
               }
             },
             "wind": {
-              "deg": 332,
-              "speed": 2.4
+              "deg": 101,
+              "speed": 6
+            }
+          },
+          "odour_sub_type": {
+            "id": 76,
+            "odour_type_id": 5,
+            "name": "Residuo descompuesto",
+            "slug": "decomposed-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -927,14 +1059,14 @@
           "odour_sub_type_id": 37,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-70.61870",
-          "latitude": "-33.43670",
+          "longitude": -70.6187,
+          "latitude": -33.4367,
           "description": "Olor a Fritura",
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-10-27T18:20:38.000000Z",
           "updatedAt": "2019-10-27T19:03:06.000000Z",
-          "APGEMOdistance": 163,
+          "APGEMOdistance": 307,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -963,8 +1095,19 @@
               }
             },
             "wind": {
-              "deg": 180,
-              "speed": 7.5
+              "deg": 45,
+              "speed": 3.3
+            }
+          },
+          "odour_sub_type": {
+            "id": 37,
+            "odour_type_id": 2,
+            "name": "Restaurante",
+            "slug": "restaurant",
+            "odour_type": {
+              "id": 2,
+              "name": "Urbano",
+              "slug": "urban"
             }
           }
         },
@@ -974,14 +1117,14 @@
           "odour_sub_type_id": 55,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-0.93200",
-          "latitude": "41.64100",
+          "longitude": -0.932,
+          "latitude": 41.641,
           "description": "Wind VRB 2 kt",
           "origin": "Paper industry sited at the east of the city",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2019-10-28T09:43:04.000000Z",
           "updatedAt": "2019-10-28T10:03:08.000000Z",
-          "APGEMOdistance": 362,
+          "APGEMOdistance": 220,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -1010,8 +1153,19 @@
               }
             },
             "wind": {
-              "deg": 284,
-              "speed": 0.1
+              "deg": 97,
+              "speed": 6
+            }
+          },
+          "odour_sub_type": {
+            "id": 55,
+            "odour_type_id": 4,
+            "name": "Sopa de repollo",
+            "slug": "cabbage-soup",
+            "odour_type": {
+              "id": 4,
+              "name": "Industrial",
+              "slug": "industry"
             }
           }
         }
@@ -1028,7 +1182,7 @@
       },
       "differentUsers": 1,
       "date": "2020-02-18",
-      "inconvenience": 2,
+      "inconvenience": 7,
       "observations": [
         {
           "id": 2318,
@@ -1036,14 +1190,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 4,
-          "longitude": "-73.45040",
-          "latitude": "-37.63220",
+          "longitude": -73.4504,
+          "latitude": -37.6322,
           "description": null,
           "origin": "Planta tratamiento",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-02-18T21:36:45.000000Z",
           "updatedAt": "2020-02-18T22:01:52.000000Z",
-          "APGEMOdistance": 207,
+          "APGEMOdistance": 596,
           "color": 4,
           "relationships": {
             "odourIntensity": {
@@ -1072,8 +1226,8 @@
               }
             },
             "wind": {
-              "deg": 215,
-              "speed": 0.3
+              "deg": 9,
+              "speed": 8.5
             }
           },
           "odour_sub_type": {
@@ -1094,14 +1248,14 @@
           "odour_sub_type_id": 32,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 4,
-          "longitude": "-73.45150",
-          "latitude": "-37.63260",
+          "longitude": -73.4515,
+          "latitude": -37.6326,
           "description": null,
           "origin": "Incendio",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-02-18T21:40:01.000000Z",
           "updatedAt": "2020-02-18T22:01:52.000000Z",
-          "APGEMOdistance": 389,
+          "APGEMOdistance": 170,
           "color": 4,
           "relationships": {
             "odourIntensity": {
@@ -1130,8 +1284,19 @@
               }
             },
             "wind": {
-              "deg": 85,
-              "speed": 9.3
+              "deg": 308,
+              "speed": 6
+            }
+          },
+          "odour_sub_type": {
+            "id": 32,
+            "odour_type_id": 2,
+            "name": "Madera quemada",
+            "slug": "burnt-wood",
+            "odour_type": {
+              "id": 2,
+              "name": "Urbano",
+              "slug": "urban"
             }
           }
         },
@@ -1141,14 +1306,14 @@
           "odour_sub_type_id": 32,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 4,
-          "longitude": "-73.45270",
-          "latitude": "-37.63290",
+          "longitude": -73.4527,
+          "latitude": -37.6329,
           "description": null,
           "origin": "Incendio",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-02-18T21:42:32.000000Z",
           "updatedAt": "2020-02-18T22:01:53.000000Z",
-          "APGEMOdistance": 224,
+          "APGEMOdistance": 433,
           "color": 4,
           "relationships": {
             "odourIntensity": {
@@ -1177,8 +1342,19 @@
               }
             },
             "wind": {
-              "deg": 249,
-              "speed": 0.8
+              "deg": 133,
+              "speed": 6.4
+            }
+          },
+          "odour_sub_type": {
+            "id": 32,
+            "odour_type_id": 2,
+            "name": "Madera quemada",
+            "slug": "burnt-wood",
+            "odour_type": {
+              "id": 2,
+              "name": "Urbano",
+              "slug": "urban"
             }
           }
         }
@@ -1195,7 +1371,7 @@
       },
       "differentUsers": 3,
       "date": "2020-06-01",
-      "inconvenience": 8,
+      "inconvenience": 1,
       "observations": [
         {
           "id": 4783,
@@ -1203,14 +1379,14 @@
           "odour_sub_type_id": 79,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.21910",
-          "latitude": "41.41160",
+          "longitude": 2.2191,
+          "latitude": 41.4116,
           "description": null,
           "origin": "Metrofang",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-01T18:30:01.000000Z",
           "updatedAt": "2020-06-17T00:02:17.000000Z",
-          "APGEMOdistance": 530,
+          "APGEMOdistance": 91,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -1239,8 +1415,8 @@
               }
             },
             "wind": {
-              "deg": 81,
-              "speed": 5.2
+              "deg": 267,
+              "speed": 6.3
             }
           },
           "odour_sub_type": {
@@ -1261,14 +1437,14 @@
           "odour_sub_type_id": 14,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "-8.50600",
-          "latitude": "40.89570",
+          "longitude": -8.506,
+          "latitude": 40.8957,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-01T18:49:10.000000Z",
           "updatedAt": "2020-06-17T00:02:17.000000Z",
-          "APGEMOdistance": 194,
+          "APGEMOdistance": 440,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -1297,8 +1473,19 @@
               }
             },
             "wind": {
-              "deg": 91,
-              "speed": 0.8
+              "deg": 159,
+              "speed": 1.5
+            }
+          },
+          "odour_sub_type": {
+            "id": 14,
+            "odour_type_id": 1,
+            "name": "Animal muerto",
+            "slug": "dead-animal",
+            "odour_type": {
+              "id": 1,
+              "name": "Campo y naturaleza",
+              "slug": "country-and-nature"
             }
           }
         },
@@ -1308,14 +1495,14 @@
           "odour_sub_type_id": 28,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.22170",
-          "latitude": "41.41720",
+          "longitude": 2.2217,
+          "latitude": 41.4172,
           "description": "It has like feeling shit in the air",
           "origin": "Metrofang",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-01T19:45:20.000000Z",
           "updatedAt": "2020-06-17T00:02:17.000000Z",
-          "APGEMOdistance": 33,
+          "APGEMOdistance": 142,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -1344,8 +1531,19 @@
               }
             },
             "wind": {
-              "deg": 224,
-              "speed": 7.4
+              "deg": 123,
+              "speed": 4.2
+            }
+          },
+          "odour_sub_type": {
+            "id": 28,
+            "odour_type_id": 2,
+            "name": "Alcantarilla",
+            "slug": "sewage-system",
+            "odour_type": {
+              "id": 2,
+              "name": "Urbano",
+              "slug": "urban"
             }
           }
         }
@@ -1362,7 +1560,7 @@
       },
       "differentUsers": 3,
       "date": "2020-06-03",
-      "inconvenience": 4,
+      "inconvenience": 7,
       "observations": [
         {
           "id": 4793,
@@ -1370,14 +1568,14 @@
           "odour_sub_type_id": 49,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "-3.96950",
-          "latitude": "40.49290",
+          "longitude": -3.9695,
+          "latitude": 40.4929,
           "description": null,
           "origin": "ABN SPAIN",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-03T17:42:46.000000Z",
           "updatedAt": "2020-06-17T00:02:21.000000Z",
-          "APGEMOdistance": 270,
+          "APGEMOdistance": 353,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -1406,8 +1604,8 @@
               }
             },
             "wind": {
-              "deg": 67,
-              "speed": 9.5
+              "deg": 276,
+              "speed": 3.1
             }
           },
           "odour_sub_type": {
@@ -1428,14 +1626,14 @@
           "odour_sub_type_id": 14,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 3,
-          "longitude": "-8.50600",
-          "latitude": "40.89610",
+          "longitude": -8.506,
+          "latitude": 40.8961,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-03T20:06:53.000000Z",
           "updatedAt": "2020-06-17T00:02:21.000000Z",
-          "APGEMOdistance": 363,
+          "APGEMOdistance": 308,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -1464,8 +1662,19 @@
               }
             },
             "wind": {
-              "deg": 214,
-              "speed": 7.6
+              "deg": 210,
+              "speed": 3
+            }
+          },
+          "odour_sub_type": {
+            "id": 14,
+            "odour_type_id": 1,
+            "name": "Animal muerto",
+            "slug": "dead-animal",
+            "odour_type": {
+              "id": 1,
+              "name": "Campo y naturaleza",
+              "slug": "country-and-nature"
             }
           }
         },
@@ -1475,14 +1684,14 @@
           "odour_sub_type_id": 14,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-8.50690",
-          "latitude": "40.89580",
+          "longitude": -8.5069,
+          "latitude": 40.8958,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-03T21:11:02.000000Z",
           "updatedAt": "2020-06-17T00:02:22.000000Z",
-          "APGEMOdistance": 222,
+          "APGEMOdistance": 501,
           "color": 6,
           "relationships": {
             "odourIntensity": {
@@ -1511,8 +1720,19 @@
               }
             },
             "wind": {
-              "deg": 81,
-              "speed": 4.7
+              "deg": 46,
+              "speed": 10.4
+            }
+          },
+          "odour_sub_type": {
+            "id": 14,
+            "odour_type_id": 1,
+            "name": "Animal muerto",
+            "slug": "dead-animal",
+            "odour_type": {
+              "id": 1,
+              "name": "Campo y naturaleza",
+              "slug": "country-and-nature"
             }
           }
         },
@@ -1522,14 +1742,14 @@
           "odour_sub_type_id": 15,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 4,
-          "longitude": "-76.30700",
-          "latitude": "3.91460",
+          "longitude": -76.307,
+          "latitude": 3.9146,
           "description": "El olor se siente luego de unas pocas horas de lluvia leve. Se percibe el olor en el ambiente. A pesar de ser una zona residencial, se percibe como si hubiese actividad avícola cerca, pues el olor se asemeja al de galpones",
           "origin": "No logro identificar el punto de origen del olor",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-03T23:25:20.000000Z",
           "updatedAt": "2020-06-03T23:25:20.000000Z",
-          "APGEMOdistance": 12,
+          "APGEMOdistance": 560,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -1558,8 +1778,19 @@
               }
             },
             "wind": {
-              "deg": 82,
-              "speed": 3.4
+              "deg": 288,
+              "speed": 7.7
+            }
+          },
+          "odour_sub_type": {
+            "id": 15,
+            "odour_type_id": 1,
+            "name": "Abonos orgánicos (estiercol y purines)",
+            "slug": "organic-fertilizers",
+            "odour_type": {
+              "id": 1,
+              "name": "Campo y naturaleza",
+              "slug": "country-and-nature"
             }
           }
         }
@@ -1576,7 +1807,7 @@
       },
       "differentUsers": 4,
       "date": "2020-06-26",
-      "inconvenience": 8,
+      "inconvenience": 5,
       "observations": [
         {
           "id": 5010,
@@ -1584,14 +1815,14 @@
           "odour_sub_type_id": 51,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-3.96210",
-          "latitude": "40.49000",
+          "longitude": -3.9621,
+          "latitude": 40.49,
           "description": "Es insoportable no se puede tener la ventana abierta, viene por ráfagas",
           "origin": "De la fábrica del pueblo",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-26T19:59:13.000000Z",
           "updatedAt": "2020-06-26T20:02:05.000000Z",
-          "APGEMOdistance": 596,
+          "APGEMOdistance": 505,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -1620,8 +1851,8 @@
               }
             },
             "wind": {
-              "deg": 257,
-              "speed": 7.7
+              "deg": 289,
+              "speed": 6.3
             }
           },
           "odour_sub_type": {
@@ -1642,14 +1873,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 3,
-          "longitude": "8.89630",
-          "latitude": "45.61570",
+          "longitude": 8.8963,
+          "latitude": 45.6157,
           "description": null,
           "origin": "Area fiume Olona. Zona Tessa srl.",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-26T20:00:49.000000Z",
           "updatedAt": "2020-06-26T21:02:05.000000Z",
-          "APGEMOdistance": 219,
+          "APGEMOdistance": 42,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -1678,8 +1909,19 @@
               }
             },
             "wind": {
-              "deg": 63,
-              "speed": 5.7
+              "deg": 251,
+              "speed": 9.5
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -1689,14 +1931,14 @@
           "odour_sub_type_id": 81,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 3,
-          "longitude": "8.89700",
-          "latitude": "45.62360",
+          "longitude": 8.897,
+          "latitude": 45.6236,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-27T05:32:43.000000Z",
           "updatedAt": "2020-06-27T06:02:07.000000Z",
-          "APGEMOdistance": 362,
+          "APGEMOdistance": 180,
           "color": 6,
           "relationships": {
             "odourIntensity": {
@@ -1725,8 +1967,19 @@
               }
             },
             "wind": {
-              "deg": 282,
-              "speed": 5.3
+              "deg": 264,
+              "speed": 6.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 81,
+            "odour_type_id": 5,
+            "name": "Pescado",
+            "slug": "fishy",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -1736,14 +1989,14 @@
           "odour_sub_type_id": 79,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.21940",
-          "latitude": "41.41170",
+          "longitude": 2.2194,
+          "latitude": 41.4117,
           "description": null,
           "origin": "Edar Metrofang",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-27T18:25:13.000000Z",
           "updatedAt": "2020-06-27T19:02:11.000000Z",
-          "APGEMOdistance": 90,
+          "APGEMOdistance": 312,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -1772,8 +2025,19 @@
               }
             },
             "wind": {
-              "deg": 341,
-              "speed": 0
+              "deg": 50,
+              "speed": 4.4
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -1783,14 +2047,14 @@
           "odour_sub_type_id": 81,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 2,
-          "longitude": "8.89830",
-          "latitude": "45.62480",
+          "longitude": 8.8983,
+          "latitude": 45.6248,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-27T19:15:02.000000Z",
           "updatedAt": "2020-06-27T20:02:09.000000Z",
-          "APGEMOdistance": 573,
+          "APGEMOdistance": 370,
           "color": 6,
           "relationships": {
             "odourIntensity": {
@@ -1819,8 +2083,19 @@
               }
             },
             "wind": {
-              "deg": 73,
-              "speed": 10.4
+              "deg": 351,
+              "speed": 8.1
+            }
+          },
+          "odour_sub_type": {
+            "id": 81,
+            "odour_type_id": 5,
+            "name": "Pescado",
+            "slug": "fishy",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -1837,7 +2112,7 @@
       },
       "differentUsers": 2,
       "date": "2020-06-26",
-      "inconvenience": 2,
+      "inconvenience": 5,
       "observations": [
         {
           "id": 5012,
@@ -1845,14 +2120,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 3,
-          "longitude": "8.89630",
-          "latitude": "45.61570",
+          "longitude": 8.8963,
+          "latitude": 45.6157,
           "description": null,
           "origin": "Area fiume Olona. Zona Tessa srl.",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-26T20:51:38.000000Z",
           "updatedAt": "2020-06-26T21:02:05.000000Z",
-          "APGEMOdistance": 495,
+          "APGEMOdistance": 444,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -1881,8 +2156,8 @@
               }
             },
             "wind": {
-              "deg": 191,
-              "speed": 9.6
+              "deg": 139,
+              "speed": 0.7
             }
           },
           "odour_sub_type": {
@@ -1903,14 +2178,14 @@
           "odour_sub_type_id": 76,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 1,
-          "longitude": "-3.96220",
-          "latitude": "40.49000",
+          "longitude": -3.9622,
+          "latitude": 40.49,
           "description": null,
           "origin": "No lo se",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-26T21:33:22.000000Z",
           "updatedAt": "2020-06-26T22:02:10.000000Z",
-          "APGEMOdistance": 522,
+          "APGEMOdistance": 217,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -1939,8 +2214,19 @@
               }
             },
             "wind": {
-              "deg": 340,
-              "speed": 1.1
+              "deg": 71,
+              "speed": 9.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 76,
+            "odour_type_id": 5,
+            "name": "Residuo descompuesto",
+            "slug": "decomposed-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -1957,7 +2243,7 @@
       },
       "differentUsers": 3,
       "date": "2020-06-30",
-      "inconvenience": 9,
+      "inconvenience": 2,
       "observations": [
         {
           "id": 5057,
@@ -1965,14 +2251,14 @@
           "odour_sub_type_id": 60,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 3,
-          "longitude": "8.89780",
-          "latitude": "45.62640",
+          "longitude": 8.8978,
+          "latitude": 45.6264,
           "description": "L odore è sempre il solito di aldeide formica",
           "origin": "Depuratore Olgiate Olona",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-30T20:09:11.000000Z",
           "updatedAt": "2020-06-30T21:02:10.000000Z",
-          "APGEMOdistance": 190,
+          "APGEMOdistance": 137,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -2001,8 +2287,8 @@
               }
             },
             "wind": {
-              "deg": 189,
-              "speed": 1
+              "deg": 177,
+              "speed": 1.2
             }
           },
           "odour_sub_type": {
@@ -2023,14 +2309,14 @@
           "odour_sub_type_id": 78,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "8.89550",
-          "latitude": "45.61730",
+          "longitude": 8.8955,
+          "latitude": 45.6173,
           "description": null,
           "origin": "Dal fiume",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-30T21:10:36.000000Z",
           "updatedAt": "2020-06-30T22:02:06.000000Z",
-          "APGEMOdistance": 323,
+          "APGEMOdistance": 367,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -2059,8 +2345,19 @@
               }
             },
             "wind": {
-              "deg": 112,
-              "speed": 10.5
+              "deg": 264,
+              "speed": 8.9
+            }
+          },
+          "odour_sub_type": {
+            "id": 78,
+            "odour_type_id": 5,
+            "name": "Huevos podridos",
+            "slug": "rotten-eggs",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -2070,14 +2367,14 @@
           "odour_sub_type_id": 60,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 1,
-          "longitude": "8.90160",
-          "latitude": "45.62370",
+          "longitude": 8.9016,
+          "latitude": 45.6237,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-01T00:08:36.000000Z",
           "updatedAt": "2020-07-01T01:02:16.000000Z",
-          "APGEMOdistance": 57,
+          "APGEMOdistance": 464,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -2106,8 +2403,19 @@
               }
             },
             "wind": {
-              "deg": 176,
-              "speed": 10.4
+              "deg": 49,
+              "speed": 8.9
+            }
+          },
+          "odour_sub_type": {
+            "id": 60,
+            "odour_type_id": 4,
+            "name": "Químico",
+            "slug": "chemical",
+            "odour_type": {
+              "id": 4,
+              "name": "Industrial",
+              "slug": "industry"
             }
           }
         }
@@ -2124,7 +2432,7 @@
       },
       "differentUsers": 3,
       "date": "2020-06-29",
-      "inconvenience": 4,
+      "inconvenience": 2,
       "observations": [
         {
           "id": 5050,
@@ -2132,14 +2440,14 @@
           "odour_sub_type_id": 76,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 3,
-          "longitude": "8.90150",
-          "latitude": "45.62370",
+          "longitude": 8.9015,
+          "latitude": 45.6237,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-29T22:21:13.000000Z",
           "updatedAt": "2020-06-29T23:02:04.000000Z",
-          "APGEMOdistance": 208,
+          "APGEMOdistance": 341,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -2168,8 +2476,8 @@
               }
             },
             "wind": {
-              "deg": 142,
-              "speed": 4.1
+              "deg": 54,
+              "speed": 3.9
             }
           },
           "odour_sub_type": {
@@ -2190,14 +2498,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 3,
-          "longitude": "8.89650",
-          "latitude": "45.61570",
+          "longitude": 8.8965,
+          "latitude": 45.6157,
           "description": null,
           "origin": "Area fiume Olona. Zona Tessa srl.",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-30T06:32:44.000000Z",
           "updatedAt": "2020-06-30T07:02:39.000000Z",
-          "APGEMOdistance": 524,
+          "APGEMOdistance": 476,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -2226,8 +2534,19 @@
               }
             },
             "wind": {
-              "deg": 201,
-              "speed": 6.1
+              "deg": 302,
+              "speed": 3.1
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -2237,14 +2556,14 @@
           "odour_sub_type_id": 39,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 5,
-          "longitude": "77.60280",
-          "latitude": "14.68230",
+          "longitude": 77.6028,
+          "latitude": 14.6823,
           "description": null,
           "origin": "Don't know",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-06-30T07:47:48.000000Z",
           "updatedAt": "2020-06-30T07:47:48.000000Z",
-          "APGEMOdistance": 215,
+          "APGEMOdistance": 321,
           "color": 4,
           "relationships": {
             "odourIntensity": {
@@ -2273,8 +2592,19 @@
               }
             },
             "wind": {
-              "deg": 111,
-              "speed": 4.7
+              "deg": 355,
+              "speed": 10.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 39,
+            "odour_type_id": 2,
+            "name": "Otros",
+            "slug": "other",
+            "odour_type": {
+              "id": 2,
+              "name": "Urbano",
+              "slug": "urban"
             }
           }
         }
@@ -2291,7 +2621,7 @@
       },
       "differentUsers": 3,
       "date": "2020-07-02",
-      "inconvenience": 5,
+      "inconvenience": 1,
       "observations": [
         {
           "id": 5079,
@@ -2299,14 +2629,14 @@
           "odour_sub_type_id": 49,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "-3.96900",
-          "latitude": "40.50110",
+          "longitude": -3.969,
+          "latitude": 40.5011,
           "description": null,
           "origin": "Empresa Abp en el polígono de Villanueva del pardillo",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-02T06:50:20.000000Z",
           "updatedAt": "2020-07-02T07:02:29.000000Z",
-          "APGEMOdistance": 495,
+          "APGEMOdistance": 556,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -2335,8 +2665,8 @@
               }
             },
             "wind": {
-              "deg": 274,
-              "speed": 9.4
+              "deg": 105,
+              "speed": 9.6
             }
           },
           "odour_sub_type": {
@@ -2357,14 +2687,14 @@
           "odour_sub_type_id": 81,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "1.90050",
-          "latitude": "41.25240",
+          "longitude": 1.9005,
+          "latitude": 41.2524,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-02T08:24:18.000000Z",
           "updatedAt": "2020-07-02T09:02:11.000000Z",
-          "APGEMOdistance": 187,
+          "APGEMOdistance": 154,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -2393,8 +2723,19 @@
               }
             },
             "wind": {
-              "deg": 208,
-              "speed": 7.8
+              "deg": 97,
+              "speed": 10.6
+            }
+          },
+          "odour_sub_type": {
+            "id": 81,
+            "odour_type_id": 5,
+            "name": "Pescado",
+            "slug": "fishy",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -2404,14 +2745,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "8.89820",
-          "latitude": "45.62380",
+          "longitude": 8.8982,
+          "latitude": 45.6238,
           "description": "Evento relativo alla fascia oraria 5-8 della mattina",
           "origin": "Fiume",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-02T11:04:52.000000Z",
           "updatedAt": "2020-07-02T12:02:03.000000Z",
-          "APGEMOdistance": 388,
+          "APGEMOdistance": 154,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -2440,8 +2781,19 @@
               }
             },
             "wind": {
-              "deg": 320,
-              "speed": 9.5
+              "deg": 321,
+              "speed": 6.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -2458,7 +2810,7 @@
       },
       "differentUsers": 4,
       "date": "2020-07-02",
-      "inconvenience": 7,
+      "inconvenience": 6,
       "observations": [
         {
           "id": 5092,
@@ -2466,14 +2818,14 @@
           "odour_sub_type_id": 65,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 3,
-          "longitude": "8.89630",
-          "latitude": "45.62380",
+          "longitude": 8.8963,
+          "latitude": 45.6238,
           "description": "Sono sotto il ponte dell’autostrada",
           "origin": "Fiume olona",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-02T21:53:11.000000Z",
           "updatedAt": "2020-07-02T22:02:20.000000Z",
-          "APGEMOdistance": 557,
+          "APGEMOdistance": 95,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -2502,8 +2854,8 @@
               }
             },
             "wind": {
-              "deg": 273,
-              "speed": 4.4
+              "deg": 125,
+              "speed": 5
             }
           },
           "odour_sub_type": {
@@ -2524,14 +2876,14 @@
           "odour_sub_type_id": 90,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 2,
-          "longitude": "8.89340",
-          "latitude": "45.62310",
+          "longitude": 8.8934,
+          "latitude": 45.6231,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-03T03:26:10.000000Z",
           "updatedAt": "2020-07-03T04:02:08.000000Z",
-          "APGEMOdistance": 48,
+          "APGEMOdistance": 92,
           "color": 6,
           "relationships": {
             "odourIntensity": {
@@ -2560,8 +2912,19 @@
               }
             },
             "wind": {
-              "deg": 9,
-              "speed": 8
+              "deg": 193,
+              "speed": 2.2
+            }
+          },
+          "odour_sub_type": {
+            "id": 90,
+            "odour_type_id": 5,
+            "name": "No lo sé",
+            "slug": "i-dont-know",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -2571,14 +2934,14 @@
           "odour_sub_type_id": 81,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 3,
-          "longitude": "8.89800",
-          "latitude": "45.62470",
+          "longitude": 8.898,
+          "latitude": 45.6247,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-03T06:11:14.000000Z",
           "updatedAt": "2020-07-03T07:02:33.000000Z",
-          "APGEMOdistance": 573,
+          "APGEMOdistance": 403,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -2607,8 +2970,19 @@
               }
             },
             "wind": {
-              "deg": 66,
-              "speed": 1.7
+              "deg": 1,
+              "speed": 4.1
+            }
+          },
+          "odour_sub_type": {
+            "id": 81,
+            "odour_type_id": 5,
+            "name": "Pescado",
+            "slug": "fishy",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -2618,14 +2992,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 3,
-          "longitude": "8.89820",
-          "latitude": "45.61260",
+          "longitude": 8.8982,
+          "latitude": 45.6126,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-03T06:49:01.000000Z",
           "updatedAt": "2020-07-03T07:02:34.000000Z",
-          "APGEMOdistance": 19,
+          "APGEMOdistance": 136,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -2654,8 +3028,19 @@
               }
             },
             "wind": {
-              "deg": 50,
-              "speed": 5
+              "deg": 254,
+              "speed": 1.7
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -2672,7 +3057,7 @@
       },
       "differentUsers": 2,
       "date": "2020-07-08",
-      "inconvenience": 1,
+      "inconvenience": 0,
       "observations": [
         {
           "id": 5144,
@@ -2680,14 +3065,14 @@
           "odour_sub_type_id": 75,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.21630",
-          "latitude": "41.42950",
+          "longitude": 2.2163,
+          "latitude": 41.4295,
           "description": null,
           "origin": "Zona Mar",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-08T20:32:49.000000Z",
           "updatedAt": "2020-07-08T21:02:10.000000Z",
-          "APGEMOdistance": 148,
+          "APGEMOdistance": 518,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -2716,8 +3101,8 @@
               }
             },
             "wind": {
-              "deg": 254,
-              "speed": 3.1
+              "deg": 158,
+              "speed": 7.2
             }
           },
           "odour_sub_type": {
@@ -2738,14 +3123,14 @@
           "odour_sub_type_id": 56,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "-8.50590",
-          "latitude": "40.89610",
+          "longitude": -8.5059,
+          "latitude": 40.8961,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-09T14:24:27.000000Z",
           "updatedAt": "2020-07-09T15:02:09.000000Z",
-          "APGEMOdistance": 107,
+          "APGEMOdistance": 182,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -2774,8 +3159,19 @@
               }
             },
             "wind": {
-              "deg": 14,
-              "speed": 9.6
+              "deg": 182,
+              "speed": 7.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 56,
+            "odour_type_id": 4,
+            "name": "Huevos podridos",
+            "slug": "rotten-eggs",
+            "odour_type": {
+              "id": 4,
+              "name": "Industrial",
+              "slug": "industry"
             }
           }
         }
@@ -2792,7 +3188,7 @@
       },
       "differentUsers": 2,
       "date": "2020-07-11",
-      "inconvenience": 7,
+      "inconvenience": 2,
       "observations": [
         {
           "id": 5180,
@@ -2800,14 +3196,14 @@
           "odour_sub_type_id": 14,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "8.87970",
-          "latitude": "45.63280",
+          "longitude": 8.8797,
+          "latitude": 45.6328,
           "description": null,
           "origin": "Azienda agricola",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-11T17:23:27.000000Z",
           "updatedAt": "2020-07-11T18:02:01.000000Z",
-          "APGEMOdistance": 425,
+          "APGEMOdistance": 181,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -2836,8 +3232,8 @@
               }
             },
             "wind": {
-              "deg": 196,
-              "speed": 0.8
+              "deg": 28,
+              "speed": 2.5
             }
           },
           "odour_sub_type": {
@@ -2858,14 +3254,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 9,
-          "longitude": "-3.15220",
-          "latitude": "51.56220",
+          "longitude": -3.1522,
+          "latitude": 51.5622,
           "description": null,
           "origin": "Drain",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-12T04:14:51.000000Z",
           "updatedAt": "2020-07-12T05:02:00.000000Z",
-          "APGEMOdistance": 389,
+          "APGEMOdistance": 340,
           "color": 2,
           "relationships": {
             "odourIntensity": {
@@ -2894,8 +3290,19 @@
               }
             },
             "wind": {
-              "deg": 62,
-              "speed": 3.9
+              "deg": 167,
+              "speed": 4.1
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -2912,7 +3319,7 @@
       },
       "differentUsers": 2,
       "date": "2020-07-14",
-      "inconvenience": 8,
+      "inconvenience": 7,
       "observations": [
         {
           "id": 5219,
@@ -2920,14 +3327,14 @@
           "odour_sub_type_id": 79,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.22370",
-          "latitude": "41.41070",
+          "longitude": 2.2237,
+          "latitude": 41.4107,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-14T18:46:31.000000Z",
           "updatedAt": "2020-07-14T19:02:09.000000Z",
-          "APGEMOdistance": 566,
+          "APGEMOdistance": 358,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -2956,8 +3363,8 @@
               }
             },
             "wind": {
-              "deg": 193,
-              "speed": 5.6
+              "deg": 198,
+              "speed": 1.8
             }
           },
           "odour_sub_type": {
@@ -2978,14 +3385,14 @@
           "odour_sub_type_id": 79,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.22500",
-          "latitude": "41.40960",
+          "longitude": 2.225,
+          "latitude": 41.4096,
           "description": null,
           "origin": "fangos",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-14T18:46:54.000000Z",
           "updatedAt": "2020-07-14T19:02:10.000000Z",
-          "APGEMOdistance": 91,
+          "APGEMOdistance": 140,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3014,8 +3421,19 @@
               }
             },
             "wind": {
-              "deg": 96,
-              "speed": 8.3
+              "deg": 322,
+              "speed": 7.6
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -3032,7 +3450,7 @@
       },
       "differentUsers": 3,
       "date": "2020-07-14",
-      "inconvenience": 9,
+      "inconvenience": 7,
       "observations": [
         {
           "id": 5210,
@@ -3040,14 +3458,14 @@
           "odour_sub_type_id": 76,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.21820",
-          "latitude": "41.42900",
+          "longitude": 2.2182,
+          "latitude": 41.429,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-14T18:20:50.000000Z",
           "updatedAt": "2020-07-14T19:02:07.000000Z",
-          "APGEMOdistance": 502,
+          "APGEMOdistance": 39,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3076,8 +3494,8 @@
               }
             },
             "wind": {
-              "deg": 284,
-              "speed": 2.8
+              "deg": 346,
+              "speed": 10.6
             }
           },
           "odour_sub_type": {
@@ -3098,14 +3516,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 3,
-          "longitude": "2.22160",
-          "latitude": "41.41390",
+          "longitude": 2.2216,
+          "latitude": 41.4139,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-14T18:23:29.000000Z",
           "updatedAt": "2020-07-14T19:02:08.000000Z",
-          "APGEMOdistance": 258,
+          "APGEMOdistance": 516,
           "color": 6,
           "relationships": {
             "odourIntensity": {
@@ -3134,8 +3552,19 @@
               }
             },
             "wind": {
-              "deg": 318,
-              "speed": 2.6
+              "deg": 243,
+              "speed": 4.6
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -3145,14 +3574,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 3,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.22130",
-          "latitude": "41.41300",
+          "longitude": 2.2213,
+          "latitude": 41.413,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-14T18:34:39.000000Z",
           "updatedAt": "2020-07-14T19:02:08.000000Z",
-          "APGEMOdistance": 238,
+          "APGEMOdistance": 462,
           "color": 6,
           "relationships": {
             "odourIntensity": {
@@ -3181,8 +3610,19 @@
               }
             },
             "wind": {
-              "deg": 8,
-              "speed": 10.2
+              "deg": 356,
+              "speed": 1.5
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -3207,14 +3647,14 @@
           "odour_sub_type_id": 14,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-8.50600",
-          "latitude": "40.89610",
+          "longitude": -8.506,
+          "latitude": 40.8961,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-14T19:34:33.000000Z",
           "updatedAt": "2020-07-14T20:02:04.000000Z",
-          "APGEMOdistance": 75,
+          "APGEMOdistance": 529,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3243,8 +3683,8 @@
               }
             },
             "wind": {
-              "deg": 271,
-              "speed": 1.2
+              "deg": 102,
+              "speed": 3.2
             }
           },
           "odour_sub_type": {
@@ -3265,14 +3705,14 @@
           "odour_sub_type_id": 76,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.22050",
-          "latitude": "41.42900",
+          "longitude": 2.2205,
+          "latitude": 41.429,
           "description": null,
           "origin": "Tersa",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-14T22:13:33.000000Z",
           "updatedAt": "2020-07-14T23:02:02.000000Z",
-          "APGEMOdistance": 151,
+          "APGEMOdistance": 101,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3301,8 +3741,19 @@
               }
             },
             "wind": {
-              "deg": 297,
-              "speed": 7.8
+              "deg": 254,
+              "speed": 9.4
+            }
+          },
+          "odour_sub_type": {
+            "id": 76,
+            "odour_type_id": 5,
+            "name": "Residuo descompuesto",
+            "slug": "decomposed-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -3312,14 +3763,14 @@
           "odour_sub_type_id": 55,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-8.56570",
-          "latitude": "41.16530",
+          "longitude": -8.5657,
+          "latitude": 41.1653,
           "description": "O cheiro era forte ,deveriam andar em cima das descargas ilegais ,e fazer manutenção ao passadiço visto que se encontram grades de proteção no chão,e o próprio chão do passadiço já têm madeiras soltas e tornasse perigoso",
           "origin": "No passadiço a beira do restaurante Madureira",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-14T23:17:22.000000Z",
           "updatedAt": "2020-07-15T00:02:02.000000Z",
-          "APGEMOdistance": 584,
+          "APGEMOdistance": 297,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3348,8 +3799,19 @@
               }
             },
             "wind": {
-              "deg": 152,
-              "speed": 4.4
+              "deg": 316,
+              "speed": 7.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 55,
+            "odour_type_id": 4,
+            "name": "Sopa de repollo",
+            "slug": "cabbage-soup",
+            "odour_type": {
+              "id": 4,
+              "name": "Industrial",
+              "slug": "industry"
             }
           }
         }
@@ -3366,7 +3828,7 @@
       },
       "differentUsers": 2,
       "date": "2020-07-16",
-      "inconvenience": 7,
+      "inconvenience": 4,
       "observations": [
         {
           "id": 5252,
@@ -3374,14 +3836,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.21910",
-          "latitude": "41.41080",
+          "longitude": 2.2191,
+          "latitude": 41.4108,
           "description": null,
           "origin": "edar",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-16T18:35:04.000000Z",
           "updatedAt": "2020-07-16T19:02:05.000000Z",
-          "APGEMOdistance": 265,
+          "APGEMOdistance": 501,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3410,8 +3872,8 @@
               }
             },
             "wind": {
-              "deg": 236,
-              "speed": 0
+              "deg": 130,
+              "speed": 7.2
             }
           },
           "odour_sub_type": {
@@ -3432,14 +3894,14 @@
           "odour_sub_type_id": 81,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 2,
-          "longitude": "8.90120",
-          "latitude": "45.62920",
+          "longitude": 8.9012,
+          "latitude": 45.6292,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-16T19:15:45.000000Z",
           "updatedAt": "2020-07-16T20:02:03.000000Z",
-          "APGEMOdistance": 36,
+          "APGEMOdistance": 21,
           "color": 6,
           "relationships": {
             "odourIntensity": {
@@ -3468,8 +3930,19 @@
               }
             },
             "wind": {
-              "deg": 23,
-              "speed": 1.8
+              "deg": 261,
+              "speed": 0.2
+            }
+          },
+          "odour_sub_type": {
+            "id": 81,
+            "odour_type_id": 5,
+            "name": "Pescado",
+            "slug": "fishy",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -3486,7 +3959,7 @@
       },
       "differentUsers": 10,
       "date": "2020-07-16",
-      "inconvenience": 4,
+      "inconvenience": 1,
       "observations": [
         {
           "id": 5267,
@@ -3494,14 +3967,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 7,
           "odour_hedonic_tone_id": 1,
-          "longitude": "2.21760",
-          "latitude": "41.40720",
+          "longitude": 2.2176,
+          "latitude": 41.4072,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-16T20:58:21.000000Z",
           "updatedAt": "2020-07-16T21:02:13.000000Z",
-          "APGEMOdistance": 393,
+          "APGEMOdistance": 418,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3530,8 +4003,8 @@
               }
             },
             "wind": {
-              "deg": 52,
-              "speed": 6.5
+              "deg": 215,
+              "speed": 0.5
             }
           },
           "odour_sub_type": {
@@ -3552,14 +4025,14 @@
           "odour_sub_type_id": 60,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "8.90150",
-          "latitude": "45.62370",
+          "longitude": 8.9015,
+          "latitude": 45.6237,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-16T21:49:22.000000Z",
           "updatedAt": "2020-07-16T22:04:43.000000Z",
-          "APGEMOdistance": 575,
+          "APGEMOdistance": 154,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3588,8 +4061,19 @@
               }
             },
             "wind": {
-              "deg": 101,
-              "speed": 1.2
+              "deg": 320,
+              "speed": 10.2
+            }
+          },
+          "odour_sub_type": {
+            "id": 60,
+            "odour_type_id": 4,
+            "name": "Químico",
+            "slug": "chemical",
+            "odour_type": {
+              "id": 4,
+              "name": "Industrial",
+              "slug": "industry"
             }
           }
         },
@@ -3599,14 +4083,14 @@
           "odour_sub_type_id": 74,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "-76.30580",
-          "latitude": "3.88480",
+          "longitude": -76.3058,
+          "latitude": 3.8848,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-17T02:49:03.000000Z",
           "updatedAt": "2020-07-17T02:49:03.000000Z",
-          "APGEMOdistance": 131,
+          "APGEMOdistance": 106,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3635,8 +4119,19 @@
               }
             },
             "wind": {
-              "deg": 355,
-              "speed": 0.7
+              "deg": 353,
+              "speed": 3.6
+            }
+          },
+          "odour_sub_type": {
+            "id": 74,
+            "odour_type_id": 5,
+            "name": "Biolfiltro",
+            "slug": "biofilter",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -3646,14 +4141,14 @@
           "odour_sub_type_id": 89,
           "odour_intensity_id": 1,
           "odour_hedonic_tone_id": 5,
-          "longitude": "-16.57080",
-          "latitude": "28.40330",
+          "longitude": -16.5708,
+          "latitude": 28.4033,
           "description": "asd",
           "origin": "asd",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-17T14:10:39.000000Z",
           "updatedAt": "2020-07-17T14:10:39.000000Z",
-          "APGEMOdistance": 197,
+          "APGEMOdistance": 352,
           "color": 0,
           "relationships": {
             "odourIntensity": {
@@ -3682,8 +4177,19 @@
               }
             },
             "wind": {
-              "deg": 332,
-              "speed": 4.9
+              "deg": 73,
+              "speed": 2.5
+            }
+          },
+          "odour_sub_type": {
+            "id": 89,
+            "odour_type_id": 5,
+            "name": "Otros",
+            "slug": "other",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -3693,14 +4199,14 @@
           "odour_sub_type_id": 15,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.96610",
-          "latitude": "41.81270",
+          "longitude": 2.9661,
+          "latitude": 41.8127,
           "description": null,
           "origin": "Granja de aves",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-17T14:35:07.000000Z",
           "updatedAt": "2020-07-17T14:35:07.000000Z",
-          "APGEMOdistance": 93,
+          "APGEMOdistance": 385,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3729,8 +4235,19 @@
               }
             },
             "wind": {
-              "deg": 137,
-              "speed": 8.6
+              "deg": 45,
+              "speed": 5.1
+            }
+          },
+          "odour_sub_type": {
+            "id": 15,
+            "odour_type_id": 1,
+            "name": "Abonos orgánicos (estiercol y purines)",
+            "slug": "organic-fertilizers",
+            "odour_type": {
+              "id": 1,
+              "name": "Campo y naturaleza",
+              "slug": "country-and-nature"
             }
           }
         },
@@ -3740,14 +4257,14 @@
           "odour_sub_type_id": 42,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 7,
-          "longitude": "-74.11910",
-          "latitude": "4.62270",
+          "longitude": -74.1191,
+          "latitude": 4.6227,
           "description": null,
           "origin": "Plaza de Mercado",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-17T16:28:14.000000Z",
           "updatedAt": "2020-07-17T16:28:14.000000Z",
-          "APGEMOdistance": 547,
+          "APGEMOdistance": 67,
           "color": 3,
           "relationships": {
             "odourIntensity": {
@@ -3776,8 +4293,19 @@
               }
             },
             "wind": {
-              "deg": 323,
-              "speed": 2.3
+              "deg": 290,
+              "speed": 5.2
+            }
+          },
+          "odour_sub_type": {
+            "id": 42,
+            "odour_type_id": 3,
+            "name": "Fruta",
+            "slug": "fruit",
+            "odour_type": {
+              "id": 3,
+              "name": "Comida",
+              "slug": "food"
             }
           }
         },
@@ -3787,14 +4315,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 3,
-          "longitude": "-74.09970",
-          "latitude": "4.68130",
+          "longitude": -74.0997,
+          "latitude": 4.6813,
           "description": null,
           "origin": "Caño",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-17T17:44:53.000000Z",
           "updatedAt": "2020-07-17T17:44:53.000000Z",
-          "APGEMOdistance": 104,
+          "APGEMOdistance": 230,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -3823,8 +4351,19 @@
               }
             },
             "wind": {
-              "deg": 265,
-              "speed": 0.5
+              "deg": 143,
+              "speed": 2.6
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -3834,14 +4373,14 @@
           "odour_sub_type_id": 76,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.21830",
-          "latitude": "41.42900",
+          "longitude": 2.2183,
+          "latitude": 41.429,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-17T19:09:47.000000Z",
           "updatedAt": "2020-07-17T19:09:47.000000Z",
-          "APGEMOdistance": 474,
+          "APGEMOdistance": 560,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -3870,8 +4409,19 @@
               }
             },
             "wind": {
-              "deg": 144,
-              "speed": 6.4
+              "deg": 33,
+              "speed": 1.4
+            }
+          },
+          "odour_sub_type": {
+            "id": 76,
+            "odour_type_id": 5,
+            "name": "Residuo descompuesto",
+            "slug": "decomposed-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -3881,14 +4431,14 @@
           "odour_sub_type_id": 89,
           "odour_intensity_id": 1,
           "odour_hedonic_tone_id": 5,
-          "longitude": "-16.57080",
-          "latitude": "28.40330",
+          "longitude": -16.5708,
+          "latitude": 28.4033,
           "description": "asd",
           "origin": "asd",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-17T19:54:14.000000Z",
           "updatedAt": "2020-07-17T19:54:14.000000Z",
-          "APGEMOdistance": 487,
+          "APGEMOdistance": 492,
           "color": 0,
           "relationships": {
             "odourIntensity": {
@@ -3917,8 +4467,19 @@
               }
             },
             "wind": {
-              "deg": 138,
-              "speed": 0.8
+              "deg": 341,
+              "speed": 10.4
+            }
+          },
+          "odour_sub_type": {
+            "id": 89,
+            "odour_type_id": 5,
+            "name": "Otros",
+            "slug": "other",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -3928,14 +4489,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 1,
           "odour_hedonic_tone_id": 6,
-          "longitude": "-16.57080",
-          "latitude": "28.40330",
+          "longitude": -16.5708,
+          "latitude": 28.4033,
           "description": "123123123",
           "origin": "123",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-17T19:55:03.000000Z",
           "updatedAt": "2020-07-17T19:55:03.000000Z",
-          "APGEMOdistance": 63,
+          "APGEMOdistance": 394,
           "color": 0,
           "relationships": {
             "odourIntensity": {
@@ -3964,8 +4525,19 @@
               }
             },
             "wind": {
-              "deg": 345,
-              "speed": 8.6
+              "deg": 154,
+              "speed": 0
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -3975,14 +4547,14 @@
           "odour_sub_type_id": 89,
           "odour_intensity_id": 1,
           "odour_hedonic_tone_id": 5,
-          "longitude": "-16.57080",
-          "latitude": "28.40330",
+          "longitude": -16.5708,
+          "latitude": 28.4033,
           "description": "asd",
           "origin": "asd",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-17T20:52:15.000000Z",
           "updatedAt": "2020-07-17T20:52:15.000000Z",
-          "APGEMOdistance": 17,
+          "APGEMOdistance": 14,
           "color": 0,
           "relationships": {
             "odourIntensity": {
@@ -4011,8 +4583,19 @@
               }
             },
             "wind": {
-              "deg": 71,
-              "speed": 1.4
+              "deg": 75,
+              "speed": 5.2
+            }
+          },
+          "odour_sub_type": {
+            "id": 89,
+            "odour_type_id": 5,
+            "name": "Otros",
+            "slug": "other",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -4022,14 +4605,14 @@
           "odour_sub_type_id": 60,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "8.89850",
-          "latitude": "45.62380",
+          "longitude": 8.8985,
+          "latitude": 45.6238,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-18T20:46:30.000000Z",
           "updatedAt": "2020-07-18T20:46:30.000000Z",
-          "APGEMOdistance": 499,
+          "APGEMOdistance": 102,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -4058,8 +4641,19 @@
               }
             },
             "wind": {
-              "deg": 252,
-              "speed": 8.7
+              "deg": 285,
+              "speed": 7
+            }
+          },
+          "odour_sub_type": {
+            "id": 60,
+            "odour_type_id": 4,
+            "name": "Químico",
+            "slug": "chemical",
+            "odour_type": {
+              "id": 4,
+              "name": "Industrial",
+              "slug": "industry"
             }
           }
         },
@@ -4069,14 +4663,14 @@
           "odour_sub_type_id": 65,
           "odour_intensity_id": 2,
           "odour_hedonic_tone_id": 4,
-          "longitude": "8.88890",
-          "latitude": "45.62600",
+          "longitude": 8.8889,
+          "latitude": 45.626,
           "description": "E acre e pungente tipo mercapturi, e cipolla marcia è a folate tra le 8.30 alle 11.30",
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-18T22:12:24.000000Z",
           "updatedAt": "2020-07-18T22:12:24.000000Z",
-          "APGEMOdistance": 102,
+          "APGEMOdistance": 313,
           "color": 4,
           "relationships": {
             "odourIntensity": {
@@ -4105,8 +4699,19 @@
               }
             },
             "wind": {
-              "deg": 88,
-              "speed": 7.7
+              "deg": 27,
+              "speed": 9.9
+            }
+          },
+          "odour_sub_type": {
+            "id": 65,
+            "odour_type_id": 4,
+            "name": "Azufre",
+            "slug": "sulphur",
+            "odour_type": {
+              "id": 4,
+              "name": "Industrial",
+              "slug": "industry"
             }
           }
         },
@@ -4116,14 +4721,14 @@
           "odour_sub_type_id": 78,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 2,
-          "longitude": "8.90160",
-          "latitude": "45.62370",
+          "longitude": 8.9016,
+          "latitude": 45.6237,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-19T18:52:44.000000Z",
           "updatedAt": "2020-07-19T18:52:44.000000Z",
-          "APGEMOdistance": 561,
+          "APGEMOdistance": 126,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -4152,8 +4757,19 @@
               }
             },
             "wind": {
-              "deg": 295,
-              "speed": 8.8
+              "deg": 6,
+              "speed": 2.6
+            }
+          },
+          "odour_sub_type": {
+            "id": 78,
+            "odour_type_id": 5,
+            "name": "Huevos podridos",
+            "slug": "rotten-eggs",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         },
@@ -4163,14 +4779,14 @@
           "odour_sub_type_id": 49,
           "odour_intensity_id": 6,
           "odour_hedonic_tone_id": 1,
-          "longitude": "-3.96680",
-          "latitude": "40.49930",
+          "longitude": -3.9668,
+          "latitude": 40.4993,
           "description": null,
           "origin": "ABN",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-19T19:21:09.000000Z",
           "updatedAt": "2020-07-19T19:21:09.000000Z",
-          "APGEMOdistance": 504,
+          "APGEMOdistance": 173,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -4199,8 +4815,19 @@
               }
             },
             "wind": {
-              "deg": 23,
-              "speed": 10.7
+              "deg": 227,
+              "speed": 10.5
+            }
+          },
+          "odour_sub_type": {
+            "id": 49,
+            "odour_type_id": 3,
+            "name": "Malta o lúpulo",
+            "slug": "malt-or-hop",
+            "odour_type": {
+              "id": 3,
+              "name": "Comida",
+              "slug": "food"
             }
           }
         },
@@ -4210,14 +4837,14 @@
           "odour_sub_type_id": 88,
           "odour_intensity_id": 4,
           "odour_hedonic_tone_id": 3,
-          "longitude": "-74.11090",
-          "latitude": "4.66540",
+          "longitude": -74.1109,
+          "latitude": 4.6654,
           "description": null,
           "origin": "Desague puente",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-19T19:23:37.000000Z",
           "updatedAt": "2020-07-19T19:23:37.000000Z",
-          "APGEMOdistance": 140,
+          "APGEMOdistance": 149,
           "color": 5,
           "relationships": {
             "odourIntensity": {
@@ -4246,8 +4873,19 @@
               }
             },
             "wind": {
-              "deg": 221,
-              "speed": 10.6
+              "deg": 205,
+              "speed": 6.1
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
             }
           }
         }
@@ -4272,14 +4910,14 @@
           "odour_sub_type_id": 79,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "2.21730",
-          "latitude": "41.40640",
+          "longitude": 2.2173,
+          "latitude": 41.4064,
           "description": null,
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-16T23:26:41.000000Z",
           "updatedAt": "2020-07-16T23:26:41.000000Z",
-          "APGEMOdistance": 595,
+          "APGEMOdistance": 385,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -4308,8 +4946,8 @@
               }
             },
             "wind": {
-              "deg": 342,
-              "speed": 5.4
+              "deg": 223,
+              "speed": 6.8
             }
           },
           "odour_sub_type": {
@@ -4330,14 +4968,14 @@
           "odour_sub_type_id": 18,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 1,
-          "longitude": "8.88080",
-          "latitude": "45.63220",
+          "longitude": 8.8808,
+          "latitude": 45.6322,
           "description": "Odore di pollina",
           "origin": "Nord",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-19T19:48:26.000000Z",
           "updatedAt": "2020-07-19T19:48:26.000000Z",
-          "APGEMOdistance": 366,
+          "APGEMOdistance": 572,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -4366,8 +5004,19 @@
               }
             },
             "wind": {
-              "deg": 146,
-              "speed": 3.2
+              "deg": 151,
+              "speed": 1.9
+            }
+          },
+          "odour_sub_type": {
+            "id": 18,
+            "odour_type_id": 1,
+            "name": "Otros",
+            "slug": "other",
+            "odour_type": {
+              "id": 1,
+              "name": "Campo y naturaleza",
+              "slug": "country-and-nature"
             }
           }
         }
@@ -4392,14 +5041,14 @@
           "odour_sub_type_id": 79,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 2,
-          "longitude": "8.89820",
-          "latitude": "45.62380",
+          "longitude": 8.8982,
+          "latitude": 45.6238,
           "description": "Ore 6,30/7, 00",
           "origin": null,
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-20T05:38:30.000000Z",
           "updatedAt": "2020-07-20T05:38:30.000000Z",
-          "APGEMOdistance": 165,
+          "APGEMOdistance": 221,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -4428,8 +5077,8 @@
               }
             },
             "wind": {
-              "deg": 254,
-              "speed": 6.7
+              "deg": 343,
+              "speed": 9.1
             }
           },
           "odour_sub_type": {
@@ -4450,14 +5099,14 @@
           "odour_sub_type_id": 32,
           "odour_intensity_id": 5,
           "odour_hedonic_tone_id": 1,
-          "longitude": "-74.14090",
-          "latitude": "4.68430",
+          "longitude": -74.1409,
+          "latitude": 4.6843,
           "description": "Olor a perro muerto",
           "origin": "Crematorio",
-          "deletedAt": null,
+          "deleted_at": null,
           "createdAt": "2020-07-20T18:26:17.000000Z",
           "updatedAt": "2020-07-20T18:26:17.000000Z",
-          "APGEMOdistance": 535,
+          "APGEMOdistance": 153,
           "color": 7,
           "relationships": {
             "odourIntensity": {
@@ -4486,8 +5135,19 @@
               }
             },
             "wind": {
-              "deg": 105,
-              "speed": 4.5
+              "deg": 225,
+              "speed": 4.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 32,
+            "odour_type_id": 2,
+            "name": "Madera quemada",
+            "slug": "burnt-wood",
+            "odour_type": {
+              "id": 2,
+              "name": "Urbano",
+              "slug": "urban"
             }
           }
         }
