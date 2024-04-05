@@ -21,7 +21,7 @@ import { Polygon } from '../../../../models/polygon';
 })
 export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
-  @ViewChild('map') map!: MapComponent;
+  @ViewChild('map') map!: MapComponent | null;
 
   public cone!: Cone;
   public points!: Point[];
@@ -91,7 +91,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       setTimeout(() => {
         if (this.points) {
           const bbox = this.getBboxFromPoints();
-          this.map.mapInstance.fitBounds(bbox, { padding: { top: 50, bottom: 200, left: 50, right: 500 } });
+          this.map?.mapInstance.fitBounds(bbox, { padding: { top: 50, bottom: 200, left: 50, right: 500 } });
         }
       });
     });
@@ -103,7 +103,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe(
       (state) => {
         setTimeout(() => {
-          this.map.mapInstance.resize();
+          if (this.map?.mapInstance) this.map.mapInstance.resize();
         }, 250);
       }
     );
@@ -116,9 +116,9 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
           this.previewEpisode = null;
         }
         let layerId = 'APEGMOpolygons';
-        if (this.map.mapInstance.getLayer(layerId)) {
+        if (this.map?.mapInstance && this.map.mapInstance.getLayer(layerId)) {
           setTimeout(() => {
-            this.map.mapInstance.moveLayer(layerId);
+            this.map?.mapInstance.moveLayer(layerId);
           });
         }
       }
@@ -194,9 +194,10 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
       setTimeout(() => {
         const bbox = this.getBboxFromPointsAndObservations();
-        this.map.mapInstance.fitBounds(bbox, {
-          padding: { top: 50, bottom: 200, left: 50, right: 500 },
-        });
+        if (this.map?.mapInstance)
+          this.map.mapInstance.fitBounds(bbox, {
+            padding: { top: 50, bottom: 200, left: 50, right: 500 },
+          });
       });
     });
   }
@@ -390,9 +391,9 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     }
 
     let layerId = 'APEGMOpolygons';
-    if (this.map.mapInstance.getLayer(layerId)) {
+    if (this.map?.mapInstance && this.map.mapInstance.getLayer(layerId)) {
       setTimeout(() => {
-        this.map.mapInstance.moveLayer(layerId);
+        this.map?.mapInstance.moveLayer(layerId);
       });
     }
 
@@ -562,6 +563,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     this.previewObservation$?.unsubscribe();
     this.episode$?.unsubscribe();
 
+    this.map = null;
     this.studyZoneService.observation = null;
     this.studyZoneService.previewObservation = null;
     this.studyZoneService.episode = null;
