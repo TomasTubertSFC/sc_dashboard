@@ -1,4 +1,4 @@
-<div class="card col-12">
+<div class="card col-12" (mouseleave)="hidePreviewEpisode()">
   <!-- <p>Episodios de Olor</p> -->
   @if(!studyZone){
   <p-skeleton width="100%" height="150px"></p-skeleton>
@@ -56,7 +56,6 @@
           tooltipPosition="top"
           (click)="selectEpisode($event, ep.id)"
           (mouseover)="previewEpisode(tIndex, epIndex)"
-          (mouseleave)="hidePreviewEpisode()"
         >
           <div
             class="inconvenience"

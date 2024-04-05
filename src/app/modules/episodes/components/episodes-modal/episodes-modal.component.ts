@@ -69,8 +69,7 @@ export class EpisodesModalComponent implements OnDestroy {
       if(this.observationButtonPreview) this.observationButtonPreview.dispatchEvent( new Event('mouseleave'));
       this.observationButtonPreview = document.getElementById(`obsButton${previewObservation}`) as HTMLElement;
       if(this.observationButtonPreview) this.observationButtonPreview.dispatchEvent( new Event('mouseover'));
-
-      if(this.episdoesSidebarVisible) this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : this.episodesContainer.nativeElement.scrollTop;
+      if(this.episdoesSidebarVisible && this.episodesContainer) this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : this.episodesContainer.nativeElement.scrollTop;
 
     });
 
