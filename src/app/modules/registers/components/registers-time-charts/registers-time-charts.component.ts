@@ -1,18 +1,8 @@
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Observation } from '../../../../models/observation';
 import { PdfService } from '../../../../services/pdf/pdf.service';
-import {
-  OdourHedonicTone,
-  OdourIntensity,
-  OdourTypeData,
-} from '../../../../models/odour-related-data';
+import { OdourHedonicTone, OdourIntensity, OdourTypeData } from '../../../../models/odour-related-data';
 import { UIChart } from 'primeng/chart';
 
 interface dataset {
@@ -28,9 +18,7 @@ interface dataset {
   styleUrl: './registers-time-charts.component.scss',
 })
 export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
-  @ViewChild('registerTimeChart', { static: false })
-  registerTimeChart!: ElementRef;
-
+  @ViewChild('registerTimeChart', { static: false }) registerTimeChart!: ElementRef;
   @ViewChild('chart', {static: false}) chart!: UIChart;
 
   public timeFilter: string = 'months';
@@ -115,9 +103,7 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
   private getChartStylesAndData() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue(
-      '--text-color-secondary'
-    );
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
     this.options = {

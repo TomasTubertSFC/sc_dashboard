@@ -28,24 +28,15 @@
         </div>
       </div>
       @if(!observations){
-      <p-skeleton width="100%" height="600px" styleClass="mt-2"></p-skeleton>
-      } @else { @if(chartDoughnut){
-      <p-chart
-        type="doughnut"
-        class="max-h-10rem"
-        [data]="doughnutData"
-        [options]="doughnutOptions"
-        *ngIf="doughnutData"
-      />
-      } @else {
-      <p-chart
-        type="bar"
-        class="max-h-10rem"
-        [data]="barData"
-        [options]="barOptions"
-        *ngIf="barData"
-      />
-      } }
+        <p-skeleton width="100%" height="600px" styleClass="mt-2"></p-skeleton>
+      }
+      @else {
+        @if(chartDoughnut){
+          <p-chart type="doughnut" class="max-h-10rem" [data]="doughnutData" [options]="doughnutOptions" *ngIf="doughnutData" #doughnutChart/>
+        } @else {
+          <p-chart type="bar" class="max-h-10rem" [data]="barData" [options]="barOptions" *ngIf="barData" #barChart />
+        }
+      }
     </div>
     <div
       class="w-full mb-4 lg:mb-0 lg:ml-2 lg:mr-2 flex-order-0 lg:flex-order-1"
