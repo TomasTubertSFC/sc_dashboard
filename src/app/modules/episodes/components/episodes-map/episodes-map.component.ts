@@ -399,10 +399,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
   }
 
-  private getBboxFromPointsAndObservations(): [
-    [number, number],
-    [number, number]
-  ] {
+  private getBboxFromPointsAndObservations(): [[number, number], [number, number]] {
     let points = this.points;
     let observations =
       this.episode?.observations.map((observation) => ({

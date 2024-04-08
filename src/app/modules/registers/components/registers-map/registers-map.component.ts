@@ -61,9 +61,9 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
     this.studyZone$ = this.studyZoneService.studyZone.subscribe((studyZone) => {
       if (studyZone) {
         this.studyZone = studyZone;
-        this.studyZone.episodes.forEach(
-          (episode) => (this.observations = episode.observations)
-        );
+        this.studyZone.episodes.forEach((episode) => (
+          this.observations.push(...episode.observations)
+        ));
         this.observations.forEach((observation) => {
           this.intialPoint.x += observation.longitude / this.observations.length;
           this.intialPoint.y += observation.latitude / this.observations.length;
@@ -81,17 +81,20 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
             let polygon: Polygon = {
               geometry: {
                 type: 'Polygon',
-                coordinates: [point.map((pt) => [pt.x, pt.y])],
+                coordinates: [point.map((pt) =>{
+                  this.points.push(pt);
+                  return [pt.x, pt.y]
+                })],
               },
             };
 
             this.APGEMOpolygon.push(polygon);
           } else {
+            this.points.push(point);
             this.APGEMOpoints.push(point);
           }
         });
 
-        this.points = this.points.concat(this.APGEMOpoints);
 
         this.geoJsonObservation = {
           features: this.studyZone.restObservations.map(observation => observation.geoJson),
@@ -103,7 +106,7 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
 
     setTimeout(() => {
       if (this.points) {
-        const bbox = this.getBboxFromPoints();
+        const bbox = this.getBboxFromPointsAndObservations();
 
         this.map.mapInstance.fitBounds(bbox, {
           padding: { top: 100, bottom: 50, left: 50, right: 50 },
@@ -122,8 +125,12 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  private getBboxFromPoints(): [[number, number], [number, number]] {
+  private getBboxFromPointsAndObservations(): [[number, number], [number, number]] {
     let points = this.points;
+    let observations = this.observations.map((observation) => ({
+        x: observation.longitude,
+        y: observation.latitude,
+      })) || [];
 
     let minX: number = 0,
       maxX: number = 0,
@@ -140,6 +147,13 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
         maxX = Math.max(p.x, maxX);
         maxY = Math.max(p.y, maxY);
       }
+    });
+
+    observations.forEach((p) => {
+        minX = Math.min(p.x, minX);
+        minY = Math.min(p.y, minY);
+        maxX = Math.max(p.x, maxX);
+        maxY = Math.max(p.y, maxY);
     });
 
     return [
