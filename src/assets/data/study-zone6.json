@@ -1,0 +1,1608 @@
+{
+  "initDate": "2019-01-01",
+  "endDate": "2021-12-31",
+  "APGEMO": [
+    [
+      {
+        "x": 2.2276440980409284,
+        "y": 41.41827524798583
+      },
+      {
+        "x": 2.229787577578974,
+        "y": 41.41720364203901
+      },
+      {
+        "x": 2.2286137673557587,
+        "y": 41.41632338107028
+      },
+      {
+        "x": 2.2269040872480317,
+        "y": 41.417107962076805
+      }
+    ],
+    [
+      {
+        "x": 2.2375505226952987,
+        "y": 41.43376889135852
+      },
+      {
+        "x": 2.2328298353484337,
+        "y": 41.43830534321529
+      },
+      {
+        "x": 2.2237143862114253,
+        "y": 41.430750501792225
+      },
+      {
+        "x": 2.2319055401603856,
+        "y": 41.426464795353326
+      }
+    ],
+    [
+      {
+        "x": 2.2251968443669488,
+        "y": 41.407549784054794
+      },
+      {
+        "x": 2.2215532322047213,
+        "y": 41.408815537430094
+      },
+      {
+        "x": 2.2217811497031468,
+        "y": 41.41069898475872
+      },
+      {
+        "x": 2.2243605365482426,
+        "y": 41.413452755772106
+      },
+      {
+        "x": 2.227410282170974,
+        "y": 41.411404507463125
+      },
+      {
+        "x": 2.2273192449882058,
+        "y": 41.410471395155064
+      }
+    ]
+  ],
+  "restObservations": [],
+  "episodes": [
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 76,
+        "name": "Residuo descompuesto"
+      },
+      "differentUsers": 3,
+      "date": "2019-07-10",
+      "inconvenience": 7,
+      "observations": [
+        {
+          "id": 455,
+          "user_id": 244,
+          "odour_sub_type_id": 76,
+          "odour_intensity_id": 5,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.2205,
+          "latitude": 41.4077,
+          "description": null,
+          "origin": "Huele a animal muerto",
+          "created_at": "2019-07-10T17:26:28.000000Z",
+          "APGEMOdistance": 540,
+          "color": 7,
+          "createdAt": "2019-07-10T17:26:28.000000Z",
+          "updatedAt": "2019-07-10T18:01:19.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 5,
+              "power": 4,
+              "name": "Fuerte",
+              "slug": "fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 76,
+              "name": "Residuo descompuesto",
+              "slug": "decomposed-waste",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 68,
+              "speed": 6.5
+            }
+          },
+          "odour_sub_type": {
+            "id": 76,
+            "odour_type_id": 5,
+            "name": "Residuo descompuesto",
+            "slug": "decomposed-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 456,
+          "user_id": 233,
+          "odour_sub_type_id": 78,
+          "odour_intensity_id": 7,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.2115,
+          "latitude": 41.4163,
+          "description": null,
+          "origin": "Depuradora y Tersa",
+          "created_at": "2019-07-10T17:26:49.000000Z",
+          "APGEMOdistance": 96,
+          "color": 7,
+          "createdAt": "2019-07-10T17:26:49.000000Z",
+          "updatedAt": "2019-07-10T18:01:19.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 7,
+              "power": 6,
+              "name": "Extremadamente fuerte",
+              "slug": "extremadamente-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 78,
+              "name": "Huevos podridos",
+              "slug": "rotten-eggs",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 79,
+              "speed": 2.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 78,
+            "odour_type_id": 5,
+            "name": "Huevos podridos",
+            "slug": "rotten-eggs",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 459,
+          "user_id": 233,
+          "odour_sub_type_id": 28,
+          "odour_intensity_id": 3,
+          "odour_hedonic_tone_id": 3,
+          "longitude": 2.2131,
+          "latitude": 41.416,
+          "description": null,
+          "origin": "Cloaca",
+          "created_at": "2019-07-10T18:10:08.000000Z",
+          "APGEMOdistance": 560,
+          "color": 5,
+          "createdAt": "2019-07-10T18:10:08.000000Z",
+          "updatedAt": "2019-07-10T19:01:14.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 3,
+              "power": 2,
+              "name": "Débil",
+              "slug": "debil"
+            },
+            "odourHedonicTone": {
+              "id": 3,
+              "index": -2,
+              "name": "Desagradable",
+              "slug": "desagradable"
+            },
+            "odourSubType": {
+              "id": 28,
+              "name": "Alcantarilla",
+              "slug": "sewage-system",
+              "odourTypeId": 2,
+              "relationships": {
+                "odourType": {
+                  "id": 2,
+                  "name": "Urbano",
+                  "slug": "urban"
+                }
+              }
+            },
+            "wind": {
+              "deg": 35,
+              "speed": 4.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 28,
+            "odour_type_id": 2,
+            "name": "Alcantarilla",
+            "slug": "sewage-system",
+            "odour_type": {
+              "id": 2,
+              "name": "Urbano",
+              "slug": "urban"
+            }
+          }
+        },
+        {
+          "id": 462,
+          "user_id": 232,
+          "odour_sub_type_id": 77,
+          "odour_intensity_id": 5,
+          "odour_hedonic_tone_id": 5,
+          "longitude": 2.2159,
+          "latitude": 41.4127,
+          "description": null,
+          "origin": null,
+          "created_at": "2019-07-11T13:17:14.000000Z",
+          "APGEMOdistance": 220,
+          "color": 5,
+          "createdAt": "2019-07-11T13:17:14.000000Z",
+          "updatedAt": "2019-07-11T14:01:42.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 5,
+              "power": 4,
+              "name": "Fuerte",
+              "slug": "fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 5,
+              "index": 0,
+              "name": "Neutral",
+              "slug": "neutral"
+            },
+            "odourSubType": {
+              "id": 77,
+              "name": "Residuo fresco",
+              "slug": "fresh-waste",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 62,
+              "speed": 2.3
+            }
+          },
+          "odour_sub_type": {
+            "id": 77,
+            "odour_type_id": 5,
+            "name": "Residuo fresco",
+            "slug": "fresh-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 89,
+        "name": "Otros"
+      },
+      "differentUsers": 1,
+      "date": "2019-07-13",
+      "inconvenience": 7,
+      "observations": [
+        {
+          "id": 475,
+          "user_id": 240,
+          "odour_sub_type_id": 89,
+          "odour_intensity_id": 6,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2176,
+          "latitude": 41.4113,
+          "description": "Necesitamos respirar. Los vecinos no podemos ni abrir las ventanas, ni tender,...toda nuestra casa esta impregnada de este desagradable olor. Solucion ya!!",
+          "origin": "Tersa y fabricas",
+          "created_at": "2019-07-13T21:25:57.000000Z",
+          "APGEMOdistance": 296,
+          "color": 7,
+          "createdAt": "2019-07-13T21:25:57.000000Z",
+          "updatedAt": "2019-07-13T21:25:57.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 6,
+              "power": 5,
+              "name": "Muy fuerte",
+              "slug": "muy-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 89,
+              "name": "Otros",
+              "slug": "other",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 341,
+              "speed": 7.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 89,
+            "odour_type_id": 5,
+            "name": "Otros",
+            "slug": "other",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 477,
+          "user_id": 240,
+          "odour_sub_type_id": 89,
+          "odour_intensity_id": 4,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.2176,
+          "latitude": 41.4113,
+          "description": "És toxico y ya no podemos ni ventilar nuestra casa.",
+          "origin": "Tersa y fabricas que no cumple normativa",
+          "created_at": "2019-07-14T15:34:35.000000Z",
+          "APGEMOdistance": 405,
+          "color": 7,
+          "createdAt": "2019-07-14T15:34:35.000000Z",
+          "updatedAt": "2019-07-14T16:01:15.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 4,
+              "power": 3,
+              "name": "Indiferente",
+              "slug": "indiferente"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 89,
+              "name": "Otros",
+              "slug": "other",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 224,
+              "speed": 10.7
+            }
+          },
+          "odour_sub_type": {
+            "id": 89,
+            "odour_type_id": 5,
+            "name": "Otros",
+            "slug": "other",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 88,
+        "name": "Estación de tratamiento de aguas residuales"
+      },
+      "differentUsers": 2,
+      "date": "2019-07-19",
+      "inconvenience": 5,
+      "observations": [
+        {
+          "id": 494,
+          "user_id": 157,
+          "odour_sub_type_id": 88,
+          "odour_intensity_id": 7,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.2141,
+          "latitude": 41.4047,
+          "description": null,
+          "origin": "EDAR",
+          "created_at": "2019-07-19T17:22:14.000000Z",
+          "APGEMOdistance": 549,
+          "color": 7,
+          "createdAt": "2019-07-19T17:22:14.000000Z",
+          "updatedAt": "2019-07-19T18:00:57.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 7,
+              "power": 6,
+              "name": "Extremadamente fuerte",
+              "slug": "extremadamente-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 88,
+              "name": "Estación de tratamiento de aguas residuales",
+              "slug": "waste-water-treatment-station",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 264,
+              "speed": 6.8
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 500,
+          "user_id": 157,
+          "odour_sub_type_id": 78,
+          "odour_intensity_id": 7,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.214,
+          "latitude": 41.4046,
+          "description": null,
+          "origin": "EDAR",
+          "created_at": "2019-07-22T20:44:25.000000Z",
+          "APGEMOdistance": 133,
+          "color": 7,
+          "createdAt": "2019-07-22T20:44:25.000000Z",
+          "updatedAt": "2019-07-22T20:44:25.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 7,
+              "power": 6,
+              "name": "Extremadamente fuerte",
+              "slug": "extremadamente-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 78,
+              "name": "Huevos podridos",
+              "slug": "rotten-eggs",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 216,
+              "speed": 8.9
+            }
+          },
+          "odour_sub_type": {
+            "id": 78,
+            "odour_type_id": 5,
+            "name": "Huevos podridos",
+            "slug": "rotten-eggs",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 502,
+          "user_id": 250,
+          "odour_sub_type_id": 79,
+          "odour_intensity_id": 7,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.2181,
+          "latitude": 41.4285,
+          "description": "Es insoportable",
+          "origin": "Agua estancada",
+          "created_at": "2019-07-23T16:58:56.000000Z",
+          "APGEMOdistance": 141,
+          "color": 7,
+          "createdAt": "2019-07-23T16:58:56.000000Z",
+          "updatedAt": "2019-07-23T17:01:04.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 7,
+              "power": 6,
+              "name": "Extremadamente fuerte",
+              "slug": "extremadamente-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 79,
+              "name": "Lodos",
+              "slug": "sludge",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 230,
+              "speed": 9.7
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 79,
+        "name": "Lodos"
+      },
+      "differentUsers": 2,
+      "date": "2020-06-01",
+      "inconvenience": 2,
+      "observations": [
+        {
+          "id": 4783,
+          "user_id": 71,
+          "odour_sub_type_id": 79,
+          "odour_intensity_id": 6,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2191,
+          "latitude": 41.4116,
+          "description": null,
+          "origin": "Metrofang",
+          "created_at": "2020-06-01T18:30:01.000000Z",
+          "APGEMOdistance": 127,
+          "color": 7,
+          "createdAt": "2020-06-01T18:30:01.000000Z",
+          "updatedAt": "2020-06-17T00:02:17.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 6,
+              "power": 5,
+              "name": "Muy fuerte",
+              "slug": "muy-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 79,
+              "name": "Lodos",
+              "slug": "sludge",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 183,
+              "speed": 7
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 4786,
+          "user_id": 713,
+          "odour_sub_type_id": 28,
+          "odour_intensity_id": 7,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.2217,
+          "latitude": 41.4172,
+          "description": "It has like feeling shit in the air",
+          "origin": "Metrofang",
+          "created_at": "2020-06-01T19:45:20.000000Z",
+          "APGEMOdistance": 232,
+          "color": 7,
+          "createdAt": "2020-06-01T19:45:20.000000Z",
+          "updatedAt": "2020-06-17T00:02:17.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 7,
+              "power": 6,
+              "name": "Extremadamente fuerte",
+              "slug": "extremadamente-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 28,
+              "name": "Alcantarilla",
+              "slug": "sewage-system",
+              "odourTypeId": 2,
+              "relationships": {
+                "odourType": {
+                  "id": 2,
+                  "name": "Urbano",
+                  "slug": "urban"
+                }
+              }
+            },
+            "wind": {
+              "deg": 333,
+              "speed": 6.9
+            }
+          },
+          "odour_sub_type": {
+            "id": 28,
+            "odour_type_id": 2,
+            "name": "Alcantarilla",
+            "slug": "sewage-system",
+            "odour_type": {
+              "id": 2,
+              "name": "Urbano",
+              "slug": "urban"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 79,
+        "name": "Lodos"
+      },
+      "differentUsers": 1,
+      "date": "2020-06-27",
+      "inconvenience": 7,
+      "observations": [
+        {
+          "id": 5020,
+          "user_id": 71,
+          "odour_sub_type_id": 79,
+          "odour_intensity_id": 6,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2194,
+          "latitude": 41.4117,
+          "description": null,
+          "origin": "Edar Metrofang",
+          "created_at": "2020-06-27T18:25:13.000000Z",
+          "APGEMOdistance": 350,
+          "color": 7,
+          "createdAt": "2020-06-27T18:25:13.000000Z",
+          "updatedAt": "2020-06-27T19:02:11.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 6,
+              "power": 5,
+              "name": "Muy fuerte",
+              "slug": "muy-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 79,
+              "name": "Lodos",
+              "slug": "sludge",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 174,
+              "speed": 5.3
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 75,
+        "name": "Biogas"
+      },
+      "differentUsers": 1,
+      "date": "2020-07-08",
+      "inconvenience": 1,
+      "observations": [
+        {
+          "id": 5144,
+          "user_id": 222,
+          "odour_sub_type_id": 75,
+          "odour_intensity_id": 5,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2163,
+          "latitude": 41.4295,
+          "description": null,
+          "origin": "Zona Mar",
+          "created_at": "2020-07-08T20:32:49.000000Z",
+          "APGEMOdistance": 151,
+          "color": 7,
+          "createdAt": "2020-07-08T20:32:49.000000Z",
+          "updatedAt": "2020-07-08T21:02:10.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 5,
+              "power": 4,
+              "name": "Fuerte",
+              "slug": "fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 75,
+              "name": "Biogas",
+              "slug": "biogas",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 251,
+              "speed": 1.7
+            }
+          },
+          "odour_sub_type": {
+            "id": 75,
+            "odour_type_id": 5,
+            "name": "Biogas",
+            "slug": "biogas",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 79,
+        "name": "Lodos"
+      },
+      "differentUsers": 2,
+      "date": "2020-07-14",
+      "inconvenience": 1,
+      "observations": [
+        {
+          "id": 5219,
+          "user_id": 714,
+          "odour_sub_type_id": 79,
+          "odour_intensity_id": 7,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.2237,
+          "latitude": 41.4107,
+          "description": null,
+          "origin": null,
+          "created_at": "2020-07-14T18:46:31.000000Z",
+          "APGEMOdistance": 313,
+          "color": 7,
+          "createdAt": "2020-07-14T18:46:31.000000Z",
+          "updatedAt": "2020-07-14T19:02:09.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 7,
+              "power": 6,
+              "name": "Extremadamente fuerte",
+              "slug": "extremadamente-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 79,
+              "name": "Lodos",
+              "slug": "sludge",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 219,
+              "speed": 7.3
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 5220,
+          "user_id": 77,
+          "odour_sub_type_id": 79,
+          "odour_intensity_id": 7,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.225,
+          "latitude": 41.4096,
+          "description": null,
+          "origin": "fangos",
+          "created_at": "2020-07-14T18:46:54.000000Z",
+          "APGEMOdistance": 128,
+          "color": 7,
+          "createdAt": "2020-07-14T18:46:54.000000Z",
+          "updatedAt": "2020-07-14T19:02:10.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 7,
+              "power": 6,
+              "name": "Extremadamente fuerte",
+              "slug": "extremadamente-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 79,
+              "name": "Lodos",
+              "slug": "sludge",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 251,
+              "speed": 6.7
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 76,
+        "name": "Residuo descompuesto"
+      },
+      "differentUsers": 3,
+      "date": "2020-07-14",
+      "inconvenience": 0,
+      "observations": [
+        {
+          "id": 5210,
+          "user_id": 249,
+          "odour_sub_type_id": 76,
+          "odour_intensity_id": 6,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2182,
+          "latitude": 41.429,
+          "description": null,
+          "origin": null,
+          "created_at": "2020-07-14T18:20:50.000000Z",
+          "APGEMOdistance": 98,
+          "color": 7,
+          "createdAt": "2020-07-14T18:20:50.000000Z",
+          "updatedAt": "2020-07-14T19:02:07.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 6,
+              "power": 5,
+              "name": "Muy fuerte",
+              "slug": "muy-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 76,
+              "name": "Residuo descompuesto",
+              "slug": "decomposed-waste",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 280,
+              "speed": 10
+            }
+          },
+          "odour_sub_type": {
+            "id": 76,
+            "odour_type_id": 5,
+            "name": "Residuo descompuesto",
+            "slug": "decomposed-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 5211,
+          "user_id": 77,
+          "odour_sub_type_id": 88,
+          "odour_intensity_id": 5,
+          "odour_hedonic_tone_id": 3,
+          "longitude": 2.2216,
+          "latitude": 41.4139,
+          "description": null,
+          "origin": null,
+          "created_at": "2020-07-14T18:23:29.000000Z",
+          "APGEMOdistance": 439,
+          "color": 6,
+          "createdAt": "2020-07-14T18:23:29.000000Z",
+          "updatedAt": "2020-07-14T19:02:08.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 5,
+              "power": 4,
+              "name": "Fuerte",
+              "slug": "fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 3,
+              "index": -2,
+              "name": "Desagradable",
+              "slug": "desagradable"
+            },
+            "odourSubType": {
+              "id": 88,
+              "name": "Estación de tratamiento de aguas residuales",
+              "slug": "waste-water-treatment-station",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 229,
+              "speed": 10.4
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 5214,
+          "user_id": 714,
+          "odour_sub_type_id": 88,
+          "odour_intensity_id": 3,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2213,
+          "latitude": 41.413,
+          "description": null,
+          "origin": null,
+          "created_at": "2020-07-14T18:34:39.000000Z",
+          "APGEMOdistance": 366,
+          "color": 6,
+          "createdAt": "2020-07-14T18:34:39.000000Z",
+          "updatedAt": "2020-07-14T19:02:08.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 3,
+              "power": 2,
+              "name": "Débil",
+              "slug": "debil"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 88,
+              "name": "Estación de tratamiento de aguas residuales",
+              "slug": "waste-water-treatment-station",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 235,
+              "speed": 9.5
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 76,
+        "name": "Residuo descompuesto"
+      },
+      "differentUsers": 1,
+      "date": "2020-07-14",
+      "inconvenience": 3,
+      "observations": [
+        {
+          "id": 5227,
+          "user_id": 726,
+          "odour_sub_type_id": 76,
+          "odour_intensity_id": 6,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2205,
+          "latitude": 41.429,
+          "description": null,
+          "origin": "Tersa",
+          "created_at": "2020-07-14T22:13:33.000000Z",
+          "APGEMOdistance": 69,
+          "color": 7,
+          "createdAt": "2020-07-14T22:13:33.000000Z",
+          "updatedAt": "2020-07-14T23:02:02.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 6,
+              "power": 5,
+              "name": "Muy fuerte",
+              "slug": "muy-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 76,
+              "name": "Residuo descompuesto",
+              "slug": "decomposed-waste",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 356,
+              "speed": 6
+            }
+          },
+          "odour_sub_type": {
+            "id": 76,
+            "odour_type_id": 5,
+            "name": "Residuo descompuesto",
+            "slug": "decomposed-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 88,
+        "name": "Estación de tratamiento de aguas residuales"
+      },
+      "differentUsers": 1,
+      "date": "2020-07-16",
+      "inconvenience": 6,
+      "observations": [
+        {
+          "id": 5252,
+          "user_id": 77,
+          "odour_sub_type_id": 88,
+          "odour_intensity_id": 5,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2191,
+          "latitude": 41.4108,
+          "description": null,
+          "origin": "edar",
+          "created_at": "2020-07-16T18:35:04.000000Z",
+          "APGEMOdistance": 331,
+          "color": 7,
+          "createdAt": "2020-07-16T18:35:04.000000Z",
+          "updatedAt": "2020-07-16T19:02:05.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 5,
+              "power": 4,
+              "name": "Fuerte",
+              "slug": "fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 88,
+              "name": "Estación de tratamiento de aguas residuales",
+              "slug": "waste-water-treatment-station",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 163,
+              "speed": 6.9
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 88,
+        "name": "Estación de tratamiento de aguas residuales"
+      },
+      "differentUsers": 2,
+      "date": "2020-07-16",
+      "inconvenience": 3,
+      "observations": [
+        {
+          "id": 5267,
+          "user_id": 77,
+          "odour_sub_type_id": 88,
+          "odour_intensity_id": 7,
+          "odour_hedonic_tone_id": 1,
+          "longitude": 2.2176,
+          "latitude": 41.4072,
+          "description": null,
+          "origin": null,
+          "created_at": "2020-07-16T20:58:21.000000Z",
+          "APGEMOdistance": 490,
+          "color": 7,
+          "createdAt": "2020-07-16T20:58:21.000000Z",
+          "updatedAt": "2020-07-16T21:02:13.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 7,
+              "power": 6,
+              "name": "Extremadamente fuerte",
+              "slug": "extremadamente-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 1,
+              "index": -4,
+              "name": "Extremadamente desagradable",
+              "slug": "extremadamente-desagradable"
+            },
+            "odourSubType": {
+              "id": 88,
+              "name": "Estación de tratamiento de aguas residuales",
+              "slug": "waste-water-treatment-station",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 31,
+              "speed": 4.2
+            }
+          },
+          "odour_sub_type": {
+            "id": 88,
+            "odour_type_id": 5,
+            "name": "Estación de tratamiento de aguas residuales",
+            "slug": "waste-water-treatment-station",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        },
+        {
+          "id": 5275,
+          "user_id": 249,
+          "odour_sub_type_id": 76,
+          "odour_intensity_id": 6,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2183,
+          "latitude": 41.429,
+          "description": null,
+          "origin": null,
+          "created_at": "2020-07-17T19:09:47.000000Z",
+          "APGEMOdistance": 480,
+          "color": 7,
+          "createdAt": "2020-07-17T19:09:47.000000Z",
+          "updatedAt": "2020-07-17T19:09:47.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 6,
+              "power": 5,
+              "name": "Muy fuerte",
+              "slug": "muy-fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 76,
+              "name": "Residuo descompuesto",
+              "slug": "decomposed-waste",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 8,
+              "speed": 6.7
+            }
+          },
+          "odour_sub_type": {
+            "id": 76,
+            "odour_type_id": 5,
+            "name": "Residuo descompuesto",
+            "slug": "decomposed-waste",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": {
+        "id": 5,
+        "name": "Aguas residuales y residuos"
+      },
+      "subType": {
+        "id": 79,
+        "name": "Lodos"
+      },
+      "differentUsers": 1,
+      "date": "2020-07-16",
+      "inconvenience": 6,
+      "observations": [
+        {
+          "id": 5269,
+          "user_id": 77,
+          "odour_sub_type_id": 79,
+          "odour_intensity_id": 5,
+          "odour_hedonic_tone_id": 2,
+          "longitude": 2.2173,
+          "latitude": 41.4064,
+          "description": null,
+          "origin": null,
+          "created_at": "2020-07-16T23:26:41.000000Z",
+          "APGEMOdistance": 408,
+          "color": 7,
+          "createdAt": "2020-07-16T23:26:41.000000Z",
+          "updatedAt": "2020-07-16T23:26:41.000000Z",
+          "deletedAt": null,
+          "relationships": {
+            "odourIntensity": {
+              "id": 5,
+              "power": 4,
+              "name": "Fuerte",
+              "slug": "fuerte"
+            },
+            "odourHedonicTone": {
+              "id": 2,
+              "index": -3,
+              "name": "Muy desagradable",
+              "slug": "muy-desagradable"
+            },
+            "odourSubType": {
+              "id": 79,
+              "name": "Lodos",
+              "slug": "sludge",
+              "odourTypeId": 5,
+              "relationships": {
+                "odourType": {
+                  "id": 5,
+                  "name": "Aguas residuales y residuos",
+                  "slug": "wastewater-and-waste"
+                }
+              }
+            },
+            "wind": {
+              "deg": 166,
+              "speed": 2.5
+            }
+          },
+          "odour_sub_type": {
+            "id": 79,
+            "odour_type_id": 5,
+            "name": "Lodos",
+            "slug": "sludge",
+            "odour_type": {
+              "id": 5,
+              "name": "Aguas residuales y residuos",
+              "slug": "wastewater-and-waste"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -59,10 +59,10 @@ export class EpisodesTimelineComponent  implements OnDestroy {
       });
     });
     this.studyZoneService.episode.subscribe(episode => {
-        this.episode = episode;
+      this.episode = episode;
     });
     this.studyZoneService.previewEpisode.subscribe(episode => {
-        this.episodePreview = episode;
+      this.episodePreview = episode;
     });
   }
 

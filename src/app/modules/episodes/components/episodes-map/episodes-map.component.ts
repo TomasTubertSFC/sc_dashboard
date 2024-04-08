@@ -20,7 +20,8 @@ import { Polygon } from '../../../../models/polygon';
   styleUrl: './episodes-map.component.scss',
 })
 export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
-  @ViewChild('map') map!: MapComponent;
+
+  @ViewChild('map') map!: MapComponent | null;
 
   public cone!: Cone;
   public points!: Point[];
@@ -69,14 +70,10 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
         //separamos puntos y poligonos de APEGMO
         studyZone.APGEMO.forEach((point) => {
           if (Array.isArray(point)) {
-            let polygon: Polygon = {
-              geometry: {
-                type: 'Polygon',
-                coordinates: [point.map((pt) => [pt.x, pt.y])],
-              },
-            };
+            let polygon: Polygon = { geometry: { type: 'Polygon', coordinates: [point.map((pt) => [pt.x, pt.y])] }};
             this.APGEMOpolygon.push(polygon);
-          } else {
+          }
+          else {
             this.APGEMOpoints.push(point);
           }
         });
@@ -94,9 +91,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       setTimeout(() => {
         if (this.points) {
           const bbox = this.getBboxFromPoints();
-          this.map.mapInstance.fitBounds(bbox, {
-            padding: { top: 50, bottom: 200, left: 50, right: 500 },
-          });
+          this.map?.mapInstance.fitBounds(bbox, { padding: { top: 50, bottom: 200, left: 50, right: 500 } });
         }
       });
     });
@@ -108,7 +103,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe(
       (state) => {
         setTimeout(() => {
-          this.map.mapInstance.resize();
+          if (this.map?.mapInstance) this.map.mapInstance.resize();
         }, 250);
       }
     );
@@ -121,9 +116,9 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
           this.previewEpisode = null;
         }
         let layerId = 'APEGMOpolygons';
-        if (this.map.mapInstance.getLayer(layerId)) {
+        if (this.map?.mapInstance && this.map.mapInstance.getLayer(layerId)) {
           setTimeout(() => {
-            this.map.mapInstance.moveLayer(layerId);
+            this.map?.mapInstance.moveLayer(layerId);
           });
         }
       }
@@ -168,15 +163,9 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
         episode.observations.forEach((observation) => {
           //crear canvas para cada cono si la observacion no es plausible
-          if (
-            observation.APGEMOdistance >
-              this.studyZoneService.plausibilityDistance &&
-            observation.relationships.wind.speed >
-              this.studyZoneService.plausibilityWindSpeed
-          ) {
-            let canvas: HTMLCanvasElement = document.createElement(
-              'canvas'
-            ) as HTMLCanvasElement;
+          if ( observation.APGEMOdistance > this.studyZoneService.plausibilityDistance && observation.relationships.wind.speed > this.studyZoneService.plausibilityWindSpeed) {
+
+            let canvas: HTMLCanvasElement = document.createElement('canvas') as HTMLCanvasElement;
             let id: number = observation.id;
             let points = [...this.points];
 
@@ -189,38 +178,26 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
             this.coneCanvas = canvas;
             this.context = new ElementRef(canvas).nativeElement.getContext('2d') as CanvasRenderingContext2D;
-            this.cone = new Cone(
-              points,
-              {
-                x: observation.longitude,
-                y: observation.latitude,
-                id: observation.id,
-              },
-              true,
-              this.canvasHeight,
-              this.canvasWidth,
-              observation.relationships.wind
-            );
+            this.cone = new Cone( points, { x: observation.longitude, y: observation.latitude, id: observation.id }, true, this.canvasHeight, this.canvasWidth, observation.relationships.wind );
             let cone = this.cone;
 
-            if (this.cone.plausibleCone) {
+            if (this.cone.plausibleCone)
               observation.plausible = true;
-            }
 
             this.cones.push({ cone, canvas, id });
 
-            if (this.cone.observationCone && this.cone.observationCone.angle) {
+            if (this.cone.observationCone && this.cone.observationCone.angle)
               this.drawCone(undefined, undefined, 0.1);
-            }
           }
         });
       }
 
       setTimeout(() => {
         const bbox = this.getBboxFromPointsAndObservations();
-        this.map.mapInstance.fitBounds(bbox, {
-          padding: { top: 50, bottom: 200, left: 50, right: 500 },
-        });
+        if (this.map?.mapInstance)
+          this.map.mapInstance.fitBounds(bbox, {
+            padding: { top: 50, bottom: 200, left: 50, right: 500 },
+          });
       });
     });
   }
@@ -414,9 +391,9 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     }
 
     let layerId = 'APEGMOpolygons';
-    if (this.map.mapInstance.getLayer(layerId)) {
+    if (this.map?.mapInstance && this.map.mapInstance.getLayer(layerId)) {
       setTimeout(() => {
-        this.map.mapInstance.moveLayer(layerId);
+        this.map?.mapInstance.moveLayer(layerId);
       });
     }
 
@@ -450,16 +427,11 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       }
     });
 
-    observations.forEach((p, i) => {
-      if (i === 0) {
-        minX = maxX = p.x;
-        minY = maxY = p.y;
-      } else {
+    observations.forEach((p) => {
         minX = Math.min(p.x, minX);
         minY = Math.min(p.y, minY);
         maxX = Math.max(p.x, maxX);
         maxY = Math.max(p.y, maxY);
-      }
     });
 
     return [
@@ -591,6 +563,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     this.previewObservation$?.unsubscribe();
     this.episode$?.unsubscribe();
 
+    this.map = null;
     this.studyZoneService.observation = null;
     this.studyZoneService.previewObservation = null;
     this.studyZoneService.episode = null;

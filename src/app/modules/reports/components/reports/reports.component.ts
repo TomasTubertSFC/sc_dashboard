@@ -13,7 +13,7 @@ interface imgElements {
 })
 export class ReportsComponent {
   imgElements!: imgElements[];
-
+  isSomeImgChecked: boolean = false;
   constructor(private pdfService: PdfService) {
     const imgElements = this.pdfService.reportsElementsImg.getValue();
     const imgElementsArr = Object.entries(imgElements)
@@ -25,6 +25,11 @@ export class ReportsComponent {
       .filter(({ value }) => value);
 
     this.imgElements = imgElementsArr;
+    this.isSomeImgChecked = imgElementsArr.length > 0;
+  }
+
+  onCheckboxChange() {
+    this.isSomeImgChecked = this.imgElements.some((el) => el.checked);
   }
 
   async downloadReport() {

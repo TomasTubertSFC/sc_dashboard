@@ -73,7 +73,7 @@ export class OverviewComponent implements OnInit, AfterViewInit, OnDestroy {
         .sort((a, b) => Number(a.id) - Number(b.id))
         .reduce((acc: OdourType[], curr: OdourType, idx: number) => {
           if (!acc.length) return [curr];
-          if (acc[acc.length - 1]?.id !== curr.id) return [...acc, curr];
+          if (acc[acc.length - 1]?.id !== curr?.id) return [...acc, curr];
           return acc;
         }, [] as OdourType[]);
 

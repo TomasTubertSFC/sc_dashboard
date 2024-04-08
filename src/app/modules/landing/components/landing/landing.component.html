@@ -12,38 +12,52 @@
   </button>
 </nav>
 <header
-  class="relative flex justify-content-center w-auto p-5 pb-0 overflow-x-hidden md:p-8 md:pb-0 md:min-h-full md:justify-content-start lg:justify-content-center"
+  class="relative flex justify-content-center w-auto p-5 pb-0 overflow-x-hidden lg:p-8 lg:pb-0 lg:min-h-full lg:justify-content-start lg:justify-content-center"
 >
   <div
-    class="absolute z-1 flex flex-column justify-content-start align-items-center gap-3 text-center max-w-30rem lg:relative md:align-items-start md:text-left"
+    class="absolute z-1 flex flex-column justify-content-start align-items-center gap-3 text-center max-w-30rem lg:relative lg:align-items-start lg:text-left"
   >
-    <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
+    <h1 class="text-4xl">
+      <strong>OdourCollect</strong> <br />
+      <span class="text-2xl">
+        como plataforma de gestión de información ambiental. Da ese paso hacia
+        delante para tomar soluciones ante la contaminación odorífera.</span
+      >
+    </h1>
     <p class="pl-3 pr-3 sm:p-0">
-      Debitis magni reprehenderit autem aliquid porro deleniti. Architecto
-      pariatur aliquam explicabo perspiciatis distinctio eum unde corrupti
-      voluptas alias molestias itaque, enim sunt.
+      En OdourCollect hemos desarrollado una plataforma de gestión de la
+      información que ofrece una solución integral para abordar los desafíos de
+      contaminación por olor en el entorno.
     </p>
-    <button
+    <!-- <button
       pButton
       pRipple
       class="p-button-rounded text-center btn-secondary"
       (click)="showDialog()"
     >
-      Contacta con ventas
-    </button>
+      Ponte en contacto
+    </button> -->
   </div>
   <div class="flex align-items-end justify-content-end w-full lg:w-auto">
-    <img src="..\assets\images\screen-1.png" alt="dashboard" />
+    <img
+      width="609px"
+      src="..\assets\images\OC-Dashboard.webp"
+      alt="dashboard"
+    />
   </div>
 </header>
 
-<section class="flex flex-column align-items-center">
-  <h2 class="text-center mt-5 mb-5">Empresas colaboradoras</h2>
+<section class="flex flex-column align-items-center p-5 pb-0 md:p-8 md:pb-0">
+  <h2 class="text-center mt-5 mb-5 text-2xl">
+    Producto desarrollado por Science for Change con el soporte del programa
+    Neotec, subvencionado por el CDTI apoyado por el Ministerio de Ciencia e
+    innovación.
+  </h2>
   <div class="m-0 grid companys">
     @for (icon of company_icons; track icon.id){
     <div class="col flex justify-content-center">
       <div class="flex align-items-center overlay-logo border-round-lg">
-        <div class="surface-card border-round-lg p-3 h-full">
+        <div class="flex surface-card border-round-lg p-3 h-full">
           <img src="{{ icon.src }}" alt="{{ icon.alt }}" />
         </div>
       </div>
@@ -53,13 +67,28 @@
 </section>
 
 <section class="p-5 pb-0 md:p-8 md:pb-0">
-  <h2>Funcionamiento del sistema</h2>
-  <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
+  <h2 class="text-2xl">Funcionamiento del sistema</h2>
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore aperiam
-    dolorem blanditiis corporis debitis quos dolorum commodi recusandae ab unde.
-    Voluptatibus cumque nam quod quisquam praesentium animi expedita, aspernatur
-    totam?
+    Conocer el estado de la calidad del aire del entorno es esencial para la
+    salud de las personas. De hecho, la contaminación por olor es la segunda
+    causa de queja medioambiental por parte de la ciudadanía.
+  </p>
+  <p>
+    Por ello, en OdourCollect hemos desarrollado una herramienta para
+    monitorizar el olor en tiempo y espacio real. Toda la información relevante
+    sobre la situación odorífera se encuentra centralizada en un
+    <strong>único lugar, accesible con solo un clic.</strong>
+  </p>
+  <p>
+    OdourCollect proporciona una herramienta poderosa para la
+    <strong>
+      gestión eficiente de la información y la toma de decisiones basadas en la
+      evidencia científica.
+    </strong>
+    A partir de observaciones de olor hechas por las personas, se obtienen datos
+    en <strong> tiempo y espacio real </strong> sobre la situación odorífera de
+    la zona. De esta manera, se puede identificar y caracterizar una zona que se
+    vea afectada por contaminación por olor.
   </p>
   <div class="grid mt-8 mb-2">
     <div class="col-12 lg:col-6">
@@ -72,12 +101,22 @@
     <div
       class="col-12 flex flex-column text-center lg:align-items-end lg:col-6 lg:text-right"
     >
-      <h4>Lorem ipsum dolor sit amet</h4>
+      <h4 class="text-xl">
+        Generación de informes detallados y control proactivo de la situación
+        odorífera
+      </h4>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore
-        aperiam dolorem blanditiis corporis debitis quos dolorum commodi
-        recusandae ab unde. Voluptatibus cumque nam quod quisquam praesentium
-        animi expedita, aspernatur totam?
+        La interfaz fácil de usar de OdourCollect garantiza que las personas
+        usuarias puedan acceder a los datos y comprenderlos con facilidad,
+        facilitando la toma de decisiones informadas. Con esta plataforma se
+        pueden
+        <strong
+          >generar informes técnicos detallados sobre los episodios de
+          olor</strong
+        >
+        con la determinación del grado de molestia, dando cumplimiento a la
+        norma UNE 77270:2023 “Construcción de mapas colaborativos mediante
+        ciencia ciudadana”.
       </p>
     </div>
   </div>
@@ -85,12 +124,20 @@
     <div
       class="col-12 flex flex-column text-center lg:align-items-start lg:col-6 lg:text-left"
     >
-      <h4>Lorem ipsum dolor sit amet</h4>
+      <h4 class="text-xl">Integración de datos</h4>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore
-        aperiam dolorem blanditiis corporis debitis quos dolorum commodi
-        recusandae ab unde. Voluptatibus cumque nam quod quisquam praesentium
-        animi expedita, aspernatur totam?
+        Además, la plataforma ofrece la capacidad de integrar
+        <strong>datos adicionales</strong>
+        para proporcionar una comprensión más completa y profunda sobre los
+        patrones y tendencias de los episodios de contaminación por olor,
+        permitiendo <strong>una gestión más efectiva y eficiente.</strong>
+      </p>
+      <p>
+        La intervención proactiva es el modelo más eficiente para resolver
+        conflictos relacionados con la contaminación por olor. Con OdourCollect
+        podrás abordar de manera efectiva episodios de olor y mitigar cualquier
+        impacto negativo puesto que cuenta con un eficiente sistema de alertas
+        configurable con una alta amplia gama de variables.
       </p>
     </div>
     <div class="col-12 lg:col-6">
@@ -101,9 +148,22 @@
       />
     </div>
   </div>
+  <div class="companys mt-5 md:mt-8">
+    <div class="flex align-items-center overlay-logo border-round-lg">
+      <div class="surface-card border-round-lg p-3 h-full">
+        <p class="text-lg">
+          Contratando la plataforma de gestión, podrás ser
+          <strong>líder en la gestión</strong>
+          proactiva de la contaminación por olor, reduciendo riesgos,
+          optimizando recursos, mejorando la reputación social y contribuyendo
+          positivamente al medio ambiente.
+        </p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section class="p-5 pb-0 md:p-8 md:pb-0">
+<!-- <section class="p-5 pb-0 md:p-8 md:pb-0">
   <p-carousel
     [value]="reviews"
     [numVisible]="1"
@@ -132,40 +192,40 @@
       </div>
     </ng-template>
   </p-carousel>
-</section>
+</section> -->
 
 <section
-  class="relative flex flex-column gap-4 justify-content-center w-auto p-5 pb-8 overflow-x-hidden md:p-8 md:pb-0 md:min-h-full md:justify-content-start lg:justify-content-start"
+  class="relative flex flex-column gap-4 justify-content-center w-auto p-5 pb-8 mt-4 overflow-x-hidden md:p-8 md:pb-0 md:min-h-full md:justify-content-start lg:justify-content-start"
 >
   <div
     class="flex flex-column justify-content-start align-items-center gap-4 text-center md:align-items-start md:text-left"
   >
     <div class="max-w-30rem">
-      <h2 class="m-0">Escena global</h2>
+      <h2 class="text-2xl">Escena global</h2>
       <p class="pl-3 pr-3 sm:p-0">
-        Debitis magni reprehenderit autem aliquid porro deleniti. Architecto
-        pariatur aliquam explicabo perspiciatis distinctio eum unde corrupti
-        voluptas alias molestias itaque, enim sunt.
+        OdourCollect es una aplicación gratuita de ciencia ciudadana para crear
+        mapas colaborativos de olor en todo el mundo. Los registros de olor se
+        pueden observar en tiempo y espacio real.
       </p>
     </div>
-    <div class="grid">
+    <div class="grid w-full">
       <div
-        class="col text-left border-primary border-solid border-left-1 border-y-none border-right-none pl-3"
+        class="col-4 text-left border-primary border-solid border-left-1 border-y-none border-right-none pl-3"
       >
-        <h3 class="m-0">+13.000</h3>
-        <p>Tenemos más de 13.000 registros de olores</p>
+        <h3 class="m-0 text-2xl">+14.100</h3>
+        <p class="text-base md:text-xl">Observaciones</p>
       </div>
       <div
-        class="col text-left border-primary border-solid border-left-1 border-y-none border-right-none pl-3"
+        class="col-4 text-left border-primary border-solid border-left-1 border-y-none border-right-none pl-3"
       >
-        <h3 class="m-0">+2000</h3>
-        <p>Tenemos más de 2.00 usuarios mapeando</p>
+        <h3 class="m-0 text-2xl">+2700</h3>
+        <p class="text-base md:text-xl">Usuarios</p>
       </div>
       <div
-        class="col text-left border-primary border-solid border-left-1 border-y-none border-right-none pl-3"
+        class="col-4 text-left border-primary border-solid border-left-1 border-y-none border-right-none pl-3"
       >
-        <h3 class="m-0">+13.000</h3>
-        <p>Tenemos más de 13.000 registros de olores</p>
+        <h3 class="m-0 text-2xl">+176</h3>
+        <p class="text-base md:text-xl">Paises</p>
       </div>
     </div>
   </div>
@@ -186,14 +246,14 @@
       <div></div>
     </div>
     }
-    <button
+    <!-- <button
       pButton
       pRipple
       class="z-3 world-btn p-button-rounded text-center absolute btn-secondary"
       (click)="showDialog()"
     >
       Contactar con ventas
-    </button>
+    </button> -->
   </div>
 </section>
 

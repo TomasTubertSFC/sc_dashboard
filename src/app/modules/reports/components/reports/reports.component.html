@@ -1,10 +1,12 @@
 @if(imgElements){
 <button
   pButton
+  [disabled]="!isSomeImgChecked"
   class="p-button-rounded"
   type="button"
   (click)="downloadReport()"
 >
+  <icon-download />
   Descargar informe
 </button>
 } @for(img of imgElements; track $index){
@@ -12,6 +14,7 @@
   <div class="flex justify-content-end mb-3">
     <p-checkbox
       [(ngModel)]="img.checked"
+      (onChange)="onCheckboxChange()"
       [styleClass]="'reports_checkbox'"
       [binary]="true"
       inputId="binary"

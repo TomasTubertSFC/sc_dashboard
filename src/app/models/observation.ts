@@ -110,7 +110,7 @@ export class Observation {
       },
       geometry: {
         type: "Point",
-        coordinates: [this.longitude, this.latitude]
+        coordinates: [Number(this.longitude), Number(this.latitude)]
       }
     };
 

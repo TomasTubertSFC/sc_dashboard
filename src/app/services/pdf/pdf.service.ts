@@ -1,10 +1,4 @@
-import {
-  ElementRef,
-  Injectable,
-  WritableSignal,
-  signal,
-  inject,
-} from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import moment from 'moment';
 import html2canvas from 'html2canvas';
@@ -124,54 +118,61 @@ export class PdfService {
 
   private async addPageLayoutStyle(pdf: jsPDF): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const ocLogo = document.querySelector('icon-odour-logo');
-      const resizeLogo = 0.5;
+      try {
+        const resizeLogo = 0.5;
 
-      const width = pdf.internal.pageSize.getWidth();
-      const height = pdf.internal.pageSize.getHeight();
+        const width = pdf.internal.pageSize.getWidth();
+        const height = pdf.internal.pageSize.getHeight();
 
-      const totalPages = pdf.getNumberOfPages();
+        const totalPages = pdf.getNumberOfPages();
 
-      for (let i = 1; i <= totalPages; i++) {
-        pdf.setPage(i);
-        const logoOcCanvas = await html2canvas(ocLogo as HTMLElement, {
-          logging: false,
-          backgroundColor: null,
+        for (let i = 1; i <= totalPages; i++) {
+          pdf.setPage(i);
+
+          const imgLogo = new Image();
+
+          imgLogo.src = 'assets/images/Logo-odourCollect.png';
+          imgLogo.style.objectFit = 'contain';
+
+          const box = this.boxGardient();
+
+          //Layout
+          pdf.addImage(box as string, 'JPEG', 0, 0, width, 75);
+          pdf.addImage(box as string, 'JPEG', 0, height - 25, width, 25);
+
+          //Logo
+          pdf.addImage(
+            imgLogo,
+            'PNG',
+            width - 100,
+            10,
+            144.1 * resizeLogo,
+            110 * resizeLogo
+          );
+
+          //Title
+          pdf.setFont('helvetica', 'bold');
+          pdf.setFontSize(24);
+          pdf.setTextColor('#fff');
+          pdf.text('OdourCollect Report', 25, 40);
+
+          //Date
+          pdf.setFont('helvetica', 'normal');
+          pdf.setFontSize(20);
+          pdf.setTextColor('#fff');
+          pdf.text(moment().format('ll'), 25, 60);
+        }
+
+        resolve();
+      } catch (err) {
+        console.error('err', err);
+        this.loading.next(false);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'El informe no se ha podido descargar. Inténtelo de nuevo.',
         });
-        const imgLogo = new Image();
-
-        imgLogo.src = logoOcCanvas.toDataURL();
-
-        const box = this.boxGardient();
-
-        //Layout
-        pdf.addImage(box as string, 'JPEG', 0, 0, width, 75);
-        pdf.addImage(box as string, 'JPEG', 0, height - 25, width, 25);
-
-        //Logo
-        pdf.addImage(
-          imgLogo,
-          'PNG',
-          width - 100,
-          10,
-          144.1 * resizeLogo,
-          110 * resizeLogo
-        );
-
-        //Title
-        pdf.setFont('helvetica', 'bold');
-        pdf.setFontSize(24);
-        pdf.setTextColor('#fff');
-        pdf.text('OdourCollect Report', 25, 40);
-
-        //Date
-        pdf.setFont('helvetica', 'normal');
-        pdf.setFontSize(20);
-        pdf.setTextColor('#fff');
-        pdf.text(moment().format('ll'), 25, 60);
       }
-
-      resolve();
     });
   }
 
@@ -333,7 +334,6 @@ export class PdfService {
 
       await Promise.all(createPagesPromises);
       await this.addPageLayoutStyle(pdf);
-
       const date = new Date().toLocaleDateString('es-ES');
 
       pdf.save('OC_Report_' + date + '.pdf');

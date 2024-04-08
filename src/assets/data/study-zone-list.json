@@ -25,6 +25,11 @@
       "id": 5,
       "tag": "L'Hospitalet",
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    },
+    {
+      "id": 6,
+      "tag": "Piloto Forum",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     }
   ]
 }

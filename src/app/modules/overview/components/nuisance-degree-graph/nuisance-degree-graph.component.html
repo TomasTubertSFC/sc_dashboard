@@ -1,4 +1,34 @@
-<section class="mb-3 flex justify-content-end">
+@if(!episodes){
+  <section class="mb-3 flex justify-content-end">
+    <div style="width: fit-content" class="card flex gap-3">
+      <p-skeleton width="8rem"  height="40px"/>
+      <p-skeleton width="8rem" height="40px"/>
+    </div>
+  </section>
+  <div class="card mb-0">
+    <div class="flex title gap-3 justify-content-center mb-3">
+      <div>
+        <div></div>
+        <p>Ótpima</p>
+      </div>
+      <div>
+        <div></div>
+        <p>Mejorable</p>
+      </div>
+      <div>
+        <div></div>
+        <p>Grave</p>
+      </div>
+      <div>
+        <div></div>
+        <p>Crítica</p>
+      </div>
+    </div>
+    <p-skeleton width="100%" height="500px"/>
+    <p class="text-xl text-center">Grado de molestia</p>
+  </div>
+} @else {
+ <section class="mb-3 flex justify-content-end">
   <div style="width: fit-content" class="card flex gap-3">
     <p-dropdown
       [options]="types"
@@ -42,6 +72,7 @@
     [data]="basicData"
     [options]="basicOptions"
     [plugins]="plugins"
+    [height]="'550px'"
     (onDataSelect)="showDialog($event)"
   ></p-chart>
   <p class="text-xl text-center">Grado de molestia</p>
@@ -91,4 +122,6 @@
     </li>
   </ul>
 </p-dialog>
+} 
 }
+

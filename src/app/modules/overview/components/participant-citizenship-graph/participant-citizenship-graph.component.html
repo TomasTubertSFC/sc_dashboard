@@ -3,9 +3,13 @@
     <i class="pi pi-user"></i>
     Total de usuarios activos
   </h2>
+  @if(totalUsers || activeUsers){
   <p-progressBar [value]="percentageOfActiveUsers" [color]="backgroundColor">
     <ng-template pTemplate="content" let-value>
       <span>{{ activeUsers }}/{{ totalUsers }}</span>
     </ng-template>
   </p-progressBar>
+  } @else {
+    <p-skeleton width="100%" height="20px"></p-skeleton>
+  }
 </div>

@@ -125,8 +125,10 @@ mgl-map{
         }
       }
       &.active .p-button{
-        background-color: #fd9a7790;
-        border-color: #ffbda5;
+        // background-color: #fd9a7790;
+        // border-color: #ffbda5;
+        background-color: var(--orange-light);
+        border-color: var(--orange-lighter);
       }
     }
     .p-toolbar-group-start{

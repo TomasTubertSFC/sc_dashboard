@@ -9,13 +9,12 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subject, Subscription } from 'rxjs';
 
 import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
-import { AppTopBarComponent } from '../topbar/app.topbar.component';
 import { MenuService } from '../menu/app.menu.service';
 import { StudyZoneService } from '../../../services/study-zone.service';
 import { PdfService } from '../../../services/pdf/pdf.service';
 
 interface LayoutState {
-  staticMenuDesktopInactive: boolean;
+  overlayMenuActive: boolean;
   staticMenuMobileActive: boolean;
 }
 
@@ -39,16 +38,13 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
   menuOutsideClickListener: any;
 
-  menuMode: string = 'static';
-
   state: LayoutState = {
-    staticMenuDesktopInactive: false,
+    // overlayMenuActive: false,
+    overlayMenuActive: false,
     staticMenuMobileActive: false,
   };
 
   @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
-
-  @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
 
   constructor(
     public renderer: Renderer2,
@@ -66,11 +62,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
             //All the components that triggers hidemenu
             const isOutsideClicked = !(
               this.appSidebar.el.nativeElement.isSameNode(event.target) ||
-              this.appSidebar.el.nativeElement.contains(event.target) ||
-              this.appTopbar.menuButton.nativeElement.isSameNode(
-                event.target
-              ) ||
-              this.appTopbar.menuButton.nativeElement.contains(event.target)
+              this.appSidebar.el.nativeElement.contains(event.target)
             );
 
             if (isOutsideClicked) {
@@ -111,8 +103,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     this.sidebarMenuIsOpen = !this.sidebarMenuIsOpen;
     this.menuService.sidebarMenuIsOpen = this.sidebarMenuIsOpen;
     if (this.isDesktop()) {
-      this.state.staticMenuDesktopInactive =
-        !this.state.staticMenuDesktopInactive;
+      this.state.overlayMenuActive = !this.state.overlayMenuActive;
     } else {
       this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
 
@@ -161,8 +152,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   //Toggle classes to show or not sidebar menu
   get containerClass() {
     return {
-      'layout-static-inactive':
-        this.state.staticMenuDesktopInactive && this.menuMode,
+      'layout-overlay-active': this.state.overlayMenuActive,
       'layout-mobile-active': this.state.staticMenuMobileActive,
     };
   }
