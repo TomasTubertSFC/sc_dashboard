@@ -2,8 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Observation } from '../../../../models/observation';
 import { OdourIntensity } from '../../../../models/odour-related-data';
-import { withHttpTransferCacheOptions } from '@angular/platform-browser';
 import { PdfService } from '../../../../services/pdf/pdf.service';
+import { UIChart } from 'primeng/chart';
 
 @Component({
   selector: 'app-registers-typology-charts',
@@ -12,6 +12,11 @@ import { PdfService } from '../../../../services/pdf/pdf.service';
 })
 export class RegistersTypologyChartsComponent {
   @ViewChild('typologyChart', { static: false }) typologyChart!: ElementRef;
+  @ViewChild('doughnutChart', { static: false }) doughnutChart!: UIChart;
+  @ViewChild('barChart', { static: false }) barChart!: UIChart;
+
+  private xLegend: string = 'Intensidad';
+  private yLegend: string = 'Número de registros';
 
   public typeFilter: string = 'intensity';
   public doughnutData: any;
@@ -25,33 +30,33 @@ export class RegistersTypologyChartsComponent {
   private colors: { [filter: string]: { [key: number]: string } } = {
     ['type']: {
       [0]: '#000000',
-      [1]: '#daf299',
-      [2]: '#ffff9e',
-      [3]: '#dfc4f2',
-      [4]: '#ff8133',
-      [5]: '#a2daf9',
+      [1]: '#CBE87C',
+      [2]: '#FFFF7D',
+      [3]: '#D7B1F2',
+      [4]: '#FF8133',
+      [5]: '#8AD1F9',
       [6]: '#CCCCCC',
       [7]: '#FFFFFF',
     },
     ['intensity']: {
-      [1]: '#b0f4f3',
-      [2]: '#97d5ec',
-      [3]: '#7eabe2',
-      [4]: '#697cd8',
-      [5]: '#5f53cf',
-      [6]: '#733fc5',
-      [7]: '#8a2dba',
+      [1]: '#eded74', //'#b0f4f3',
+      [2]: '#e5e973', //'#97d5ec',
+      [3]: '#dde572', //'#7eabe2',
+      [4]: '#d4e071', //'#697cd8',
+      [5]: '#c8da70', //'#5f53cf',
+      [6]: '#bfd56f', //'#733fc5',
+      [7]: '#B5CF6E', //'#8a2dba',
     },
     ['hedonicTone']: {
-      [1]: '#b2301a',
-      [2]: '#cb351d',
-      [3]: '#f4723e',
-      [4]: '#fdaf6d',
-      [5]: '#fcddae',
-      [6]: '#73aea8',
-      [7]: '#008c99',
-      [8]: '#207793',
-      [9]: '#001f50',
+      [1]: '#ff6200', //'#b2301a',
+      [2]: '#f5763e', //'#cb351d',
+      [3]: '#f0805c', //'#f4723e',
+      [4]: '#eb8a7b', //'#fdaf6d',
+      [5]: '#e79190', //'#fcddae',
+      [6]: '#e497a1', //'#73aea8',
+      [7]: '#e19cb2', //'#008c99',
+      [8]: '#dca6d1', //'#207793',
+      [9]: '#d7b1f2', //'#001f50',
     },
   };
 
@@ -59,57 +64,7 @@ export class RegistersTypologyChartsComponent {
     private studyZoneService: StudyZoneService,
     private pdfService: PdfService
   ) {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue(
-      '--text-color-secondary'
-    );
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-    this.doughnutOptions = {
-      maintainAspectRatio: false,
-      aspectRatio: 0.54,
-      cutout: '60%',
-      plugins: {
-        legend: {
-          labels: {
-            color: textColorSecondary,
-          },
-        },
-      },
-    };
-    this.barOptions = {
-      maintainAspectRatio: false,
-      aspectRatio: 0.54,
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor,
-          },
-        },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false,
-          },
-        },
-        x: {
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false,
-          },
-        },
-      },
-    };
+    this.getChartsStilesAndOptions();
   }
 
   ngOnInit() {
@@ -129,7 +84,100 @@ export class RegistersTypologyChartsComponent {
     });
   }
 
+  private getChartsStilesAndOptions() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    this.doughnutOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.54,
+      cutout: '60%',
+      plugins: {
+        legend: {
+          labels: {
+            color: textColorSecondary,
+          },
+        },
+        tooltip: {
+          callbacks: {
+              label: function(context:any) {
+                  let label = context.dataset.label || '';
+
+                  if (label) {
+                      label += ': ';
+                  }
+                  if (context.parsed.y !== null) {
+                      let total = context.dataset.data.reduce((a:any, b:any) => a + b, 0);
+                      label = ` ${Math.round((context.parsed * 100) / total)}%`;
+                  }
+                  return label;
+              }
+          }
+        }
+      },
+    };
+    this.barOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.54,
+      plugins: {
+        legend: {
+          display: false,
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+          title: {
+            display: true,
+            text: this.yLegend,
+            color: '#212529',
+            font: {
+              family: 'Space Grotesk',
+              size: 15,
+              weight: 'bold',
+              lineHeight: 1,
+            },
+            padding: {top: 10, left: 0, right: 0, bottom: 10}
+          }
+        },
+        x: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+          title: {
+            display: true,
+            text: this.xLegend,
+            color: '#212529',
+            font: {
+              family: 'Space Grotesk',
+              size: 15,
+              weight: 'bold',
+              lineHeight: 1,
+            },
+            padding: {top: 10, left: 0, right: 0, bottom: 10}
+          }
+        },
+      },
+    };
+  }
+
   private getIntensityCharts() {
+
+    this.xLegend = 'Intensidad';
+
     const intensities: (undefined | OdourIntensity)[] = this.observations.map(
       (observation) => observation.relationships.odourIntensity
     );
@@ -187,6 +235,9 @@ export class RegistersTypologyChartsComponent {
   }
 
   private getHedonicToneCharts() {
+
+    this.xLegend = 'Tono hedónico';
+
     const hedonicTones = this.observations.map(
       (observation) => observation.relationships.odourHedonicTone
     );
@@ -243,6 +294,9 @@ export class RegistersTypologyChartsComponent {
   }
 
   private getTypeCharts() {
+
+    this.xLegend = 'Tipología';
+
     const types = this.observations.map(
       (observation) =>
         observation.relationships.odourSubType.relationships?.odourType
@@ -298,6 +352,9 @@ export class RegistersTypologyChartsComponent {
   }
 
   private getSubtypeCharts() {
+
+    this.xLegend = 'Subtipología';
+
     const subtypes = this.observations.map(
       (observation) => observation.relationships.odourSubType
     );
@@ -352,11 +409,16 @@ export class RegistersTypologyChartsComponent {
   }
 
   public changeTypeFilter(): void {
-    this.doughnutData = null;
-    this.barData = null;
+
     if (this.typeFilter === 'intensity') this.getIntensityCharts();
     else if (this.typeFilter === 'hedonicTone') this.getHedonicToneCharts();
     else if (this.typeFilter === 'type') this.getTypeCharts();
     else this.getSubtypeCharts();
+
+    if(this.barChart) this.barChart.refresh();
+    if(this.doughnutChart)  this.doughnutChart.refresh();
+
+    this.getChartsStilesAndOptions();
+
   }
 }
