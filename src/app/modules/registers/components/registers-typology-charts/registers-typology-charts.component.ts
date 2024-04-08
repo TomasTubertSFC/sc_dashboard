@@ -1,19 +1,22 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Observation } from '../../../../models/observation';
 import { OdourIntensity } from '../../../../models/odour-related-data';
 import { PdfService } from '../../../../services/pdf/pdf.service';
 import { UIChart } from 'primeng/chart';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registers-typology-charts',
   templateUrl: './registers-typology-charts.component.html',
   styleUrl: './registers-typology-charts.component.scss',
 })
-export class RegistersTypologyChartsComponent {
+export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, OnDestroy{
   @ViewChild('typologyChart', { static: false }) typologyChart!: ElementRef;
   @ViewChild('doughnutChart', { static: false }) doughnutChart!: UIChart;
   @ViewChild('barChart', { static: false }) barChart!: UIChart;
+
+  private studyZone$!: Subscription;
 
   private xLegend: string = 'Intensidad';
   private yLegend: string = 'Número de registros';
@@ -68,7 +71,7 @@ export class RegistersTypologyChartsComponent {
   }
 
   ngOnInit() {
-    this.studyZoneService.allObservations.subscribe((allObservations) => {
+    this.studyZone$ = this.studyZoneService.allObservations.subscribe((allObservations) => {
       this.observations = allObservations;
 
       this.getIntensityCharts();
@@ -102,18 +105,18 @@ export class RegistersTypologyChartsComponent {
         },
         tooltip: {
           callbacks: {
-              label: function(context:any) {
-                  let label = context.dataset.label || '';
+            label: function(context:any) {
+                let label = context.dataset.label || '';
 
-                  if (label) {
-                      label += ': ';
-                  }
-                  if (context.parsed.y !== null) {
-                      let total = context.dataset.data.reduce((a:any, b:any) => a + b, 0);
-                      label = ` ${Math.round((context.parsed * 100) / total)}%`;
-                  }
-                  return label;
-              }
+                if (label) {
+                    label += ': ';
+                }
+                if (context.parsed.y !== null) {
+                    let total = context.dataset.data.reduce((a:any, b:any) => a + b, 0);
+                    label = ` ${Math.round((context.parsed * 100) / total)}%`;
+                }
+                return label;
+            }
           }
         }
       },
@@ -198,15 +201,9 @@ export class RegistersTypologyChartsComponent {
     );
 
     //obtenemos los 3 valores de intensadad mas altos, el resto los sumamos en otros
-    const doughnutData = barData
-      .slice(0, 3)
-      .map((data: any) => data[1]['value']);
+    const doughnutData = barData.slice(0, 3).map((data: any) => data[1]['value']);
     const doughnutColors = barColors.slice(0, 3);
-    doughnutData.push(
-      barData
-        .slice(3)
-        .reduce((acc: any, data: any) => acc + data[1]['value'], 0)
-    );
+    doughnutData.push(barData.slice(3).reduce((acc: any, data: any) => acc + data[1]['value'], 0));
     doughnutColors.push('#CCCCCC');
 
     this.doughnutData = {
@@ -421,4 +418,9 @@ export class RegistersTypologyChartsComponent {
     this.getChartsStilesAndOptions();
 
   }
+
+  ngOnDestroy() {
+    this.studyZone$.unsubscribe();
+  }
+
 }

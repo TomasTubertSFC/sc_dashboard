@@ -1,0 +1,12 @@
+<div class="card p-2 flex flex-column gap-2">
+  <div class="card-header">
+    <h3>Gráficas de viento</h3>
+  </div>
+  <div class="card-body flex flex-column flex-nowrap lg:flex-row gap-2">
+    <div class="card col-12 lg:col-7 xl:col-9 flex-order-1 lg:flex-order-0">
+      <div class="card-body">
+        <p-chart type="radar" class="max-h-10rem" [data]="data" [options]="options"></p-chart>
+      </div>
+    </div>
+  </div>
+</div>

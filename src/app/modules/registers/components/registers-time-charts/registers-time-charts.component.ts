@@ -176,13 +176,7 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
 
     let datasets: dataset[] = [];
 
-    let dataType =
-      this.dataTypeFilter === 'type'
-        ? this.types
-        : this.dataTypeFilter === 'intensity'
-        ? this.intensities
-        : this.hedonicTones;
-
+    let dataType = this.dataTypeFilter === 'type' ? this.types : this.dataTypeFilter === 'intensity' ? this.intensities : this.hedonicTones;
     for (let element of dataType) {
       if (!element) continue;
       let dataset: dataset = {
@@ -196,8 +190,7 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
               .filter((observation) => {
                 if (this.dataTypeFilter === 'type')
                   return (
-                    observation.relationships.odourSubType.relationships
-                      ?.odourType?.id === element?.id
+                    observation.relationships.odourSubType.relationships?.odourType?.id === element?.id
                   );
                 else if (this.dataTypeFilter === 'intensity')
                   return (
@@ -205,15 +198,11 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
                   );
                 else if (this.dataTypeFilter === 'hedonicTone')
                   return (
-                    observation.relationships.odourHedonicTone?.id ===
-                    element?.id
+                    observation.relationships.odourHedonicTone?.id === element?.id
                   );
                 return false;
               })
-              .filter(
-                (observation) =>
-                  new Date(observation.updatedAt).getHours() === i
-              ).length
+              .filter((observation) => new Date(observation.updatedAt).getHours() === i ).length
         ),
       };
       datasets.push(dataset);
