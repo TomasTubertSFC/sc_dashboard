@@ -1,20 +1,16 @@
 # instruction for installation:
-# remove old image/container/cache from docker 'docker system prune -a' if needed
+# remove old image/container/cache from docker 'docker system prune -a'
 # get the latest source code with git clone GITHUB_CODE and jump to 'develop' branch
 # build the docker image with 'docker build -t oc_dash .'
 # run the container from the image 'docker run -p 80:4200 oc_dash'
 # while this container is alive go into it 'docker exec -ti 8 bash'
-<<<<<<< Updated upstream
-=======
-
 #✘ [ERROR] Cannot assign to import "baseApiUrl"
 #
 #    node_modules/ngx-mapbox-gl/fesm2022/ngx-mapbox-gl.mjs:101:19:
 #      101 │           MapboxGl.baseApiUrl = options.customMapboxApiUrl;
 #          ╵                    ~~~~~~~~~~
 #
->>>>>>> Stashed changes
-# comment three lines of code within file 'nano node_modules/ngx-mapbox-gl/fesm2022/ngx-mapbox-gl.mjs'
+# comment three lines of code within file 'cd node_modules/ngx-mapbox-gl/fesm2022/ngx-mapbox-gl.mjs'
 # comment lines '       //if (options.customMapboxApiUrl) {
                         # //    MapboxGl.baseApiUrl = options.customMapboxApiUrl;
                         # //}'
