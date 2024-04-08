@@ -6,11 +6,7 @@
     <div class="card-body flex flex-column flex-nowrap lg:flex-row gap-2">
       <div class="card col-12 lg:col-7 xl:col-9 flex-order-1 lg:flex-order-0">
         <div class="card-body">
-          @if(data && data.datasets && data.datasets.length > 0){
-          <p-chart type="line" [data]="data" [options]="options" />
-          } @else {
-          <p-skeleton width="100%" height="600px"></p-skeleton>
-          }
+          <p-chart type="line" [data]="data" [options]="options" #chart />
         </div>
       </div>
 
@@ -130,8 +126,7 @@
                 </div>
                 <small
                   class="ml-3 w-2rem"
-                  [style]="{ color: data.backgroundColor }"
-                  >{{ getPercents(data.data) + "%" }}</small
+                  >{{ getTotal(data.data) }}</small
                 >
               </div>
             </div>

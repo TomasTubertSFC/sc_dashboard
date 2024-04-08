@@ -2,8 +2,8 @@ import {
   Component,
   ElementRef,
   OnDestroy,
+  OnInit,
   ViewChild,
-  AfterViewInit,
 } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Observation } from '../../../../models/observation';
@@ -13,6 +13,7 @@ import {
   OdourIntensity,
   OdourTypeData,
 } from '../../../../models/odour-related-data';
+import { UIChart } from 'primeng/chart';
 
 interface dataset {
   type: string;
@@ -26,9 +27,11 @@ interface dataset {
   templateUrl: './registers-time-charts.component.html',
   styleUrl: './registers-time-charts.component.scss',
 })
-export class RegistersTimeChartsComponent implements OnDestroy {
+export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
   @ViewChild('registerTimeChart', { static: false })
   registerTimeChart!: ElementRef;
+
+  @ViewChild('chart', {static: false}) chart!: UIChart;
 
   public timeFilter: string = 'months';
   public dataTypeFilter: string = 'type';
@@ -48,36 +51,39 @@ export class RegistersTimeChartsComponent implements OnDestroy {
   private firstYear: number = new Date().getFullYear();
   private lastYear: number = 0;
 
+  private xLegend: string = 'Fecha del registro de olor';
+  private yLegend: string = 'Número de registros por mes';
+
   private colors: { [filter: string]: { [key: number]: string } } = {
     ['type']: {
       [0]: '#000000',
-      [1]: '#daf299',
-      [2]: '#ffff9e',
-      [3]: '#dfc4f2',
-      [4]: '#ff8133',
-      [5]: '#a2daf9',
+      [1]: '#CBE87C',
+      [2]: '#FFFF7D',
+      [3]: '#D7B1F2',
+      [4]: '#FF8133',
+      [5]: '#8AD1F9',
       [6]: '#CCCCCC',
       [7]: '#FFFFFF',
     },
     ['intensity']: {
-      [1]: '#b0f4f3',
-      [2]: '#97d5ec',
-      [3]: '#7eabe2',
-      [4]: '#697cd8',
-      [5]: '#5f53cf',
-      [6]: '#733fc5',
-      [7]: '#8a2dba',
+      [1]: '#eded74', //'#b0f4f3',
+      [2]: '#e5e973', //'#97d5ec',
+      [3]: '#dde572', //'#7eabe2',
+      [4]: '#d4e071', //'#697cd8',
+      [5]: '#c8da70', //'#5f53cf',
+      [6]: '#bfd56f', //'#733fc5',
+      [7]: '#B5CF6E', //'#8a2dba',
     },
     ['hedonicTone']: {
-      [1]: '#b2301a',
-      [2]: '#cb351d',
-      [3]: '#f4723e',
-      [4]: '#fdaf6d',
-      [5]: '#fcddae',
-      [6]: '#73aea8',
-      [7]: '#008c99',
-      [8]: '#207793',
-      [9]: '#001f50',
+      [1]: '#ff6200', //'#b2301a',
+      [2]: '#f5763e', //'#cb351d',
+      [3]: '#f0805c', //'#f4723e',
+      [4]: '#eb8a7b', //'#fdaf6d',
+      [5]: '#e79190', //'#fcddae',
+      [6]: '#e497a1', //'#73aea8',
+      [7]: '#e19cb2', //'#008c99',
+      [8]: '#dca6d1', //'#207793',
+      [9]: '#d7b1f2', //'#001f50',
     },
   };
 
@@ -97,6 +103,7 @@ export class RegistersTimeChartsComponent implements OnDestroy {
   }
 
   ngAfterViewInit(): void {
+
     const reportsElements = this.pdfService.reportsElements.getValue();
 
     this.pdfService.reportsElements.next({
@@ -124,6 +131,7 @@ export class RegistersTimeChartsComponent implements OnDestroy {
         legend: {
           labels: {
             color: textColor,
+
           },
         },
       },
@@ -137,6 +145,18 @@ export class RegistersTimeChartsComponent implements OnDestroy {
             color: surfaceBorder,
             drawBorder: false,
           },
+          title: {
+            display: true,
+            text: this.xLegend,
+            color: '#212529',
+            font: {
+              family: 'Space Grotesk',
+              size: 15,
+              weight: 'bold',
+              lineHeight: 1,
+            },
+            padding: {top: 10, left: 0, right: 0, bottom: 10}
+          }
         },
         y: {
           stacked: true,
@@ -147,13 +167,26 @@ export class RegistersTimeChartsComponent implements OnDestroy {
             color: surfaceBorder,
             drawBorder: false,
           },
+          title: {
+            display: true,
+            text: this.yLegend,
+            color: '#212529',
+            font: {
+              family: 'Space Grotesk',
+              size: 15,
+              weight: 'bold',
+              lineHeight: 1,
+            },
+            padding: {top: 10, left: 0, right: 0, bottom: 10}
+          }
         },
       },
     };
   }
 
   public getObservationOrderByTypeAndHourRange() {
-    this.data = null;
+    this.yLegend = 'Número de registros por horas';
+    this.xLegend = 'Tiempo';
 
     let datasets: dataset[] = [];
 
@@ -202,36 +235,42 @@ export class RegistersTimeChartsComponent implements OnDestroy {
 
     this.data = {
       labels: [
-        '00:00',
-        '01:00',
-        '02:00',
-        '03:00',
-        '04:00',
-        '05:00',
-        '06:00',
-        '07:00',
-        '08:00',
-        '09:00',
-        '10:00',
-        '11:00',
-        '12:00',
-        '13:00',
-        '14:00',
-        '15:00',
-        '16:00',
-        '17:00',
-        '18:00',
-        '19:00',
-        '20:00',
-        '21:00',
-        '22:00',
-        '23:00',
+        '00:00h',
+        '01:00h',
+        '02:00h',
+        '03:00h',
+        '04:00h',
+        '05:00h',
+        '06:00h',
+        '07:00h',
+        '08:00h',
+        '09:00h',
+        '10:00h',
+        '11:00h',
+        '12:00h',
+        '13:00h',
+        '14:00h',
+        '15:00h',
+        '16:00h',
+        '17:00h',
+        '18:00h',
+        '19:00h',
+        '20:00h',
+        '21:00h',
+        '22:00h',
+        '23:00h',
       ],
       datasets: datasets,
     };
+
+    if(this.chart){
+      this.getChartStylesAndData();
+      this.chart.refresh();
+    }
   }
   public getObservationOrderByTypeAndMonth() {
-    this.data = null;
+    this.yLegend = 'Número de registros por mes';
+    this.xLegend = 'Tiempo';
 
     let datasets: dataset[] = [];
 
@@ -275,7 +314,9 @@ export class RegistersTimeChartsComponent implements OnDestroy {
               ).length
         ),
       };
+
       datasets.push(dataset);
+
     }
 
     this.data = {
@@ -295,10 +336,16 @@ export class RegistersTimeChartsComponent implements OnDestroy {
       ],
       datasets: datasets,
     };
-  }
-  public getObservationOrderByTypeAndSeason() {
-    this.data = null;
 
+    if(this.chart){
+      this.getChartStylesAndData();
+      this.chart.refresh();
+    }
+  }
+
+  public getObservationOrderByTypeAndSeason() {
+    this.yLegend = 'Número de registros por estación';
+    this.xLegend = 'Tiempo';
     let datasets: dataset[] = [];
 
     let dataType =
@@ -374,10 +421,16 @@ export class RegistersTimeChartsComponent implements OnDestroy {
       labels: ['Primavera', 'Verano', 'Otoño', 'Invierno'],
       datasets: datasets,
     };
+
+    if(this.chart){
+      this.getChartStylesAndData();
+      this.chart.refresh();
+    }
   }
 
   public getObservationOrderByTypeAndYear() {
-    this.data = null;
+    this.yLegend = 'Número de registros por año';
+    this.xLegend = 'Tiempo';
 
     let datasets: dataset[] = [];
 
@@ -433,6 +486,11 @@ export class RegistersTimeChartsComponent implements OnDestroy {
       ),
       datasets: datasets,
     };
+
+    if(this.chart){
+      this.getChartStylesAndData();
+      this.chart.refresh();
+    }
   }
 
   public getStudyZoneTypes(): void {
@@ -481,9 +539,15 @@ export class RegistersTimeChartsComponent implements OnDestroy {
       this.getObservationOrderByTypeAndYear();
     }
   }
+
   public getPercents(data: number[]): number {
     return Math.round(
       (data.reduce((a, b) => a + b, 0) * 100) / this.observations.length
+    );
+  }
+  public getTotal(data: number[]): number {
+    return Math.round(
+      (data.reduce((a, b) => a + b, 0))
     );
   }
 
