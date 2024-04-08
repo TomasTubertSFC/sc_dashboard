@@ -70,10 +70,10 @@
         <div class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter" *ngIf="filtersForm.value.hours">
           <small class="text-center mb-2">
             @if(filtersForm.value.hoursFilter[0] === filtersForm.value.hoursFilter[1]){
-              {{filtersForm.value.hoursFilter[0]}}:00
+              {{filtersForm.value.hoursFilter[0]}}:00h
             }
             @else {
-              {{filtersForm.value.hoursFilter[0]}}:00 - {{filtersForm.value.hoursFilter[1]}}:00
+              {{filtersForm.value.hoursFilter[0]}}:00h - {{filtersForm.value.hoursFilter[1]}}:00h
             }
           </small>
           <p-slider formControlName="hoursFilter" [step]="1" [min]="0" [max]="23" [range]="true" [className]="'ml-2 mb-2 mr-2'" />
