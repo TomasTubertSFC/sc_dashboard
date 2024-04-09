@@ -183,27 +183,15 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
         type: 'bar',
         label: element.name,
         backgroundColor: this.colors[this.dataTypeFilter][element.id],
-        data: Array.from(
-          { length: 24 },
-          (x, i) =>
-            this.observations
-              .filter((observation) => {
-                if (this.dataTypeFilter === 'type')
-                  return (
-                    observation.relationships.odourSubType.relationships?.odourType?.id === element?.id
-                  );
-                else if (this.dataTypeFilter === 'intensity')
-                  return (
-                    observation.relationships.odourIntensity?.id === element?.id
-                  );
-                else if (this.dataTypeFilter === 'hedonicTone')
-                  return (
-                    observation.relationships.odourHedonicTone?.id === element?.id
-                  );
-                return false;
-              })
-              .filter((observation) => new Date(observation.updatedAt).getHours() === i ).length
+
+        data: Array.from({ length: 24 }, (x, i) => this.observations.filter((observation) => {
+          if (this.dataTypeFilter === 'type') return observation.relationships.odourSubType.relationships?.odourType?.id === element?.id;
+          else if (this.dataTypeFilter === 'intensity') return observation.relationships.odourIntensity?.id === element?.id;
+          else if (this.dataTypeFilter === 'hedonicTone') return observation.relationships.odourHedonicTone?.id === element?.id;
+          return false;
+          }).filter((observation) => new Date(observation.createdAt).getHours() === i ).length
         ),
+
       };
       datasets.push(dataset);
     }
@@ -268,24 +256,16 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
             this.observations
               .filter((observation) => {
                 if (this.dataTypeFilter === 'type')
-                  return (
-                    observation.relationships.odourSubType.relationships
-                      ?.odourType?.id === element?.id
-                  );
+                  return ( observation.relationships.odourSubType.relationships?.odourType?.id === element?.id );
                 else if (this.dataTypeFilter === 'intensity')
-                  return (
-                    observation.relationships.odourIntensity?.id === element?.id
-                  );
+                  return ( observation.relationships.odourIntensity?.id === element?.id );
                 else if (this.dataTypeFilter === 'hedonicTone')
-                  return (
-                    observation.relationships.odourHedonicTone?.id ===
-                    element?.id
-                  );
+                  return ( observation.relationships.odourHedonicTone?.id === element?.id );
                 return false;
               })
               .filter(
                 (observation) =>
-                  new Date(observation.updatedAt).getMonth() === i + 1
+                  new Date(observation.createdAt).getMonth() === i + 1
               ).length
         ),
       };
@@ -309,6 +289,7 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
         'Noviembre',
         'Diciembre',
       ],
+
       datasets: datasets,
     };
 
@@ -358,7 +339,7 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
                 return false;
               })
               .filter((observation) => {
-                let date = new Date(observation.updatedAt);
+                let date = new Date(observation.createdAt);
                 let month = date.getMonth();
                 let day = date.getDate();
                 if (
@@ -445,7 +426,7 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
               })
               .filter(
                 (observation) =>
-                  new Date(observation.updatedAt).getFullYear() ===
+                  new Date(observation.createdAt).getFullYear() ===
                   this.firstYear + i
               ).length
         ),
@@ -470,7 +451,7 @@ export class RegistersTimeChartsComponent implements OnInit, OnDestroy {
 
   public getStudyZoneTypes(): void {
     let types = this.observations.map((observation) => {
-      let year = new Date(observation.updatedAt).getFullYear();
+      let year = new Date(observation.createdAt).getFullYear();
       this.firstYear = Math.min(this.firstYear, year);
       this.lastYear = Math.max(this.lastYear, year);
       return observation.relationships.odourSubType.relationships?.odourType;
