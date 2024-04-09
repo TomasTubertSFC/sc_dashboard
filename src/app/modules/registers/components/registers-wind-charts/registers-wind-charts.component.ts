@@ -237,7 +237,7 @@ export class RegistersWindChartsComponent implements OnInit, OnDestroy{
       ];
       datasets = [
         {
-            label: 'Número de observaciones/dirección del viento',
+            label: 'Número de observaciones',
             data: data
         }
       ];
