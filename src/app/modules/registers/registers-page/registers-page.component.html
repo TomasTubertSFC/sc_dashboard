@@ -1,6 +1,12 @@
-<div class="flex flex-column gap-2">
+<div class="flex flex-column gap-5">
   <app-registers-map/>
   <app-registers-time-charts/>
   <app-registers-typology-charts/>
-  <app-registers-wind-charts/>
+  <div class="card p-2 flex flex-column gap-5">
+    <div class="card-header">
+      <h3>Gráficas de viento</h3>
+    </div>
+    <app-registers-wind-typology-charts/>
+    <app-registers-wind-charts/>
+  </div>
 </div>

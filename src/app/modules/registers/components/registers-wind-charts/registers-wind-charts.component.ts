@@ -229,11 +229,11 @@ export class RegistersWindChartsComponent implements OnInit, OnDestroy{
       }, []);
 
       labels = [
-        'Calma',
-        'Flojos',
-        'Moderados',
-        'Fuertes',
-        'Muy fuertes',
+        'Calma 0-2 km/s',
+        'Flojos 2-19 km/s',
+        'Moderados 19-50 km/s',
+        'Fuertes 50-87 km/s',
+        'Muy fuertes > 87 km/s'
       ];
       datasets = [
         {

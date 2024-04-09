@@ -23,6 +23,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { RegistersTypologyChartsComponent } from './components/registers-typology-charts/registers-typology-charts.component';
 import { SkeletonModule } from 'primeng/skeleton';
 import { RegistersWindChartsComponent } from './components/registers-wind-charts/registers-wind-charts.component';
+import { RegistersWindTypologyChartsComponent } from './components/registers-wind-typology-charts/registers-wind-typology-charts.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { RegistersWindChartsComponent } from './components/registers-wind-charts
     RegistersFilterModalComponent,
     RegistersTimeChartsComponent,
     RegistersTypologyChartsComponent,
-    RegistersWindChartsComponent
+    RegistersWindChartsComponent,
+    RegistersWindTypologyChartsComponent
   ],
   imports: [
     FormsModule,
