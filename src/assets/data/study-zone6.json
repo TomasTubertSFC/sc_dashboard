@@ -410,8 +410,8 @@
             "odourIntensity": {
               "id": 4,
               "power": 3,
-              "name": "Indiferente",
-              "slug": "indiferente"
+              "name": "Distinguible",
+              "slug": "Distinguible"
             },
             "odourHedonicTone": {
               "id": 1,
