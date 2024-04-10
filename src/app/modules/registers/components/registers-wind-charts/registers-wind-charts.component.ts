@@ -123,7 +123,7 @@ export class RegistersWindChartsComponent implements OnInit, OnDestroy{
           },
           title: {
             display: true,
-            text: 'dirección del viento',
+            text: 'Origen del viento',
             color: '#212529',
             font: {
               family: 'Space Grotesk',
@@ -176,7 +176,7 @@ export class RegistersWindChartsComponent implements OnInit, OnDestroy{
 
     let datasets = [
       {
-          label: 'Número de observaciones/dirección del viento',
+          label: 'Número de observaciones/origen del viento',
           borderColor: documentStyle.getPropertyValue('--primary-400'),
           pointBackgroundColor: documentStyle.getPropertyValue('--primary-400'),
           pointBorderColor: documentStyle.getPropertyValue('--primary-400'),
@@ -229,11 +229,11 @@ export class RegistersWindChartsComponent implements OnInit, OnDestroy{
       }, []);
 
       labels = [
-        'Calma 0-2 km/s',
-        'Flojos 2-19 km/s',
-        'Moderados 19-50 km/s',
-        'Fuertes 50-87 km/s',
-        'Muy fuertes > 87 km/s'
+        'Calma 0-2 Km/h',
+        'Flojos 2-19 Km/h',
+        'Moderados 19-50 Km/h',
+        'Fuertes 50-87 Km/h',
+        'Muy fuertes > 87 Km/h'
       ];
       datasets = [
         {

@@ -39,8 +39,8 @@ export class RegistersWindTypologyChartsComponent implements OnInit, OnDestroy {
   private firstYear: number = new Date().getFullYear();
   private lastYear: number = 0;
 
-  private xLegend: string = 'Fecha del registro de olor';
-  private yLegend: string = 'Número de registros por mes';
+  private xLegend: string = 'Origen del viento';
+  private yLegend: string = 'Número de registros de observaciones';
 
   private colors: { [filter: string]: { [key: number]: string } } = {
     ['type']: {
@@ -171,8 +171,9 @@ export class RegistersWindTypologyChartsComponent implements OnInit, OnDestroy {
   }
 
   public getObservationOrderByTypeAndDirection() {
-    this.yLegend = 'Número de registros';
-    this.xLegend = 'Direcciones del viento';
+
+    this.xLegend = 'Origen del viento';
+    this.yLegend = 'Número de registros de observaciones';
 
     let datasets: dataset[] = [];
 
@@ -228,7 +229,7 @@ export class RegistersWindTypologyChartsComponent implements OnInit, OnDestroy {
   }
 
   public getObservationOrderByTypeAndSpeed() {
-    this.yLegend = 'Número de registros por estación';
+    this.yLegend = 'Número de regitrso de observaciones';
     this.xLegend = 'Velocidad del viento (Km/h)';
     let datasets: dataset[] = [];
 
@@ -281,11 +282,11 @@ export class RegistersWindTypologyChartsComponent implements OnInit, OnDestroy {
 
     this.data = {
       labels: [
-        'Calma 0-2 km/s',
-        'Flojos 2-19 km/s',
-        'Moderados 19-50 km/s',
-        'Fuertes 50-87 km/s',
-        'Muy fuertes > 87 km/s'
+        'Calma 0-2 Km/h',
+        'Flojos 2-19 Km/h',
+        'Moderados 19-50 Km/h',
+        'Fuertes 50-87 Km/h',
+        'Muy fuertes > 87 Km/h'
       ],
       datasets: datasets,
     };
