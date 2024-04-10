@@ -283,8 +283,8 @@
             "odourHedonicTone": {
               "id": 5,
               "index": 0,
-              "name": "Neutral",
-              "slug": "neutral"
+              "name": "Neutro",
+              "slug": "Neutro"
             },
             "odourSubType": {
               "id": 77,

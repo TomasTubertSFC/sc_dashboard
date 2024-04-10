@@ -18,10 +18,10 @@ export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, 
 
   private studyZone$!: Subscription;
 
-  private xLegend: string = 'Intensidad';
+  private xLegend: string = 'Tipología';
   private yLegend: string = 'Número de registros';
 
-  public typeFilter: string = 'intensity';
+  public typeFilter: string = 'type';
   public doughnutData: any;
   public barData: any;
   public doughnutOptions: any;
@@ -74,7 +74,7 @@ export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, 
     this.studyZone$ = this.studyZoneService.allObservations.subscribe((allObservations) => {
       this.observations = allObservations;
 
-      this.getIntensityCharts();
+      this.getTypeCharts();
     });
   }
 
@@ -177,6 +177,112 @@ export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, 
     };
   }
 
+  private getTypeCharts() {
+
+    this.xLegend = 'Tipología';
+
+    const types = this.observations.map(
+      (observation) =>
+        observation.relationships.odourSubType.relationships?.odourType
+    );
+
+    const barData = Object.entries(
+      types.reduce((acc: any, type) => {
+        if (type === undefined) return acc;
+        if (acc[type.id] === undefined) {
+          acc[type.id] = { label: type.name, value: 0 };
+        }
+        acc[type.id].value++;
+        return acc;
+      }, {})
+    )
+
+    const barColors = barData.map((data: any) => this.colors['type'][data[0]]);
+
+    const doughnutData = barData;
+    const doughnutColors = barColors;
+    doughnutColors.push('#CCCCCC');
+
+    this.doughnutData = {
+      labels: barData.map((data: any) => data[1]['label']),
+      datasets: [
+        {
+          data: doughnutData.map((data: any) => data[1]['value']),
+          backgroundColor: doughnutColors,
+          hoverOffset: 5,
+        },
+      ],
+    };
+
+    this.barData = {
+      labels: barData.map((data: any) => data[1]['label']),
+      datasets: [
+        {
+          label: 'Observaciones',
+          data: barData.map((data: any) => data[1]['value']),
+          backgroundColor: barColors,
+        },
+      ],
+    };
+  }
+
+  private getSubtypeCharts() {
+
+    this.xLegend = 'Subtipología';
+
+    const subtypes = this.observations.map(
+      (observation) => observation.relationships.odourSubType
+    );
+
+    const barData = Object.entries(
+      subtypes.reduce((acc: any, subtype) => {
+        if (subtype === undefined) return acc;
+        if (acc[subtype.id] === undefined) {
+          acc[subtype.id] = { label: subtype.name, value: 0 };
+        }
+        acc[subtype.id].value++;
+        return acc;
+      }, {})
+    );
+
+    const barColors = barData.map((data: any) => this.colors['type'][data[0]]);
+
+    const doughnutData = barData
+      .slice(0, 3)
+      .map((data: any) => data[1]['value']);
+    const doughnutColors = barColors.slice(0, 3);
+    doughnutData.push(
+      barData
+        .slice(3)
+        .reduce((acc: any, data: any) => acc + data[1]['value'], 0)
+    );
+    doughnutColors.push('#CCCCCC');
+
+    this.doughnutData = {
+      labels: barData
+        .map((data: any) => data[1]['label'])
+        .slice(0, 3)
+        .concat(['Otros']),
+      datasets: [
+        {
+          data: doughnutData,
+          backgroundColor: doughnutColors,
+          hoverOffset: 5,
+        },
+      ],
+    };
+    this.barData = {
+      labels: barData.map((data: any) => data[1]['label']),
+      datasets: [
+        {
+          label: 'Observaciones',
+          data: barData.map((data: any) => data[1]['value']),
+          backgroundColor: barColors,
+        },
+      ],
+    };
+  }
+
   private getIntensityCharts() {
 
     this.xLegend = 'Intensidad';
@@ -195,22 +301,17 @@ export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, 
         acc[intensity.id].value++;
         return acc;
       }, {})
-    ).sort((a: any, b: any) => b[1]['value'] - a[1]['value']);
+    );
     const barColors = barData.map(
       (data: any) => this.colors['intensity'][data[0]]
     );
 
     //obtenemos los 3 valores de intensadad mas altos, el resto los sumamos en otros
-    const doughnutData = barData.slice(0, 3).map((data: any) => data[1]['value']);
-    const doughnutColors = barColors.slice(0, 3);
-    doughnutData.push(barData.slice(3).reduce((acc: any, data: any) => acc + data[1]['value'], 0));
-    doughnutColors.push('#CCCCCC');
+    const doughnutData = barData.map((data: any) => data[1]['value']);
+    const doughnutColors = barColors;
 
     this.doughnutData = {
-      labels: barData
-        .map((data: any) => data[1]['label'])
-        .slice(0, 3)
-        .concat(['Otros']),
+      labels: barData.map((data: any) => data[1]['label']),
       datasets: [
         {
           data: doughnutData,
@@ -248,28 +349,17 @@ export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, 
         acc[hedonicTone.id].value++;
         return acc;
       }, {})
-    ).sort((a: any, b: any) => b[1]['value'] - a[1]['value']);
+    )
 
     const barColors = barData.map(
       (data: any) => this.colors['hedonicTone'][data[0]]
     );
 
-    const doughnutData = barData
-      .slice(0, 3)
-      .map((data: any) => data[1]['value']);
-    const doughnutColors = barColors.slice(0, 3);
-    doughnutData.push(
-      barData
-        .slice(3)
-        .reduce((acc: any, data: any) => acc + data[1]['value'], 0)
-    );
-    doughnutColors.push('#CCCCCC');
+    const doughnutData = barData.map((data: any) => data[1]['value']);
+    const doughnutColors = barColors;
 
     this.doughnutData = {
-      labels: barData
-        .map((data: any) => data[1]['label'])
-        .slice(0, 3)
-        .concat(['Otros']),
+      labels: barData.map((data: any) => data[1]['label']),
       datasets: [
         {
           data: doughnutData,
@@ -278,6 +368,7 @@ export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, 
         },
       ],
     };
+
     this.barData = {
       labels: barData.map((data: any) => data[1]['label']),
       datasets: [
@@ -290,120 +381,6 @@ export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, 
     };
   }
 
-  private getTypeCharts() {
-
-    this.xLegend = 'Tipología';
-
-    const types = this.observations.map(
-      (observation) =>
-        observation.relationships.odourSubType.relationships?.odourType
-    );
-
-    const barData = Object.entries(
-      types.reduce((acc: any, type) => {
-        if (type === undefined) return acc;
-        if (acc[type.id] === undefined) {
-          acc[type.id] = { label: type.name, value: 0 };
-        }
-        acc[type.id].value++;
-        return acc;
-      }, {})
-    ).sort((a: any, b: any) => b[1]['value'] - a[1]['value']);
-
-    const barColors = barData.map((data: any) => this.colors['type'][data[0]]);
-
-    const doughnutData = barData
-      .slice(0, 3)
-      .map((data: any) => data[1]['value']);
-    const doughnutColors = barColors.slice(0, 3);
-    doughnutData.push(
-      barData
-        .slice(3)
-        .reduce((acc: any, data: any) => acc + data[1]['value'], 0)
-    );
-    doughnutColors.push('#CCCCCC');
-
-    this.doughnutData = {
-      labels: barData
-        .map((data: any) => data[1]['label'])
-        .slice(0, 3)
-        .concat(['Otros']),
-      datasets: [
-        {
-          data: doughnutData,
-          backgroundColor: doughnutColors,
-          hoverOffset: 5,
-        },
-      ],
-    };
-    this.barData = {
-      labels: barData.map((data: any) => data[1]['label']),
-      datasets: [
-        {
-          label: 'Observaciones',
-          data: barData.map((data: any) => data[1]['value']),
-          backgroundColor: barColors,
-        },
-      ],
-    };
-  }
-
-  private getSubtypeCharts() {
-
-    this.xLegend = 'Subtipología';
-
-    const subtypes = this.observations.map(
-      (observation) => observation.relationships.odourSubType
-    );
-
-    const barData = Object.entries(
-      subtypes.reduce((acc: any, subtype) => {
-        if (subtype === undefined) return acc;
-        if (acc[subtype.id] === undefined) {
-          acc[subtype.id] = { label: subtype.name, value: 0 };
-        }
-        acc[subtype.id].value++;
-        return acc;
-      }, {})
-    ).sort((a: any, b: any) => b[1]['value'] - a[1]['value']);
-
-    const barColors = barData.map((data: any) => this.colors['type'][data[0]]);
-
-    const doughnutData = barData
-      .slice(0, 3)
-      .map((data: any) => data[1]['value']);
-    const doughnutColors = barColors.slice(0, 3);
-    doughnutData.push(
-      barData
-        .slice(3)
-        .reduce((acc: any, data: any) => acc + data[1]['value'], 0)
-    );
-    doughnutColors.push('#CCCCCC');
-
-    this.doughnutData = {
-      labels: barData
-        .map((data: any) => data[1]['label'])
-        .slice(0, 3)
-        .concat(['Otros']),
-      datasets: [
-        {
-          data: doughnutData,
-          backgroundColor: doughnutColors,
-          hoverOffset: 5,
-        },
-      ],
-    };
-    this.barData = {
-      labels: barData.map((data: any) => data[1]['label']),
-      datasets: [
-        {
-          label: 'Observaciones',
-          data: barData.map((data: any) => data[1]['value']),
-          backgroundColor: barColors,
-        },
-      ],
-    };
-  }
 
   public changeTypeFilter(): void {
 

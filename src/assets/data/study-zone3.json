@@ -102,8 +102,8 @@
             "odourHedonicTone": {
               "id": 5,
               "index": 0,
-              "name": "Neutral",
-              "slug": "neutral"
+              "name": "Neutro",
+              "slug": "Neutro"
             },
             "wind": {
               "deg": 90,
@@ -342,8 +342,8 @@
             "odourHedonicTone": {
               "id": 5,
               "index": 0,
-              "name": "Neutral",
-              "slug": "neutral"
+              "name": "Neutro",
+              "slug": "Neutro"
             },
             "wind": {
               "deg": 200,
@@ -605,8 +605,8 @@
         "odourHedonicTone": {
           "id": 5,
           "index": 0,
-          "name": "Neutral",
-          "slug": "neutral"
+          "name": "Neutro",
+          "slug": "Neutro"
         }
       },
       "likes": 0,
@@ -1005,8 +1005,8 @@
         "odourHedonicTone": {
           "id": 5,
           "index": 0,
-          "name": "Neutral",
-          "slug": "neutral"
+          "name": "Neutro",
+          "slug": "Neutro"
         }
       },
       "likes": 0,
@@ -1045,8 +1045,8 @@
         "odourHedonicTone": {
           "id": 5,
           "index": 0,
-          "name": "Neutral",
-          "slug": "neutral"
+          "name": "Neutro",
+          "slug": "Neutro"
         }
       },
       "likes": 0,

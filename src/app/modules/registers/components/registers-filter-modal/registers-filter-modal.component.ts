@@ -24,7 +24,7 @@ export class RegistersFilterModalComponent {
     'Muy desagradable',
     'Desagradable',
     'Ligeramente desagradable',
-    'Neutral',
+    'Neutro',
     'Ligeramente agradable',
     'Agradable',
     'Muy agradable',
