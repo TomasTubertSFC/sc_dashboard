@@ -9,6 +9,8 @@ import { PdfService } from '../../../services/pdf/pdf.service';
 export class EpisodesPageComponent {
   @ViewChild('episodesMap', { static: false }) episodesMap!: ElementRef;
 
+  public episodesSidebarVisible: boolean = false;
+
   constructor(private pdfService: PdfService) {}
 
   ngAfterViewInit(): void {
@@ -18,5 +20,8 @@ export class EpisodesPageComponent {
       ...reportsElements,
       3: this.episodesMap,
     });
+  }
+  public isModalOpened(open:boolean) {
+    this.episodesSidebarVisible = open;
   }
 }

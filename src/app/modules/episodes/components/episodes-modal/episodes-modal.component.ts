@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, Output, ViewChild } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Episode, StudyZone } from '../../../../models/study-zone';
 import { Point } from 'chart.js';
@@ -29,6 +29,8 @@ export class EpisodesModalComponent implements OnDestroy {
   public plausibilityWindSpeed!: number;
   public plausibilityDistance!: number;
   public plausibilityMinOKObservations!: number;
+
+  @Output() public episodesSidebarVisible = new EventEmitter<boolean>();
 
   @ViewChild('episodesContainer') episodesContainer!: ElementRef;
 
@@ -93,6 +95,7 @@ export class EpisodesModalComponent implements OnDestroy {
 
   public onToggleEpisodesModal() {
     this.episdoesSidebarVisible = !this.episdoesSidebarVisible;
+    this.episodesSidebarVisible.emit(this.episdoesSidebarVisible);
     setTimeout(() => {
       if(this.episdoesSidebarVisible) this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : 0;
     }, 300);

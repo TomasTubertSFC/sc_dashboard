@@ -1,5 +1,5 @@
 <div #episodesMap>
-  <app-episodes-map />
-  <app-episodes-modal />
+  <app-episodes-map [episodesSidebarVisible]="episodesSidebarVisible"/>
+  <app-episodes-modal (episodesSidebarVisible)="isModalOpened($event)"/>
 </div>
 <app-episodes-timeline />
