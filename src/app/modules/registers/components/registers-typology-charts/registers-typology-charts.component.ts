@@ -245,11 +245,9 @@ export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, 
       }, {})
     );
 
-    const barColors = barData.map((data: any) => this.colors['type'][data[0]]);
+    const barColors = barData.map((data: any) => "#aaaaff");
 
-    const doughnutData = barData
-      .slice(0, 3)
-      .map((data: any) => data[1]['value']);
+    const doughnutData = barData.slice(0, 3).map((data: any) => data[1]['value']);
     const doughnutColors = barColors.slice(0, 3);
     doughnutData.push(
       barData

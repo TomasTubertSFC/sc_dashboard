@@ -176,12 +176,7 @@ export class RegistersWindChartsComponent implements OnInit, OnDestroy{
 
     let datasets = [
       {
-          label: 'Número de observaciones/origen del viento',
-          borderColor: documentStyle.getPropertyValue('--primary-400'),
-          pointBackgroundColor: documentStyle.getPropertyValue('--primary-400'),
-          pointBorderColor: documentStyle.getPropertyValue('--primary-400'),
-          pointHoverBackgroundColor: textColor,
-          pointHoverBorderColor: documentStyle.getPropertyValue('--primary-400'),
+          label: 'Número de observaciones',
           data: data
       }
     ];
