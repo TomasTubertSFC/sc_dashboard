@@ -151,7 +151,7 @@
                   <b>{{obs.createdAt| date:'HH:mm'}}h.</b>
                 </div>
 
-                <p-overlayPanel #ol>
+                <p-overlayPanel [style]="{'pointer-events': 'none'}" #ol>
                   <div class="flex gap-2">
                     <div class="max-w-24rem gap-2 mb-3">
                       @if(obs.plausible){
