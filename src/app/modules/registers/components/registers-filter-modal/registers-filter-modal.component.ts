@@ -34,7 +34,7 @@ export class RegistersFilterModalComponent {
     'Imperceptible',
     'Muy débil',
     'Débil',
-    'Indiferente ',
+    'Distinguible ',
     'Fuerte',
     'Muy fuerte',
     'Extremadamente fuerte'
