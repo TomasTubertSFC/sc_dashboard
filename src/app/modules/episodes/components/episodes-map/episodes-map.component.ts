@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Input,
   OnDestroy,
   ViewChild,
 } from '@angular/core';
@@ -22,6 +23,7 @@ import { Polygon } from '../../../../models/polygon';
 export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
   @ViewChild('map') map!: MapComponent | null;
+  @Input('episodesSidebarVisible') episodesSidebarVisible: boolean = false;
 
   public cone!: Cone;
   public points!: Point[];
@@ -91,7 +93,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       setTimeout(() => {
         if (this.points) {
           const bbox = this.getBboxFromPoints();
-          this.map?.mapInstance.fitBounds(bbox, { padding: { top: 50, bottom: 200, left: 50, right: 500 } });
+          this.map?.mapInstance.fitBounds(bbox, { padding: { top: 50, bottom: 200, left: 50, right: this.episodesSidebarVisible? 500 : 50 } });
         }
       });
     });
@@ -196,7 +198,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
         const bbox = this.getBboxFromPointsAndObservations();
         if (this.map?.mapInstance)
           this.map.mapInstance.fitBounds(bbox, {
-            padding: { top: 50, bottom: 200, left: 50, right: 500 },
+            padding: { top: 50, bottom: 200, left: 50, right: this.episodesSidebarVisible? 500 : 50  },
           });
       });
     });

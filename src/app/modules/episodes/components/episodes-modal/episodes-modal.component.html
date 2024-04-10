@@ -24,7 +24,7 @@
 </p-overlayPanel>
 
 <div id="episodesModal" #episodesModal></div>
-<p-sidebar [(visible)]="episdoesSidebarVisible" [appendTo]="episodesModal" [position]="'right'" [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
+<p-sidebar [(visible)]="episdoesSidebarVisible" [appendTo]="episodesModal" (onHide)="onToggleEpisodesModal()" [position]="'right'" [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'" [modal]="false" [blockScroll]="false">
   <ng-template pTemplate="header">
     <div class="flex flex-1 justify-content-between">
       <span>Episodios: {{studyZone?.episodes?.length}}</span>
@@ -39,7 +39,6 @@
           [classList]="'position-sticky'"
           [ngClass]="{'preview': index === previewEpisode?.id}"
           (click)="selectEpisode(ep)"
-
           >
             <ng-template pTemplate="header">
               Ep. {{(index + 1)}}
@@ -152,7 +151,7 @@
                   <b>{{obs.createdAt| date:'HH:mm'}}h.</b>
                 </div>
 
-                <p-overlayPanel #ol>
+                <p-overlayPanel [style]="{'pointer-events': 'none'}" #ol>
                   <div class="flex gap-2">
                     <div class="max-w-24rem gap-2 mb-3">
                       @if(obs.plausible){
