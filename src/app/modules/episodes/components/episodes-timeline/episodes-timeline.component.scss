@@ -1,3 +1,5 @@
+@import '../../../../../../styles/_colors.scss';
+
 .card{
   position: absolute;
   max-height: calc(100vh - 9rem);
@@ -5,7 +7,6 @@
   margin: 0.5rem;
   bottom: 0;
   border-radius: 12px;
-  box-shadow: 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12), 0 11px 15px -7px rgba(0,0,0,.2);
   z-index: 100;
   padding: 12px 7px 45px 7px;
   #timeline{
@@ -25,7 +26,6 @@
       width: 50px;
       right: 0px;
       top: -10px;
-      background-image: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1));
       z-index: 10;
     }
     #timeline-legend{
@@ -158,32 +158,26 @@
             pointer-events: none;
             width: 100%;
             box-sizing: content-box;
-            background:  linear-gradient(0deg, #8edead, #43c6ac) no-repeat bottom;
-            background-size: 110% 90px;
-            border: 1px solid rgba(0, 129, 86, 0.2);
-            border-bottom: none;
+            background: $green;
+            border: 1px solid $green-dark;
             padding-bottom: 0;
             border-radius: 3px 3px 0 0;
-            box-shadow: 0;
+            border-bottom: none;
           }
           &.active{
             z-index: 1;
             .inconvenience{
-              background: linear-gradient(0deg, #fd9a77, #fb827a) no-repeat bottom;
-              background-size: 90px 90px;
-              border-color: #e96c63;
-              box-shadow: 0 -8px 10px 0 rgba(0, 0, 0, 0.16), 0 0 5px 0 rgba(0, 0, 0, 0.26);
+              background: $orange;
+              border-bottom: none;
+              border-color: $orange-dark;
             }
           }
           &.preview{
             z-index: 1;
             .inconvenience{
-              background: linear-gradient(0deg, #348ac7, #7474bf) no-repeat bottom;
-              background-size: 90px 90px;
-              border: 1px solid rgba(0, 129, 86, 0.2);
+              background: $blue;
               border-bottom: none;
-              border-color: #6666c2;
-              box-shadow: 0 -4px 5px 0 rgba(0, 0, 0, 0.16), 0 0 5px 0 rgba(0, 0, 0, 0.26);
+              border-color: $blue-dark;
             }
           }
         }
