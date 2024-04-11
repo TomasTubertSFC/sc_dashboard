@@ -66,13 +66,12 @@ export class EpisodesModalComponent implements OnDestroy {
     });
 
     this.previewObservation$ = this.studyZoneService.previewObservation.subscribe(previewObservation => {
-
+      if(this.previewObservation === previewObservation) return;
       this.previewObservation = previewObservation;
       if(this.observationButtonPreview) this.observationButtonPreview.dispatchEvent( new Event('mouseleave'));
       this.observationButtonPreview = document.getElementById(`obsButton${previewObservation}`) as HTMLElement;
       if(this.observationButtonPreview) this.observationButtonPreview.dispatchEvent( new Event('mouseover'));
       if(this.episdoesSidebarVisible && this.episodesContainer) this.episodesContainer.nativeElement.scrollTop = this.episode? this.episode.id * 40 : this.episodesContainer.nativeElement.scrollTop;
-
     });
 
   }
@@ -109,6 +108,7 @@ export class EpisodesModalComponent implements OnDestroy {
 
   public observationPreview(id:number | null = null):void {
     if(id === null) this.observationButtonPreview = null;
+    this.previewObservation = id;
     if(this.studyZoneService.previewObservation.value !== id) this.studyZoneService.previewObservation = id;
   }
 

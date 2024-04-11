@@ -131,7 +131,7 @@
             <h6>
               <b>{{ep.observations.length}} observations</b>
             </h6>
-            <div class="flex flex-wrap gap-1">
+            <div class="flex flex-wrap max-w-max gap-1" (mouseleave)="observationPreview(null)">
               @for(obs of ep.observations; track obs; let index = $index){
                 <div
                   [id]="'obsButton' + obs.id"
@@ -139,7 +139,7 @@
                   (click)="[ol.show($event), observationSelected(obs.id)]"
                   (mouseenter)="[ol.show($event), observationPreview(obs.id)]"
                   (mouseover)="ol.show($event)"
-                  (mouseleave)="[ol.hide(), observationPreview(null)]"
+                  (mouseleave)="[ol.hide()]"
                   [ngClass]="{ 'active' : obs.id === observation , 'preview' : obs.id === previewObservation && obs.id !== observation, 'plausible' : obs.plausible, 'not-plausible' : !obs.plausible}"
                 >
                   @if(obs.plausible){
