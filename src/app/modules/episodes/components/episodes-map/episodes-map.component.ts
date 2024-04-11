@@ -43,8 +43,8 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     'fill-opacity': 0.8,
   };
 
-  public canvasHeight: number = 2100;
-  public canvasWidth: number = 2100;
+  public canvasHeight: number = 1000;
+  public canvasWidth: number = 1000;
 
   public context!: CanvasRenderingContext2D;
 

@@ -26,6 +26,8 @@ export class EpisodesTimelineComponent  implements OnDestroy {
   @ViewChild('termsSlider') termsSlider!: ElementRef;
   @ViewChild('nextButton') nextButton!: Button;
   @ViewChild('prevButton') prevButton!: Button;
+  private activeBarEpisode!: HTMLElement;
+  private previewBarEpisode!: HTMLElement;
   public currentElement:number = 1;
   public galleryElementWidth!:number;
   public galleryTotalWidth!:number;
@@ -60,15 +62,20 @@ export class EpisodesTimelineComponent  implements OnDestroy {
     });
     this.studyZoneService.episode.subscribe(episode => {
       this.episode = episode;
+      setTimeout(() => {
+        this.activeBarEpisode = document.querySelector('.active') as HTMLElement;
+        this.showElementOnSlider(this.activeBarEpisode);
+      },0);
     });
     this.studyZoneService.previewEpisode.subscribe(episode => {
       this.episodePreview = episode;
+      this.previewBarEpisode = document.querySelector('.preview') as HTMLElement;
     });
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.getGalleryElementwidth();
+      this.getGalleryElementWidth();
     })
   }
 
@@ -116,7 +123,25 @@ export class EpisodesTimelineComponent  implements OnDestroy {
     }
   }
 
-  getGalleryElementwidth(){
+  private showElementOnSlider(element: HTMLElement){
+    if(element){
+      let elementWidth = element.clientWidth;
+      let elementLeft = element.offsetLeft + (element.parentElement ? element.parentElement?.offsetLeft : 0);
+      let gallery = this.termsSlider.nativeElement as HTMLElement;
+      let galleryWidth = gallery.clientWidth - elementWidth;
+      let galleryScroll = gallery.scrollLeft;
+      let galleryRight = galleryScroll + galleryWidth;
+      if(elementLeft < galleryScroll + 10){
+        console.log(elementLeft, galleryScroll)
+        gallery.scrollLeft = elementLeft - 10;
+      }
+      else if(elementLeft > galleryRight - 35){
+        gallery.scrollLeft = elementLeft - (galleryWidth - 35);
+      }
+    }
+  }
+
+  private getGalleryElementWidth(){
     this.galleryTotalWidth = this.termsSlider.nativeElement.clientWidth;
     let termsSlider = this.termsSlider.nativeElement as HTMLElement;
     termsSlider.addEventListener('scroll', () => {
@@ -126,10 +151,11 @@ export class EpisodesTimelineComponent  implements OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.getGalleryElementwidth();
+    this.getGalleryElementWidth();
     let termsSlider = this.termsSlider.nativeElement as HTMLElement;
     this.currentScroll = this.galleryElementWidth * this.currentElement;
     termsSlider.scrollLeft = this.currentScroll;
+    this.showElementOnSlider(this.activeBarEpisode);
   }
 
   ngOnDestroy() {
