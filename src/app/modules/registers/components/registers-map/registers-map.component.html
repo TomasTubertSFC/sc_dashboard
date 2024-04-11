@@ -3,8 +3,10 @@
   (closeFilterSidebar)="showFilters = false"
   [filterSidebarVisible]="showFilters"
 />
-<p-toolbar styleClass="shadow-6" #toolBar>
+<p-toolbar #toolBar>
   <ng-template pTemplate="start">
+
+
     <p-button
       (onClick)="toggleHeatmapLayer(false)"
       [ngClass]="{ active: !heatmapLayer }"

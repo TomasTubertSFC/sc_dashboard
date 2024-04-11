@@ -16,6 +16,7 @@ import { EpisodesMapComponent } from './components/episodes-map/episodes-map.com
 import { EpisodesTimelineComponent } from './components/episodes-timeline/episodes-timeline.component';
 import { EpisodesModalComponent } from './components/episodes-modal/episodes-modal.component';
 import { SkeletonModule } from 'primeng/skeleton';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     EpisodesMapComponent,
     EpisodesTimelineComponent,
     EpisodesModalComponent,
+
   ],
   exports:[
     EpisodesPageComponent,
@@ -33,6 +35,7 @@ import { SkeletonModule } from 'primeng/skeleton';
   imports: [
     TooltipModule,
     ButtonModule,
+    SelectButtonModule,
     SplitButtonModule,
     SidebarModule,
     AccordionModule,
