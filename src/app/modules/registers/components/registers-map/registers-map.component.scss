@@ -67,12 +67,31 @@ mgl-map{
     padding: 0.5rem;
     transition: all 0.3s cubic-bezier(0,.60,.25,1);
     .p-toolbar-group-center{
-      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
-
+    }
+  }
+  p-button .p-button{
+    background-color: var(--surface);
+    color: var(--text);
+  }
+  p-button.active .p-button{
+    background-color: var(--orange);
+    color: var(--surface);
+  }
+  p-selectbutton .p-button{
+    background-color: var(--surface);
+    border-color: var(--orange);
+    color: var(--text);
+    &.p-highlight{
+      background-color: var(--orange);
+      color: var(--surface);
+    }
+    &.p-button .p-button-icon-left,
+    &.p-button .p-button-icon-right{
+      color: var(--surface);
     }
   }
 }

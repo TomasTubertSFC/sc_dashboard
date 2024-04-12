@@ -1,4 +1,4 @@
-<p-dialog  header="Select a study zone" [(visible)]="visible" [maskStyle]="'background:#F00'" [closable]="dissmissable" [closeOnEscape]="dissmissable" [dismissableMask]="dissmissable" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+<p-dialog  header="Select a study zone" [(visible)]="visible" [breakpoints]="{ '960px': '90vw' }" [style]="{ width: '50vw' }" [maskStyle]="'background:#F00'" [closable]="dissmissable" [closeOnEscape]="dissmissable" [dismissableMask]="dissmissable" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
 
   @for(studyZone of studyZonesList; track studyZone){
     <div class="study-zone flex flex-column p-3 pb-4" (click)="selectStudyZone(studyZone.id)" [ngClass]="{'active': selectedStudyZone && selectedStudyZone === studyZone.id}">
@@ -14,5 +14,5 @@
       </div>
     </div>
   }
-  
+
 </p-dialog>

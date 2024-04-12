@@ -19,6 +19,19 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
   @ViewChild('map') map!: MapComponent;
 
+  public stateOptions: any[] = [
+    {
+      icon:"pi pi-map-marker",
+      label: 'Registros',
+      value: false
+    },
+    {
+      icon:"pi pi-sun",
+      label: 'Mapa de calor',
+      value: true
+    }
+  ];
+
   private sidebarMenuIsOpen$!: Subscription;
   private studyZone$!: Subscription;
 
@@ -165,10 +178,6 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.sidebarMenuIsOpen$.unsubscribe();
     this.studyZone$.unsubscribe();
-  }
-
-  public toggleHeatmapLayer(status: boolean | undefined = undefined) {
-    this.heatmapLayer = status === undefined ? !this.heatmapLayer : status;
   }
 
   public toggleFilters(status: boolean | undefined = undefined) {

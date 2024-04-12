@@ -16,6 +16,19 @@ export class RegistersTypologyChartsComponent implements OnInit, AfterViewInit, 
   @ViewChild('doughnutChart', { static: false }) doughnutChart!: UIChart;
   @ViewChild('barChart', { static: false }) barChart!: UIChart;
 
+  public stateOptions: any[] = [
+    {
+      icon:"pi pi-chart-pie",
+      label: 'Dónut',
+      value: true
+    },
+    {
+      icon:"pi pi-chart-bar",
+      label: 'Barras',
+      value: false
+    }
+  ];
+
   private studyZone$!: Subscription;
 
   private xLegend: string = 'Tipología';

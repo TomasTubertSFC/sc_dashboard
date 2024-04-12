@@ -2,3 +2,19 @@
   padding: 0.5rem;
   margin: 0;
 }
+
+:host ::ng-deep {
+  p-selectbutton .p-button{
+    background-color: var(--surface);
+    border-color: var(--orange);
+    color: var(--text);
+    &.p-highlight{
+      background-color: var(--orange);
+      color: var(--surface);
+    }
+    &.p-button .p-button-icon-left,
+    &.p-button .p-button-icon-right{
+      color: var(--surface);
+    }
+  }
+}

@@ -2,9 +2,9 @@
   cursor: pointer;
   background-color: white;
   &:hover{
-    background-color: #f5f5f5;
+    background-color: var(--blue-lighter);
   }
   &.active{
-    background-color: rgba(182, 182, 241, 0.2);
+    background-color: var(--orange-lighter);
   }
 }

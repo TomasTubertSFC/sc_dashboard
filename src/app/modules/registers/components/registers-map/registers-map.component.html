@@ -4,31 +4,16 @@
   [filterSidebarVisible]="showFilters"
 />
 <p-toolbar #toolBar>
-  <ng-template pTemplate="start">
+  <ng-template pTemplate="start" class="min-w-max">
 
+    <p-selectButton [options]="stateOptions" [(ngModel)]="heatmapLayer" [classList]="'p-buttonset'" [unselectable]="true" optionLabel="label" optionValue="value"></p-selectButton>
 
-    <p-button
-      (onClick)="toggleHeatmapLayer(false)"
-      [ngClass]="{ active: !heatmapLayer }"
-      pTooltip="Marcadores"
-      tooltipPosition="bottom"
-    >
-      <i class="pi pi-map-marker"></i>
-    </p-button>
-    <p-button
-      (onClick)="toggleHeatmapLayer(true)"
-      [ngClass]="{ active: heatmapLayer }"
-      pTooltip="Mapa de calor"
-      tooltipPosition="bottom"
-    >
-      <i class="pi pi-sun"></i>
-    </p-button>
   </ng-template>
   <ng-template pTemplate="center">
-    <span class="p-input-icon-left">
+    <!-- <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
       <input type="text" pInputText />
-    </span>
+    </span> -->
   </ng-template>
   <ng-template pTemplate="end" #filterButton>
     <div class="flex gap-2">

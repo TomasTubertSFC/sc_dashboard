@@ -1,23 +1,8 @@
   <div class="card-body flex flex-column flex-nowrap lg:flex-row gap-2">
     <div class="card col-12 lg:col-7 xl:col-9 flex-order-1 lg:flex-order-0">
       <div class="card-body">
-        <div class="flex">
-          <p-button
-            (onClick)="changeWindFilter(true)"
-            [ngClass]="{ active: chartRadar }"
-            pTooltip="Gráfico radar"
-            tooltipPosition="top"
-          >
-            <i class="pi pi-chart-pie"></i>
-          </p-button>
-          <p-button
-            (onClick)="changeWindFilter(false)"
-            [ngClass]="{ active: !chartRadar }"
-            pTooltip="Gráfico de barras"
-            tooltipPosition="top"
-          >
-            <i class="pi pi-chart-bar"></i>
-          </p-button>
+        <div class="flex m-2">
+          <p-selectButton [options]="stateOptions" [(ngModel)]="chartRadar" [unselectable]="true" optionLabel="label" optionValue="value" />
         </div>
       </div>
       <div class="card-body">
