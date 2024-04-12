@@ -8,21 +8,13 @@
     width: calc(100% - 5rem);
     max-width: 390px;
     border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    background-color: var(--surface-overlay);
     backdrop-filter: blur(8px);
-    box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
     .p-sidebar-header{
       padding: 0 0.15rem 0.5rem;
     }
     .p-sidebar-content{
       padding: 0;
-    }
-    .card{
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      background-color: #FFF5;
-      box-shadow:  0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.08);
     }
   }
 }

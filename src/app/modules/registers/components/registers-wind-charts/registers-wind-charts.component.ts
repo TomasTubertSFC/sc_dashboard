@@ -14,6 +14,19 @@ export class RegistersWindChartsComponent implements OnInit, OnDestroy{
   @ViewChild('radarChart', { static: false }) radarChart!: UIChart;
   @ViewChild('barChart', { static: false }) barChart!: UIChart;
 
+  public stateOptions: any[] = [
+    {
+      icon:"pi pi-chart-pie",
+      label: 'Radar',
+      value: true
+    },
+    {
+      icon:"pi pi-chart-bar",
+      label: 'Barras',
+      value: false
+    }
+  ];
+
   private studyZone$!: Subscription;
   public data: any = [];
   public observations!: Observation[];

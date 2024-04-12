@@ -132,7 +132,6 @@ export class EpisodesTimelineComponent  implements OnDestroy {
       let galleryScroll = gallery.scrollLeft;
       let galleryRight = galleryScroll + galleryWidth;
       if(elementLeft < galleryScroll + 10){
-        console.log(elementLeft, galleryScroll)
         gallery.scrollLeft = elementLeft - 10;
       }
       else if(elementLeft > galleryRight - 35){

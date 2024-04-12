@@ -24,6 +24,8 @@ import { RegistersTypologyChartsComponent } from './components/registers-typolog
 import { SkeletonModule } from 'primeng/skeleton';
 import { RegistersWindChartsComponent } from './components/registers-wind-charts/registers-wind-charts.component';
 import { RegistersWindTypologyChartsComponent } from './components/registers-wind-typology-charts/registers-wind-typology-charts.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import { RegistersWindTypologyChartsComponent } from './components/registers-win
     DividerModule,
     RadioButtonModule,
     SkeletonModule,
+    SelectButtonModule
 
   ]
 })
