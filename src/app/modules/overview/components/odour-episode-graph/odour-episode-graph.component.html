@@ -15,8 +15,9 @@
     Llevas <strong>{{ getDaysfromLastEpisode() }}</strong> días sin episodios de
     olor
   </h2>
+  <p></p>
   <div class="flex flex-wrap gap-2 justify-content-center">
-    @for (episode of odourEpisodes; track $index) {
+    @for (episode of odourEpisodesSelected; track $index) {
     <div class="flex flex-column justify-content-center align-items-center">
       <div
         class="border-circle p-3 episode-card flex align-items-center text-center"
@@ -29,10 +30,19 @@
           }}
         </p>
       </div>
-      <p class="title-m">{{ months[$index] }}</p>
+      <p class="title-m">{{ selectedMonths[$index] }}</p>
     </div>
     }
   </div>
-
-  }
+  @if(numberOfPages > 1){
+  <div class="flex justify-content-center mt-3">
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [styleClass]="'pagination'"
+      [first]="firstPage"
+      [rows]="6"
+      [totalRecords]="months.length"
+    ></p-paginator>
+  </div>
+  } }
 </div>
