@@ -86,9 +86,9 @@ export class EpisodesModalComponent implements OnDestroy {
     const diff = (epEnd.getTime() - epStart.getTime()) / 1000;
     const days = Math.floor(diff / 86400);
     const hours = Math.floor(diff / 3600) % 24;
-    let dayText = days > 1 ? 'days' : 'day';
-    let hourText = hours > 1 ? 'hours' : 'hour';
-    return days > 0 ? `${days} ${dayText}` : `${hours} ${hourText}`;
+    let dayText = days > 1 ? 'dias' : 'dia';
+    let hourText = hours > 1 ? 'horas' : 'hora';
+    return days > 0 ? `${days} ${dayText}` : hours > 0 ? `${hours} ${hourText}` : 'Menos de 1 hora';
   }
 
 

@@ -1,18 +1,19 @@
-<p-dialog  header="Select a study zone" [(visible)]="visible" [breakpoints]="{ '960px': '90vw' }" [style]="{ width: '50vw' }" [maskStyle]="'background:#F00'" [closable]="dissmissable" [closeOnEscape]="dissmissable" [dismissableMask]="dissmissable" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+<p-dialog  header="Selecciona una zona de estudio" [(visible)]="visible" [breakpoints]="{ '960px': '90vw' }" [style]="{ width: '50vw' }" [maskStyle]="'background:#F00'" [closable]="dissmissable" [closeOnEscape]="dissmissable" [dismissableMask]="dissmissable" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
 
-  @for(studyZone of studyZonesList; track studyZone){
-    <div class="study-zone flex flex-column p-3 pb-4" (click)="selectStudyZone(studyZone.id)" [ngClass]="{'active': selectedStudyZone && selectedStudyZone === studyZone.id}">
-      <div class="flex flex-row">
-        <i class="pi pi-map-marker text-2xl pt-1 pr-3"></i>
-        <div class="flex flex-column">
-          <div class="flex flex-row align-content-end">
-            <h4 class="m-0 mb-2 flex align-items-end mr-3">Study zone {{studyZone.id}}</h4>
-            <h6 class="m-0 mb-2 flex align-items-end">{{studyZone.tag}}</h6>
+  <div class="flex flex-column gap-3">
+    @for(studyZone of studyZonesList; track studyZone){
+      <div class="study-zone flex flex-column p-3 pb-4" (click)="selectStudyZone(studyZone.id)" [ngClass]="{'active': selectedStudyZone && selectedStudyZone === studyZone.id}">
+        <div class="flex flex-row">
+          <i class="pi pi-map-marker text-2xl pt-1 pr-3"></i>
+          <div class="flex flex-column">
+            <div class="flex flex-row align-content-end">
+              <h4 class="m-0 mb-2 flex align-items-end mr-3">{{studyZone.tag}}</h4>
+            </div>
+            <p>{{studyZone.description}}</p>
           </div>
-          <p>{{studyZone.description}}</p>
         </div>
       </div>
-    </div>
-  }
+    }
+  </div>
 
 </p-dialog>

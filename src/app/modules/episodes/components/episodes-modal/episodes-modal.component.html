@@ -7,18 +7,17 @@
 <p-overlayPanel #plausibilityInfo>
   <div class="max-w-30rem">
     <h6>
-      <b>Plausibility criteria</b>
+      <b>Criterio de plausibilidad</b>
     </h6>
     <p>
-      The episode is plausible if the following criteria are met:<br/>
-      - <b>{{plausibilityMinOKObservations}} or more</b> of observations are plausible.
+      Un episodio es plausible si <b>{{plausibilityMinOKObservations}} o más</b> de las observaciones son plausibles.
     </p>
     <p>
-      The observation is plausible if:<br/>
-      - The observer is less than <b>{{plausibilityDistance}}m</b> from the source.<br/>
-      - The wind speed is less than <b>{{plausibilityWindSpeed}}m/s</b>.<br/>
-      If the observation is not under <b>{{plausibilityDistance}}m</b> of the source and the wind is faster than <b>{{plausibilityWindSpeed}}m/s</b>:<br/>
-      - The wind is blowing from the source to the receptor passing through the observer's cone.
+      La observación es plausible si:<br/>
+      - El observador está a menos de <b>{{plausibilityDistance}}m</b> de la fuente.<br/>
+      - La velocidad del viento es menor a <b>{{plausibilityWindSpeed}}m/s</b>.<br/>
+      - Si la observación no está a menos de <b>{{plausibilityDistance}}m</b> de la fuente y el viento es más rápido de <b>{{plausibilityWindSpeed}}m/s</b>:<br/>
+      - El viento sopla desde la fuente al receptor pasando por el cono del observador.
     </p>
   </div>
 </p-overlayPanel>
@@ -45,7 +44,7 @@
               <span class="severance">{{ep.date | date:'dd/MM/Y'}}</span>
               <span class="severance flex flex-1">{{ep.observations[0].relationships.odourSubType.relationships?.odourType?.name}}</span>
               <span class="severance" >
-                {{getInconvenienceInBase100(ep.inconvenience)}}
+                {{getInconvenienceInBase100(ep.inconvenience) > 100 ? 100 : getInconvenienceInBase100(ep.inconvenience)}}
                 <span class="gm color-{{ep.inconvenienceColor}}"></span>
               </span>
             </ng-template>
@@ -53,7 +52,7 @@
             <div class="flex flex-column">
 
               <h6 class="flex gap-2">
-                Plausibility
+                Plausibilidad
                 <i class="pi pi-info-circle flex-1" (click)="plausibilityInfo.toggle($event)"></i>
               </h6>
 
@@ -64,37 +63,25 @@
                 }
                 @else {
                   <i class="pi pi-times"></i>
-                  <span>Not plausible</span>
+                  <span>No plausible</span>
                 }
               </div>
 
 
               <h6>
-                Data
+                Datos del episodio
               </h6>
               <div class="flex justify-content-between">
-                <span>
-                  Start
-                </span>
-                <span>
-                  {{ep.observations[0].createdAt | date:'dd/MM/Y - HH:mm'}}
-                </span>
+                <b>Inicio:</b>
+                <span>{{ep.observations[0].createdAt | date:'dd/MM/Y - HH:mm'}}</span>
               </div>
               <div class="flex justify-content-between">
-                <span>
-                  End
-                </span>
-                <span>
-                  {{ep.observations[ep.observations.length - 1].createdAt | date:'dd/MM/Y - HH:mm'}}
-                </span>
+                <b>Fin:</b>
+                <span>{{ep.observations[ep.observations.length - 1].createdAt | date:'dd/MM/Y - HH:mm'}}</span>
               </div>
               <div class="flex justify-content-between">
-                <span>
-                  Episode length
-                </span>
-                <span>
-                  {{getEpisodeLength(ep.observations[0].createdAt, ep.observations[ep.observations.length - 1].createdAt)}}
-                </span>
+                <b>Duración:</b>
+                <span>{{getEpisodeLength(ep.observations[0].createdAt, ep.observations[ep.observations.length - 1].createdAt)}}</span>
               </div>
 
               <!-- <div class="flex justify-content-between">
@@ -103,12 +90,8 @@
               </div> -->
 
               <div class="flex justify-content-between">
-                <span>
-                  Degree of participation
-                </span>
-                <span>
-                  {{ep.participation}}%
-                </span>
+                <b>Grado de participación:</b>
+                <span>{{ ep.participation | number : '1.2-2' }}%</span>
               </div>
 
               <!-- <div class="flex justify-content-between">
@@ -122,14 +105,14 @@
               </div> -->
 
               <div class="flex justify-content-between">
-              <span>Participating citizenship number</span>
-              <span>{{ep.differentUsers}}</span>
+                <b>Participación ciudadana:</b>
+                <span>{{ep.differentUsers}}</span>
               </div>
 
             </div>
 
             <h6>
-              <b>{{ep.observations.length}} observations</b>
+              <b>{{ep.observations.length}} Observaciones</b>
             </h6>
             <div class="flex flex-wrap max-w-max gap-1" (mouseleave)="observationPreview(null)">
               @for(obs of ep.observations; track obs; let index = $index){
@@ -159,38 +142,55 @@
                           <i class="pi pi-check"></i>
                           <b><span>Plausible</span></b>
                         </div>
-                        The observation is plausible because
+                        La observación es plausible ya que
                         @if(obs.APGEMOdistance <= plausibilityDistance && obs.relationships.wind.speed > plausibilityWindSpeed){
-                          the observer is less than <b>{{plausibilityDistance}}m</b> from the source.
+                          el observador está a menos de <b>{{plausibilityDistance}}m</b> de la fuente.
                         }
                         @else if (obs.APGEMOdistance > plausibilityDistance && obs.relationships.wind.speed <= plausibilityWindSpeed){
-                          the wind speed is less than <b>{{plausibilityWindSpeed}}m/s</b>.
+                          la velocidad del viento es menor a <b>{{plausibilityWindSpeed}}m/s</b>.
                         }
                         @else if (obs.APGEMOdistance <= plausibilityDistance && obs.relationships.wind.speed <= plausibilityWindSpeed) {
-                          the observer is less than <b>{{plausibilityDistance}}m</b> from the source and the wind speed is less than <b>{{plausibilityWindSpeed}}m/s</b>.
+                          el observador está a menos de <b>{{plausibilityDistance}}m</b> de la fuente y la velocidad del viento es menor a <b>{{plausibilityWindSpeed}}m/s</b>.
                         }
                         @else {
-                          the wind is blowing from the source to the receptor passing through the observer's cone.
+                          el viento sopla desde la fuente al receptor pasando por el cono del observador.
                         }
                       }
                       @else {
                         <div class="flex justify-content-start align-items-center gap-2 mb-1">
                           <i class="pi pi-times"></i>
-                          <b><span>Not plausible</span></b>
+                          <b><span>No plausible</span></b>
                         </div>
-                        The observation is not plausible because the observer is more than <b>{{plausibilityDistance}}m.</b>
-                        from the source, the wind speed is faster than <b>{{plausibilityWindSpeed}}m/s</b>
-                        and the wind is not blowing from the source to the receptor passing through the observer's cone.
+                        La observación no es plausible porque el observador está a más de <b>{{plausibilityDistance}}m.</b>
+                        de la fuente, la velocidad del viento es mayor a <b>{{plausibilityWindSpeed}}m/s</b>
+                        y el viento no sopla desde la fuente al receptor pasando por el cono del observador.
                       }
                     </div>
                   </div>
-                  <b>Date:</b> {{obs.createdAt| date:'dd/MM/Y HH:mm'}}<br/>
-                  <b>Wind speed:</b> {{obs.relationships.wind.speed}}m/s<br/>
-                  <b>Distance from APGEMO:</b> {{obs.APGEMOdistance}}m<br/>
-                  <b>Type:</b> {{obs.relationships.odourSubType.relationships?.odourType?.name}}<br/>
-                  <b>Subtype:</b> {{obs.relationships.odourSubType.name}}<br/>
-                  <b>Hedonic Tone:</b> {{obs.relationships.odourHedonicTone?.name}}<br/>
-                  <b>Intensity:</b> {{obs.relationships.odourIntensity?.name}}<br/>
+                  <div class="flex justify-content-between">
+                    <b>Fecha:</b> {{obs.createdAt| date:'dd/MM/Y HH:mm'}}<br/>
+                  </div>
+                  <div class="flex justify-content-between">
+                    <b>Velcidad del viento:</b> {{ obs.relationships.wind.speed | number : '1.0-2' }}m/s<br/>
+                  </div>
+                  <div class="flex justify-content-between">
+                    <b>Dirección del viento:</b> {{ obs.relationships.wind.deg | number : '1.0-2' }}º<br/>
+                  </div>
+                  <div class="flex justify-content-between">
+                    <b>Distancia a APGEMO:</b> {{ obs.APGEMOdistance | number : '1.0-0' }}m<br/>
+                  </div>
+                  <div class="flex justify-content-between">
+                    <b>Tipo:</b> {{obs.relationships.odourSubType.relationships?.odourType?.name}}<br/>
+                  </div>
+                  <div class="flex justify-content-between">
+                    <b>Subtipo:</b> {{obs.relationships.odourSubType.name}}<br/>
+                  </div>
+                  <div class="flex justify-content-between">
+                    <b>Tono hedónico:</b> {{obs.relationships.odourHedonicTone?.name}}<br/>
+                  </div>
+                  <div class="flex justify-content-between">
+                    <b>Intensidad:</b> {{obs.relationships.odourIntensity?.name}}<br/>
+                  </div>
                 </p-overlayPanel>
 
               }

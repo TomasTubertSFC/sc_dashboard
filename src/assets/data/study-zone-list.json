@@ -1,35 +1,21 @@
 
 {
   "studyZonesList":[
+
     {
       "id": 1,
-      "tag": "Poble nou",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh."
+      "tag": "Piloto Forum",
+      "description": "Estudio de la convivencia de hasta 5 plantas diferentes de tratamiento de aguas residuales en un mismo espacio."
     },
     {
       "id": 2,
-      "tag": "Les Corts",
-      "description": "Nullam vel eros sit amet arcu vestibulum accumsan in in leo. Fusce malesuada auctor orci, id feugiat nunc posuere eget. Nulla nec purus feugiat, molestie ipsum et, consequat nibh."
+      "tag": "Plaça Espanya",
+      "description": "Estudio de puntos de estancamiento de agua en la ciudad de Barcelona, zona de Plaça Espanya."
     },
     {
       "id": 3,
-      "tag": "Gracia",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    },
-    {
-      "id": 4,
       "tag": "La Rambla",
       "description": "Fusce malesuada auctor orci, id feugiat nunc posuere eget. Nulla nec purus feugiat, molestie ipsum et, consequat nibh."
-    },
-    {
-      "id": 5,
-      "tag": "L'Hospitalet",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    },
-    {
-      "id": 6,
-      "tag": "Piloto Forum",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     }
   ]
 }
