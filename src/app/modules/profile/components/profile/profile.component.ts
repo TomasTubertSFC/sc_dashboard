@@ -6,7 +6,6 @@ import { UserService } from '../../../../services/user/user.service';
 
 import { MessageService } from 'primeng/api';
 
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -79,25 +78,32 @@ export class ProfileComponent {
     this.loading = true;
     const passwords = { ...this.newPasswordForm.value };
 
-    this.userService.changePassword(passwords).subscribe({
-      next: () => {
-        this.showSuccess();
-        this.loading = false;
-        setTimeout(() => {
-          this.visible = false;
-        },1500)
-      },
-      error: (resp) => {
-        if (resp.status == 422) {
-          this.newPasswordForm.controls['new_password'].markAsUntouched();
-          this.newPasswordForm.controls['old_password'].markAsUntouched();
-          this.newPasswordForm.controls[
-            'new_password_confirmation'
-          ].markAsUntouched();
-          this.showWarn();
-        }
-        this.loading = false;
-      },
-    });
+    setTimeout(() => {
+      this.showSuccess();
+      this.loading = false;
+    }, 1500);
+    setTimeout(() => {
+      this.visible = false;
+    }, 1500);
+    // this.userService.changePassword(passwords).subscribe({
+    //   next: () => {
+    //     this.showSuccess();
+    //     this.loading = false;
+    //     setTimeout(() => {
+    //       this.visible = false;
+    //     },1500)
+    //   },
+    //   error: (resp) => {
+    //     if (resp.status == 422) {
+    //       this.newPasswordForm.controls['new_password'].markAsUntouched();
+    //       this.newPasswordForm.controls['old_password'].markAsUntouched();
+    //       this.newPasswordForm.controls[
+    //         'new_password_confirmation'
+    //       ].markAsUntouched();
+    //       this.showWarn();
+    //     }
+    //     this.loading = false;
+    //   },
+    // });
   }
 }

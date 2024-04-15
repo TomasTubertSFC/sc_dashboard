@@ -62,21 +62,26 @@ export class RecoverPasswordComponent {
 
     this.loading = true;
 
-    this.authService
-      .recoverPasswordEmail(this.recoverPasswordForm.value.email)
-      .subscribe({
-        next: () => {
-          this.showSuccess();
-          this.loading = false;
-        },
-        error: (resp: any) => {
-          if (resp.status == 422) {
-            this.recoverPasswordForm.controls['email'].markAsUntouched();
-            this.clear();
-            this.showWarn();
-          }
-          this.loading = false;
-        },
-      });
+    setTimeout(() => {
+      this.showSuccess();
+      this.loading = false;
+    }, 2000);
+
+    // this.authService
+    //   .recoverPasswordEmail(this.recoverPasswordForm.value.email)
+    //   .subscribe({
+    //     next: () => {
+    //       this.showSuccess();
+    //       this.loading = false;
+    //     },
+    //     error: (resp: any) => {
+    //       if (resp.status == 422) {
+    //         this.recoverPasswordForm.controls['email'].markAsUntouched();
+    //         this.clear();
+    //         this.showWarn();
+    //       }
+    //       this.loading = false;
+    //     },
+    //   });
   }
 }

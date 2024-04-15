@@ -16,7 +16,6 @@ export interface RecoverPasswords {
 @Injectable({
   providedIn: 'root',
 })
-
 export class AuthService {
   private _isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
@@ -45,30 +44,39 @@ export class AuthService {
   }
 
   login(user: any): Observable<Object> {
-    return this.http
-      .post(
-        `${environment.BACKEND_BASE_URL}/login`,
-        { ...user },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          withCredentials: true,
-        }
-      )
-      .pipe(
-        tap(() => {
-          if (this.lastUrl) {
-            this.router.navigate([this.lastUrl]);
-            this.lastUrl = null;
-          } else {
-            this.router.navigate(['/dashboard']);
-          }
+    // return this.http
+    //   .post(
+    //     `${environment.BACKEND_BASE_URL}/login`,
+    //     { ...user },
+    //     {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         Accept: 'application/json',
+    //       },
+    //       withCredentials: true,
+    //     }
+    //   )
+    //   .pipe(
+    //     tap(() => {
+    //       if (this.lastUrl) {
+    //         this.router.navigate([this.lastUrl]);
+    //         this.lastUrl = null;
+    //       } else {
+    //         this.router.navigate(['/dashboard']);
+    //       }
 
-          this._isLoggedIn.next(true);
-        })
-      );
+    //       this._isLoggedIn.next(true);
+    //     })
+    //   );
+    if (this.lastUrl) {
+      this.router.navigate([this.lastUrl]);
+      this.lastUrl = null;
+    } else {
+      this.router.navigate(['/dashboard']);
+    }
+    localStorage.setItem('_isLoggedIn', 'true');
+    this._isLoggedIn.next(true);
+    return of({ status: 200, data: { message: 'User logged' } });
   }
 
   userIsLogged(): Observable<
@@ -78,48 +86,59 @@ export class AuthService {
         data: any;
       }
   > {
-    return this.http
-      .get<{ status: number; data: any }>(
-        `${environment.BACKEND_BASE_URL}/api/user-logged`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          withCredentials: true,
-        }
-      )
-      .pipe(
-        tap((resp: { status: number; data: any }) => {
-          this._isLoggedIn.next(true);
-        }),
-        catchError((error) => {
-          if (error.status === 401) {
-            return of(true);
-          }
-          return of(false);
-        })
-      );
+    const isLogged = localStorage.getItem('_isLoggedIn');
+
+    if (isLogged !== 'true') {
+      return of(false);
+    }
+    this._isLoggedIn.next(true);
+    return of(true);
+
+    // return this.http
+    //   .get<{ status: number; data: any }>(
+    //     `${environment.BACKEND_BASE_URL}/api/user-logged`,
+    //     {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         Accept: 'application/json',
+    //       },
+    //       withCredentials: true,
+    //     }
+    //   )
+    //   .pipe(
+    //     tap((resp: { status: number; data: any }) => {
+    //       this._isLoggedIn.next(true);
+    //     }),
+    //     catchError((error) => {
+    //       if (error.status === 401) {
+    //         return of(true);
+    //       }
+    //       return of(false);
+    //     })
+    //   );
   }
 
   logout() {
-    this.http
-      .post(
-        `${environment.BACKEND_BASE_URL}/logout`,
-        {},
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          withCredentials: true,
-        }
-      )
-      .subscribe(() => {
-        this._isLoggedIn.next(false);
-        // this.user = undefined;
-        this.router.navigate(['/login']);
-      });
+    // this.http
+    //   .post(
+    //     `${environment.BACKEND_BASE_URL}/logout`,
+    //     {},
+    //     {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         Accept: 'application/json',
+    //       },
+    //       withCredentials: true,
+    //     }
+    //   )
+    //   .subscribe(() => {
+    //     this._isLoggedIn.next(false);
+    //     // this.user = undefined;
+    //     this.router.navigate(['/login']);
+    //   });
+    localStorage.removeItem('_isLoggedIn');
+    this._isLoggedIn.next(false);
+    this.router.navigate(['/login']);
   }
 
   recoverPasswordEmail(email: string): Observable<Object> {
