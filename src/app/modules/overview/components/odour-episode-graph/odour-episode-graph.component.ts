@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Episode } from '../../../../models/study-zone';
-import { direction } from 'html2canvas/dist/types/css/property-descriptors/direction';
 
 @Component({
   selector: 'app-odour-episode-graph',
@@ -13,7 +12,11 @@ export class OdourEpisodeGraphComponent implements OnInit {
   @Input() episodes!: Episode[];
 
   months!: string[];
+  selectedMonths!: string[];
   odourEpisodes!: number[];
+  odourEpisodesSelected!: number[];
+  firstPage: number = 0;
+  numberOfPages: number = 1;
 
   calculateMonthsBetweenDates(initDate: Date, endDate: Date): number {
     let months;
@@ -28,6 +31,7 @@ export class OdourEpisodeGraphComponent implements OnInit {
     return [...new Array(diferentBewteen)].map((_, index) => {
       return new Date(2022, index, 1).toLocaleString('default', {
         month: 'long',
+        year: 'numeric',
       });
     });
   }
@@ -58,15 +62,39 @@ export class OdourEpisodeGraphComponent implements OnInit {
     });
   }
 
+  splitIntoGroups(array: string[], groupSize: number): string[][] {
+    const groups: string[][] = [];
+
+    for (let i = 0; i < array.length; i += groupSize) {
+      groups.push(array.slice(i, i + groupSize));
+    }
+
+    return groups;
+  }
+  onPageChange(event: any) {
+    console.log('this.selectedMonths', this.selectedMonths);
+    console.log('event', event);
+    this.selectedMonths = this.months.slice(
+      event.first,
+      event.first + event.rows
+    );
+    console.log('this.selectedMonths', this.selectedMonths);
+  }
+
   ngOnInit(): void {
     const monthsBetween = this.calculateMonthsBetweenDates(
       this.initDate,
       this.endDate
     );
     this.months = this.monthNamesBetweenDates(monthsBetween);
+    this.selectedMonths = this.months.slice(0, 6);
     this.odourEpisodes = this.calculateOdourEpisodesPerMonth(
       this.episodes,
       monthsBetween
     );
+    this.odourEpisodesSelected = this.odourEpisodes.splice(0, 6);
+    this.numberOfPages = this.splitIntoGroups(this.months, 6).length;
+    //He de actualizar odourEpisodes y crear una variable con los seleccionados según la página
+    console.log('this.odourEpisodes', this.odourEpisodes);
   }
 }

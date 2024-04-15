@@ -183,3 +183,10 @@ button.close {
 .p-button.p-button-outlined:not(:disabled):active {
   background-color: $orange-light;
 }
+
+.pagination {
+  button {
+    border: 0px;
+    border-radius: 6px;
+  }
+}
