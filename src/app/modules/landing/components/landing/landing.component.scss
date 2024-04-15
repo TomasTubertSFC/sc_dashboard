@@ -16,6 +16,7 @@ nav {
   }
 }
 header {
+  overflow-y: hidden;
   background: linear-gradient(
       0deg,
       rgba(255, 255, 255, 0.2),
@@ -151,6 +152,15 @@ header {
   header {
     img {
       filter: opacity(1);
+      margin-bottom: -20px;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  header {
+    img {
+      margin-right: -180px;
     }
   }
 }

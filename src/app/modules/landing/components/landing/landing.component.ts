@@ -22,7 +22,7 @@ export class LandingComponent {
       id: 2,
     },
     {
-      src: '../assets/images/NextGeneration.jpg',
+      src: '../assets/images/NextGeneration.webp',
       alt: 'Next Generation EU',
       id: 3,
     },
