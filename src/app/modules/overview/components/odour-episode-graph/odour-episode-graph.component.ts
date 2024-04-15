@@ -72,13 +72,10 @@ export class OdourEpisodeGraphComponent implements OnInit {
     return groups;
   }
   onPageChange(event: any) {
-    console.log('this.selectedMonths', this.selectedMonths);
-    console.log('event', event);
     this.selectedMonths = this.months.slice(
       event.first,
       event.first + event.rows
     );
-    console.log('this.selectedMonths', this.selectedMonths);
   }
 
   ngOnInit(): void {
@@ -94,7 +91,5 @@ export class OdourEpisodeGraphComponent implements OnInit {
     );
     this.odourEpisodesSelected = this.odourEpisodes.splice(0, 6);
     this.numberOfPages = this.splitIntoGroups(this.months, 6).length;
-    //He de actualizar odourEpisodes y crear una variable con los seleccionados según la página
-    console.log('this.odourEpisodes', this.odourEpisodes);
   }
 }

@@ -1,5 +1,5 @@
 @if(!episodes){
-  <section class="mb-3 flex justify-content-end">
+  <section class="mb-3 flex justify-content-start">
     <div style="width: fit-content" class="card flex gap-3">
       <p-skeleton width="8rem"  height="40px"/>
       <p-skeleton width="8rem" height="40px"/>
@@ -28,7 +28,7 @@
     <p class="text-xl text-center">Grado de molestia</p>
   </div>
 } @else {
- <section class="mb-3 flex justify-content-end">
+ <section class="mb-3 flex justify-content-start">
   <div style="width: fit-content" class="card flex gap-3">
     <p-dropdown
       [options]="types"
