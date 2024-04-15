@@ -1,16 +1,16 @@
 {
   "initDate": "2023-01-01",
-  "endDate": "2023-02-01",
+  "endDate": "2023-09-01",
   "APGEMO": [
-    { "x": 1.1488025699850932, "y": 40.374829419455985 },
-    { "x": 1.1493968867070796, "y": 40.375230099973656 },
-    { "x": 1.1494015298064704, "y": 40.374791093364074 },
-    { "x": 1.1496986881674633, "y": 40.375345077405576 },
+    { "x": 2.1488025699850932, "y": 41.374829419455985 },
+    { "x": 2.1493968867070796, "y": 41.375230099973656 },
+    { "x": 2.1494015298064704, "y": 41.374791093364074 },
+    { "x": 2.1496986881674633, "y": 41.375345077405576 },
     [
-      { "x": 1.1497286881674633, "y": 40.374885419455985 },
-      { "x": 1.1495086881674633, "y": 40.374832419455985 },
-      { "x": 1.1496086881674633, "y": 40.374820419455985 },
-      { "x": 1.1496986881674633, "y": 40.374829419455985 }
+      { "x": 2.1497286881674633, "y": 41.374885419455985 },
+      { "x": 2.1495086881674633, "y": 41.374832419455985 },
+      { "x": 2.1496086881674633, "y": 41.374820419455985 },
+      { "x": 2.1496986881674633, "y": 41.374829419455985 }
     ]
   ],
   "episodes": [
@@ -29,8 +29,8 @@
       "observations": [
         {
           "id": 13717,
-          "longitude": 1.148942318412885,
-          "latitude": 40.37703282758233,
+          "longitude": 2.148942318412885,
+          "latitude": 41.37703282758233,
           "color": 3,
           "APGEMOdistance": 150,
           "relationships": {
@@ -74,8 +74,8 @@
         },
         {
           "id": 13724,
-          "longitude": 1.15038586687726,
-          "latitude": 40.37449842064499,
+          "longitude": 2.15038586687726,
+          "latitude": 41.37449842064499,
           "color": 4,
           "APGEMOdistance": 200,
           "relationships": {
@@ -102,8 +102,8 @@
             "odourHedonicTone": {
               "id": 5,
               "index": 0,
-              "name": "Neutro",
-              "slug": "Neutro"
+              "name": "Neutral",
+              "slug": "neutral"
             },
             "wind": {
               "deg": 90,
@@ -114,13 +114,13 @@
           "liked": false,
           "description": "Yep",
           "origin": "Rubiah",
-          "createdAt": "2023-08-19T14:04:51.000000Z",
-          "updatedAt": "2023-08-19T14:04:51.000000Z"
+          "createdAt": "2023-08-19T14:04:52.000000Z",
+          "updatedAt": "2023-08-19T14:04:52.000000Z"
         },
         {
           "id": 13726,
-          "longitude": 1.1475582193484346,
-          "latitude": 40.37404198794295,
+          "longitude": 2.1475582193484346,
+          "latitude": 41.37404198794295,
           "color": 6,
           "APGEMOdistance": 400,
           "relationships": {
@@ -164,8 +164,8 @@
         },
         {
           "id": 13727,
-          "longitude": 1.149355098812565,
-          "latitude": 40.37630321476795,
+          "longitude": 2.149355098812565,
+          "latitude": 41.37630321476795,
           "color": 7,
           "APGEMOdistance": 600,
           "relationships": {
@@ -209,8 +209,8 @@
         },
         {
           "id": 13736,
-          "longitude": 1.1482732566545746,
-          "latitude": 40.37542869722843,
+          "longitude": 2.1482732566545746,
+          "latitude": 41.37542869722843,
           "color": 7,
           "APGEMOdistance": 200,
           "relationships": {
@@ -249,19 +249,19 @@
           "liked": false,
           "description": "Durante todo el d\u00eda ha habido olor a putrefacci\u00f3n!!\n\nPasa continuamente necesitamos alguna respuesta y una investigaci\u00f3n",
           "origin": "De la f\u00e1brica tersa",
-          "createdAt": "2023-08-30T17:24:01.000000Z",
-          "updatedAt": "2023-08-30T17:24:01.000000Z"
+          "createdAt": "2023-08-30T17:24:03.000000Z",
+          "updatedAt": "2023-08-30T17:24:03.000000Z"
         }
       ]
     },
     {
       "type": {
-        "name": "Comida",
-        "id": 3
+        "name": "Aguas residuales y residuo",
+        "id": 5
       },
       "subtype": {
-        "name": "Grasa y aceite",
-        "id": 51
+        "name": "Otros",
+        "id": 89
       },
       "differentUsers": 2,
       "date": "2023-07-01",
@@ -269,8 +269,8 @@
       "observations": [
         {
           "id": 15717,
-          "longitude": 1.148049318492885,
-          "latitude": 40.37793982798233,
+          "longitude": 2.148049318492885,
+          "latitude": 41.37793982798233,
           "color": 3,
           "APGEMOdistance": 100,
           "relationships": {
@@ -314,8 +314,8 @@
         },
         {
           "id": 14724,
-          "longitude": 1.15018586687726,
-          "latitude": 40.37499842064499,
+          "longitude": 2.15018586687726,
+          "latitude": 41.37499842064499,
           "color": 4,
           "APGEMOdistance": 500,
           "relationships": {
@@ -342,8 +342,8 @@
             "odourHedonicTone": {
               "id": 5,
               "index": 0,
-              "name": "Neutro",
-              "slug": "Neutro"
+              "name": "Neutral",
+              "slug": "neutral"
             },
             "wind": {
               "deg": 200,
@@ -354,13 +354,13 @@
           "liked": false,
           "description": "Yep",
           "origin": "Rubiah",
-          "createdAt": "2023-08-19T14:04:51.000000Z",
-          "updatedAt": "2023-08-19T14:04:51.000000Z"
+          "createdAt": "2023-08-19T14:04:52.000000Z",
+          "updatedAt": "2023-08-19T14:04:52.000000Z"
         },
         {
           "id": 14726,
-          "longitude": 1.1476582193484346,
-          "latitude": 40.37403198794295,
+          "longitude": 2.1476582193484346,
+          "latitude": 41.37403198794295,
           "color": 6,
           "APGEMOdistance": 300,
           "relationships": {
@@ -404,8 +404,8 @@
         },
         {
           "id": 14728,
-          "longitude": 1.149325098812565,
-          "latitude": 40.37638321476795,
+          "longitude": 2.149325098812565,
+          "latitude": 41.37638321476795,
           "color": 7,
           "APGEMOdistance": 600,
           "relationships": {
@@ -449,8 +449,8 @@
         },
         {
           "id": 143736,
-          "longitude": 1.1482772566545746,
-          "latitude": 40.37546869722843,
+          "longitude": 2.1482772566545746,
+          "latitude": 41.37546869722843,
           "color": 7,
           "APGEMOdistance": 351,
           "relationships": {
@@ -489,8 +489,8 @@
           "liked": false,
           "description": "Durante todo el d\u00eda ha habido olor a putrefacci\u00f3n!!\n\nPasa continuamente necesitamos alguna respuesta y una investigaci\u00f3n",
           "origin": "De la f\u00e1brica tersa",
-          "createdAt": "2023-08-30T17:24:01.000000Z",
-          "updatedAt": "2023-08-30T17:24:01.000000Z"
+          "createdAt": "2023-08-30T17:24:03.000000Z",
+          "updatedAt": "2023-08-30T17:24:03.000000Z"
         }
       ]
     }
@@ -498,8 +498,8 @@
   "restObservations": [
     {
       "id": 13716,
-      "latitude": "41.37850",
-      "longitude": "-8.40360",
+      "latitude": 43.37850,
+      "longitude": -8.40360,
       "color": 3,
       "relationships": {
         "odourSubType": {
@@ -527,6 +527,10 @@
           "index": 4,
           "name": "Extremadamente agradable",
           "slug": "extremadamente-agradable"
+        },
+        "wind": {
+          "deg": 50,
+          "speed": 1.6
         }
       },
       "likes": 0,
@@ -538,8 +542,8 @@
     },
     {
       "id": 13717,
-      "latitude": "41.37860",
-      "longitude": "-8.40360",
+      "latitude": 43.37860,
+      "longitude": -8.40360,
       "color": 3,
       "relationships": {
         "odourSubType": {
@@ -567,6 +571,10 @@
           "index": 4,
           "name": "Extremadamente agradable",
           "slug": "extremadamente-agradable"
+        },
+        "wind": {
+          "deg": 10,
+          "speed": 5.6
         }
       },
       "likes": 0,
@@ -578,8 +586,8 @@
     },
     {
       "id": 13724,
-      "latitude": "51.45840",
-      "longitude": "-0.46130",
+      "latitude": 51.45840,
+      "longitude": -0.46130,
       "color": 4,
       "relationships": {
         "odourSubType": {
@@ -605,21 +613,26 @@
         "odourHedonicTone": {
           "id": 5,
           "index": 0,
-          "name": "Neutro",
-          "slug": "Neutro"
+          "name": "Neutral",
+          "slug": "neutral"
+        }
+        ,
+        "wind": {
+          "deg": 250,
+          "speed": 0
         }
       },
       "likes": 0,
       "liked": false,
       "description": "Yep",
       "origin": "Rubiah",
-      "createdAt": "2023-08-19T14:04:51.000000Z",
-      "updatedAt": "2023-08-19T14:04:51.000000Z"
+      "createdAt": "2023-08-19T14:04:52.000000Z",
+      "updatedAt": "2023-08-19T14:04:52.000000Z"
     },
     {
       "id": 13725,
-      "latitude": "51.45830",
-      "longitude": "-0.46100",
+      "latitude": 51.45830,
+      "longitude": -0.46100,
       "color": 7,
       "relationships": {
         "odourSubType": {
@@ -647,6 +660,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 180,
+          "speed": 3
         }
       },
       "likes": 0,
@@ -658,8 +675,8 @@
     },
     {
       "id": 13726,
-      "latitude": "51.45840",
-      "longitude": "-0.46130",
+      "latitude": 51.45840,
+      "longitude": -0.46130,
       "color": 1,
       "relationships": {
         "odourSubType": {
@@ -687,6 +704,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 50,
+          "speed": 30
         }
       },
       "likes": 0,
@@ -698,8 +719,8 @@
     },
     {
       "id": 13727,
-      "latitude": "39.32490",
-      "longitude": "-0.45440",
+      "latitude": 39.32490,
+      "longitude": -0.45440,
       "color": 2,
       "relationships": {
         "odourSubType": {
@@ -727,6 +748,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 320,
+          "speed": 10
         }
       },
       "likes": 0,
@@ -738,8 +763,8 @@
     },
     {
       "id": 13736,
-      "latitude": "40.42140",
-      "longitude": "1.22450",
+      "latitude": 41.42140,
+      "longitude": 2.22450,
       "color": 7,
       "relationships": {
         "odourSubType": {
@@ -767,19 +792,23 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 25,
+          "speed": 1
         }
       },
       "likes": 0,
       "liked": false,
       "description": "Durante todo el d\u00eda ha habido olor a putrefacci\u00f3n!!\n\nPasa continuamente necesitamos alguna respuesta y una investigaci\u00f3n",
       "origin": "De la f\u00e1brica tersa",
-      "createdAt": "2023-08-30T17:24:01.000000Z",
-      "updatedAt": "2023-08-30T17:24:01.000000Z"
+      "createdAt": "2023-08-30T17:24:03.000000Z",
+      "updatedAt": "2023-08-30T17:24:03.000000Z"
     },
     {
       "id": 13737,
-      "latitude": "40.42170",
-      "longitude": "1.22470",
+      "latitude": 41.42170,
+      "longitude": 2.22470,
       "color": 2,
       "relationships": {
         "odourSubType": {
@@ -807,19 +836,23 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 50,
+          "speed": 30
         }
       },
       "likes": 0,
       "liked": false,
       "description": "Se mete el olor en la casa incluso cerrando todas las ventanas. Horrible.",
       "origin": "F\u00e1bricas / incineradora de enfrente",
-      "createdAt": "2023-08-30T17:44:41.000000Z",
-      "updatedAt": "2023-08-30T17:44:41.000000Z"
+      "createdAt": "2023-08-30T17:44:42.000000Z",
+      "updatedAt": "2023-08-30T17:44:42.000000Z"
     },
     {
       "id": 13740,
-      "latitude": "40.40070",
-      "longitude": "1.20950",
+      "latitude": 41.40070,
+      "longitude": 2.20950,
       "color": 4,
       "relationships": {
         "odourSubType": {
@@ -847,19 +880,23 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 150,
+          "speed": 10
         }
       },
       "likes": 0,
       "liked": false,
       "description": "Ojal\u00e1 y puedan hacer algo para solucionar esto ya que son gases t\u00f3xicos cancer\u00edgenos",
       "origin": "La depuradora sant Adri\u00e0 de besos y Eco parc",
-      "createdAt": "2023-08-31T09:53:21.000000Z",
-      "updatedAt": "2023-08-31T09:53:21.000000Z"
+      "createdAt": "2023-08-31T09:53:22.000000Z",
+      "updatedAt": "2023-08-31T09:53:22.000000Z"
     },
     {
       "id": 13743,
-      "latitude": "40.37110",
-      "longitude": "1.15490",
+      "latitude": 41.37110,
+      "longitude": 2.15490,
       "color": 3,
       "relationships": {
         "odourSubType": {
@@ -887,6 +924,10 @@
           "index": 3,
           "name": "Muy agradable",
           "slug": "muy-agradable"
+        },
+        "wind": {
+          "deg": 250,
+          "speed": 20
         }
       },
       "likes": 0,
@@ -898,8 +939,8 @@
     },
     {
       "id": 13745,
-      "latitude": "40.42180",
-      "longitude": "1.22470",
+      "latitude": 41.42180,
+      "longitude": 2.22470,
       "color": 6,
       "relationships": {
         "odourSubType": {
@@ -927,6 +968,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 0,
+          "speed": 0
         }
       },
       "likes": 0,
@@ -938,8 +983,8 @@
     },
     {
       "id": 13746,
-      "latitude": "40.42190",
-      "longitude": "1.22510",
+      "latitude": 41.42190,
+      "longitude": 2.22510,
       "color": 5,
       "relationships": {
         "odourSubType": {
@@ -967,6 +1012,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 20,
+          "speed": 20
         }
       },
       "likes": 0,
@@ -978,8 +1027,8 @@
     },
     {
       "id": 13747,
-      "latitude": "59.92960",
-      "longitude": "10.71540",
+      "latitude": 59.92960,
+      "longitude": 10.71540,
       "color": 4,
       "relationships": {
         "odourSubType": {
@@ -998,15 +1047,19 @@
         },
         "odourIntensity": {
           "id": 4,
-          "name": "Distinguible",
+          "name": "Indiferente",
           "power": 3,
-          "slug": "Distinguible"
+          "slug": "indiferente"
         },
         "odourHedonicTone": {
           "id": 5,
           "index": 0,
-          "name": "Neutro",
-          "slug": "Neutro"
+          "name": "Neutral",
+          "slug": "neutral"
+        },
+        "wind": {
+          "deg": 25,
+          "speed": 10
         }
       },
       "likes": 0,
@@ -1018,8 +1071,8 @@
     },
     {
       "id": 13749,
-      "latitude": "38.70650",
-      "longitude": "-9.35620",
+      "latitude": 38.70650,
+      "longitude": -9.35620,
       "color": 3,
       "relationships": {
         "odourSubType": {
@@ -1045,8 +1098,12 @@
         "odourHedonicTone": {
           "id": 5,
           "index": 0,
-          "name": "Neutro",
-          "slug": "Neutro"
+          "name": "Neutral",
+          "slug": "neutral"
+        },
+        "wind": {
+          "deg": 5,
+          "speed": 10
         }
       },
       "likes": 0,
@@ -1058,8 +1115,8 @@
     },
     {
       "id": 13750,
-      "latitude": "40.42190",
-      "longitude": "1.22540",
+      "latitude": 41.42190,
+      "longitude": 2.22540,
       "color": 1,
       "relationships": {
         "odourSubType": {
@@ -1087,6 +1144,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 120,
+          "speed": 5.5
         }
       },
       "likes": 0,
@@ -1098,8 +1159,8 @@
     },
     {
       "id": 13753,
-      "latitude": "40.42180",
-      "longitude": "1.22470",
+      "latitude": 41.42180,
+      "longitude": 2.22470,
       "color": 2,
       "relationships": {
         "odourSubType": {
@@ -1127,6 +1188,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 260,
+          "speed": 3.5
         }
       },
       "likes": 0,
@@ -1138,8 +1203,8 @@
     },
     {
       "id": 13755,
-      "latitude": "40.41880",
-      "longitude": "1.22620",
+      "latitude": 41.41880,
+      "longitude": 2.22620,
       "color": 7,
       "relationships": {
         "odourSubType": {
@@ -1167,6 +1232,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 87,
+          "speed": 3.2
         }
       },
       "likes": 0,
@@ -1178,8 +1247,8 @@
     },
     {
       "id": 13756,
-      "latitude": "40.42240",
-      "longitude": "1.22290",
+      "latitude": 41.42240,
+      "longitude": 2.22290,
       "color": 7,
       "relationships": {
         "odourSubType": {
@@ -1207,6 +1276,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 9,
+          "speed": 3.6
         }
       },
       "likes": 0,
@@ -1218,8 +1291,8 @@
     },
     {
       "id": 13757,
-      "latitude": "40.42170",
-      "longitude": "1.22480",
+      "latitude": 41.42170,
+      "longitude": 2.22480,
       "color": 3,
       "relationships": {
         "odourSubType": {
@@ -1247,6 +1320,10 @@
           "index": -4,
           "name": "Extremadamente desagradable",
           "slug": "extremadamente-desagradable"
+        },
+        "wind": {
+          "deg": 58,
+          "speed": 0.6
         }
       },
       "likes": 0,
@@ -1258,8 +1335,8 @@
     },
     {
       "id": 13758,
-      "latitude": "40.40670",
-      "longitude": "1.21674",
+      "latitude": 41.40670,
+      "longitude": 2.21674,
       "color": 5,
       "relationships": {
         "odourSubType": {
@@ -1287,19 +1364,23 @@
           "index": -2,
           "name": "Desagradable",
           "slug": "desagradable"
+        },
+        "wind": {
+          "deg": 97,
+          "speed": 3.4
         }
       },
       "likes": 0,
       "liked": false,
       "description": "testtestest",
       "origin": "test",
-      "createdAt": "2023-10-04T09:24:41.000000Z",
-      "updatedAt": "2023-10-04T09:24:41.000000Z"
+      "createdAt": "2023-10-04T09:24:42.000000Z",
+      "updatedAt": "2023-10-04T09:24:42.000000Z"
     },
     {
       "id": 13759,
-      "latitude": "40.40670",
-      "longitude": "1.21674",
+      "latitude": 41.40670,
+      "longitude": 2.21674,
       "color": 5,
       "relationships": {
         "odourSubType": {
@@ -1327,6 +1408,10 @@
           "index": -2,
           "name": "Desagradable",
           "slug": "desagradable"
+        },
+        "wind": {
+          "deg": 10,
+          "speed": 5
         }
       },
       "likes": 0,
@@ -1338,8 +1423,8 @@
     },
     {
       "id": 13760,
-      "latitude": "40.40670",
-      "longitude": "1.21674",
+      "latitude": 41.40670,
+      "longitude": 2.21674,
       "color": 6,
       "relationships": {
         "odourSubType": {
@@ -1367,6 +1452,10 @@
           "index": -2,
           "name": "Desagradable",
           "slug": "desagradable"
+        },
+        "wind": {
+          "deg": 20,
+          "speed": 5
         }
       },
       "likes": 0,
