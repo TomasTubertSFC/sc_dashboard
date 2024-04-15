@@ -95,22 +95,24 @@ export class LoginComponent {
 
     this.loading = true;
 
-    this.authService.login(this.user).subscribe({
-      next: () => {
-        this.showSuccess();
-        this.router.navigate(['/dashboard']);
-        this.loading = false;
-      },
-      error: (resp: any) => {
-        if (resp.status == 422) {
-          this.loginForm.controls['email'].markAsUntouched();
-          this.clear();
-          this.showWarn();
+    setTimeout(() => {
+      this.authService.login(this.user).subscribe({
+        next: () => {
+          this.showSuccess();
+          this.router.navigate(['/dashboard']);
+          this.loading = false;
+        },
+        error: (resp: any) => {
+          if (resp.status == 422) {
+            this.loginForm.controls['email'].markAsUntouched();
+            this.clear();
+            this.showWarn();
 
-          this.loginForm.controls['password'].reset();
-        }
-        this.loading = false;
-      },
-    });
+            this.loginForm.controls['password'].reset();
+          }
+          this.loading = false;
+        },
+      });
+    }, 2000);
   }
 }
