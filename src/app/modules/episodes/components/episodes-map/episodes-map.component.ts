@@ -30,12 +30,15 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
   public previewEpisode: Episode | null = null;
   public APGEMOpoints: Point[] = [];
   public APGEMOpolygon: Polygon[] = [];
+
+  //estilo de los poligonos de APEGMO
   public APGEMOpolygonStyle: {} = {
-    'fill-outline-color': '#363c69',
-    'fill-color': '#348ac7',
+    'fill-outline-color': '#8ad1f9',
+    'fill-color': '#8ad1f9',
     'fill-opacity': 0.8,
   };
 
+  //resolución del canvas de los conos
   public canvasHeight: number = 1000;
   public canvasWidth: number = 1000;
 
@@ -54,6 +57,15 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
   private observation$!: Subscription;
   private previewObservation$!: Subscription;
 
+  /*
+    * @method constructor
+    * @description Método constructor del componente.
+    * Se inyectan los servicios de la zona de estudio y del menú lateral.
+    * Se suscribe al observable de la zona de estudio.
+    * Se calcula la media de las coordenadas de la zona de estudio con la finalidad de centrar el mapa en la vista.
+    * @param studyZoneService Servicio de la zona de estudio.
+    * @param menuService Servicio del menú lateral.
+  */
   constructor(
     private studyZoneService: StudyZoneService,
     private menuService: MenuService,
@@ -83,6 +95,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
         this.observation = { x: averageX, y: averageY };
       }
 
+      //una vez dibujada la vista, ajustar el zoom para que se vea toda la zona de estudio
       setTimeout(() => {
         if (this.points) {
           const bbox = this.getBboxFromPoints();
@@ -92,8 +105,11 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  ngOnInit() {}
-
+  /*
+    * @method ngAfterViewInit
+    * @description Método que se ejecuta después de que la vista del componente se haya inicializado.
+    * Se suscribe a los observables de los servicios de la zona de estudio y del menú lateral.
+  */
   ngAfterViewInit(): void {
     this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe(
       (state) => {
@@ -103,6 +119,26 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       }
     );
 
+    //observar cambios en la observacion seleccionada para resaltarla, puede ser modificado desde el modal o el timeline
+    this.observation$ = this.studyZoneService.observation.subscribe(
+      (observation) => {
+        this.selectedObservation = observation;
+        this.leaveObservation();
+      }
+    );
+
+    //observar cambios en la vista prevía de la observación para resaltarla, puede ser modificado desde el modal o el timeline haciendo hover
+    this.previewObservation$ = this.studyZoneService.previewObservation.subscribe(
+      (previewObservation) => {
+        this.previewObservation = previewObservation;
+        this.overObservation(this.previewObservation);
+        if (previewObservation === null) {
+          this.leaveObservation();
+        }
+      }
+    );
+
+    //observar cambios en el hover de los episodios este previewEpisode puede ser modificado desde el modal o el timeline
     this.episode$ = this.studyZoneService.previewEpisode.subscribe(
       (episode) => {
         if (episode) {
@@ -119,42 +155,30 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       }
     );
 
-    this.observation$ = this.studyZoneService.observation.subscribe(
-      (observation) => {
-        this.selectedObservation = observation;
-        this.leaveObservation();
-      }
-    );
-
-    this.previewObservation$ = this.studyZoneService.previewObservation.subscribe(
-      (previewObservation) => {
-        this.previewObservation = previewObservation;
-        this.overObservation(this.previewObservation);
-        if (previewObservation === null) {
-          this.leaveObservation();
-        }
-      }
-    );
-
+    //observar cambios en el episodio seleccionado para mostrarlo en el mapa, puede ser modificado desde el modal o el timeline
     this.episode$ = this.studyZoneService.episode.subscribe((episode) => {
+
+      //limpiar canvas de conos
       this.cones.map((cone) => {
         cone.canvas.remove();
         return;
       });
       this.cones = [];
 
+
       if (episode) {
+
+        this.episode = episode;
+
         // coordenadas promedio de las observaciones
         let averageX = 0;
         let averageY = 0;
-        episode.observations.forEach((observation) => {
+        this.episode.observations.forEach((observation) => {
           averageX += observation.longitude / episode.observations.length;
           averageY += observation.latitude / episode.observations.length;
         });
 
         this.observation = { x: averageX, y: averageY };
-
-        this.episode = episode;
 
         episode.observations.forEach((observation) => {
           //crear canvas para cada cono si la observacion no es plausible
@@ -169,18 +193,23 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
             canvas.id = `cone-${id}`;
             canvas.style.display = 'none';
 
+            //añadir canvas al DOM
             document.body.appendChild(canvas);
 
+            //crear cono
             this.coneCanvas = canvas;
             this.context = new ElementRef(canvas).nativeElement.getContext('2d') as CanvasRenderingContext2D;
             this.cone = new Cone( points, { x: observation.longitude, y: observation.latitude, id: observation.id }, true, this.canvasHeight, this.canvasWidth, observation.relationships.wind );
             let cone = this.cone;
 
+            //Si el cálculo del cono indica que la observación es plausible, marcarla como plausible
             if (this.cone.plausibleCone)
               observation.plausible = true;
 
+            //añadir cono al array de conos
             this.cones.push({ cone, canvas, id });
 
+            //dibujar cono
             if (this.cone.observationCone && this.cone.observationCone.angle)
               this.drawCone(undefined, undefined, 0.1);
           }
@@ -196,6 +225,14 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       });
     });
   }
+
+  /*
+    * @method hexToRGBA
+    * @description Método que convierte un color en formato hexadecimal a RGBA.
+    * @param hex Color en formato hexadecimal.
+    * @param alpha Opacidad del color.
+    * @returns string
+  */
   private hexToRGBA(hex: string, alpha: number = 1) {
     if (hex.length === 4) {
       hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
@@ -207,6 +244,14 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
+  /*
+    * @method calculateAngle
+    * @description Método que calcula el ángulo entre dos puntos y un vértice.
+    * @param p1 Primer punto.
+    * @param vertex Vértice.
+    * @param p2 Segundo punto.
+    * @returns number
+  */
   private calculateAngle(p1: Point, vertex: Point, p2: Point) {
     if (p1.x === p2.x && p1.y === p2.y) {
       return 0;
@@ -232,11 +277,15 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     return angleInRadians * (180 / Math.PI); // Convertir a grados
   }
 
-  private drawCone(
-    adjacentColor: string = '#14b8a6',
-    observationColor: string = '#c93d82',
-    alpha: number = 0.2
-  ) {
+  /*
+    * @method drawCone
+    * @description Método que se encarga de dibujar el cono de observación en el canvas.
+    * @param adjacentColor Color de los conos adyacentes (30º al inicio y al final).
+    * @param observationColor Color del cono de observación principal.
+    * @param alpha Opacidad del cono.
+    * @returns void
+  */
+  private drawCone(adjacentColor: string = '#b5cf6e', observationColor: string = '#ff6200', alpha: number = 0.2) {
     //pasamos grados de viento a grados de dibujo en canvas
     if (this.cone.wind.deg <= 90) {
       var windDegrees = this.cone.wind.deg + 270;
@@ -244,45 +293,18 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       var windDegrees = this.cone.wind.deg - 90;
     }
 
+    //si la observación está fuera del perímetro de la zona de estudio, dibujar el cono de observación
     if (this.cone.observationCone?.vertexPosition) {
       // Dibujar el arco del angulo de observacion abarcando todos los puntos
-      const initialAnglePoint =
-        this.calculateAngle(
-          {
-            x: this.cone.observationCone.vertexPosition.x + 1000,
-            y: this.cone.observationCone.vertexPosition.y,
-          },
-          this.cone.observationCone.vertexPosition,
-          this.cone.observationCone.initialSidePosition
-        ) *
-        (Math.PI / 180);
-      const finalAnglePoint =
-        this.calculateAngle(
-          {
-            x: this.cone.observationCone.vertexPosition.x + 1000,
-            y: this.cone.observationCone.vertexPosition.y,
-          },
-          this.cone.observationCone.vertexPosition,
-          this.cone.observationCone.terminalSidePosition
-        ) *
-        (Math.PI / 180);
+      const initialAnglePoint = this.calculateAngle({ x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y }, this.cone.observationCone.vertexPosition, this.cone.observationCone.initialSidePosition) * (Math.PI / 180);
+      const finalAnglePoint = this.calculateAngle({x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y}, this.cone.observationCone.vertexPosition, this.cone.observationCone.terminalSidePosition) * (Math.PI / 180);
 
       this.context.strokeStyle = this.hexToRGBA(observationColor, alpha * 2);
       this.context.lineWidth = 1;
       this.context.fillStyle = this.hexToRGBA(observationColor, alpha);
       this.context.beginPath();
-      this.context.arc(
-        this.cone.observationCone.vertexPosition.x,
-        this.cone.observationCone.vertexPosition.y,
-        this.cone.coneSize,
-        initialAnglePoint,
-        finalAnglePoint,
-        false
-      );
-      this.context.lineTo(
-        this.cone.observationCone.vertexPosition.x,
-        this.cone.observationCone.vertexPosition.y
-      );
+      this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, finalAnglePoint, false);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
       this.context.closePath();
       this.context.stroke();
       this.context.fill();
@@ -292,38 +314,16 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       this.context.lineWidth = 1;
       this.context.fillStyle = this.hexToRGBA(adjacentColor, alpha);
       this.context.beginPath();
-      this.context.arc(
-        this.cone.observationCone.vertexPosition.x,
-        this.cone.observationCone.vertexPosition.y,
-        this.cone.coneSize,
-        initialAnglePoint,
-        initialAnglePoint +
-          -this.cone.initialAdjacentAngle.angle * (Math.PI / 180),
-        true
-      );
-      this.context.lineTo(
-        this.cone.observationCone.vertexPosition.x,
-        this.cone.observationCone.vertexPosition.y
-      );
+      this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, initialAnglePoint + -this.cone.initialAdjacentAngle.angle * (Math.PI / 180), true );
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x,this.cone.observationCone.vertexPosition.y);
       this.context.closePath();
       this.context.stroke();
       this.context.fill();
 
       // Dibujar ángulo adyacente final
       this.context.beginPath();
-      this.context.arc(
-        this.cone.observationCone.vertexPosition.x,
-        this.cone.observationCone.vertexPosition.y,
-        this.cone.coneSize,
-        finalAnglePoint,
-        finalAnglePoint +
-          this.cone.terminalAdjacentAngle.angle * (Math.PI / 180),
-        false
-      );
-      this.context.lineTo(
-        this.cone.observationCone.vertexPosition.x,
-        this.cone.observationCone.vertexPosition.y
-      );
+      this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, finalAnglePoint, finalAnglePoint + this.cone.terminalAdjacentAngle.angle * (Math.PI / 180), false);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
       this.context.closePath();
       this.context.stroke();
       this.context.fill();
@@ -335,56 +335,28 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       let initialTriangleArrow = initialDistanceArrow - 30;
       let finalTriangleArrow = initialTriangleArrow + 35;
 
-      let windColor = this.cone.plausibleCone ? '#FFF' : '#e96c63';
-      let windStrokeColor = this.cone.plausibleCone ? '#DDD' : '#64110b';
+      let windColor = this.cone.plausibleCone ? '#FFF' : observationColor;
+      let windStrokeColor = this.cone.plausibleCone ? '#FFF' : observationColor;
       this.context.strokeStyle = this.hexToRGBA(windStrokeColor, alpha * 2);
       this.context.fillStyle = this.hexToRGBA(windColor, alpha * 2);
       this.context.lineWidth = 1;
       this.context.beginPath();
-      this.context.moveTo(
-        this.cone.observationCone.vertexPosition.x +
-          Math.cos((windDegrees - 5) * (Math.PI / 180)) * finalTriangleArrow,
-        this.cone.observationCone.vertexPosition.y +
-          Math.sin((windDegrees - 5) * (Math.PI / 180)) * finalTriangleArrow
-      );
-      this.context.lineTo(
-        this.cone.observationCone.vertexPosition.x +
-          Math.cos(windDegrees * (Math.PI / 180)) * initialTriangleArrow,
-        this.cone.observationCone.vertexPosition.y +
-          Math.sin(windDegrees * (Math.PI / 180)) * initialTriangleArrow
-      );
-      this.context.lineTo(
-        this.cone.observationCone.vertexPosition.x +
-          Math.cos((windDegrees + 5) * (Math.PI / 180)) * finalTriangleArrow,
-        this.cone.observationCone.vertexPosition.y +
-          Math.sin((windDegrees + 5) * (Math.PI / 180)) * finalTriangleArrow
-      );
-
-      this.context.lineTo(
-        this.cone.observationCone.vertexPosition.x +
-          Math.cos((windDegrees + 2) * (Math.PI / 180)) * initialDistanceArrow,
-        this.cone.observationCone.vertexPosition.y +
-          Math.sin((windDegrees + 2) * (Math.PI / 180)) * initialDistanceArrow
-      );
-      this.context.lineTo(
-        this.cone.observationCone.vertexPosition.x +
-          Math.cos(windDegrees * (Math.PI / 180)) * finalDistanceArrow,
-        this.cone.observationCone.vertexPosition.y +
-          Math.sin(windDegrees * (Math.PI / 180)) * finalDistanceArrow
-      );
-      this.context.lineTo(
-        this.cone.observationCone.vertexPosition.x +
-          Math.cos((windDegrees - 2) * (Math.PI / 180)) * initialDistanceArrow,
-        this.cone.observationCone.vertexPosition.y +
-          Math.sin((windDegrees - 2) * (Math.PI / 180)) * initialDistanceArrow
-      );
+      this.context.moveTo(this.cone.observationCone.vertexPosition.x + Math.cos((windDegrees - 5) * (Math.PI / 180)) * finalTriangleArrow, this.cone.observationCone.vertexPosition.y + Math.sin((windDegrees - 5) * (Math.PI / 180)) * finalTriangleArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos(windDegrees * (Math.PI / 180)) * initialTriangleArrow, this.cone.observationCone.vertexPosition.y + Math.sin(windDegrees * (Math.PI / 180)) * initialTriangleArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos((windDegrees + 5) * (Math.PI / 180)) * finalTriangleArrow, this.cone.observationCone.vertexPosition.y + Math.sin((windDegrees + 5) * (Math.PI / 180)) * finalTriangleArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos((windDegrees + 2) * (Math.PI / 180)) * initialDistanceArrow, this.cone.observationCone.vertexPosition.y + Math.sin((windDegrees + 2) * (Math.PI / 180)) * initialDistanceArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos(windDegrees * (Math.PI / 180)) * finalDistanceArrow, this.cone.observationCone.vertexPosition.y + Math.sin(windDegrees * (Math.PI / 180)) * finalDistanceArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos((windDegrees - 2) * (Math.PI / 180)) * initialDistanceArrow, this.cone.observationCone.vertexPosition.y + Math.sin((windDegrees - 2) * (Math.PI / 180)) * initialDistanceArrow);
       this.context.closePath();
       this.context.fill();
       this.context.stroke();
-    } else {
+    }
+    //si la observación está dentro del perímetro de la zona de estudio, dibujar perímetro de la zona de estudio
+    else {
       //this.drawConvexHull();
     }
 
+    //una vez dibujado el cono, ponemos el polígono de APEGMO por encima
     let layerId = 'APEGMOpolygons';
     if (this.map?.mapInstance && this.map.mapInstance.getLayer(layerId)) {
       setTimeout(() => {
@@ -394,6 +366,11 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
   }
 
+  /*
+    * @method getBboxFromPointsAndObservations
+    * @description Método que obtiene las coordenadas de la caja delimitadora de los puntos (APGEMOS) y observaciones.
+    * @returns [[number, number], [number, number]]
+  */
   private getBboxFromPointsAndObservations(): [[number, number], [number, number]] {
     let points = this.points;
     let observations =
@@ -432,6 +409,12 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     ];
   }
 
+  /*
+    * @method getBboxFromPoints
+    * @description Método que obtiene las coordenadas de la caja delimitadora de los puntos (APGEMOS).
+    * @returns [[number, number], [number, number]]
+  */
+
   private getBboxFromPoints(): [[number, number], [number, number]] {
     let points = this.points;
 
@@ -458,6 +441,11 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     ];
   }
 
+  /*
+    * @method drawConvexHull
+    * @description Método que se encarga de dibujar el perímetro de la zona de estudio.
+    * @returns void
+  */
   private drawConvexHull() {
     let minX: number = 0,
       maxX: number = 0,
@@ -503,6 +491,13 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     this.context.beginPath();
   }
 
+  /*
+    * @method observationSelected
+    * @description Método que se encarga de marcar como seleccionada una observación.
+    * @param event Evento de selección.
+    * @param id Identificador de la observación.
+    * @returns void
+  */
   public observationSelected(event: Event, id: number | null = null): void {
     if (id !== null && this.studyZoneService.observation.value !== id) {
       this.studyZoneService.observation = id;
@@ -511,10 +506,18 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     }
   }
 
+  /*
+    * @method overObservation
+    * @description Cuando se hace hover sobre una observación, se resalta en el mapa mostrando el cono de observación y marca la observación como vista previa.
+    * @param id Identificador de la observación.
+    * @returns void
+  */
   public overObservation(id: number | null = null): void {
     if (id !== null) {
+
       if (this.studyZoneService.previewObservation.value !== id)
         this.studyZoneService.previewObservation = id;
+
       this.cones.forEach((cone) => {
         this.cone = cone.cone;
         this.coneCanvas = cone.canvas;
@@ -524,9 +527,15 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
           this.drawCone(undefined, undefined, 0.5);
         }
       });
+
     }
   }
 
+  /*
+    * @method leaveObservation
+    * @description Método que se encarga de limpiar el cono de observación cuando se deja de hacer hover sobre una observación y se elimina la vista previa.
+    * @returns void
+  */
   public leaveObservation(): void {
     if (this.studyZoneService.previewObservation.value !== null)
       this.studyZoneService.previewObservation = null;
@@ -543,6 +552,13 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     });
   }
 
+  /*
+    * @method ngOnDestroy
+    * @description Método que se ejecuta al destruir el componente.
+    * Se eliminan los conos del canvas y se desuscriben los observables.
+    * Se desmarcan el episodio y observación como seleccionados y de vista previa.
+    * @returns void
+  */
   ngOnDestroy() {
     this.cones.map((cone) => {
       cone.canvas.remove();
