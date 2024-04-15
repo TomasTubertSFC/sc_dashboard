@@ -50,8 +50,8 @@ export class RegistersWindTypologyChartsComponent implements OnInit, OnDestroy {
       [3]: '#D7B1F2',
       [4]: '#FF8133',
       [5]: '#8AD1F9',
-      [6]: '#CCCCCC',
-      [7]: '#FFFFFF',
+      [6]: '#AAAAAA',
+      [7]: '#EEEEEE',
     },
     ['intensity']: {
       [1]: '#eded74', //'#b0f4f3',
