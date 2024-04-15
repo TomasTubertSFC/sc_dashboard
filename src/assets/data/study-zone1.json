@@ -72,7 +72,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 76,
         "name": "Residuo descompuesto"
       },
@@ -323,7 +323,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 89,
         "name": "Otros"
       },
@@ -456,7 +456,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 88,
         "name": "Estación de tratamiento de aguas residuales"
       },
@@ -648,7 +648,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 79,
         "name": "Lodos"
       },
@@ -781,7 +781,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 79,
         "name": "Lodos"
       },
@@ -855,7 +855,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 75,
         "name": "Biogas"
       },
@@ -929,7 +929,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 79,
         "name": "Lodos"
       },
@@ -1062,7 +1062,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 76,
         "name": "Residuo descompuesto"
       },
@@ -1254,7 +1254,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 76,
         "name": "Residuo descompuesto"
       },
@@ -1328,7 +1328,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 88,
         "name": "Estación de tratamiento de aguas residuales"
       },
@@ -1402,7 +1402,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 88,
         "name": "Estación de tratamiento de aguas residuales"
       },
@@ -1535,7 +1535,7 @@
         "id": 5,
         "name": "Aguas residuales y residuos"
       },
-      "subType": {
+      "subtype": {
         "id": 79,
         "name": "Lodos"
       },
