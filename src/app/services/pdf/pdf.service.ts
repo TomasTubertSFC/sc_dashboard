@@ -201,11 +201,12 @@ export class PdfService {
           //Create section for the graphs
           const section = document.createElement('section');
           section.style.display = 'flex';
+          section.style.flexDirection = 'column'
           section.style.justifyContent = 'center';
-          section.style.alignItems = 'flex-end';
-          section.style.alignContent = 'center';
-          section.style.gap = '5px';
-          section.style.flexWrap = 'wrap';
+          section.style.alignItems = 'center';
+          // section.style.alignContent = 'center';
+          // section.style.gap = '5px';
+          // section.style.flexWrap = 'wrap';
           section.style.width = '841.89px';
           section.style.height = '495.28px';
           section.id = `sectionToPdf-${idx}`;
@@ -224,22 +225,27 @@ export class PdfService {
                 img.style.width = '100%';
                 switch (idx) {
                   case 0:
-                    div.style.width = '100%';
+                    // div.style.width = '100%';
+                    // img.style.maxWidth = '490px';
+                    // img.style.maxHeight = '365px';
                     div.style.textAlign = 'center';
-                    img.style.maxWidth = '490px';
-                    img.style.maxHeight = '365px';
+                    img.style.maxHeight = '340px';
                     break;
                   case 1:
-                    img.style.maxWidth = '465px';
-                    img.style.maxHeight = '120px';
+                    // div.style.width = '100%';
+                    // img.style.maxWidth = '465px';
+                    img.style.maxHeight = '100px';
                     break;
                   case 2:
-                    img.style.maxWidth = '345px';
-                    img.style.maxHeight = '120px';
+                    // div.style.width = '100%';
+                    // img.style.maxWidth = '345px';
+                    img.style.maxHeight = '50px';
                     break;
                 }
               } else {
                 img.style.maxHeight = '490px';
+                img.style.width = '100%';
+                img.style.objectFit = 'contain';
               }
               div.appendChild(img);
               section.appendChild(div);
@@ -269,7 +275,7 @@ export class PdfService {
           const elementToCanvas = await html2canvas(
             sectionToCanvas as HTMLElement,
             {
-              logging: false,
+              logging: true,
               backgroundColor: null,
               useCORS: true,
             }
@@ -296,6 +302,9 @@ export class PdfService {
           // Wait for the image to load
           const image = await imagePromise();
 
+          document.body.appendChild(image.img);
+
+
           //La altura que le resto
           const substratingValue = 125;
 
@@ -309,6 +318,7 @@ export class PdfService {
           // Calculate the dimensions of the image after scaling
           const widthToPaint = image.widthImg * scale;
           const heightToPaint = image.heightImg * scale;
+
 
           const Xstart = (pageWidth - widthToPaint) / 2;
           const Ystart = (pageHeight - heightToPaint - 100) / 2 + 75;

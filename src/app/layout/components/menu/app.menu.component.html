@@ -32,7 +32,7 @@
       <span class="menu-item"> Registros de olor </span>
     </a>
   </li>
-  <li>
+  <li id="reports">
     <a routerLink="/dashboard/reports" routerLinkActive="active-route">
       <icon-rubric [iconClass]="'mr-2'" />
       <span class="menu-item"> Informes </span>
@@ -67,6 +67,7 @@
       [disabled]="disabledAddToReports"
       pButton
       type="button"
+      id="add-to-report-button"
       class="p-button-rounded p-button-outlined w-full"
     >
       <icon-add-to-chart />
