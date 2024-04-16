@@ -278,6 +278,7 @@ export class PdfService {
               logging: true,
               backgroundColor: null,
               useCORS: true,
+              scale: 4
             }
           );
 
@@ -302,9 +303,6 @@ export class PdfService {
           // Wait for the image to load
           const image = await imagePromise();
 
-          document.body.appendChild(image.img);
-
-
           //La altura que le resto
           const substratingValue = 125;
 
@@ -318,7 +316,6 @@ export class PdfService {
           // Calculate the dimensions of the image after scaling
           const widthToPaint = image.widthImg * scale;
           const heightToPaint = image.heightImg * scale;
-
 
           const Xstart = (pageWidth - widthToPaint) / 2;
           const Ystart = (pageHeight - heightToPaint - 100) / 2 + 75;
