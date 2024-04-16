@@ -202,9 +202,11 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
             this.cone = new Cone( points, { x: observation.longitude, y: observation.latitude, id: observation.id }, true, this.canvasHeight, this.canvasWidth, observation.relationships.wind );
             let cone = this.cone;
 
-            //Si el cálculo del cono indica que la observación es plausible, marcarla como plausible
-            if (this.cone.plausibleCone)
+            //Si el cálculo del cono indica que la observación es plausible, marcar observación y episodio como plausible
+            if (this.cone.plausibleCone){
               observation.plausible = true;
+              episode.plausible = true;
+            }
 
             //añadir cono al array de conos
             this.cones.push({ cone, canvas, id });

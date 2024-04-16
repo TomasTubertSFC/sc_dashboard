@@ -7,14 +7,14 @@
   z-index: 100;
   width: 3rem;
   height: 3rem;
-  background: $green;
-  border: 1px solid $green-dark;
+  background: $orange;
+  border: 1px solid $orange-dark;
   display: flex;
   justify-content: center;
   align-items: center;
   &:hover{
-    background: $orange;
-    border-color: $orange-dark;
+    background: $blue;
+    border-color: $blue-dark;
   }
   i{
     font-size: 1.5rem;
@@ -119,6 +119,20 @@
   }
   .p-accordion-content{
     padding: 1rem .5rem .5rem;
+    .badge{
+      align-self: center;
+      max-width: max-content;
+      border-radius: 10px;
+      text-align: center;
+      padding: 0 .5rem;
+      color: white;
+      background-color: $red;
+      &.plausible{
+        color: var(--text-color);
+        background-color: $green;
+      }
+    }
+
   }
   .p-accordion-tab-active{
     .p-accordion-header-link{
