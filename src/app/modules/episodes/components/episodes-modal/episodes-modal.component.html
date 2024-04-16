@@ -56,7 +56,7 @@
                 <i class="pi pi-info-circle flex-1" (click)="plausibilityInfo.toggle($event)"></i>
               </h6>
 
-              <div class="flex justify-content-center align-items-center gap-2">
+              <div class="flex justify-content-center align-items-center gap-2 badge " [ngClass]="{ 'plausible' : ep.plausible }">
                 @if(ep.plausible){
                   <i class="pi pi-check"></i>
                   <span>Plausible</span>
