@@ -11,7 +11,7 @@
   class="card"
   [style]="'mapbox://styles/mapbox/light-v11'"
   [zoom]="[17]"
-  [center]="[observation.x, observation.y]"
+  [center]="[observation.longitude, observation.latitude]"
   [projection]="'globe'"
   [preserveDrawingBuffer]="true"
 >
@@ -33,7 +33,7 @@
   @if(APGEMOpoints.length > 0){
     @for(point of APGEMOpoints; track point){
 
-    <mgl-marker [lngLat]="[point.x, point.y]">
+    <mgl-marker [lngLat]="[point.longitude, point.latitude]">
       <div class="apgemo-point"></div>
     </mgl-marker>
 

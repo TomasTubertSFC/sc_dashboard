@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Observation } from '../models/observation';
 import { AuthService } from './auth/auth.service';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -152,17 +153,27 @@ export class StudyZoneService {
 
     setTimeout(() => {
 
-      this.http.get<StudyZone>(`/assets/data/study-zone${id}.json`).pipe<StudyZone>(
-        map((studyZone: StudyZone) => {
+      this.http.get<{status: any, data: StudyZone}>(`${environment.BACKEND_BASE_URL}/api/dashboard`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          withCredentials: true,
+        }
+      ).pipe<{status: any, data: StudyZone}>(
+        map((studyZone:{status: any, data: StudyZone}) => {
 
-          studyZone.restObservations = studyZone.restObservations.map((observation) => {
+          let sz = studyZone.data;
+
+          sz.restObservations = sz.restObservations.map((observation) => {
             return new Observation(observation);
           });
 
           //cone restObservations on allObservation
-          let allObservations = studyZone.restObservations;
+          let allObservations = sz.restObservations;
 
-          studyZone.episodes.map((episode: Episode, index:number) => {
+          sz.episodes.map((episode: Episode, index:number) => {
 
             episode.id = index
 
@@ -200,7 +211,7 @@ export class StudyZoneService {
 
         })
       ).subscribe(data => {
-        this.studyZone = data;
+        this.studyZone = data.data;
       });
 
     }, 1000);

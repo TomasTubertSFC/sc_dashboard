@@ -44,7 +44,7 @@
               <span class="severance">{{ep.date | date:'dd/MM/Y'}}</span>
               <span class="severance flex flex-1">{{ep.observations[0].relationships.odourSubType.relationships?.odourType?.name}}</span>
               <span class="severance" >
-                {{getInconvenienceInBase100(ep.inconvenience) > 100 ? 100 : getInconvenienceInBase100(ep.inconvenience)}}
+                {{ep.inconvenience > 100 ? 100 : ep.inconvenience | number : '1.1-1'}}
                 <span class="gm color-{{ep.inconvenienceColor}}"></span>
               </span>
             </ng-template>

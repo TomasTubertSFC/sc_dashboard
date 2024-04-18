@@ -1,4 +1,3 @@
-import { withHttpTransferCacheOptions } from '@angular/platform-browser';
 import {
   OdourHedonicTone,
   OdourIntensity,

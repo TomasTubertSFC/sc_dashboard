@@ -57,10 +57,7 @@
           (click)="selectEpisode($event, ep.id)"
           (mouseover)="previewEpisode(tIndex, epIndex)"
         >
-          <div
-            class="inconvenience"
-            [style]="getHeightByInconvenience(ep.inconvenience)"
-          ></div>
+          <div class="inconvenience" [style]="getHeightByInconvenience(ep.inconvenience)"></div>
         </div>
         }
       </div>

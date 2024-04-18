@@ -57,6 +57,11 @@ export class RegistersFilterModalComponent {
     hoursFilter: new FormControl([0, 23], []),
   });
 
+  /*
+    * @description: Constructor del componente RegistersFilterModalComponent
+    * @param studyZoneService: StudyZoneService
+    * @returns void
+  */
   constructor(private studyZoneService: StudyZoneService) {
     this.studyZoneService.studyZone.subscribe((studyZone) => {
       if (studyZone) {
@@ -65,11 +70,16 @@ export class RegistersFilterModalComponent {
       }
     })
 
+    // Observa los cambios en el formulario de filtros y emite los cambios
     this.filtersForm.valueChanges.subscribe((value) => {
       this.filtersOutput.emit(value);
     });
   };
 
+  /*
+    * @description: Método que obtiene los tipos de olor de las observaciones de zonas de estudio
+    * @returns any[]
+  */
   public getStudyZoneTypes(): any[] {
     let types = this.studyZone.episodes.map(
         episode => episode.observations.map(
@@ -92,8 +102,12 @@ export class RegistersFilterModalComponent {
     return types;
   }
 
+  /*
+    * @description: Método que cierra el sidebar de filtros
+    * @returns void
+  */
   public closeFilters(): void {
     this.closeFilterSidebar.emit();
   }
-
+  
 }

@@ -37,14 +37,24 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
 
   public studyZone!: StudyZone;
   public points!: Point[];
-  public intialPoint: Point = { x: 0, y: 0 };
+  public intialPoint: Point = { longitude: 0, latitude: 0 };
+
   public APGEMOpoints: Point[] = [];
+  public APGEMOpointsStyle: {} = {
+    'circle-color': '#ff6200',
+    'circle-radius': 8,
+    'circle-stroke-width': 2,
+    'circle-stroke-color': '#fff'
+  };
+
   public APGEMOpolygon: Polygon[] = [];
   public APGEMOpolygonStyle: {} = {
-    'fill-outline-color': '#363c69',
-    'fill-color': '#348ac7',
+    'fill-outline-color': '#8ad1f9',
+    'fill-color': '#7cbce0',
     'fill-opacity': 0.8,
   };
+
+
 
   public observations: Observation[] = [];
 
@@ -58,11 +68,20 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
 
   public sourceFilter!: any[];
 
+  /*
+    * @description: Constructor del componente RegistersMapComponent
+    * Se suscribe a los cambios en el servicio de StudyZone, en el menú lateral y en el servicio de PDF
+    * @param studyZoneService: StudyZoneService
+    * @param menuService: MenuService
+    * @param pdfService: PdfService
+    * @returns void
+  */
   constructor(
     private studyZoneService: StudyZoneService,
     private menuService: MenuService,
     private pdfService: PdfService
   ) {
+    // Observa los cambios en el menú lateral y redimensiona el mapa
     this.sidebarMenuIsOpen$ = this.menuService.sidebarMenuIsOpen.subscribe(
       () => {
         setTimeout(() => {
@@ -71,6 +90,7 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
       }
     );
 
+    // Observa los cambios en el servicio de StudyZone y actualiza los datos del mapa
     this.studyZone$ = this.studyZoneService.studyZone.subscribe((studyZone) => {
       if (studyZone) {
         this.studyZone = studyZone;
@@ -78,14 +98,14 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
           this.observations.push(...episode.observations)
         ));
         this.observations.forEach((observation) => {
-          this.intialPoint.x += observation.longitude / this.observations.length;
-          this.intialPoint.y += observation.latitude / this.observations.length;
+          this.intialPoint.longitude += observation.longitude / this.observations.length;
+          this.intialPoint.latitude += observation.latitude / this.observations.length;
         });
 
         this.points = this.observations.map((observation) => {
           return {
-            x: observation.longitude,
-            y: observation.latitude,
+            longitude: observation.longitude,
+            latitude: observation.latitude,
           };
         });
 
@@ -96,7 +116,7 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
                 type: 'Polygon',
                 coordinates: [point.map((pt) =>{
                   this.points.push(pt);
-                  return [pt.x, pt.y]
+                  return [pt.longitude, pt.latitude]
                 })],
               },
             };
@@ -117,6 +137,7 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    // Espera al dibujado del mapa y ajusta el zoom
     setTimeout(() => {
       if (this.points) {
         const bbox = this.getBboxFromPointsAndObservations();
@@ -138,11 +159,15 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  /*
+  * @description: Método que obtiene los puntos de las observaciones y APGEMOS para calcular como ajustar el zoom del mapa
+  * @returns [[number, number], [number, number]]
+  */
   private getBboxFromPointsAndObservations(): [[number, number], [number, number]] {
     let points = this.points;
     let observations = this.observations.map((observation) => ({
-        x: observation.longitude,
-        y: observation.latitude,
+        longitude: observation.longitude,
+        latitude: observation.latitude,
       })) || [];
 
     let minX: number = 0,
@@ -152,21 +177,21 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
 
     points.forEach((p, i) => {
       if (i === 0) {
-        minX = maxX = p.x;
-        minY = maxY = p.y;
+        minX = maxX = p.longitude;
+        minY = maxY = p.latitude;
       } else {
-        minX = Math.min(p.x, minX);
-        minY = Math.min(p.y, minY);
-        maxX = Math.max(p.x, maxX);
-        maxY = Math.max(p.y, maxY);
+        minX = Math.min(p.longitude, minX);
+        minY = Math.min(p.latitude, minY);
+        maxX = Math.max(p.longitude, maxX);
+        maxY = Math.max(p.latitude, maxY);
       }
     });
 
     observations.forEach((p) => {
-        minX = Math.min(p.x, minX);
-        minY = Math.min(p.y, minY);
-        maxX = Math.max(p.x, maxX);
-        maxY = Math.max(p.y, maxY);
+        minX = Math.min(p.longitude, minX);
+        minY = Math.min(p.latitude, minY);
+        maxX = Math.max(p.longitude, maxX);
+        maxY = Math.max(p.latitude, maxY);
     });
 
     return [
@@ -175,23 +200,29 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy() {
-    this.sidebarMenuIsOpen$.unsubscribe();
-    this.studyZone$.unsubscribe();
-  }
-
-  public toggleFilters(status: boolean | undefined = undefined) {
+  /*
+    * @description: Método que se ejecuta al hacer click en el botón activa o desactiva los filtros
+    * @param status: boolean
+  */
+  public toggleFilters(status: boolean | undefined = undefined):void {
     if((!this.sourceFilter || this.sourceFilter.length < 2) && this.showFilters === false){
       this.toggleShowFilters(true);
     }
     this.filters = status===undefined? !this.filters : status;
   }
 
-  public toggleShowFilters(status: boolean | undefined = undefined) {
+  /*
+    * @description: Método que se ejecuta al hacer click en el botón que muestro u oculta el modal de filtros
+  */
+  public toggleShowFilters(status: boolean | undefined = undefined):void {
     this.showFilters = status===undefined? !this.showFilters : status;
   }
 
-  public handleFilters(filters: any) {
+  /*
+    * @description: Método que se ejecuta al cambiar los filtros
+    * @param status: boolean
+  */
+  public handleFilters(filters: any):void {
     this.sourceFilter = ['all'];
     if(filters.type){
       this.sourceFilter.push(
@@ -233,5 +264,15 @@ export class RegistersMapComponent implements AfterViewInit, OnDestroy {
     }
     this.sourceFilter.length > 1? this.filters = true : this.filters = false;
 
+  }
+
+  /*
+    * @description: Método que se ejecuta al destruir el componente
+    * Desuscribe las observaciones
+    * @returns void
+  */
+  ngOnDestroy() {
+    this.sidebarMenuIsOpen$.unsubscribe();
+    this.studyZone$.unsubscribe();
   }
 }
