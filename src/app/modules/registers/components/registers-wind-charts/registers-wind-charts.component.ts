@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Observation } from '../../../../models/observation';
 import { UIChart } from 'primeng/chart';
+import { PdfService } from '../../../../services/pdf/pdf.service';
 
 @Component({
   selector: 'app-registers-wind-charts',
@@ -10,7 +11,7 @@ import { UIChart } from 'primeng/chart';
   styleUrl: './registers-wind-charts.component.scss'
 })
 export class RegistersWindChartsComponent implements OnInit, OnDestroy{
-
+  @ViewChild('graphContainer', { static: false }) graphContainer!: ElementRef;
   @ViewChild('radarChart', { static: false }) radarChart!: UIChart;
   @ViewChild('barChart', { static: false }) barChart!: UIChart;
 
@@ -56,7 +57,7 @@ export class RegistersWindChartsComponent implements OnInit, OnDestroy{
     },
   };
 
-  constructor(private studyZoneService: StudyZoneService) { }
+  constructor(private studyZoneService: StudyZoneService, private pdfService:PdfService) { }
 
   ngOnInit(): void {
     this.studyZone$ = this.studyZoneService.allObservations.subscribe((allObservations) => {
@@ -330,6 +331,15 @@ export class RegistersWindChartsComponent implements OnInit, OnDestroy{
 
     this.getChartStylesAndOptions()
 
+  }
+
+  ngAfterViewInit(): void {
+    const reportsElements = this.pdfService.reportsElements.getValue();
+
+    this.pdfService.reportsElements.next({
+      ...reportsElements,
+      7: this.graphContainer,
+    });
   }
 
 
