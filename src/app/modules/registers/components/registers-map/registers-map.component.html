@@ -17,23 +17,10 @@
   </ng-template>
   <ng-template pTemplate="end" #filterButton>
     <div class="flex gap-2">
-      <p-button
-        (onClick)="toggleFilters()"
-        [ngClass]="{ active: filters }"
-        pTooltip="{{ filters ? 'Desactivar filtros' : 'Aplicar filtros' }}"
-        tooltipPosition="bottom"
-      >
-        <i
-          class="pi"
-          [ngClass]="{ 'pi-filter': filters, 'pi-filter-slash': !filters }"
-        ></i>
+      <p-button (onClick)="toggleFilters()" [ngClass]="{ active: filters }" pTooltip="{{ filters ? 'Desactivar filtros' : 'Aplicar filtros' }}" tooltipPosition="bottom">
+        <i class="pi" [ngClass]="{ 'pi-filter': filters, 'pi-filter-slash': !filters }"></i>
       </p-button>
-      <p-button
-        (onClick)="toggleShowFilters()"
-        [ngClass]="{ active: showFilters }"
-        pTooltip="{{ filters ? 'Editar filtros' : 'Ocutar filtros' }}"
-        tooltipPosition="bottom"
-      >
+      <p-button (onClick)="toggleShowFilters()" [ngClass]="{ active: showFilters }" pTooltip="{{ filters ? 'Editar filtros' : 'Ocutar filtros' }}" tooltipPosition="bottom">
         <i class="pi pi-sliders-h"></i>
       </p-button>
     </div>
@@ -46,16 +33,16 @@
     range="[-180, -90, 180, 90]"
     [style]="'mapbox://styles/mapbox/light-v11'"
     [zoom]="[17]"
-    [center]="[intialPoint.x, intialPoint.y]"
+    [center]="[intialPoint.longitude, intialPoint.latitude]"
     [cooperativeGestures]="true"
     [projection]="'globe'"
     [preserveDrawingBuffer]="true"
-    *ngIf="intialPoint && intialPoint.x && intialPoint.y"
+    *ngIf="intialPoint && intialPoint.longitude && intialPoint.latitude"
   >
     @if(APGEMOpoints && APGEMOpoints.length > 0){ @for(point of APGEMOpoints;
     track point){
 
-    <mgl-marker [lngLat]="[point.x, point.y]">
+    <mgl-marker [lngLat]="[point.longitude, point.latitude]">
       <div class="apgemo-point"></div>
     </mgl-marker>
 
@@ -101,19 +88,15 @@
             'interpolate',
             ['linear'],
             ['get', 'color'],
-            0,
-            0,
-            12,
-            1
+            0, 0,
+            12, 1
           ],
           'heatmap-intensity': [
             'interpolate',
             ['linear'],
             ['zoom'],
-            0,
-            0,
-            9,
-            1
+            0, 0,
+            9, 1
           ],
           'heatmap-color': [
             'interpolate',
@@ -164,21 +147,19 @@
           'circle-color': [
             'step',
             ['get', 'point_count'],
-            '#627BC1',
-            10,
-            '#f1f075',
-            20,
-            '#f28cb1'
+            '#7cbce0', 10,
+            '#eded74', 20,
+            '#c19fd9'
           ],
           'circle-radius': [
             'step',
             ['get', 'point_count'],
-            20,
-            100,
-            30,
-            750,
+            20, 100,
+            30, 750,
             40
-          ]
+          ],
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#fff',
         }"
       />
       <mgl-layer
@@ -197,12 +178,7 @@
         type="circle"
         source="geoJsonObservation"
         [filter]="['!', ['has', 'point_count']]"
-        [paint]="{
-          'circle-color': '#11b4da',
-          'circle-radius': 4,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#fff'
-        }"
+        [paint]="APGEMOpointsStyle"
       />
 
       }

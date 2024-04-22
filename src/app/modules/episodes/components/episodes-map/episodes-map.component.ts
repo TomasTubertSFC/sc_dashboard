@@ -20,7 +20,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
   public cone!: Cone;
   public points!: Point[];
-  public observation: Point = { x: 0, y: 0 };
+  public observation: Point = { longitude: 0, latitude: 0 };
   public selectedObservation: number | null = null;
   public previewObservation: number | null = null;
   public coneCanvas!: any;
@@ -77,7 +77,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
         //separamos puntos y poligonos de APEGMO
         studyZone.APGEMO.forEach((point) => {
           if (Array.isArray(point)) {
-            let polygon: Polygon = { geometry: { type: 'Polygon', coordinates: [point.map((pt) => [pt.x, pt.y])] }};
+            let polygon: Polygon = { geometry: { type: 'Polygon', coordinates: [point.map((pt) => [pt.longitude, pt.latitude])] }};
             this.APGEMOpolygon.push(polygon);
           }
           else {
@@ -89,15 +89,16 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
         let averageX = 0;
         let averageY = 0;
         this.points.map((point) => {
-          averageX += point.x / this.points.length;
-          averageY += point.y / this.points.length;
+          averageX += point.longitude / this.points.length;
+          averageY += point.latitude / this.points.length;
         });
-        this.observation = { x: averageX, y: averageY };
+        this.observation = { longitude: averageX, latitude: averageY };
       }
 
       //una vez dibujada la vista, ajustar el zoom para que se vea toda la zona de estudio
       setTimeout(() => {
         if (this.points) {
+          console.log(this.points)
           const bbox = this.getBboxFromPoints();
           this.map?.mapInstance.fitBounds(bbox, { padding: { top: 50, bottom: 200, left: 50, right: this.episodesSidebarVisible? 500 : 50 } });
         }
@@ -178,7 +179,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
           averageY += observation.latitude / episode.observations.length;
         });
 
-        this.observation = { x: averageX, y: averageY };
+        this.observation = { longitude: averageX, latitude: averageY };
 
         episode.observations.forEach((observation) => {
           //crear canvas para cada cono si la observacion no es plausible
@@ -199,7 +200,7 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
             //crear cono
             this.coneCanvas = canvas;
             this.context = new ElementRef(canvas).nativeElement.getContext('2d') as CanvasRenderingContext2D;
-            this.cone = new Cone( points, { x: observation.longitude, y: observation.latitude, id: observation.id }, true, this.canvasHeight, this.canvasWidth, observation.relationships.wind );
+            this.cone = new Cone( points, { longitude: observation.longitude, latitude: observation.latitude, id: observation.id }, true, this.canvasHeight, this.canvasWidth, observation.relationships.wind );
             let cone = this.cone;
 
             //Si el cálculo del cono indica que la observación es plausible, marcar observación y episodio como plausible
@@ -255,13 +256,13 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     * @returns number
   */
   private calculateAngle(p1: Point, vertex: Point, p2: Point) {
-    if (p1.x === p2.x && p1.y === p2.y) {
+    if (p1.longitude === p2.longitude && p1.latitude === p2.latitude) {
       return 0;
     }
-    const dx1 = p1.x - vertex.x;
-    const dy1 = p1.y - vertex.y;
-    const dx2 = p2.x - vertex.x;
-    const dy2 = p2.y - vertex.y;
+    const dx1 = p1.longitude - vertex.longitude;
+    const dy1 = p1.latitude - vertex.latitude;
+    const dx2 = p2.longitude - vertex.longitude;
+    const dy2 = p2.latitude - vertex.latitude;
 
     const dotProduct = dx1 * dx2 + dy1 * dy2;
     const crossProduct = dx1 * dy2 - dy1 * dx2;
@@ -298,15 +299,15 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     //si la observación está fuera del perímetro de la zona de estudio, dibujar el cono de observación
     if (this.cone.observationCone?.vertexPosition) {
       // Dibujar el arco del angulo de observacion abarcando todos los puntos
-      const initialAnglePoint = this.calculateAngle({ x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y }, this.cone.observationCone.vertexPosition, this.cone.observationCone.initialSidePosition) * (Math.PI / 180);
-      const finalAnglePoint = this.calculateAngle({x: this.cone.observationCone.vertexPosition.x + 1000, y: this.cone.observationCone.vertexPosition.y}, this.cone.observationCone.vertexPosition, this.cone.observationCone.terminalSidePosition) * (Math.PI / 180);
+      const initialAnglePoint = this.calculateAngle({ longitude: this.cone.observationCone.vertexPosition.longitude + 1000, latitude: this.cone.observationCone.vertexPosition.latitude }, this.cone.observationCone.vertexPosition, this.cone.observationCone.initialSidePosition) * (Math.PI / 180);
+      const finalAnglePoint = this.calculateAngle({longitude: this.cone.observationCone.vertexPosition.longitude + 1000, latitude: this.cone.observationCone.vertexPosition.latitude}, this.cone.observationCone.vertexPosition, this.cone.observationCone.terminalSidePosition) * (Math.PI / 180);
 
       this.context.strokeStyle = this.hexToRGBA(observationColor, alpha * 2);
       this.context.lineWidth = 1;
       this.context.fillStyle = this.hexToRGBA(observationColor, alpha);
       this.context.beginPath();
-      this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, finalAnglePoint, false);
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
+      this.context.arc(this.cone.observationCone.vertexPosition.longitude, this.cone.observationCone.vertexPosition.latitude, this.cone.coneSize, initialAnglePoint, finalAnglePoint, false);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.longitude, this.cone.observationCone.vertexPosition.latitude);
       this.context.closePath();
       this.context.stroke();
       this.context.fill();
@@ -316,16 +317,16 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       this.context.lineWidth = 1;
       this.context.fillStyle = this.hexToRGBA(adjacentColor, alpha);
       this.context.beginPath();
-      this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, initialAnglePoint, initialAnglePoint + -this.cone.initialAdjacentAngle.angle * (Math.PI / 180), true );
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x,this.cone.observationCone.vertexPosition.y);
+      this.context.arc(this.cone.observationCone.vertexPosition.longitude, this.cone.observationCone.vertexPosition.latitude, this.cone.coneSize, initialAnglePoint, initialAnglePoint + -this.cone.initialAdjacentAngle.angle * (Math.PI / 180), true );
+      this.context.lineTo(this.cone.observationCone.vertexPosition.longitude,this.cone.observationCone.vertexPosition.latitude);
       this.context.closePath();
       this.context.stroke();
       this.context.fill();
 
       // Dibujar ángulo adyacente final
       this.context.beginPath();
-      this.context.arc(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y, this.cone.coneSize, finalAnglePoint, finalAnglePoint + this.cone.terminalAdjacentAngle.angle * (Math.PI / 180), false);
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x, this.cone.observationCone.vertexPosition.y);
+      this.context.arc(this.cone.observationCone.vertexPosition.longitude, this.cone.observationCone.vertexPosition.latitude, this.cone.coneSize, finalAnglePoint, finalAnglePoint + this.cone.terminalAdjacentAngle.angle * (Math.PI / 180), false);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.longitude, this.cone.observationCone.vertexPosition.latitude);
       this.context.closePath();
       this.context.stroke();
       this.context.fill();
@@ -343,12 +344,12 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
       this.context.fillStyle = this.hexToRGBA(windColor, alpha * 2);
       this.context.lineWidth = 1;
       this.context.beginPath();
-      this.context.moveTo(this.cone.observationCone.vertexPosition.x + Math.cos((windDegrees - 5) * (Math.PI / 180)) * finalTriangleArrow, this.cone.observationCone.vertexPosition.y + Math.sin((windDegrees - 5) * (Math.PI / 180)) * finalTriangleArrow);
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos(windDegrees * (Math.PI / 180)) * initialTriangleArrow, this.cone.observationCone.vertexPosition.y + Math.sin(windDegrees * (Math.PI / 180)) * initialTriangleArrow);
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos((windDegrees + 5) * (Math.PI / 180)) * finalTriangleArrow, this.cone.observationCone.vertexPosition.y + Math.sin((windDegrees + 5) * (Math.PI / 180)) * finalTriangleArrow);
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos((windDegrees + 2) * (Math.PI / 180)) * initialDistanceArrow, this.cone.observationCone.vertexPosition.y + Math.sin((windDegrees + 2) * (Math.PI / 180)) * initialDistanceArrow);
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos(windDegrees * (Math.PI / 180)) * finalDistanceArrow, this.cone.observationCone.vertexPosition.y + Math.sin(windDegrees * (Math.PI / 180)) * finalDistanceArrow);
-      this.context.lineTo(this.cone.observationCone.vertexPosition.x + Math.cos((windDegrees - 2) * (Math.PI / 180)) * initialDistanceArrow, this.cone.observationCone.vertexPosition.y + Math.sin((windDegrees - 2) * (Math.PI / 180)) * initialDistanceArrow);
+      this.context.moveTo(this.cone.observationCone.vertexPosition.longitude + Math.cos((windDegrees - 5) * (Math.PI / 180)) * finalTriangleArrow, this.cone.observationCone.vertexPosition.latitude + Math.sin((windDegrees - 5) * (Math.PI / 180)) * finalTriangleArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.longitude + Math.cos(windDegrees * (Math.PI / 180)) * initialTriangleArrow, this.cone.observationCone.vertexPosition.latitude + Math.sin(windDegrees * (Math.PI / 180)) * initialTriangleArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.longitude + Math.cos((windDegrees + 5) * (Math.PI / 180)) * finalTriangleArrow, this.cone.observationCone.vertexPosition.latitude + Math.sin((windDegrees + 5) * (Math.PI / 180)) * finalTriangleArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.longitude + Math.cos((windDegrees + 2) * (Math.PI / 180)) * initialDistanceArrow, this.cone.observationCone.vertexPosition.latitude + Math.sin((windDegrees + 2) * (Math.PI / 180)) * initialDistanceArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.longitude + Math.cos(windDegrees * (Math.PI / 180)) * finalDistanceArrow, this.cone.observationCone.vertexPosition.latitude + Math.sin(windDegrees * (Math.PI / 180)) * finalDistanceArrow);
+      this.context.lineTo(this.cone.observationCone.vertexPosition.longitude + Math.cos((windDegrees - 2) * (Math.PI / 180)) * initialDistanceArrow, this.cone.observationCone.vertexPosition.latitude + Math.sin((windDegrees - 2) * (Math.PI / 180)) * initialDistanceArrow);
       this.context.closePath();
       this.context.fill();
       this.context.stroke();
@@ -377,8 +378,8 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     let points = this.points;
     let observations =
       this.episode?.observations.map((observation) => ({
-        x: observation.longitude,
-        y: observation.latitude,
+        longitude: observation.longitude,
+        latitude: observation.latitude,
       })) || [];
 
     let minX: number = 0,
@@ -388,21 +389,21 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
     points.forEach((p, i) => {
       if (i === 0) {
-        minX = maxX = p.x;
-        minY = maxY = p.y;
+        minX = maxX = p.longitude;
+        minY = maxY = p.latitude;
       } else {
-        minX = Math.min(p.x, minX);
-        minY = Math.min(p.y, minY);
-        maxX = Math.max(p.x, maxX);
-        maxY = Math.max(p.y, maxY);
+        minX = Math.min(p.longitude, minX);
+        minY = Math.min(p.latitude, minY);
+        maxX = Math.max(p.longitude, maxX);
+        maxY = Math.max(p.latitude, maxY);
       }
     });
 
     observations.forEach((p) => {
-        minX = Math.min(p.x, minX);
-        minY = Math.min(p.y, minY);
-        maxX = Math.max(p.x, maxX);
-        maxY = Math.max(p.y, maxY);
+        minX = Math.min(p.longitude, minX);
+        minY = Math.min(p.latitude, minY);
+        maxX = Math.max(p.longitude, maxX);
+        maxY = Math.max(p.latitude, maxY);
     });
 
     return [
@@ -427,13 +428,13 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
     points.forEach((p, i) => {
       if (i === 0) {
-        minX = maxX = p.x;
-        minY = maxY = p.y;
+        minX = maxX = p.longitude;
+        minY = maxY = p.latitude;
       } else {
-        minX = Math.min(p.x, minX);
-        minY = Math.min(p.y, minY);
-        maxX = Math.max(p.x, maxX);
-        maxY = Math.max(p.y, maxY);
+        minX = Math.min(p.longitude, minX);
+        minY = Math.min(p.latitude, minY);
+        maxX = Math.max(p.longitude, maxX);
+        maxY = Math.max(p.latitude, maxY);
       }
     });
 
@@ -456,13 +457,13 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
 
     this.cone.convexHull.forEach((p, i) => {
       if (i === 0) {
-        minX = maxX = p.x;
-        minY = maxY = p.y;
+        minX = maxX = p.longitude;
+        minY = maxY = p.latitude;
       } else {
-        minX = Math.min(p.x, minX);
-        minY = Math.min(p.y, minY);
-        maxX = Math.max(p.x, maxX);
-        maxY = Math.max(p.y, maxY);
+        minX = Math.min(p.longitude, minX);
+        minY = Math.min(p.latitude, minY);
+        maxX = Math.max(p.longitude, maxX);
+        maxY = Math.max(p.latitude, maxY);
       }
     });
 
@@ -482,8 +483,8 @@ export class EpisodesMapComponent implements OnDestroy, AfterViewInit {
     this.context.beginPath();
     this.cone.convexHull.forEach((p) => {
       this.context.lineTo(
-        (p.x - mapCenterX) * scale + this.canvasWidth / 2 - minX,
-        (p.y - mapCenterY) * scale + this.canvasHeight / 2 - minY
+        (p.longitude - mapCenterX) * scale + this.canvasWidth / 2 - minX,
+        (p.latitude - mapCenterY) * scale + this.canvasHeight / 2 - minY
       );
     });
     this.context.closePath();
