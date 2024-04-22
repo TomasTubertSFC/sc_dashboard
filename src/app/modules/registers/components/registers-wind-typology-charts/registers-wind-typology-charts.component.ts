@@ -18,7 +18,7 @@ interface dataset {
   styleUrl: './registers-wind-typology-charts.component.scss',
 })
 export class RegistersWindTypologyChartsComponent implements OnInit, OnDestroy {
-  @ViewChild('registerTimeChart', { static: false }) registerTimeChart!: ElementRef;
+  @ViewChild('graphContainer', { static: false }) graphContainer!: ElementRef;
   @ViewChild('chart', {static: false}) chart!: UIChart;
 
   public windTypeFilter: string = 'direction';
@@ -96,7 +96,7 @@ export class RegistersWindTypologyChartsComponent implements OnInit, OnDestroy {
 
     this.pdfService.reportsElements.next({
       ...reportsElements,
-      6: this.registerTimeChart,
+      8: this.graphContainer,
     });
   }
 

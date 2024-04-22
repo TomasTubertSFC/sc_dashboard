@@ -13,6 +13,8 @@ interface reportElements {
   4: ElementRef;
   5: ElementRef;
   6: ElementRef;
+  7: ElementRef;
+  8: ElementRef;
 }
 interface reportImages {
   0: string;
@@ -22,6 +24,8 @@ interface reportImages {
   4: string;
   5: string;
   6: string;
+  7: string;
+  8: string;
 }
 
 @Injectable({
