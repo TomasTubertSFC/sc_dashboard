@@ -1,11 +1,11 @@
-import {Component, AfterViewInit, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import { Point } from './../../../../models/cone';
+import { Component, AfterViewInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MenuService } from '../../../../layout/components/menu/app.menu.service';
 import { MapComponent } from 'ngx-mapbox-gl';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { StudyZone } from '../../../../models/study-zone';
-import { Point } from 'chart.js';
 import { Observation } from '../../../../models/observation';
 import { Polygon } from '../../../../models/polygon';
 import { PdfService } from '../../../../services/pdf/pdf.service';

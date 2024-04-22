@@ -1,6 +1,6 @@
+import { Point } from './../../../../models/cone';
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Cone } from '../../../../models/cone';
-import { Point } from 'chart.js';
 import { StudyZoneService } from '../../../../services/study-zone.service';
 import { Episode, StudyZone } from '../../../../models/study-zone';
 import { MapComponent } from 'ngx-mapbox-gl';
