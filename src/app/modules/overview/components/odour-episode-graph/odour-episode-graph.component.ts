@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Episode } from '../../../../models/study-zone';
+import { SliderModule } from 'primeng/slider';
 
 @Component({
   selector: 'app-odour-episode-graph',
@@ -27,12 +28,16 @@ export class OdourEpisodeGraphComponent implements OnInit {
     return diferentBewteen;
   }
 
-  monthNamesBetweenDates(diferentBewteen: number): string[] {
+  monthNamesBetweenDates(diferentBewteen: number, initDate: Date): string[] {
     return [...new Array(diferentBewteen)].map((_, index) => {
-      return new Date(2022, index, 1).toLocaleString('default', {
-        month: 'long',
-        year: 'numeric',
-      });
+      const date = new Date(initDate.getFullYear(), index).toLocaleString(
+        'default',
+        {
+          month: 'long',
+          year: 'numeric',
+        }
+      );
+      return date;
     });
   }
 
@@ -71,8 +76,13 @@ export class OdourEpisodeGraphComponent implements OnInit {
 
     return groups;
   }
+
   onPageChange(event: any) {
-    this.selectedMonths = this.months.slice(
+    this.selectedMonths = [...this.months].slice(
+      event.first,
+      event.first + event.rows
+    );
+    this.odourEpisodesSelected = [...this.odourEpisodes].slice(
       event.first,
       event.first + event.rows
     );
@@ -82,14 +92,14 @@ export class OdourEpisodeGraphComponent implements OnInit {
     const monthsBetween = this.calculateMonthsBetweenDates(
       this.initDate,
       this.endDate
-    );
-    this.months = this.monthNamesBetweenDates(monthsBetween);
-    this.selectedMonths = this.months.slice(0, 6);
+    ) + 1
+    this.months = this.monthNamesBetweenDates(monthsBetween, this.initDate);
+    this.selectedMonths = [...this.months].slice(0, 6);
     this.odourEpisodes = this.calculateOdourEpisodesPerMonth(
       this.episodes,
       monthsBetween
     );
-    this.odourEpisodesSelected = this.odourEpisodes.splice(0, 6);
+    this.odourEpisodesSelected = [...this.odourEpisodes].splice(0, 6);
     this.numberOfPages = this.splitIntoGroups(this.months, 6).length;
   }
 }
