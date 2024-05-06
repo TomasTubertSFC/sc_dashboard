@@ -1,7 +1,7 @@
 <ul class="layout-menu">
   <li>
     <icon-odour-icon-logo [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
-    <span class="menu-item"> ZONA DE ESTUDIO {{ studyZoneid }}</span>
+    <span class="menu-item"> SoundCollect</span>
   </li>
   <p-divider />
   <li>
@@ -49,31 +49,7 @@
       <span class="menu-item"> Filtro tiempo </span>
     </button>
   </li>
-  <li>
-    <button
-      (click)="openStudyZoneModal()"
-      pButton
-      type="button"
-      class="p-button-rounded p-button-outlined w-full"
-    >
-      <icon-change-circle />
-      <span class="menu-item"> Cambiar zona </span>
-    </button>
-  </li>
   <p-divider />
-  <li>
-    <button
-      (click)="saveView()"
-      [disabled]="disabledAddToReports"
-      pButton
-      type="button"
-      id="add-to-report-button"
-      class="p-button-rounded p-button-outlined w-full"
-    >
-      <icon-add-to-chart />
-      <span class="menu-item"> Añadir al informe </span>
-    </button>
-  </li>
   <div class="h-full flex flex-column justify-content-end gap-3">
     <li>
       <a

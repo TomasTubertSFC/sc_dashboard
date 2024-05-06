@@ -14,9 +14,9 @@
 @import "../node_modules/mapbox-gl/dist/mapbox-gl.css";
 
 $gutter: 1rem; //for primeflex grid system
+
 :root {
   //PRIMARY
-
   --violet: #{$violet};
   --violet-light: #{$violet-light};
   --violet-lighter: #{$violet-lighter};
@@ -24,7 +24,6 @@ $gutter: 1rem; //for primeflex grid system
   --violet-transparency: #{$violet-transparency};
 
   //SECONDARY
-
   --green: #{$green};
   --green-light: #{$green-light};
   --green-lighter: #{$green-lighter};

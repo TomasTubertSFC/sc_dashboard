@@ -7,8 +7,7 @@ import { RecoverPasswordComponent } from './modules/recover-password/components/
 import { CreatePasswordComponent } from './modules/recover-password/components/create-password/create-password.component';
 import { ProfileComponent } from './modules/profile/components/profile/profile.component';
 import { LandingComponent } from './modules/landing/components/landing/landing.component';
-import { OverviewComponent } from './modules/overview/components/overview/overview.component';
-import { ReportsComponent } from './modules/reports/components/reports/reports.component';
+import { OverviewComponent } from './modules/overview/page/overview.component';
 
 const routes: Routes = [
   {
@@ -18,7 +17,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: AppLayoutComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -27,24 +26,6 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
-      },
-      {
-        path: 'reports',
-        component: ReportsComponent,
-      },
-      {
-        path: 'episodes',
-        loadChildren: () =>
-          import('./modules/episodes/episodes.module').then(
-            (m) => m.EpisodesModule
-          ),
-      },
-      {
-        path: 'registers',
-        loadChildren: () =>
-          import('./modules/registers/registers.module').then(
-            (m) => m.RegistersModule
-          ),
       },
     ],
   },
