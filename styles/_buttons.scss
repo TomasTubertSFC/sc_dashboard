@@ -1,18 +1,18 @@
 button.btn-primary,
 input[type="button"].btn-primary,
 button.btn-primary {
-  background-color: $violet;
-  border: $violet;
+  background-color: $blue;
+  border: $blue;
   color: $black;
   &:hover,
   &:active,
   &:focus-visible,
   &:first-child:active {
-    background-color: $violet-dark;
+    background-color: $blue;
     color: $black;
   }
   &:disabled {
-    background-color: $violet-light;
+    background-color: $blue-light;
   }
 }
 
@@ -93,8 +93,8 @@ button.btn-white {
   &:active,
   &:focus-visible,
   &:first-child:active {
-    border-color: $violet-dark;
-    color: $violet-dark;
+    border-color: $blue;
+    color: $blue;
   }
   &:disabled {
     background-color: $grey-light;
