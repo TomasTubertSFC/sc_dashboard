@@ -1,33 +1,42 @@
-# instruction for installation:
-# remove old image/container/cache from docker 'docker system prune -a'
-# get the latest source code with git clone GITHUB_CODE and jump to 'develop' branch
-# build the docker image with 'docker build -t oc_dash .'
-# run the container from the image 'docker run -p 80:4200 oc_dash'
-# while this container is alive go into it 'docker exec -ti 8 bash'
-#✘ [ERROR] Cannot assign to import "baseApiUrl"
-#
-#    node_modules/ngx-mapbox-gl/fesm2022/ngx-mapbox-gl.mjs:101:19:
-#      101 │           MapboxGl.baseApiUrl = options.customMapboxApiUrl;
-#          ╵                    ~~~~~~~~~~
-#
-# comment three lines of code within file 'cd node_modules/ngx-mapbox-gl/fesm2022/ngx-mapbox-gl.mjs'
-# comment lines '       //if (options.customMapboxApiUrl) {
-                        # //    MapboxGl.baseApiUrl = options.customMapboxApiUrl;
-                        # //}'
+#This sets the base image for the build stage. It uses the official Node.js image, version 20.9.0-alpine, as a starting point.
+#Naming it as ‘build’ allows us to refer to this stage later in the Dockerfile.
+FROM node:20.9.0-alpine AS base
 
+#This instruction is like telling the container, “Hey, for the rest of the instructions, 
+#consider ‘/app’ as your main working directory.”
+WORKDIR /app
 
-FROM node:20
-
-WORKDIR /usr/src/app
-
-COPY . /usr/src/app
-
-RUN apt-get update
-
-RUN apt-get install nano -y
-
-RUN npm install -g @angular/cli
+#Copies the package.json and package-lock.json files from your local directory 
+#(where the Dockerfile is) to the ‘/app’ directory in the container.
+COPY package*.json ./
 
 RUN npm install
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+RUN npm install -g @angular/cli
+
+#This command copies all files from your local directory to the ‘/app’ directory inside the container.
+COPY . .
+
+#This instruction sets the base image for the development stage.
+FROM base AS dev
+EXPOSE 4200
+CMD ["npm", "run", "start"]
+
+#This instruction sets the base image for the build stage.
+#FROM base AS build
+#RUN ng build 
+
+#Since we’ve successfully installed Angular CLI , let’s executes 
+#this command to build the Angular application in production mode. 
+#The resulting output will be stored in the ‘dist’ directory.
+
+#So basically with this command we starts a new stage in the Dockerfile,
+#using the official Nginx image as the base image for the runtime environment.
+#FROM nginx:1.25.1-alpine AS prod
+
+#Copies the production-ready Angular application files from the build stage to 
+#the `/usr/share/nginx/html`directory inside the Nginx container.
+#COPY --from=build app/dist/aftas-angular /usr/share/nginx/html
+
+#EXPOSE 80
+#CMD ["nginx", "-g", "daemon off;"]
