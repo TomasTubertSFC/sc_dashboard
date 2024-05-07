@@ -8,7 +8,7 @@ WORKDIR /app
 
 #Copies the package.json and package-lock.json files from your local directory 
 #(where the Dockerfile is) to the ‘/app’ directory in the container.
-COPY package*.json ./
+COPY package.* ./
 
 RUN npm install
 
@@ -22,9 +22,10 @@ FROM base AS dev
 EXPOSE 4200
 CMD ["npm", "run", "start"]
 
+#-------------------
 #This instruction sets the base image for the build stage.
-#FROM base AS build
-#RUN ng build 
+# FROM base AS build
+# RUN ng build 
 
 #Since we’ve successfully installed Angular CLI , let’s executes 
 #this command to build the Angular application in production mode. 
@@ -32,11 +33,11 @@ CMD ["npm", "run", "start"]
 
 #So basically with this command we starts a new stage in the Dockerfile,
 #using the official Nginx image as the base image for the runtime environment.
-#FROM nginx:1.25.1-alpine AS prod
+# FROM nginx:1.25.1-alpine AS prod
 
 #Copies the production-ready Angular application files from the build stage to 
 #the `/usr/share/nginx/html`directory inside the Nginx container.
-#COPY --from=build app/dist/aftas-angular /usr/share/nginx/html
+# COPY --from=build app/dist/aftas-angular /usr/share/nginx/html
 
 #EXPOSE 80
-#CMD ["nginx", "-g", "daemon off;"]
+# CMD ["nginx", "-g", "daemon off;"]

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "oc_dashboard": {
+    "sc_dashboard": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -18,14 +18,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/oc_dashboard",
+            "outputPath": "dist/sc_dashboard",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss", "mapbox-gl/dist/mapbox-gl.css"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -56,10 +56,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "oc_dashboard:build:production"
+              "buildTarget": "sc_dashboard:build:production"
             },
             "development": {
-              "buildTarget": "oc_dashboard:build:development"
+              "buildTarget": "sc_dashboard:build:development",
+              "disableHostCheck": true
             }
           },
           "defaultConfiguration": "development"
@@ -67,7 +68,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "oc_dashboard:build"
+            "buildTarget": "sc_dashboard:build"
           }
         },
         "test": {
@@ -79,6 +80,15 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.scss"],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }

@@ -1,0 +1,16 @@
+name: sc_dashboard
+services:
+    frontend:
+      build:
+        context: .
+        dockerfile: ./Dockerfile
+        target: dev
+      # restart: unless-stopped
+      ports:
+            - 8080:4200
+      volumes:
+            - ./:/app
+            #Estando así, no sobrescribe la carpeta de node_modules con la de mi local.
+            - /app/node_modules
+      environment:
+       - NODE_ENV=local
