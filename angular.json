@@ -59,8 +59,7 @@
               "buildTarget": "sc_dashboard:build:production"
             },
             "development": {
-              "buildTarget": "sc_dashboard:build:development",
-              "disableHostCheck": true
+              "buildTarget": "sc_dashboard:build:development"
             }
           },
           "defaultConfiguration": "development"
