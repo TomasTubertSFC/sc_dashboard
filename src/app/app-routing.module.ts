@@ -10,12 +10,12 @@ import { LandingComponent } from './modules/landing/components/landing/landing.c
 import { OverviewComponent } from './modules/overview/page/overview.component';
 
 const routes: Routes = [
+  // {
+  //   path: '',
+  //   component: LandingComponent,
+  // },
   {
     path: '',
-    component: LandingComponent,
-  },
-  {
-    path: 'dashboard',
     component: AppLayoutComponent,
     // canActivate: [AuthGuard],
     children: [
