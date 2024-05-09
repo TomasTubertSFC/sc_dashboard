@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { confirmPasswordValidator } from '../../../../validators/confirm-password.validator';
@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
+
   visible: boolean = false;
 
   loading: boolean = false;

@@ -8,10 +8,14 @@ import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
 import { PaginatorModule } from 'primeng/paginator';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 @NgModule({
   declarations: [
     OverviewComponent,
+    SearchBarComponent,
+    SearchResultsComponent,
   ],
   imports: [
     CommonModule,

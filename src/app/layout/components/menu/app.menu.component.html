@@ -7,7 +7,7 @@
   <li>
     <a
       pRipple
-      routerLink="/dashboard"
+      routerLink="/"
       [routerLinkActiveOptions]="{
         paths: 'exact',
         queryParams: 'ignored',
@@ -21,19 +21,19 @@
     </a>
   </li>
   <li>
-    <a routerLink="/dashboard/episodes" routerLinkActive="active-route">
+    <a routerLink="/episodes" routerLinkActive="active-route">
       <icon-transition-fade [iconClass]="'mr-2'" />
       <span class="menu-item"> Episodios de olor </span>
     </a>
   </li>
   <li>
-    <a routerLink="/dashboard/registers" routerLinkActive="active-route">
+    <a routerLink="/registers" routerLinkActive="active-route">
       <icon-odour-registers [iconClass]="'mr-2'" />
       <span class="menu-item"> Registros de olor </span>
     </a>
   </li>
   <li id="reports">
-    <a routerLink="/dashboard/reports" routerLinkActive="active-route">
+    <a routerLink="/reports" routerLinkActive="active-route">
       <icon-rubric [iconClass]="'mr-2'" />
       <span class="menu-item"> Informes </span>
     </a>
@@ -53,7 +53,7 @@
   <div class="h-full flex flex-column justify-content-end gap-3">
     <li>
       <a
-        routerLink="/dashboard/profile"
+        routerLink="/profile"
         routerLinkActive="active-route"
         pButton
         type="button"
