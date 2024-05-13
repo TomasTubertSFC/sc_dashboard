@@ -12,11 +12,11 @@ import { FormFilterValues } from '../../../../models/forms';
 import { MapService } from '../../../../services/map/map.service';
 
 @Component({
-  selector: 'app-overview-filters',
+  selector: 'app-map-filters',
   templateUrl: './filters.component.html',
   styleUrl: './filters.component.scss',
 })
-export class OverviewFiltersComponent implements OnInit {
+export class MapFiltersComponent implements OnInit {
   mapService = inject(MapService);
 
   @Input() showFilters?: WritableSignal<boolean>;
@@ -50,7 +50,7 @@ export class OverviewFiltersComponent implements OnInit {
       );
     });
     this.filtersForm.valueChanges.subscribe((values: FormFilterValues) => {
-      
+
       //Check if any value of form is setted to toggle the showFilters button
       if(values.type || values.soundPressure || values.days || values.hours){
         this.mapService.isFilterActive.next(true);

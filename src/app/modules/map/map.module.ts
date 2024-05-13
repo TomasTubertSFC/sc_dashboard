@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OverviewComponent } from './page/overview.component';
+import { MapComponent } from './page/map.component';
 import { ChartModule } from 'primeng/chart';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -8,8 +8,8 @@ import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
 import { PaginatorModule } from 'primeng/paginator';
-import { OverviewToolBarComponent } from './components/tool-bar/tool-bar.component';
-import { OverviewFiltersComponent } from './components/filters/filters.component';
+import { MapToolBarComponent } from './components/tool-bar/tool-bar.component';
+import { MapFiltersComponent } from './components/filters/filters.component';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { SidebarModule } from 'primeng/sidebar';
@@ -21,9 +21,9 @@ import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
-    OverviewComponent,
-    OverviewToolBarComponent,
-    OverviewFiltersComponent,
+    MapComponent,
+    MapToolBarComponent,
+    MapFiltersComponent,
   ],
   imports: [
     FormsModule,
@@ -45,4 +45,4 @@ import { CalendarModule } from 'primeng/calendar';
     PaginatorModule,
   ],
 })
-export class OverviewModule {}
+export class MapModule {}

@@ -18,11 +18,11 @@ import { FeatureCollection, Geometry } from 'geojson';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrl: './overview.component.scss',
+  selector: 'app-map',
+  templateUrl: './map.component.html',
+  styleUrl: './map.component.scss',
 })
-export class OverviewComponent implements AfterViewInit, OnDestroy {
+export class MapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mapDiv') mapDivElement!: ElementRef;
   private mapService = inject(MapService);
 

@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output, Signal, WritableSignal } from '@angular/core';
 
 @Component({
-  selector: 'app-overview-tool-bar',
+  selector: 'app-map-tool-bar',
   templateUrl: './tool-bar.component.html',
   styleUrl: './tool-bar.component.scss',
 })
-export class OverviewToolBarComponent {
+export class MapToolBarComponent {
   @Input() showFilters?: WritableSignal<boolean>;
   @Input() isFilterActive: boolean = false;
   

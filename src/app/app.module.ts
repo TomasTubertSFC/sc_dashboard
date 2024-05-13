@@ -11,7 +11,7 @@ import { initializeInterceptorProvider } from './helpers/intializeApp';
 import { RecoverPasswordModule } from './modules/recover-password/recover-password.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { LandingModule } from './modules/landing/landing.module';
-import { OverviewModule } from './modules/overview/overview.module';
+import { MapModule } from './modules/map/map.module';
 import { LoginModule } from './modules/login/login.module';
 import { MessageService } from 'primeng/api';
 
@@ -27,7 +27,7 @@ import { MessageService } from 'primeng/api';
     RecoverPasswordModule,
     ProfileModule,
     LandingModule,
-    OverviewModule,
+    MapModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',
