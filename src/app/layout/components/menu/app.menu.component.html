@@ -1,6 +1,6 @@
 <ul class="layout-menu">
   <li>
-    <icon-odour-icon-logo [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
+    <icon-soundcollect [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
     <span class="menu-item"> SoundCollect</span>
   </li>
   <p-divider />
@@ -16,26 +16,20 @@
       }"
       routerLinkActive="active-route"
     >
-      <icon-bar-chart [iconClass]="'mr-2'" />
-      <span class="menu-item"> Resumen </span>
+      <icon-map [iconClass]="'mr-2'" />
+      <span class="menu-item"> Mapa </span>
     </a>
   </li>
   <li>
     <a routerLink="/episodes" routerLinkActive="active-route">
-      <icon-transition-fade [iconClass]="'mr-2'" />
+      <icon-bar-chart [iconClass]="'mr-2'" />
       <span class="menu-item"> Episodios de olor </span>
     </a>
   </li>
   <li>
     <a routerLink="/registers" routerLinkActive="active-route">
-      <icon-odour-registers [iconClass]="'mr-2'" />
+      <!-- <icon-odour-registers [iconClass]="'mr-2'" /> -->
       <span class="menu-item"> Registros de olor </span>
-    </a>
-  </li>
-  <li id="reports">
-    <a routerLink="/reports" routerLinkActive="active-route">
-      <icon-rubric [iconClass]="'mr-2'" />
-      <span class="menu-item"> Informes </span>
     </a>
   </li>
   <p-divider />
