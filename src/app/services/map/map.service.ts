@@ -64,13 +64,12 @@ export class MapService {
     });
     this.isFilterActive.subscribe((isFilterActive) => {
       if (!this.map) return;
-      let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
       if (isFilterActive) {
         //update the geojson
-        source.setData(this.filteredGeoJSON as FeatureCollection<Geometry>);
+        this.updateSourceObservations(this.filteredGeoJSON);
       } else {
         //update the geojson
-        source.setData(this.GeoJSON$.getValue() as FeatureCollection<Geometry>);
+        this.updateSourceObservations(this.GeoJSON$.getValue());
       }
     });
   }
@@ -93,10 +92,19 @@ export class MapService {
             quiet: observation.attributes.quiet,
           };
         });
+        
         this.mapObservations = mapObs;
         const geoJSON = this.createGeoJson(mapObs);
         this.GeoJSON$.next(geoJSON);
+
+        //update the source observations at map
+        this.updateSourceObservations(geoJSON);
       });
+  }
+
+  public updateSourceObservations(geoJson: any) {
+    let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
+    source.setData(geoJson as FeatureCollection<Geometry>);
   }
 
   private createGeoJson(observations: MapObservation[]): ObservationGeoJSON {
@@ -350,8 +358,92 @@ export class MapService {
     this.filteredGeoJSON = geoJSON;
 
     //update the geojson
-    let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
-    source.setData(geoJSON as FeatureCollection<Geometry>);
+    this.updateSourceObservations(geoJSON);
+  }
+
+  private buildClustersAndLayers(GeoJSON: any): void {
+    // Add a new source from our GeoJSON data and set the
+    this.map.addSource('observations', {
+      type: 'geojson',
+      data: GeoJSON as FeatureCollection<Geometry, { [name: string]: any }>,
+      cluster: true,
+      clusterMaxZoom: this.mapSettings.clusterMaxZoom, // Max zoom to cluster points on
+      clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+    });
+    // Add a new source for spiderfy observations
+    this.map.addSource('observationsSpiderfy', {
+      type: 'geojson',
+      data: this.initialGeoJson as FeatureCollection<
+        Geometry,
+        { [name: string]: any }
+      >,
+      cluster: false,
+    });
+    //Cluster background color
+    this.map.addLayer({
+      id: 'clusters',
+      type: 'circle',
+      source: 'observations',
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': '#D7B1F2',
+        'circle-radius': 20,
+        'circle-stroke-color': 'rgba(215, 177, 242, 0.5)',
+        'circle-stroke-width': 5,
+      },
+    });
+    //Cluster number count
+    this.map.addLayer({
+      id: 'cluster-count',
+      type: 'symbol',
+      source: 'observations',
+      filter: ['has', 'point_count'],
+      layout: {
+        'text-field': '{point_count_abbreviated}',
+        'text-size': 12,
+      },
+      paint: {
+        'text-color': '#ffffff',
+      },
+    });
+    //Markers
+    this.map.addLayer({
+      id: 'unclustered-point',
+      type: 'symbol',
+      source: 'observations',
+      filter: ['!has', 'point_count'],
+      layout: {
+        'icon-image': [
+          'match',
+          ['get', 'userType'],
+          'citizen',
+          '1-icon',
+          '3-icon',
+        ],
+        'icon-size': 0.8,
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
+      },
+    });
+    //Spiderfy markers
+    this.map.addLayer({
+      id: 'unclustered-point-spiderfy',
+      type: 'symbol',
+      source: 'observationsSpiderfy',
+      layout: {
+        'icon-image': [
+          'match',
+          ['get', 'userType'],
+          'citizen',
+          '1-icon',
+          '3-icon',
+        ],
+        'icon-size': 0.8,
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
+        'icon-offset': ['get', 'iconOffset'],
+      },
+    });
   }
 
   public initializeMap(): void {
@@ -376,6 +468,9 @@ export class MapService {
         'get',
         `name_es`,
       ]);
+
+      //Build all clusters and layers
+      this.buildClustersAndLayers(this.initialGeoJson);
     });
 
     // Add event listeners for 'zoomstart' and 'touchstart' events
