@@ -50,14 +50,12 @@ export class MapFiltersComponent implements OnInit {
       );
     });
     this.filtersForm.valueChanges.subscribe((values: FormFilterValues) => {
-
       //Check if any value of form is setted to toggle the showFilters button
       if(values.type || values.soundPressure || values.days || values.hours){
         this.mapService.isFilterActive.next(true);
       } else {
         this.mapService.isFilterActive.next(false);
       }
-
       //I want to create a debounce
       if (this.debounceTimer) clearTimeout(this.debounceTimer);
       this.debounceTimer = setTimeout(() => {

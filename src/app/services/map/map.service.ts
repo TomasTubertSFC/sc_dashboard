@@ -62,10 +62,10 @@ export class MapService {
     this.observationsService.observations$.subscribe((observations) => {
       this.getAllMapObservations(observations);
     });
-    this.isFilterActive.subscribe((value) => {
+    this.isFilterActive.subscribe((isFilterActive) => {
       if (!this.map) return;
       let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
-      if (this.filteredGeoJSON.features.length > 0 && value) {
+      if (isFilterActive) {
         //update the geojson
         source.setData(this.filteredGeoJSON as FeatureCollection<Geometry>);
       } else {
