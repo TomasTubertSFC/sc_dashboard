@@ -1,0 +1,28 @@
+<p-toolbar #toolBar>
+  <ng-template pTemplate="start" class="min-w-max"> </ng-template>
+
+  <ng-template pTemplate="end">
+    <div class="flex gap-2">
+      <p-button
+        (onClick)="activeFilters()"
+        [ngClass]="{ active: isFilterActive }"
+        pTooltip="{{
+          isFilterActive ? 'Desactivar filtros' : 'Aplicar filtros'
+        }}"
+        tooltipPosition="bottom"
+      >
+        <i
+          class="pi"
+          [ngClass]="isFilterActive ? 'pi-filter' : 'pi-filter-slash'"
+        ></i>
+      </p-button>
+      <p-button
+        (onClick)="toggleShowFilters()"
+        [ngClass]="{ active: showFilters }"
+        tooltipPosition="bottom"
+      >
+        <i class="pi pi-sliders-h"></i>
+      </p-button>
+    </div>
+  </ng-template>
+</p-toolbar>

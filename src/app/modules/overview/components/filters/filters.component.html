@@ -1,0 +1,102 @@
+<p-sidebar
+  [(visible)]="showFilters"
+  [position]="'right'"
+  [modal]="false"
+  [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'"
+  [blockScroll]="false"
+  [closeOnEscape]="true"
+>
+  <form [formGroup]="filtersForm" class="flex flex-column p-1 pt-4 gap-2">
+    <div class="flex flex-column">
+      <p-checkbox
+        formControlName="days"
+        label="Dies"
+        [binary]="true"
+        [class]="'flex justify-content-between'"
+      />
+      <p-calendar
+        formControlName="daysFilter"
+        class="mt-3 mb-4 w-100 flex flex-column"
+        dateFormat="yyyy-mm-dd"
+        [panelStyleClass]="'card p-0'"
+        [inline]="true"
+        [selectionMode]="'range'"
+        *ngIf="filtersForm.value.days"
+      />
+    </div>
+    <div class="flex flex-column">
+      <p-checkbox
+        formControlName="hours"
+        label="Franja horària"
+        [binary]="true"
+        [class]="'flex justify-content-between'"
+      />
+      <div
+        class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
+        *ngIf="filtersForm.value.hours"
+      >
+        <small class="text-center mb-2">
+          @if(filtersForm.value.hoursFilter[0] ===
+          filtersForm.value.hoursFilter[1]){
+          {{ filtersForm.value.hoursFilter[0] }}:00h } @else {
+          {{ filtersForm.value.hoursFilter[0] }}:00h -
+          {{ filtersForm.value.hoursFilter[1] }}:00h }
+        </small>
+        <p-slider
+          formControlName="hoursFilter"
+          [step]="1"
+          [min]="0"
+          [max]="23"
+          [range]="true"
+          [className]="'ml-2 mb-2 mr-2'"
+        />
+      </div>
+    </div>
+    <div class="flex flex-column">
+      <p-checkbox
+        formControlName="type"
+        label="Tipus d'olor"
+        [binary]="true"
+        [class]="'flex justify-content-between'"
+      />
+      <div
+        formGroupName="typeFilter"
+        class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
+        *ngIf="filtersForm.value.type"
+      >
+        @for (type of typesFilter; track $index) {
+        <p-checkbox
+          formControlName="{{ type.id }}"
+          [label]="type.value"
+          [binary]="true"
+          [class]="'flex justify-content-start'"
+        />
+        }
+      </div>
+    </div>
+    <div class="flex flex-column">
+      <p-checkbox
+        formControlName="soundPressure"
+        label="Pressió sonora"
+        [binary]="true"
+        [class]="'flex justify-content-between'"
+      />
+      <div
+        class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
+        *ngIf="filtersForm.value.soundPressure"
+      >
+        <small class="text-center mb-2">
+          @if(filtersForm.value.soundPressureFilter === 85){ dBA >85 } @else {
+          dBA {{ filtersForm.value.soundPressureFilter }} }
+        </small>
+        <p-slider
+          formControlName="soundPressureFilter"
+          [step]="5"
+          [min]="35"
+          [max]="85"
+          [className]="'ml-2 mb-2 mr-2'"
+        />
+      </div>
+    </div>
+  </form>
+</p-sidebar>

@@ -1,0 +1,17 @@
+:host {
+  ::ng-deep {
+    .p-toolbar {
+      display: flex;
+      flex-wrap: nowrap;
+      border-radius: 12px;
+      position: absolute;
+      z-index: 100;
+      width: calc(100% - 1rem);
+      margin: 0.5rem;
+      background-color: transparent;
+      border: 0;
+      padding: 0.5rem;
+      transition: all 0.3s cubic-bezier(0, 0.6, 0.25, 1);
+    }
+  }
+}

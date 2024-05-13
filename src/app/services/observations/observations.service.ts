@@ -8,7 +8,7 @@ import { Observations } from '../../models/observations';
   providedIn: 'root',
 })
 export class ObservationsService {
-  observations$ = new Subject<any>();
+  observations$ = new Subject<Observations[]>();
 
   constructor(private http: HttpClient) {
     this.getAllObservations();

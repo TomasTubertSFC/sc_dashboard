@@ -8,19 +8,36 @@ import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
 import { PaginatorModule } from 'primeng/paginator';
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
-import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { OverviewToolBarComponent } from './components/tool-bar/tool-bar.component';
+import { OverviewFiltersComponent } from './components/filters/filters.component';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+import { SidebarModule } from 'primeng/sidebar';
+import { ToolbarModule } from 'primeng/toolbar';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
+import { SliderModule } from 'primeng/slider';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
     OverviewComponent,
-    SearchBarComponent,
-    SearchResultsComponent,
+    OverviewToolBarComponent,
+    OverviewFiltersComponent,
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    CheckboxModule,
+    SliderModule,
+    CalendarModule,
     CommonModule,
     ChartModule,
     DialogModule,
+    ButtonModule,
+    TooltipModule,
+    SidebarModule,
+    ToolbarModule,
     ProgressBarModule,
     ToastModule,
     DropdownModule,

@@ -1,3 +1,10 @@
-<div #mapDiv class="map-container">
-
-</div>
+<app-overview-tool-bar
+  [showFilters]="showFilters"
+  [isFilterActive]="activeFilters"
+  (toggleActiveFilters)="toogleActiveFilters()"
+/>
+<app-overview-filters
+  [showFilters]="showFilters"
+  [isFilterActive]="activeFilters"
+/>
+<div #mapDiv class="map-container"></div>
