@@ -63,7 +63,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     this.mapService.setMap(map);
 
+    //Build all the layers and add the sources empty
     this.mapService.initializeMap();
+
+    //Update the data of the sources added.
     this.mapService.getAllMapObservations();
   }
   ngOnDestroy(): void {
