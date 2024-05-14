@@ -64,9 +64,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.mapService.setMap(map);
 
     this.mapService.initializeMap();
-
+    this.mapService.getAllMapObservations();
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    this.mapService.map = null;
   }
 }

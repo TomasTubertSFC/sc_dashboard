@@ -6,7 +6,7 @@ import { MapObservation, ObservationGeoJSON } from '../../models/map';
 import mapboxgl, { LngLat, LngLatBounds, LngLatLike, Map } from 'mapbox-gl';
 import { Observations } from '../../models/observations';
 import { FeatureCollection, Geometry } from 'geojson';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, forkJoin } from 'rxjs';
 import { FormFilterValues } from '../../models/forms';
 
 @Injectable({
@@ -59,9 +59,7 @@ export class MapService {
     private http: HttpClient,
     private observationsService: ObservationsService
   ) {
-    this.observationsService.observations$.subscribe((observations) => {
-      this.getAllMapObservations(observations);
-    });
+    //Subscribe to know if the filter is active
     this.isFilterActive.subscribe((isFilterActive) => {
       if (!this.map) return;
       if (isFilterActive) {
@@ -75,24 +73,30 @@ export class MapService {
   }
 
   //Conseguir todos los olores en el constructor
-  public getAllMapObservations(observations: Observations[]): void {
+  public getAllMapObservations(): void {
+    if (this.mapObservations.length > 0){
+      this.updateSourceObservations(this.GeoJSON$.getValue());
+      return;
+    };
     this.http
-      .get<{ data: MapObservation[] }>(
-        `${environment.BACKEND_BASE_URL}/map/observations`
+      .get<{ data: Observations[] }>(
+        `${environment.BACKEND_BASE_URL}/observations`
       )
       .subscribe(({ data }) => {
-        const mapObs = data.map((obs, idx) => {
-          const observation = observations[idx];
+        const mapObs = data.map((obs) => {
           return {
-            ...obs,
-            created_at: new Date(observation.attributes.created_at),
-            types: observation.relationships.types.map((type) => type.id),
-            Leq: observation.attributes.Leq,
-            userType: observation.relationships.user.type,
-            quiet: observation.attributes.quiet,
+            id: obs.id,
+            user_id: obs.relationships.user.id,
+            latitude: obs.attributes.latitude,
+            longitude: obs.attributes.longitude,
+            created_at: new Date(obs.attributes.created_at),
+            types: obs.relationships.types.map((type) => type.id),
+            Leq: obs.attributes.Leq,
+            userType: obs.relationships.user.type,
+            quiet: obs.attributes.quiet,
           };
         });
-        
+
         this.mapObservations = mapObs;
         const geoJSON = this.createGeoJson(mapObs);
         this.GeoJSON$.next(geoJSON);
@@ -103,8 +107,10 @@ export class MapService {
   }
 
   public updateSourceObservations(geoJson: any) {
-    let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
-    source.setData(geoJson as FeatureCollection<Geometry>);
+    this.map.on('load', () => {
+      let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
+      source.setData(geoJson as FeatureCollection<Geometry>);
+    });
   }
 
   private createGeoJson(observations: MapObservation[]): ObservationGeoJSON {
@@ -468,7 +474,6 @@ export class MapService {
         'get',
         `name_es`,
       ]);
-
       //Build all clusters and layers
       this.buildClustersAndLayers(this.initialGeoJson);
     });
