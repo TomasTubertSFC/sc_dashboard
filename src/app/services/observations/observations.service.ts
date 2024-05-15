@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Observations } from '../../models/observations';
 
 @Injectable({
@@ -18,16 +18,15 @@ export class ObservationsService {
 
   //TODO VER QUE HAGO CON ESTO
   constructor(private http: HttpClient) {
-    this.getAllObservations();
+    // this.getAllObservations();
   }
 
-  public getAllObservations(): void {
-    this.http
-      .get<{ success: string; data: Observations[] }>(
-        `${environment.BACKEND_BASE_URL}/observations`
-      )
-      .subscribe(({ data }) => {
-        this.observations$.next(data);
-      });
+  public getAllObservations(): Observable<{
+    success: string;
+    data: Observations[];
+  }> {
+    return this.http.get<{ success: string; data: Observations[] }>(
+      `${environment.BACKEND_BASE_URL}/observations`
+    );
   }
 }

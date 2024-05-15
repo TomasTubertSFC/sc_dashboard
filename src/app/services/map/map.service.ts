@@ -75,9 +75,11 @@ export class MapService {
   //Conseguir todos los olores en el constructor
   public getAllMapObservations(): void {
     if (this.mapObservations.length > 0){
+      console.log('if',this.GeoJSON$.getValue())
       this.updateSourceObservations(this.GeoJSON$.getValue());
       return;
     };
+    console.log('http')
     this.http
       .get<{ data: Observations[] }>(
         `${environment.BACKEND_BASE_URL}/observations`
@@ -100,17 +102,15 @@ export class MapService {
         this.mapObservations = mapObs;
         const geoJSON = this.createGeoJson(mapObs);
         this.GeoJSON$.next(geoJSON);
-
+        console.log('GeoJson', geoJSON)
         //update the source observations at map
         this.updateSourceObservations(geoJSON);
       });
   }
 
   public updateSourceObservations(geoJson: any) {
-    this.map.on('load', () => {
       let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
       source.setData(geoJson as FeatureCollection<Geometry>);
-    });
   }
 
   private createGeoJson(observations: MapObservation[]): ObservationGeoJSON {

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+  inject,
+} from '@angular/core';
 import * as echarts from 'echarts/core';
 import {
   TitleComponent,
@@ -11,7 +17,7 @@ import {
   VisualMapComponentOption,
   GeoComponent,
   GeoComponentOption,
-  DataZoomComponent
+  DataZoomComponent,
 } from 'echarts/components';
 import { MapChart, MapSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -35,6 +41,11 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
   myChart!: echarts.ECharts;
   options: EChartsOption;
   http: HttpClient = inject(HttpClient);
+  
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.myChart.resize();
+  }
 
   ngOnInit(): void {
     echarts.use([
@@ -45,7 +56,7 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
       GeoComponent,
       MapChart,
       CanvasRenderer,
-      DataZoomComponent
+      DataZoomComponent,
     ]);
   }
 
