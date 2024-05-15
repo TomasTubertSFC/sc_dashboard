@@ -12,11 +12,9 @@ import {
   signal,
 } from '@angular/core';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 import mapboxgl, { Map } from 'mapbox-gl';
 import { MapService } from '../../../services/map/map.service';
-import { FeatureCollection, Geometry } from 'geojson';
 import { Subscription } from 'rxjs';
 
 @Component({

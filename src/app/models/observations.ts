@@ -31,7 +31,7 @@ export interface ObservationsAttributes {
     temperature:            string;
     pressure:               number | string;
     user_id:                string;
-    created_at:             Date;
+    created_at:             string;
     updated_at:             Date;
     roughtness_R?:          string;
 }

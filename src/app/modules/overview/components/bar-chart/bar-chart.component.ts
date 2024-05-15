@@ -14,10 +14,9 @@ type EChartsOption = echarts.ComposeOption<
 >;
 
 interface ObservationsDataChart {
-  date: string;
-  observations: Observations[];
+  date: Date;
+  obs: Observations[];
   count: number;
-  month: number;
 }
 
 @Component({
@@ -54,44 +53,50 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       this.observationService.getAllObservations()
     );
     const data = response.data;
-console.log('data[0]', data[0], new Date(data[0].attributes.created_at))
+
     const arrGroupObsByDays = data.reduce(
-      (acc: { [key: string]: any[] }, observation, idx) => {
-        // Add index signature to the type of acc
-        const date = new Date(observation.attributes.created_at).toDateString();
-        // console.log(date, idx);
-        if (!acc[date]) {
-          acc[date] = [];
+      (
+        acc: {
+          [key: string]: { date: Date; obs: Observations[]; count: number };
+        },
+        observation,
+        idx
+      ) => {
+        const splitedDate = observation.attributes.created_at
+          .split(' ')[0]
+          .split('-');
+        const formatedDate = new Date(
+          Number(splitedDate[0]),
+          Number(splitedDate[1]) - 1,
+          Number(splitedDate[2])
+        );
+        // console.log('formatedDate', formatedDate);
+        const key = formatedDate.toDateString(); // Convert the date to a string for use as the index
+        if (!acc[key]) {
+          acc[key] = { date: formatedDate, obs: [], count: 0 };
         }
-        acc[date].push(observation);
+        acc[key].obs.push(observation);
         return acc;
       },
       {}
     );
 
-    const arrSorted = Object.entries(arrGroupObsByDays)
-      .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
-      .map(([date, observations]) => ({
-        date: new Date(date).toLocaleDateString('ca-ES', {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-        }),
-        observations,
-        count: observations.length,
-        month: new Date(date).getMonth() + 1,
+    console.log('arrGroupObsByDays', arrGroupObsByDays);
+    const arrSorted = Object.values(arrGroupObsByDays)
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .map((obs) => ({
+        ...obs,
+        count: obs.obs.length,
       }));
 
     this.observations = arrSorted;
-    return arrSorted.filter((obs) => {
-      const isBeforeToday = this.today >= new Date(obs.date);
-      const isAfterLastDay30 = this.lastDay30 <= new Date(obs.date);
-      console.log('obs.date', obs.date, new Date(obs.date));
-      console.log('isBeforeToday', isAfterLastDay30);
-      console.log('isAfterLastDay30', isBeforeToday);
+    const arr30DaysBefore = arrSorted.filter((obs) => {
+      const isBeforeToday = obs.date <= this.today;
+      const isAfterLastDay30 = obs.date >= this.lastDay30 ;
       if (isBeforeToday && isAfterLastDay30) return true;
       return false;
     });
+    return arr30DaysBefore;
   }
 
   //Faltaría añadir el filtro por fechas que por defecto lo dejaría en los últimos 30 días.
@@ -100,14 +105,12 @@ console.log('data[0]', data[0], new Date(data[0].attributes.created_at))
     this.myChart = echarts.init(chartDom);
     this.myChart.showLoading();
     const obs = await this.getAllObservationsAndFormated();
-    console.log(
-      'obs.map((obs) => obs.date)',
-      obs.map((obs) => obs.date)
-    );
+
+    console.log('obs', obs);
     this.options = {
       xAxis: {
         type: 'category',
-        data: obs.map((obs) => obs.date),
+        data: obs.map((obs) => obs.date.toDateString()),
       },
       yAxis: {
         type: 'value',

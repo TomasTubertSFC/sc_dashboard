@@ -55,10 +55,7 @@ export class MapService {
     clusterMaxZoom: 17,
   };
 
-  constructor(
-    private http: HttpClient,
-    private observationsService: ObservationsService
-  ) {
+  constructor(private http: HttpClient) {
     //Subscribe to know if the filter is active
     this.isFilterActive.subscribe((isFilterActive) => {
       if (!this.map) return;
@@ -74,12 +71,10 @@ export class MapService {
 
   //Conseguir todos los olores en el constructor
   public getAllMapObservations(): void {
-    if (this.mapObservations.length > 0){
-      console.log('if',this.GeoJSON$.getValue())
+    if (this.mapObservations.length > 0) {
       this.updateSourceObservations(this.GeoJSON$.getValue());
       return;
-    };
-    console.log('http')
+    }
     this.http
       .get<{ data: Observations[] }>(
         `${environment.BACKEND_BASE_URL}/observations`
@@ -102,15 +97,24 @@ export class MapService {
         this.mapObservations = mapObs;
         const geoJSON = this.createGeoJson(mapObs);
         this.GeoJSON$.next(geoJSON);
-        console.log('GeoJson', geoJSON)
         //update the source observations at map
         this.updateSourceObservations(geoJSON);
       });
   }
 
   public updateSourceObservations(geoJson: any) {
+    let isSource = !!this.map.getSource('observations');
+    if (isSource) {
       let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
       source.setData(geoJson as FeatureCollection<Geometry>);
+    } else {
+      this.map.on('load', () => {
+        let source = this.map.getSource(
+          'observations'
+        ) as mapboxgl.GeoJSONSource;
+        source.setData(geoJson as FeatureCollection<Geometry>);
+      });
+    }
   }
 
   private createGeoJson(observations: MapObservation[]): ObservationGeoJSON {
@@ -451,7 +455,7 @@ export class MapService {
       },
     });
   }
-
+  //TODO MAKE A LOADING FOR MAP
   public initializeMap(): void {
     if (!this.isMapReady) return;
 
