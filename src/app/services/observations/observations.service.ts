@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { BehaviorSubject, Observable, map, filter } from 'rxjs';
-import { Observations } from '../../models/observations';
+import { Observations, ObservationsDataChart } from '../../models/observations';
 import { MapObservation } from '../../models/map';
 
 @Injectable({
@@ -19,8 +19,7 @@ export class ObservationsService {
     return this.observations$.getValue();
   }
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public getAllObservations(): Observable<{
     success: string;
@@ -58,6 +57,48 @@ export class ObservationsService {
           quiet: obs.attributes.quiet,
         }))
       )
+    );
+  }
+
+  public getAllObservationsFormated(): Observable<ObservationsDataChart[]> {
+    return this.observations$.pipe(
+      filter((value) => value.length > 0),
+      map((observations) => {
+        const arrGroupObsByDays = observations.reduce(
+          (
+            acc: {
+              [key: string]: { date: Date; obs: Observations[]; count: number };
+            },
+            observation,
+            idx
+          ) => {
+            const splitedDate = observation.attributes.created_at
+              .split(' ')[0]
+              .split('-');
+            const formatedDate = new Date(
+              Number(splitedDate[0]),
+              Number(splitedDate[1]) - 1,
+              Number(splitedDate[2])
+            );
+            const key = formatedDate.toDateString(); // Convert the date to a string for use as the index
+            if (!acc[key]) {
+              acc[key] = { date: formatedDate, obs: [], count: 0 };
+            }
+            acc[key].obs.push(observation);
+            return acc;
+          },
+          {}
+        );
+        const arrSorted = Object.values(arrGroupObsByDays)
+          .sort(
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+          )
+          .map((obs) => ({
+            ...obs,
+            count: obs.obs.length,
+          }));
+        return arrSorted;
+      })
     );
   }
 }

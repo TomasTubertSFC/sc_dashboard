@@ -5,6 +5,12 @@ export interface Observations {
     relationships: ObservationsRelationships;
 }
 
+export interface ObservationsDataChart {
+    date: Date;
+    obs: Observations[];
+    count: number;
+  }
+
 export interface ObservationsAttributes {
     Leq:                    string;
     LAeqT:                  string[] | string;
