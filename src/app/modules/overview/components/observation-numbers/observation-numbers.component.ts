@@ -7,30 +7,21 @@ import { ObservationsService } from '../../../../services/observations/observati
   styleUrl: './observation-numbers.component.scss',
 })
 export class ObservationNumbersComponent implements OnInit {
-
   private observationService: ObservationsService = inject(ObservationsService);
-
+  dataGenre!: { genre: string; value: number }[];
+  dataAge!: { age: string; value: number }[];
+  averageObsPerUser!: number;
+  totalUsers!: number;
+  totalObs!:number;
 
   ngOnInit(): void {
     this.observationService.getAllObservationsNumbers().subscribe((data) => {
-      console.log('data', data);
+      this.dataGenre = data.observationsByGender
+      this.dataAge = data.observationsByAge
+      this.averageObsPerUser = data.averageObservationsPerUser.toFixed(2)
+      this.totalUsers = data.numberOfDifferentUsers
+      this.totalObs = data.totalObservations
     });
   }
 
-
-  dataGenre: any[] = [
-    { genre: 'Dones', value: '25%' },
-    { genre: 'Homes', value: '25%' },
-    { genre: 'Altres', value: '25%' },
-    { genre: 'No binario', value: '24%' },
-    { genre: 'Prefereixo no dir-ho', value: '1%' },
-  ];
-
-  dataAge: any[] = [
-    { age: '18', value: '20%' },
-    { age: '19-34', value: '25%' },
-    { age: '30-40', value: '24%' },
-    { age: '40-50', value: '1%' },
-    { age: '>50', value: '1%' },
-  ];
 }

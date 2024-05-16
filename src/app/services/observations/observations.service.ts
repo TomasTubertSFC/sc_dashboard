@@ -98,8 +98,12 @@ export class ObservationsService {
           numberOfDifferentUsers,
           totalObservations,
           averageObservationsPerUser,
-          observationsByGender,
-          observationsByAge,
+          observationsByGender: Object.entries(observationsByGender).map(
+            ([genre, value]) => ({ genre, value })
+          ),
+          observationsByAge: Object.entries(observationsByAge).map(
+            ([age, value]) => ({ age, value })
+          ),
         };
       })
     );
