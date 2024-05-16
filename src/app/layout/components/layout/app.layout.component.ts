@@ -22,9 +22,17 @@ interface LayoutState {
   selector: 'app-layout',
   templateUrl: './app.layout.component.html',
 })
-export class AppLayoutComponent {
+export class AppLayoutComponent implements OnInit, OnDestroy {
   mapService = inject(MapService);
   observationService = inject(ObservationsService);
 
   loading: boolean = false;
+
+  ngOnInit(): void {
+    this.observationService.loading$.subscribe((value) => {
+      this.loading = value;
+    });
+  }
+  
+  ngOnDestroy(): void {}
 }

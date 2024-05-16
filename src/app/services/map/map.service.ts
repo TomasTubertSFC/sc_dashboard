@@ -6,7 +6,7 @@ import { MapObservation, ObservationGeoJSON } from '../../models/map';
 import mapboxgl, { LngLat, LngLatBounds, LngLatLike, Map } from 'mapbox-gl';
 import { Observations } from '../../models/observations';
 import { FeatureCollection, Geometry } from 'geojson';
-import { BehaviorSubject, Subject, forkJoin } from 'rxjs';
+import { BehaviorSubject, Subject, filter, first, forkJoin, last, Subscription } from 'rxjs';
 import { FormFilterValues } from '../../models/forms';
 
 @Injectable({
@@ -55,7 +55,7 @@ export class MapService {
     clusterMaxZoom: 17,
   };
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private observationsService: ObservationsService) {
     //Subscribe to know if the filter is active
     this.isFilterActive.subscribe((isFilterActive) => {
       if (!this.map) return;
@@ -75,31 +75,13 @@ export class MapService {
       this.updateSourceObservations(this.GeoJSON$.getValue());
       return;
     }
-    this.http
-      .get<{ data: Observations[] }>(
-        `${environment.BACKEND_BASE_URL}/observations`
-      )
-      .subscribe(({ data }) => {
-        const mapObs = data.map((obs) => {
-          return {
-            id: obs.id,
-            user_id: obs.relationships.user.id,
-            latitude: obs.attributes.latitude,
-            longitude: obs.attributes.longitude,
-            created_at: new Date(obs.attributes.created_at),
-            types: obs.relationships.types.map((type) => type.id),
-            Leq: obs.attributes.Leq,
-            userType: obs.relationships.user.type,
-            quiet: obs.attributes.quiet,
-          };
-        });
-
-        this.mapObservations = mapObs;
-        const geoJSON = this.createGeoJson(mapObs);
-        this.GeoJSON$.next(geoJSON);
-        //update the source observations at map
-        this.updateSourceObservations(geoJSON);
-      });
+    this.observationsService.getAllMapObservations().subscribe((data) => {
+      this.mapObservations = data;
+      const geoJSON = this.createGeoJson(data);
+      this.GeoJSON$.next(geoJSON);
+      //update the source observations at map
+      this.updateSourceObservations(geoJSON);
+    })
   }
 
   public updateSourceObservations(geoJson: any) {
