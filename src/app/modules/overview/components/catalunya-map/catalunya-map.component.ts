@@ -43,6 +43,10 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
   options: EChartsOption;
   http: HttpClient = inject(HttpClient);
   observationService: ObservationsService = inject(ObservationsService);
+  loadingOptions = {
+    text: 'Carregant...',
+    color: '#FF7A1F',
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -65,14 +69,13 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const chartDom = document.getElementById('chart-container');
     this.myChart = echarts.init(chartDom);
-    this.myChart.showLoading();
+    this.myChart.showLoading('default', this.loadingOptions);
     this.observationService
       .getAllObservationsByRegion()
       .subscribe(({ values, geojson }) => {
-        this.myChart.hideLoading();
         echarts.registerMap('CATALUNYA', geojson);
-        const max = Math.max(...values.map((v:any) => v.value));
-        const min = Math.min(...values.map((v:any) => v.value));
+        const max = Math.max(...values.map((v: any) => v.value));
+        const min = Math.min(...values.map((v: any) => v.value));
         this.options = {
           title: {
             text: 'Observacions per comarques',
@@ -125,6 +128,8 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
             },
           ],
         };
+        this.myChart.hideLoading();
+        this.myChart.resize();
         this.myChart.setOption(this.options);
       });
     this.options && this.myChart.setOption(this.options);

@@ -11,7 +11,6 @@ import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { Observations } from '../../../../models/observations';
-import { lastValueFrom } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 
 type EChartsOption = echarts.ComposeOption<
@@ -42,6 +41,10 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
+  };
+  private loadingOptions = {
+    text: 'Carregant...',
+    color: '#FF7A1F',
   };
 
   private observationService: ObservationsService = inject(ObservationsService);
@@ -93,7 +96,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
   async ngAfterViewInit(): Promise<void> {
     const chartDom = document.getElementById('bar-chart-container');
     this.myChart = echarts.init(chartDom);
-    this.myChart.showLoading();
+    this.myChart.showLoading('default', this.loadingOptions);
     this.observationService.getAllObservationsFormated().subscribe((data) => {
       this.observations = data;
       const arr30DaysBefore = data.filter((obs) => {
