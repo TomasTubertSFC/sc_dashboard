@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
-import { BehaviorSubject, Observable, map, filter } from 'rxjs';
+import { BehaviorSubject, Observable, map, filter, switchMap } from 'rxjs';
 import { Observations, ObservationsDataChart } from '../../models/observations';
-import { MapObservation } from '../../models/map';
+import { Feature, MapObservation } from '../../models/map';
+import * as turf from '@turf/turf';
 
 @Injectable({
   providedIn: 'root',
@@ -89,6 +90,58 @@ export class ObservationsService {
             count: obs.obs.length,
           }));
         return arrSorted;
+      })
+    );
+  }
+
+  // public getAllObservationsByRegion(): Observable<any> {
+  //   return this.observations$.pipe(
+  //     filter((value) => value.length > 0),
+  //     map((observations) => {
+  //       const catalunyaGeoJsonUrl = '../../../assets/shapefiles_catalunya_comarcas.geojson'
+  //       let catalunyaGeoJson;
+  //       this.http.get<any>(catalunyaGeoJsonUrl).subscribe((geoJson) => {
+  //         catalunyaGeoJson = geoJson;
+  //       });
+  //       console.log('catalunyaGeoJson', catalunyaGeoJson)
+  //       // observations.map((obs) => ({
+  //       //   let point = turf.point([Number(obs.attributes.longitude), Number(obs.attributes.latitude)])
+
+  //       // }))
+  //     }
+  //     )
+  //   );
+  // }
+
+  public getAllObservationsByRegion(): Observable<any> {
+    return this.observations$.pipe(
+      filter((value) => value.length > 0),
+      switchMap((observations) => {
+        const catalunyaGeoJsonUrl =
+          '../../../assets/shapefiles_catalunya_comarcas.geojson';
+        return this.http.get<any>(catalunyaGeoJsonUrl).pipe(
+          map((catalunyaGeoJson) => {
+            //Por cada comarca quiero que encuentre las observaciones que le tocan
+            const values = catalunyaGeoJson.features.map((comarca: any) => {
+              const obsCount = observations.filter((obs) => {
+                let point = turf.point([
+                  Number(obs.attributes.longitude),
+                  Number(obs.attributes.latitude),
+                ]);
+                const isInside = turf.booleanPointInPolygon(point, comarca);
+                return isInside;
+              }).length;
+              return {
+                name: comarca.properties.name,
+                value: obsCount,
+              };
+            });
+            return {
+              geojson: catalunyaGeoJson,
+              values: values,
+            };
+          })
+        );
       })
     );
   }
