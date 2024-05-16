@@ -1,11 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { ObservationsService } from '../../../../services/observations/observations.service';
 
 @Component({
   selector: 'app-observation-numbers',
   templateUrl: './observation-numbers.component.html',
   styleUrl: './observation-numbers.component.scss',
 })
-export class ObservationNumbersComponent {
+export class ObservationNumbersComponent implements OnInit {
+
+  private observationService: ObservationsService = inject(ObservationsService);
+
+
+  ngOnInit(): void {
+    this.observationService.getAllObservationsNumbers().subscribe((data) => {
+      console.log('data', data);
+    });
+  }
+
+
   dataGenre: any[] = [
     { genre: 'Dones', value: '25%' },
     { genre: 'Homes', value: '25%' },

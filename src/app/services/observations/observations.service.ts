@@ -16,10 +16,6 @@ export class ObservationsService {
 
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  get observations(): Observations[] {
-    return this.observations$.getValue();
-  }
-
   constructor(private http: HttpClient) {}
 
   public getAllObservations(): void {
@@ -28,9 +24,85 @@ export class ObservationsService {
         `${environment.BACKEND_BASE_URL}/observations`
       )
       .subscribe(({ data }) => {
+        console.log('data', data[0]);
         this.observations$.next(data);
         this.loading$.next(false);
       });
+  }
+
+  public getAllObservationsNumbers(): Observable<any> {
+    return this.observations$.pipe(
+      filter((value) => value.length > 0),
+      map((observations) => {
+        const observationsByUser: { [key: string]: number } =
+          observations.reduce((acc, obs) => {
+            const userId = obs.relationships.user.id;
+            if (!acc[userId]) {
+              acc[userId] = 0;
+            }
+            acc[userId]++;
+            return acc;
+          }, {} as { [key: string]: number });
+        const observationsByGender: { [key: string]: number } =
+          observations.reduce((acc, obs) => {
+            const gender = obs.relationships.user.attributes.profile.gender;
+            if (!acc[gender]) {
+              acc[gender] = 0;
+            }
+            acc[gender]++;
+            return acc;
+          }, {} as { [key: string]: number });
+
+        const numberOfDifferentUsers = Object.keys(observationsByUser).length;
+        const totalObservations = Object.values(observationsByUser).reduce(
+          (a, b) => a + b,
+          0
+        );
+        const averageObservationsPerUser =
+          totalObservations / numberOfDifferentUsers;
+        const observationsByAge = {
+          '<18': 0,
+          '18-30': 0,
+          '30-40': 0,
+          '40-50': 0,
+          '>50': 0,
+        };
+
+        const uniqueUserProfiles = Object.keys(observationsByUser).map(
+          (userId) => {
+            // console.log('userId', userId)
+            const userProfile = observations.find(
+              (obs) => obs.relationships.user.id === userId
+            )?.relationships.user.attributes.profile;
+            const birthYear = userProfile?.birthYear as number;
+            const year = new Date().getFullYear();
+            const yearsOld = year - birthYear;
+            return { ...userProfile, yearsOld };
+          }
+        );
+
+        uniqueUserProfiles.forEach((user) => {
+          if (user.yearsOld < 18) {
+            observationsByAge['<18']++;
+          } else if (user.yearsOld >= 18 && user.yearsOld < 30) {
+            observationsByAge['18-30']++;
+          } else if (user.yearsOld >= 30 && user.yearsOld < 40) {
+            observationsByAge['30-40']++;
+          } else if (user.yearsOld >= 40 && user.yearsOld < 50) {
+            observationsByAge['40-50']++;
+          } else {
+            observationsByAge['>50']++;
+          }
+        });
+        return {
+          numberOfDifferentUsers,
+          totalObservations,
+          averageObservationsPerUser,
+          observationsByGender,
+          observationsByAge,
+        };
+      })
+    );
   }
 
   public getAllMapObservations(): Observable<MapObservation[]> {
@@ -94,26 +166,10 @@ export class ObservationsService {
     );
   }
 
-  // public getAllObservationsByRegion(): Observable<any> {
-  //   return this.observations$.pipe(
-  //     filter((value) => value.length > 0),
-  //     map((observations) => {
-  //       const catalunyaGeoJsonUrl = '../../../assets/shapefiles_catalunya_comarcas.geojson'
-  //       let catalunyaGeoJson;
-  //       this.http.get<any>(catalunyaGeoJsonUrl).subscribe((geoJson) => {
-  //         catalunyaGeoJson = geoJson;
-  //       });
-  //       console.log('catalunyaGeoJson', catalunyaGeoJson)
-  //       // observations.map((obs) => ({
-  //       //   let point = turf.point([Number(obs.attributes.longitude), Number(obs.attributes.latitude)])
-
-  //       // }))
-  //     }
-  //     )
-  //   );
-  // }
-
-  public getAllObservationsByRegion(): Observable<any> {
+  public getAllObservationsByRegion(): Observable<{
+    geojson: any;
+    values: { name: string; value: number }[];
+  }> {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
       switchMap((observations) => {
@@ -121,7 +177,6 @@ export class ObservationsService {
           '../../../assets/shapefiles_catalunya_comarcas.geojson';
         return this.http.get<any>(catalunyaGeoJsonUrl).pipe(
           map((catalunyaGeoJson) => {
-            //Por cada comarca quiero que encuentre las observaciones que le tocan
             const values = catalunyaGeoJson.features.map((comarca: any) => {
               const obsCount = observations.filter((obs) => {
                 let point = turf.point([
