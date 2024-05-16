@@ -10,6 +10,6 @@ export class AppComponent {
 
 
   ngOnInit(): void {
-    this.observationService.getAllObservationsT();
+    this.observationService.getAllObservations();
   }
 }

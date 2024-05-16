@@ -38,6 +38,11 @@ export class BarChartComponent implements OnInit, AfterViewInit {
   private lastDay30: Date = new Date(
     new Date().setDate(this.today.getDate() - 30)
   );
+  private dateOptions: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  };
 
   private observationService: ObservationsService = inject(ObservationsService);
 
@@ -65,7 +70,9 @@ export class BarChartComponent implements OnInit, AfterViewInit {
           this.options = {
             xAxis: {
               type: 'category',
-              data: this.obsFiltered.map((obs) => obs.date.toDateString()),
+              data: this.obsFiltered.map((obs) =>
+                obs.date.toLocaleDateString('ca-Es', this.dateOptions)
+              ),
             },
             yAxis: {
               type: 'value',
@@ -87,11 +94,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     const chartDom = document.getElementById('bar-chart-container');
     this.myChart = echarts.init(chartDom);
     this.myChart.showLoading();
-    const dateOptions: Intl.DateTimeFormatOptions = {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    };
     this.observationService.getAllObservationsFormated().subscribe((data) => {
       this.observations = data;
       const arr30DaysBefore = data.filter((obs) => {
@@ -100,6 +102,9 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         if (isBeforeToday && isAfterLastDay30) return true;
         return false;
       });
+      // console.log('first', arr30DaysBefore.map((obs) =>
+      //   obs.date.toLocaleDateString('ca-Es', dateOptions)
+      // ))
       this.options = {
         tooltip: {
           trigger: 'axis',
@@ -114,7 +119,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         xAxis: {
           type: 'category',
           data: arr30DaysBefore.map((obs) =>
-            obs.date.toLocaleDateString('ca-Es', dateOptions)
+            obs.date.toLocaleDateString('ca-Es', this.dateOptions)
           ),
           axisLabel: {
             interval: 0, // This forces displaying all labels
@@ -132,9 +137,8 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         ],
       };
       this.myChart.hideLoading();
-  
+
       this.options && this.myChart.setOption(this.options);
     });
-
   }
 }

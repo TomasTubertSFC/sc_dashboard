@@ -21,15 +21,7 @@ export class ObservationsService {
 
   constructor(private http: HttpClient) {}
 
-  public getAllObservations(): Observable<{
-    success: string;
-    data: Observations[];
-  }> {
-    return this.http.get<{ success: string; data: Observations[] }>(
-      `${environment.BACKEND_BASE_URL}/observations`
-    );
-  }
-  public getAllObservationsT(): void {
+  public getAllObservations(): void {
     this.http
       .get<{ success: string; data: Observations[] }>(
         `${environment.BACKEND_BASE_URL}/observations`
@@ -37,7 +29,6 @@ export class ObservationsService {
       .subscribe(({ data }) => {
         this.observations$.next(data);
         this.loading$.next(false);
-        console.log('done');
       });
   }
 
