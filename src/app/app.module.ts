@@ -10,7 +10,6 @@ import { authInterceptorProviders } from './interceptor/auth.interceptor';
 import { initializeInterceptorProvider } from './helpers/intializeApp';
 import { RecoverPasswordModule } from './modules/recover-password/recover-password.module';
 import { ProfileModule } from './modules/profile/profile.module';
-import { LandingModule } from './modules/landing/landing.module';
 import { MapModule } from './modules/map/map.module';
 import { LoginModule } from './modules/login/login.module';
 import { MessageService } from 'primeng/api';
@@ -27,7 +26,6 @@ import { OverviewModule } from './modules/overview/overview.module';
     LoginModule,
     RecoverPasswordModule,
     ProfileModule,
-    LandingModule,
     MapModule,
     OverviewModule,
     HttpClientXsrfModule.withOptions({
