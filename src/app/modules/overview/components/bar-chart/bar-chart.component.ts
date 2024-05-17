@@ -10,18 +10,12 @@ import { GridComponent, GridComponentOption } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ObservationsService } from '../../../../services/observations/observations.service';
-import { Observations } from '../../../../models/observations';
+import { Observations, ObservationsDataChart } from '../../../../models/observations';
 import { FormControl, FormGroup } from '@angular/forms';
 
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | BarSeriesOption
 >;
-
-interface ObservationsDataChart {
-  date: Date;
-  obs: Observations[];
-  count: number;
-}
 
 @Component({
   selector: 'app-bar-chart',
@@ -65,8 +59,8 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         const haveTwoDaysSelected = values.daysFilter[1] !== null;
         if (haveTwoDaysSelected) {
           this.obsFiltered = this.observations.filter((obs) => {
-            const isBeforeToday = obs.date <= values.daysFilter[1];
-            const isAfterLastDay30 = obs.date >= values.daysFilter[0];
+            const isBeforeToday = new Date (obs.date) <= values.daysFilter[1];
+            const isAfterLastDay30 = new Date(obs.date) >= values.daysFilter[0];
             if (isBeforeToday && isAfterLastDay30) return true;
             return false;
           });
@@ -74,7 +68,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             xAxis: {
               type: 'category',
               data: this.obsFiltered.map((obs) =>
-                obs.date.toLocaleDateString('ca-Es', this.dateOptions)
+                obs.date
               ),
             },
             yAxis: {
@@ -99,15 +93,14 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     this.myChart.showLoading('default', this.loadingOptions);
     this.observationService.getAllObservationsFormated().subscribe((data) => {
       this.observations = data;
+
       const arr30DaysBefore = data.filter((obs) => {
-        const isBeforeToday = obs.date <= this.today;
-        const isAfterLastDay30 = obs.date >= this.lastDay30;
+        const isBeforeToday = new Date(obs.date) <= this.today;
+        const isAfterLastDay30 = new Date(obs.date) >= this.lastDay30;
         if (isBeforeToday && isAfterLastDay30) return true;
         return false;
       });
-      // console.log('first', arr30DaysBefore.map((obs) =>
-      //   obs.date.toLocaleDateString('ca-Es', dateOptions)
-      // ))
+
       this.options = {
         tooltip: {
           trigger: 'axis',
@@ -115,14 +108,13 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             type: 'cross',
           },
           formatter: function (params: any) {
-            console.log('params', params);
             return params[0].data + ' ';
           },
         },
         xAxis: {
           type: 'category',
           data: arr30DaysBefore.map((obs) =>
-            obs.date.toLocaleDateString('ca-Es', this.dateOptions)
+            obs.date
           ),
           axisLabel: {
             interval: 0, // This forces displaying all labels

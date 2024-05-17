@@ -24,7 +24,6 @@ export class ObservationsService {
         `${environment.BACKEND_BASE_URL}/observations`
       )
       .subscribe(({ data }) => {
-        console.log('data', data[0]);
         this.observations$.next(data);
         this.loading$.next(false);
       });
@@ -70,7 +69,6 @@ export class ObservationsService {
 
         const uniqueUserProfiles = Object.keys(observationsByUser).map(
           (userId) => {
-            // console.log('userId', userId)
             const userProfile = observations.find(
               (obs) => obs.relationships.user.id === userId
             )?.relationships.user.attributes.profile;
@@ -132,40 +130,64 @@ export class ObservationsService {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
       map((observations) => {
-        const arrGroupObsByDays = observations.reduce(
-          (
-            acc: {
-              [key: string]: { date: Date; obs: Observations[]; count: number };
-            },
-            observation,
-            idx
-          ) => {
-            const splitedDate = observation.attributes.created_at
-              .split(' ')[0]
-              .split('-');
-            const formatedDate = new Date(
-              Number(splitedDate[0]),
-              Number(splitedDate[1]) - 1,
-              Number(splitedDate[2])
-            );
-            const key = formatedDate.toDateString(); // Convert the date to a string for use as the index
-            if (!acc[key]) {
-              acc[key] = { date: formatedDate, obs: [], count: 0 };
-            }
-            acc[key].obs.push(observation);
-            return acc;
-          },
-          {}
-        );
-        const arrSorted = Object.values(arrGroupObsByDays)
+        const arrOfDaysObservationsCout = observations
           .sort(
-            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+            (a, b) =>
+              new Date(a.attributes.created_at).getTime() -
+              new Date(b.attributes.created_at).getTime()
           )
-          .map((obs) => ({
-            ...obs,
-            count: obs.obs.length,
-          }));
-        return arrSorted;
+          .reduce(
+            (
+              acc: {
+                [key: string]: {
+                  date: string;
+                  obs: Observations[];
+                  count: number;
+                };
+              },
+              obs
+            ) => {
+              const key = obs.attributes.created_at.split(' ')[0];
+              if (!acc[key]) {
+                acc[key] = {
+                  date: obs.attributes.created_at,
+                  obs: [],
+                  count: 0,
+                };
+              }
+              acc[key].obs.push(obs);
+              acc[key].count++;
+              return acc;
+            },
+            {}
+          );
+
+        const arrOfDays = Object.values(arrOfDaysObservationsCout);
+        let firstDay = new Date(arrOfDays[0].date);
+        let lastDay = new Date(arrOfDays[arrOfDays.length - 1].date);
+
+        let currentDate = new Date(firstDay.setHours(0, 0, 0, 0));
+        let endDay = new Date(lastDay.setHours(0, 0, 0, 0));
+        let allDays = [];
+
+        while (currentDate <= endDay) {
+          const dayValue = arrOfDays.find((value) => {
+            const valueDate = new Date(value.date).setHours(0, 0, 0, 0);
+            return valueDate === currentDate.getTime();
+          });
+          if (!!dayValue) {
+            allDays.push({ ...dayValue, date: dayValue.date.split(' ')[0] });
+          } else {
+            const day = currentDate.toISOString().split('T')[0];
+            allDays.push({
+              date: day,
+              count: 0,
+              obs: [],
+            });
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return allDays;
       })
     );
   }

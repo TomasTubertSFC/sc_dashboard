@@ -6,7 +6,7 @@ export interface Observations {
 }
 
 export interface ObservationsDataChart {
-    date: Date;
+    date: string;
     obs: Observations[];
     count: number;
   }
