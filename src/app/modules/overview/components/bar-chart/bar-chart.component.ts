@@ -100,6 +100,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         if (isBeforeToday && isAfterLastDay30) return true;
         return false;
       });
+      
 
       this.options = {
         tooltip: {
