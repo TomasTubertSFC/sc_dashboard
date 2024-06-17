@@ -1,16 +1,4 @@
 services:
-  nginx:
-    image: dockersfc/soundcollect-dash-nginx:${IMAGE_TAG}
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt/:ro
-      - ./certbot/www/:/var/www/certbot/:ro
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - frontend
-
   certbot:
     image: certbot/certbot:latest
     volumes:
@@ -19,7 +7,13 @@ services:
 
   frontend:
     image: dockersfc/soundcollect-dash-frontend:${IMAGE_TAG}
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt/:ro
+      - ./certbot/www/:/var/www/certbot/:ro
     restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
 
   watchtower:
     image: containrrr/watchtower:1.5.3
