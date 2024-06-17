@@ -16,6 +16,7 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, { Map } from 'mapbox-gl';
 import { MapService } from '../../../services/map/map.service';
 import { Subscription } from 'rxjs';
+import { effect } from '@angular/core';
 
 @Component({
   selector: 'app-map',
@@ -27,6 +28,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private mapService = inject(MapService);
 
   public showFilters: WritableSignal<boolean> = signal<boolean>(false);
+  public showMapLayers: WritableSignal<boolean> = signal<boolean>(false);
   public activeFilters: boolean = false;
   private subscriptions = new Subscription();
 

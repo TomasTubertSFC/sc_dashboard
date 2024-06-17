@@ -6,7 +6,15 @@ import { MapObservation, ObservationGeoJSON } from '../../models/map';
 import mapboxgl, { LngLat, LngLatBounds, LngLatLike, Map } from 'mapbox-gl';
 import { Observations } from '../../models/observations';
 import { FeatureCollection, Geometry } from 'geojson';
-import { BehaviorSubject, Subject, filter, first, forkJoin, last, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  Subject,
+  filter,
+  first,
+  forkJoin,
+  last,
+  Subscription,
+} from 'rxjs';
 import { FormFilterValues } from '../../models/forms';
 
 @Injectable({
@@ -55,7 +63,10 @@ export class MapService {
     clusterMaxZoom: 17,
   };
 
-  constructor(private http: HttpClient, private observationsService: ObservationsService) {
+  constructor(
+    private http: HttpClient,
+    private observationsService: ObservationsService
+  ) {
     //Subscribe to know if the filter is active
     this.isFilterActive.subscribe((isFilterActive) => {
       if (!this.map) return;
@@ -81,7 +92,7 @@ export class MapService {
       this.GeoJSON$.next(geoJSON);
       //update the source observations at map
       this.updateSourceObservations(geoJSON);
-    })
+    });
   }
 
   public updateSourceObservations(geoJson: any) {
@@ -460,8 +471,20 @@ export class MapService {
         'get',
         `name_es`,
       ]);
-      //Build all clusters and layers
-      this.buildClustersAndLayers(this.initialGeoJson);
+      // this.buildClustersAndLayers(this.initialGeoJson);
+    });
+
+    //Build all clusters and layers after the style is loaded
+    //Usefull when toggling between style map layers
+    this.map.on('style.load', () => {
+      //I want to detect if the layer with id observations exists
+      if (this.isFilterActive.getValue()) {
+        //update the geojson
+        this.buildClustersAndLayers(this.filteredGeoJSON);
+      } else {
+        //update the geojson
+        this.buildClustersAndLayers(this.GeoJSON$.getValue());
+      }
     });
 
     // Add event listeners for 'zoomstart' and 'touchstart' events
