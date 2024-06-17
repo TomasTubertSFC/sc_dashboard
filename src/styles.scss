@@ -32,4 +32,11 @@ body {
   overflow-x: hidden;
 }
 
+.mapboxgl-ctrl-geocoder{
+  width: 100%;
+}
+.mapboxgl-ctrl-geocoder--input{
+  width: 350px;
+}
+
 

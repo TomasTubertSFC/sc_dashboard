@@ -18,12 +18,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SliderModule } from 'primeng/slider';
 import { CalendarModule } from 'primeng/calendar';
+import { MapLayersComponent } from './components/map-layers/map-layers.component';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [
     MapComponent,
     MapToolBarComponent,
     MapFiltersComponent,
+    MapLayersComponent,
   ],
   imports: [
     FormsModule,
@@ -43,6 +46,7 @@ import { CalendarModule } from 'primeng/calendar';
     DropdownModule,
     SkeletonModule,
     PaginatorModule,
+    RadioButtonModule
   ],
 })
 export class MapModule {}

@@ -35,7 +35,7 @@ export class MapFiltersComponent implements OnInit {
     type: new FormControl(false, []),
     typeFilter: new FormGroup({}),
     soundPressure: new FormControl(false, []),
-    soundPressureFilter: new FormControl(35, []),
+    soundPressureFilter: new FormControl([35,80], []),
     days: new FormControl(false, []),
     daysFilter: new FormControl([new Date(), new Date()], []),
     hours: new FormControl(false, []),
