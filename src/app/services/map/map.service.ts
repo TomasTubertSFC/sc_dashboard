@@ -344,7 +344,11 @@ export class MapService {
       }
     }
     if (soundPressure) {
-      mapObs = mapObs.filter((obs) => Number(obs.Leq) <= soundPressureFilter);
+      mapObs = mapObs.filter(
+        (obs) =>
+          Number(obs.Leq) <= soundPressureFilter[1] &&
+          Number(obs.Leq) >= soundPressureFilter[0]
+      );
     }
     if (hours) {
       mapObs = mapObs.filter((obs) => {
