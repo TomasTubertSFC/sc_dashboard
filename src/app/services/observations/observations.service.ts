@@ -33,7 +33,7 @@ export class ObservationsService {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
       map((observations) => {
-        
+
         const observationsByUser: { [key: string]: {[key:number]:number} } =
           observations.reduce((acc, obs) => {
             const userId = obs.relationships.user.id;
@@ -47,11 +47,11 @@ export class ObservationsService {
             acc[userId][month]++;
             return acc;
           }, {} as { [key: string]: {[key:number]:number} });
-          
+
 
         const numberOfDifferentUsers = Object.keys(observationsByUser).length;
         const totalObservations = observations.length;
-        
+
         const averageObservationsPerUserPerMonth = (totalObservations / 12 / numberOfDifferentUsers);
 
         const observationsByAge = {
@@ -252,4 +252,31 @@ export class ObservationsService {
       })
     );
   }
+
+  public getFilteredObservationsForSoundscape(minHour: number | null = null, maxHour: number | null = null, polygon: number[][]){
+    this.observations$.pipe(
+      filter((value) => value.length > 0),
+      map((observations) => {
+        const polygonTurf = turf.polygon([polygon]);
+        return observations.filter((obs) => {
+          let point = turf.point([
+            Number(obs.attributes.longitude),
+            Number(obs.attributes.latitude),
+          ]);
+          const isInside = turf.booleanPointInPolygon(point, polygonTurf);
+          if (isInside) {
+            if (minHour && maxHour) {
+              const hour = new Date(obs.attributes.created_at).getHours();
+              return hour >= minHour && hour <= maxHour;
+            }
+            return true;
+          }
+          return false;
+        });
+      })
+    ).subscribe((filteredObservations) => {
+      this.observations$.next(filteredObservations);
+    });
+  }
+
 }
