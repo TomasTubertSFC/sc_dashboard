@@ -37,7 +37,7 @@ FROM nginx:1.25.1-alpine AS prod
 
 #Copies the production-ready Angular application files from the build stage to
 #the `/usr/share/nginx/html`directory inside the Nginx container.
-COPY --from=build /app/dist/sc_dashboard /usr/share/nginx/html
+COPY --from=build /app/dist/sc_dashboard/browser /usr/share/nginx/html
 COPY ./deployment/config/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
