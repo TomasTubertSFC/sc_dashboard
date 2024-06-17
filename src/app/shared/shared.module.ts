@@ -5,10 +5,15 @@ import { IconModule } from './icons/icons.module';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ SpinnerComponent],
-  exports: [IconModule,  SpinnerComponent],
+  exports: [
+    IconModule,
+    SpinnerComponent,
+    TranslateModule
+  ],
   imports: [
     DialogModule,
     ButtonModule,

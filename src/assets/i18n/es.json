@@ -1,0 +1,31 @@
+{
+  "app": {
+    "return": "Volver",
+    "next": "Siguiente",
+    "yes": "Sí",
+    "no": "No",
+    "send": "Enviar",
+    "accept": "Aceptar",
+    "cancel": "Cancelar",
+    "areYouSure": "¿Estás segura/o?",
+    "save": "Guardar",
+    "close": "Cerrar",
+    "loading": "Cargando",
+    "error": "Error",
+    "knowMore": "Saber más",
+    "seeMore": "Ver más",
+    "login": "Iniciar sesión",
+    "register": "Registrarme",
+    "guest": "Continuar como invitado/a",
+    "user": "Usuario/a",
+    "userTrained": "Usuario/a entrenado/a",
+    "dateFormats": {
+      "short": "dd/MM/yyyy",
+      "long": "dd/MM/yyyy, HH:mm:ss"
+    }
+  },
+  "soundscape": {
+    "titleMenu": "Paisaje sonoro"
+  }
+
+}

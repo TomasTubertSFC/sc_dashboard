@@ -1,10 +1,10 @@
 <app-map-tool-bar
   [showFilters]="showFilters"
+  [showMapLayers]="showMapLayers"
   [isFilterActive]="activeFilters"
   (toggleActiveFilters)="toogleActiveFilters()"
 />
-<app-map-filters
-  [showFilters]="showFilters"
-  [isFilterActive]="activeFilters"
-/>
+<app-map-filters [showFilters]="showFilters" [isFilterActive]="activeFilters" />
+<app-map-layers [showMapLayers]="showMapLayers" />
+
 <div #mapDiv class="map-container"></div>
