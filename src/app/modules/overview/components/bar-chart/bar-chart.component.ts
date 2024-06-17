@@ -106,7 +106,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'cross',
+            type: 'none',
           },
           formatter: function (params: any) {
             return params[0].data + ' ';
