@@ -42,15 +42,6 @@ export class ObservationsService {
             acc[userId]++;
             return acc;
           }, {} as { [key: string]: number });
-        const observationsByGender: { [key: string]: number } =
-          observations.reduce((acc, obs) => {
-            const gender = obs.relationships.user.attributes.profile.gender;
-            if (!acc[gender]) {
-              acc[gender] = 0;
-            }
-            acc[gender]++;
-            return acc;
-          }, {} as { [key: string]: number });
 
         const numberOfDifferentUsers = Object.keys(observationsByUser).length;
         const totalObservations = Object.values(observationsByUser).reduce(
@@ -65,6 +56,14 @@ export class ObservationsService {
           '30-40': 0,
           '40-50': 0,
           '>50': 0,
+        };
+        const observationsByUserGender = {
+          male: 0,
+          female: 0,
+          others: 0,
+          'non-binary': 0,
+          'prefer-not-to-say': 0,
+          null: 0,
         };
 
         const uniqueUserProfiles = Object.keys(observationsByUser).map(
@@ -92,11 +91,34 @@ export class ObservationsService {
             observationsByAge['>50']++;
           }
         });
+        uniqueUserProfiles.forEach((user) => {
+          switch (user.gender) {
+            case 'male':
+              observationsByUserGender.male++;
+              break;
+            case 'female':
+              observationsByUserGender.female++;
+              break;
+            case 'others':
+              observationsByUserGender.others++;
+              break;
+            case 'prefer-not-to-say':
+              observationsByUserGender['prefer-not-to-say']++;
+              break;
+            case 'non-binary':
+              observationsByUserGender['non-binary']++;
+              break;
+            default:
+              observationsByUserGender.null++;
+              break;
+          }
+        });
+
         return {
           numberOfDifferentUsers,
           totalObservations,
           averageObservationsPerUser,
-          observationsByGender: Object.entries(observationsByGender).map(
+          observationsByGender: Object.entries(observationsByUserGender).map(
             ([genre, value]) => ({ genre, value })
           ),
           observationsByAge: Object.entries(observationsByAge).map(

@@ -1,0 +1,31 @@
+{
+  "common": {
+    "return": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "send": "Send",
+    "accept": "Accept",
+    "cancel": "Cancel",
+    "areYouSure": "Are you sure?",
+    "save": "Save",
+    "close": "Close",
+    "loading": "Loading",
+    "error": "Error",
+    "knowMore": "Learn more",
+    "seeMore": "See more",
+    "login": "Login",
+    "register": "Register",
+    "guest": "Continue as a guest",
+    "user": "User",
+    "userTrained": "Trained user",
+    "dateFormats": {
+      "short": "dd/MM/yyyy",
+      "long": "dd/MM/yyyy, HH:mm:ss"
+    }
+  },
+  "soundscape": {
+    "titleMenu": "Soundscape"
+  }
+
+}

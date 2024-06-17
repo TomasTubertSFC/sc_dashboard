@@ -21,6 +21,12 @@
     </a>
   </li>
   <li>
+    <a routerLink="/soundscape" routerLinkActive="active-route">
+      <icon-bar-chart [iconClass]="'mr-2'" />
+      <span class="menu-item"> {{'soundscape.titleMenu' | translate}} </span>
+    </a>
+  </li>
+  <li>
     <a routerLink="/resum" routerLinkActive="active-route">
       <icon-bar-chart [iconClass]="'mr-2'" />
       <span class="menu-item"> Resum </span>
@@ -28,7 +34,7 @@
   </li>
   <!-- <li>
     <a routerLink="/registers" routerLinkActive="active-route">
-      <icon-odour-registers [iconClass]="'mr-2'" /> 
+      <icon-odour-registers [iconClass]="'mr-2'" />
       <span class="menu-item"> Registros de olor </span>
     </a>
   </li> -->
@@ -45,7 +51,7 @@
   </li> -->
   <p-divider />
   <div class="h-full flex flex-column justify-content-end gap-3">
-    <li>
+    <!-- <li>
       <a
         routerLink="/profile"
         routerLinkActive="active-route"
@@ -56,8 +62,8 @@
         <icon-user />
         <span class="menu-item"> Mi perfil </span>
       </a>
-    </li>
-    <li>
+    </li> -->
+    <!-- <li>
       <button
         (click)="logout()"
         pButton
@@ -67,6 +73,6 @@
         <icon-logout />
         <span class="menu-item"> Cerrar sesión </span>
       </button>
-    </li>
+    </li> -->
   </div>
 </ul>
