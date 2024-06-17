@@ -33,23 +33,27 @@ export class ObservationsService {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
       map((observations) => {
-        const observationsByUser: { [key: string]: number } =
+        
+        const observationsByUser: { [key: string]: {[key:number]:number} } =
           observations.reduce((acc, obs) => {
             const userId = obs.relationships.user.id;
             if (!acc[userId]) {
-              acc[userId] = 0;
+              //Podría crear aquí el objeto con los diferentes meses del año
+              // acc[userId] = 0;
+              acc[userId] = Array.from({length: 12}, (_, i) => i + 1).reduce((acc, month) => ({...acc, [month]: 0}), {})
             }
-            acc[userId]++;
+            //Aquí, con la fecha de la observacion, debería sumar 1 al mes correspondiente
+            const month = new Date(obs.attributes.created_at).getMonth() + 1
+            acc[userId][month]++;
             return acc;
-          }, {} as { [key: string]: number });
+          }, {} as { [key: string]: {[key:number]:number} });
+          
 
         const numberOfDifferentUsers = Object.keys(observationsByUser).length;
-        const totalObservations = Object.values(observationsByUser).reduce(
-          (a, b) => a + b,
-          0
-        );
-        const averageObservationsPerUser =
-          totalObservations / numberOfDifferentUsers;
+        const totalObservations = observations.length;
+        
+        const averageObservationsPerUserPerMonth = (totalObservations / 12 / numberOfDifferentUsers);
+
         const observationsByAge = {
           '<18': 0,
           '18-30': 0,
@@ -117,7 +121,7 @@ export class ObservationsService {
         return {
           numberOfDifferentUsers,
           totalObservations,
-          averageObservationsPerUser,
+          averageObservationsPerUserPerMonth,
           observationsByGender: Object.entries(observationsByUserGender).map(
             ([genre, value]) => ({ genre, value })
           ),
