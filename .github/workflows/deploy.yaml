@@ -1,8 +1,8 @@
 name: Deploy to production
 
 on:
-  push:
-    branches: [ "backChore#Deploy" ]
+  pull_request:
+    branches: [ "master" ]
 
 env:
   FRONTEND_IMAGE: dockersfc/soundcollect-dash-frontend:${{ github.sha }}
