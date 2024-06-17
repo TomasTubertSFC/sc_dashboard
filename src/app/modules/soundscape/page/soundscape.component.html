@@ -5,6 +5,12 @@
       <i class="pi pi-pencil mr-2"></i>
       <span>{{ 'soundscape.map.createFilter' | translate}}</span>
     </p-button>
+    @if (selectedPolygon) {
+      <p-button (click)="deletePolygonFilter()">
+        <i class="pi pi-trash mr-2"></i>
+        <span>{{ 'soundscape.map.deleteFilter' | translate}}</span>
+      </p-button>
+    }
 
   </div>
 </div>

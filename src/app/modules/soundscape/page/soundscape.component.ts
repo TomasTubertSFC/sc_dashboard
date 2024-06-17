@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
@@ -8,17 +8,24 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
   templateUrl: './soundscape.component.html',
   styleUrl: './soundscape.component.scss'
 })
-export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('map') mapContainer!: ElementRef;
 
   private map!: Map;
   private draw!: MapboxDraw;
   public points: [number, number][] = [];
+  public selectedPolygon: any | undefined = undefined;
 
   public drawPolygonFilter(){
     this.draw.changeMode('draw_polygon');
   };
+
+  public deletePolygonFilter(){
+    this.draw.delete(this.selectedPolygon.id);
+    this.selectedPolygon = undefined;
+  }
+
   public mapSettings: {
     zoom: number;
     mapStyle: string;
@@ -36,11 +43,6 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
     bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
     clusterMaxZoom: 17,
   };
-
-  ngOnInit(): void {
-
-
-  }
 
   ngAfterViewInit(): void {
     this.map = new Map({
@@ -63,16 +65,12 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.map.addControl(geocoder, 'top-left');
   }
-  ngOnDestroy(): void {
-  }
    /*
   * Evento de carga del mapa
   */
    public onMapLoad() {
 
-    const inactiveColor = '#C19FD9';
-    const subareaSelectedColor = '#00FF00';
-    const APGEMOColor = '#FF6200';
+    const selectionColor = '#C19FD9';
 
     this.draw = new MapboxDraw({
       userProperties: true,
@@ -87,20 +85,8 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
                 ['!=', 'user_type', 'subarea']
             ],
             'paint': {
-              'fill-color': [
-                "case",
-                ['==', ['get', "user_class_id"], 1], inactiveColor,
-                ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                inactiveColor
-              ],
-              'fill-outline-color': [
-                "case",
-                ['==', ['get', "user_class_id"], 1], inactiveColor,
-                ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                inactiveColor
-              ],
+              'fill-color': selectionColor,
+              'fill-outline-color': selectionColor,
               'fill-opacity': 0.1
             }
         },
@@ -111,20 +97,8 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
                 ['==', '$type', 'Polygon']
             ],
             'paint': {
-              'fill-color': [
-                "case",
-                ['==', ['get', "user_class_id"], 1], inactiveColor,
-                ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                inactiveColor
-              ],
-              'fill-outline-color': [
-                "case",
-                ['==', ['get', "user_class_id"], 1], inactiveColor,
-                ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                inactiveColor
-              ],
+              'fill-color': selectionColor,
+              'fill-outline-color': selectionColor,
               'fill-opacity': 0.1
             }
         },
@@ -136,13 +110,7 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
             ],
             'paint': {
                 'circle-radius': 3,
-                'circle-color': [
-                  "case",
-                  ['==', ['get', "user_class_id"], 1], inactiveColor,
-                  ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                  ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                  "#191919"
-                ]
+                'circle-color': "#191919"
             }
         },
         {
@@ -158,14 +126,7 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
             'line-join': 'round'
           },
           'paint': {
-            'line-color':
-            [
-              "case",
-              ['==', ['get', "user_class_id"], 1], inactiveColor,
-              ['==', ['get', "user_class_id"], 2], APGEMOColor,
-              ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-              inactiveColor
-            ],
+            'line-color':selectionColor,
             'line-width': [
               "case",
               ['==', ['get', "user_class_id"], 2], 2,
@@ -190,13 +151,7 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
                 'line-join': 'round'
             },
             'paint': {
-                'line-color': [
-                  "case",
-                  ['==', ['get', "user_class_id"], 1], inactiveColor,
-                  ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                  ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                  inactiveColor
-                ],
+                'line-color': selectionColor,
                 'line-dasharray': [0.2, 2],
                 'line-width': 2
             }
@@ -213,13 +168,7 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
                 'line-join': 'round'
             },
             'paint': {
-                'line-color': [
-                  "case",
-                  ['==', ['get', "user_class_id"], 1], inactiveColor,
-                  ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                  ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                  inactiveColor
-                ],
+                'line-color': selectionColor,
                 'line-width': 2
             }
         },
@@ -234,13 +183,7 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
                 'line-join': 'round'
             },
             'paint': {
-                'line-color': [
-                  "case",
-                  ['==', ['get', "user_class_id"], 1], inactiveColor,
-                  ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                  ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                  inactiveColor
-                ],
+                'line-color': selectionColor,
                 'line-dasharray': [0.2, 2],
                 'line-width': 2
             }
@@ -266,13 +209,7 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
             ],
             'paint': {
                 'circle-radius': 5,
-                'circle-color': [
-                  "case",
-                  ['==', ['get', "user_class_id"], 1], inactiveColor,
-                  ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                  ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                  "#191919"
-                ]
+                'circle-color': "#191919"
             }
         },
         {
@@ -299,13 +236,7 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
           ],
           'paint': {
             'circle-radius': 5,
-            'circle-color': [
-              "case",
-              ['==', ['get', "user_class_id"], 1], inactiveColor,
-              ['==', ['get', "user_class_id"], 2], APGEMOColor,
-              ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-              inactiveColor
-            ]
+            'circle-color': selectionColor
           }
         },
         {
@@ -329,13 +260,7 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
             ],
             'paint': {
                 'circle-radius': 8,
-                'circle-color': [
-                  "case",
-                  ['==', ['get', "user_class_id"], 1], inactiveColor,
-                  ['==', ['get', "user_class_id"], 2], APGEMOColor,
-                  ['==', ['get', "user_class_id"], 3], subareaSelectedColor,
-                  "#191919"
-                ]
+                'circle-color': "#191919"
             }
         },
         {
@@ -405,13 +330,22 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
     //Llamada a la función markerCreated cuando se termina de dibujar un marcador
 
     //La función updatedSubareaPolygon se llama cuando se actualiza un polígono
-    this.map.on('draw.update', this.onDrawCreated.bind(this));
+    this.map.on('draw.update', this.onDrawUpdated.bind(this));
   }
   private onDrawSelect(event: any) {
+    this.selectedPolygon = event.features[0] ? event.features[0] : undefined;
   }
 
-
   private onDrawCreated(event: any) {
+    this.getFilteredObservations()
+  }
+
+  private onDrawUpdated(event: any) {
+    this.getFilteredObservations()
+  }
+
+  private getFilteredObservations() {
+    console.log('getFilteredObservations');
   }
 
   private getBboxFromPoints(): [[number, number], [number, number]] {
@@ -439,5 +373,7 @@ export class SoundscapeComponent implements OnInit, AfterViewInit, OnDestroy {
       [maxX, maxY],
     ];
   }
+
+  ngOnDestroy(): void {}
 }
 
