@@ -8,6 +8,7 @@ import { CreatePasswordComponent } from './modules/recover-password/components/c
 import { ProfileComponent } from './modules/profile/components/profile/profile.component';
 import { MapComponent } from './modules/map/page/map.component';
 import { OverviewComponent } from './modules/overview/page/overview/overview.component';
+import { SoundscapeComponent } from './modules/soundscape/page/soundscape.component';
 
 const routes: Routes = [
   // {
@@ -22,6 +23,10 @@ const routes: Routes = [
       {
         path: '',
         component: MapComponent,
+      },
+      {
+        path: 'soundscape',
+        component: SoundscapeComponent,
       },
       {
         path: 'resum',

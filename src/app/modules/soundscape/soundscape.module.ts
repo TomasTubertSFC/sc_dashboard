@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ButtonModule } from 'primeng/button'
-
 import { SoundscapeComponent } from './page/soundscape.component';
 import { SharedComponentsModule } from '../../shared/shared.module';
+import { ButtonModule } from 'primeng/button';
 
 
 
@@ -14,8 +13,8 @@ import { SharedComponentsModule } from '../../shared/shared.module';
   ],
   imports: [
     CommonModule,
+    ButtonModule,
     SharedComponentsModule,
-    ButtonModule
   ]
 })
 export class SoundscapeModule { }

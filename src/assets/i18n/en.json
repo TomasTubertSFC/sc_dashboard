@@ -25,7 +25,10 @@
     }
   },
   "soundscape": {
-    "titleMenu": "Soundscape"
+    "titleMenu": "Soundscape",
+    "map":{
+      "createFilter": "Create filter"
+    }
   }
 
 }

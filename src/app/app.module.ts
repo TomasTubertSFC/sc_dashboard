@@ -17,6 +17,7 @@ import { OverviewModule } from './modules/overview/overview.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from '../environments/environments';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { SoundscapeModule } from './modules/soundscape/soundscape.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -33,6 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RecoverPasswordModule,
     ProfileModule,
     MapModule,
+    SoundscapeModule,
     OverviewModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
