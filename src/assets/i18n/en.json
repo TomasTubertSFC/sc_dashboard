@@ -1,0 +1,43 @@
+{
+  "common": {
+    "return": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "send": "Send",
+    "accept": "Accept",
+    "cancel": "Cancel",
+    "areYouSure": "Are you sure?",
+    "save": "Save",
+    "close": "Close",
+    "loading": "Loading",
+    "error": "Error",
+    "knowMore": "Learn more",
+    "seeMore": "See more",
+    "login": "Login",
+    "register": "Register",
+    "guest": "Continue as a guest",
+    "user": "User",
+    "userTrained": "Trained user",
+    "dateFormats": {
+      "short": "dd/MM/yyyy",
+      "long": "dd/MM/yyyy, HH:mm:ss"
+    }
+  },
+  "soundscape": {
+    "titleMenu": "Soundscape",
+    "map":{
+      "createFilter": "Create filter",
+      "editFilter": "Edit filter",
+      "deleteFilter": "Delete filter"
+    },
+    "filter":{
+      "morning": "Morning (7:00 - 19:00)",
+      "afternoon": "Afternoon (19:00 - 23:00)",
+      "night": "Night (23:00 - 7:00)",
+      "allDay": "All day"
+    }
+
+  }
+
+}

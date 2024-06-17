@@ -18,7 +18,7 @@ export class ObservationNumbersComponent implements OnInit {
     this.observationService.getAllObservationsNumbers().subscribe((data) => {
       this.dataGenre = data.observationsByGender
       this.dataAge = data.observationsByAge
-      this.averageObsPerUser = data.averageObservationsPerUser.toFixed(2)
+      this.averageObsPerUser = data.averageObservationsPerUserPerMonth.toFixed(2)
       this.totalUsers = data.numberOfDifferentUsers
       this.totalObs = data.totalObservations
     });

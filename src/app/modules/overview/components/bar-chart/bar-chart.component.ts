@@ -100,12 +100,13 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         if (isBeforeToday && isAfterLastDay30) return true;
         return false;
       });
+      
 
       this.options = {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'cross',
+            type: 'none',
           },
           formatter: function (params: any) {
             return params[0].data + ' ';

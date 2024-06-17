@@ -1,0 +1,37 @@
+
+:host{
+  display: flex;
+  flex: 1 1 auto;
+  position: relative;
+}
+#toolsBar{
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  flex-basis: 1;
+  z-index: 2;
+  position: absolute;
+  pointer-events: none;
+  padding: 2rem;
+  .tools{
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    height: max-content;
+    pointer-events: none;
+    flex-basis: 1;
+
+    *{
+      pointer-events: auto;
+    }
+  }
+}
+
+:host {
+  display: flex;
+  position: relative;
+}
+.map-container {
+  height: calc(100vh - 1rem);
+  width: 100%;
+}
