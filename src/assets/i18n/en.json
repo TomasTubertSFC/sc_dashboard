@@ -27,7 +27,9 @@
   "soundscape": {
     "titleMenu": "Soundscape",
     "map":{
-      "createFilter": "Create filter"
+      "createFilter": "Create filter",
+      "editFilter": "Edit filter",
+      "deleteFilter": "Delete filter"
     }
   }
 
