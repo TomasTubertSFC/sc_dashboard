@@ -12,17 +12,20 @@
   z-index: 2;
   position: absolute;
   pointer-events: none;
-  padding: 2rem;
+  padding: 1rem;
   .tools{
     display: flex;
     flex-direction: column;
     width: max-content;
     height: max-content;
     pointer-events: none;
-    flex-basis: 1;
-
+    justify-content: end;
+    align-items: end;
     *{
       pointer-events: auto;
+    }
+    .card{
+      border-radius: 4px;
     }
   }
 }

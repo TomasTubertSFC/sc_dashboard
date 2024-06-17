@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, signal } from '@angular/core';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
@@ -9,7 +9,7 @@ enum TimeFilter {
   MORNING = 'morning',
   AFTERNOON = 'afternoon',
   NIGHT = 'night',
-  ALL = 'all',
+  ALLDAY = 'allDay',
 }
 
 @Component({
@@ -25,13 +25,14 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private draw!: MapboxDraw;
   public points: [number, number][] = [];
   public selectedPolygon: any | undefined = undefined;
-  public polygonFilter: any | undefined = undefined;
-
-  public timeFilter: TimeFilter = TimeFilter.ALL;
+  public polygonFilter = signal<any | undefined>(undefined);
+  public timeFilter = signal<TimeFilter>(TimeFilter.ALLDAY);
 
   public drawPolygonFilter(){
-    if(this.selectedPolygon){
+    if(this.selectedPolygon && this.polygonFilter()){
       this.draw.delete(this.selectedPolygon.id);
+      this.selectedPolygon = undefined;
+      this.polygonFilter.update(() => undefined)
     }
     this.draw.changeMode('draw_polygon');
   };
@@ -39,8 +40,13 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   public deletePolygonFilter(){
     this.draw.delete(this.selectedPolygon.id);
     this.selectedPolygon = undefined;
+    this.polygonFilter.update(() => undefined)
   }
-
+  constructor() {
+    effect(() => {
+      if(this.polygonFilter()) console.log(this.timeFilter());
+    });
+  }
   public mapSettings: {
     zoom: number;
     mapStyle: string;
@@ -360,7 +366,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   }
 
   private getFilteredObservations(event: any) {
-    this.polygonFilter = event.features[0];
+    this.polygonFilter.update(() => event.features[0])
     console.log('getFilteredObservations');
   }
 

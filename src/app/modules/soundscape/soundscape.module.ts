@@ -7,6 +7,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 
 import { SoundscapeComponent } from './page/soundscape.component';
 import { SharedComponentsModule } from '../../shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -20,6 +21,7 @@ import { SharedComponentsModule } from '../../shared/shared.module';
     CheckboxModule,
     RadioButtonModule,
     SharedComponentsModule,
+    FormsModule
   ]
 })
 export class SoundscapeModule { }
