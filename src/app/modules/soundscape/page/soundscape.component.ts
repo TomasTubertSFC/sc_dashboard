@@ -9,7 +9,7 @@ enum TimeFilter {
   MORNING = 'morning',
   AFTERNOON = 'afternoon',
   NIGHT = 'night',
-  ALLDAY = 'allDay',
+  WHOLEDAY = 'wholeDay',
 }
 
 @Component({
@@ -26,7 +26,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   public points: [number, number][] = [];
   public selectedPolygon: any | undefined = undefined;
   public polygonFilter = signal<any | undefined>(undefined);
-  public timeFilter = signal<TimeFilter>(TimeFilter.ALLDAY);
+  public timeFilter = signal<TimeFilter>(TimeFilter.WHOLEDAY);
 
   public drawPolygonFilter(){
     if(this.selectedPolygon && this.polygonFilter()){
