@@ -1,12 +1,12 @@
 <div id="toolsBar">
   <div class="tools gap-1">
 
-    <p-button [styleClass]="'w-full'" (click)="drawPolygonFilter()">
+    <p-button (click)="drawPolygonFilter()">
       <i class="pi pi-pencil mr-2"></i>
-      <span>{{ 'studyAreas.step2.map.APGEMO.createPolygon' | translate}}</span>
+      <span>{{ 'soundscape.map.createFilter' | translate}}</span>
     </p-button>
 
   </div>
 </div>
 
-<div #mapDiv class="map-container"></div>
+<div #map class="map-container"></div>
