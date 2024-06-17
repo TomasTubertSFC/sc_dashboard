@@ -28,7 +28,3 @@ services:
     environment:
       - REPO_USER=${DOCKERHUB_USERNAME}
       - REPO_PASS=${DOCKERHUB_PASSWORD}
-
-volumes:
-  storage:
-  mysqldata:

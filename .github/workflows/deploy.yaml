@@ -90,5 +90,12 @@ jobs:
         run: |
           scp -C -o StrictHostKeyChecking=no -i ./id_rsa ./deployment/bin/deploy.sh ${{ secrets.SSH_CONNECTION_PROD }}:/home/ubuntu/deploy.sh
           scp -C -o StrictHostKeyChecking=no -i ./id_rsa ./docker-compose.prod.yml ${{ secrets.SSH_CONNECTION_PROD }}:/usr/src/docker-compose.prod.yml
+          scp -C -o StrictHostKeyChecking=no -i ./id_rsa ./.env.prod.template ${{ secrets.SSH_CONNECTION_PROD }}:/usr/src/.env
           ssh -tt -o StrictHostKeyChecking=no -i ./id_rsa ${{ secrets.SSH_CONNECTION_PROD }} "chmod +x /home/ubuntu/deploy.sh"
+                    ssh -tt -o StrictHostKeyChecking=no -i ./id_rsa ${{ secrets.SSH_CONNECTION_PROD }} "
+            sed -i '/IMAGE_TAG/c\IMAGE_TAG=${{ github.sha }}' /usr/src/.env
+            sed -i '/COMPOSE_PROJECT_NAME/c\COMPOSE_PROJECT_NAME=soundcollect-dashboard' /usr/src/.env
+
+            sed -i '/DOCKERHUB_USERNAME/c\DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}' /usr/src/.env
+            sed -i '/DOCKERHUB_PASSWORD/c\DOCKERHUB_PASSWORD=${{ secrets.DOCKERHUB_PASSWORD }}' /usr/src/.env"
           ssh -tt -o StrictHostKeyChecking=no -i ./id_rsa ${{ secrets.SSH_CONNECTION_PROD }} "/home/ubuntu/deploy.sh"
