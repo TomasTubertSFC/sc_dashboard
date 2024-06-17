@@ -3,6 +3,15 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
+
+//time filter enum
+enum TimeFilter {
+  MORNING = 'morning',
+  AFTERNOON = 'afternoon',
+  NIGHT = 'night',
+  ALL = 'all',
+}
+
 @Component({
   selector: 'app-soundscape',
   templateUrl: './soundscape.component.html',
@@ -16,8 +25,14 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private draw!: MapboxDraw;
   public points: [number, number][] = [];
   public selectedPolygon: any | undefined = undefined;
+  public polygonFilter: any | undefined = undefined;
+
+  public timeFilter: TimeFilter = TimeFilter.ALL;
 
   public drawPolygonFilter(){
+    if(this.selectedPolygon){
+      this.draw.delete(this.selectedPolygon.id);
+    }
     this.draw.changeMode('draw_polygon');
   };
 
@@ -337,14 +352,15 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   }
 
   private onDrawCreated(event: any) {
-    this.getFilteredObservations()
+    this.getFilteredObservations(event)
   }
 
   private onDrawUpdated(event: any) {
-    this.getFilteredObservations()
+    this.getFilteredObservations(event)
   }
 
-  private getFilteredObservations() {
+  private getFilteredObservations(event: any) {
+    this.polygonFilter = event.features[0];
     console.log('getFilteredObservations');
   }
 
