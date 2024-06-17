@@ -1,0 +1,94 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: [ "backChore#Deploy" ]
+
+env:
+  NGINX_IMAGE: dockersfc/soundcollect-dash-nginx:${{ github.sha }}
+  FRONTEND_IMAGE: dockersfc/soundcollect-dash-frontend:${{ github.sha }}
+
+jobs:
+  build-frontend-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build frontend image
+        run: |
+          docker build -t $FRONTEND_IMAGE --target=dev --build-arg user=ubuntu --build-arg uid=1000 -f ./Dockerfile .
+      - name: Push images
+        run: |
+          docker push $FRONTEND_IMAGE
+
+  front-test:
+    needs: [ build-frontend-image ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Pull FRONTEND image
+        run: docker pull $FRONTEND_IMAGE
+      - name: Run tests
+        run: |
+          echo "tests de front, de momento creo que no hay"
+
+  remove-images:
+    needs: [ front-test ]
+    runs-on: ubuntu-latest
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Remove images
+        run: |
+          ./deployment/bin/remove-image.sh dockersfc/soundcollect-dash-frontend ${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  build-nginx:
+    needs: [ front-test ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build nginx image
+        run: |
+          docker build -t $NGINX_IMAGE -f ./Dockerfile.nginx .
+          docker push $NGINX_IMAGE
+
+  build-frontend:
+    needs: [ front-test ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build frontend image
+        run: |
+          docker build -t $FRONTEND_IMAGE --target=prod -f ./Dockerfile .
+          docker push $FRONTEND_IMAGE
+
+  deploy-prod:
+    needs: [ build-frontend, build-nginx ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Copy SSH key
+        run: |
+          echo "${{ secrets.SSH_KEY }}" >> ./id_rsa
+          chmod 600 id_rsa
+      - name: Deploy app
+        run: |
+          scp -C -o StrictHostKeyChecking=no -i ./id_rsa ./deployment/bin/deploy.sh ${{ secrets.SSH_CONNECTION_PROD }}:/home/ubuntu/deploy.sh
+          scp -C -o StrictHostKeyChecking=no -i ./id_rsa ./docker-compose.prod.yml ${{ secrets.SSH_CONNECTION_PROD }}:/usr/src/docker-compose.prod.yml
+          ssh -tt -o StrictHostKeyChecking=no -i ./id_rsa ${{ secrets.SSH_CONNECTION_PROD }} "chmod +x /home/ubuntu/deploy.sh"
+          ssh -tt -o StrictHostKeyChecking=no -i ./id_rsa ${{ secrets.SSH_CONNECTION_PROD }} "/home/ubuntu/deploy.sh"
