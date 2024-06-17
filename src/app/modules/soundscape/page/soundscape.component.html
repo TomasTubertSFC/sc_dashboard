@@ -1,18 +1,26 @@
 <div id="toolsBar">
   <div class="tools gap-1">
 
+    @if (!polygonFilter) {
     <p-button (click)="drawPolygonFilter()">
       <i class="pi pi-pencil mr-2"></i>
       <span>{{ 'soundscape.map.createFilter' | translate}}</span>
     </p-button>
-    @if (selectedPolygon) {
+    }
+    @else {
       <p-button (click)="deletePolygonFilter()">
         <i class="pi pi-trash mr-2"></i>
         <span>{{ 'soundscape.map.deleteFilter' | translate}}</span>
       </p-button>
-    }
 
-  </div>
+      <div id="timeFilters" class="card flex flex-column p-2 gap-2">
+        <p-radioButton binary="true" label="{{ 'soundscape.filter.morning' | translate}}"></p-radioButton>
+        <p-radioButton binary="true" label="{{ 'soundscape.filter.afternoon' | translate}}"></p-radioButton>
+        <p-radioButton binary="true" label="{{ 'soundscape.filter.night' | translate}}"></p-radioButton>
+        <p-radioButton binary="true" label="{{ 'soundscape.filter.allDay' | translate}}"></p-radioButton>
+      </div>
+    }
+    </div>
 </div>
 
 <div #map class="map-container"></div>

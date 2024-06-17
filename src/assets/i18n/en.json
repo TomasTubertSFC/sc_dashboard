@@ -30,7 +30,14 @@
       "createFilter": "Create filter",
       "editFilter": "Edit filter",
       "deleteFilter": "Delete filter"
+    },
+    "filter":{
+      "morning": "Morning (7:00 - 19:00)",
+      "afternoon": "Afternoon (19:00 - 23:00)",
+      "night": "Night (23:00 - 7:00)",
+      "allDay": "All day"
     }
+
   }
 
 }
