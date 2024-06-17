@@ -1,7 +1,7 @@
 <div id="toolsBar">
-  <div class="tools gap-1">
+  <div class="tools gap-3">
 
-    @if (!polygonFilter) {
+    @if (!polygonFilter()) {
     <p-button (click)="drawPolygonFilter()">
       <i class="pi pi-pencil mr-2"></i>
       <span>{{ 'soundscape.map.createFilter' | translate}}</span>
@@ -14,10 +14,10 @@
       </p-button>
 
       <div id="timeFilters" class="card flex flex-column p-2 gap-2">
-        <p-radioButton binary="true" label="{{ 'soundscape.filter.morning' | translate}}"></p-radioButton>
-        <p-radioButton binary="true" label="{{ 'soundscape.filter.afternoon' | translate}}"></p-radioButton>
-        <p-radioButton binary="true" label="{{ 'soundscape.filter.night' | translate}}"></p-radioButton>
-        <p-radioButton binary="true" label="{{ 'soundscape.filter.allDay' | translate}}"></p-radioButton>
+        <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="morning" label="{{ 'soundscape.filter.morning' | translate}}"/>
+        <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="afternoon" label="{{ 'soundscape.filter.afternoon' | translate}}"/>
+        <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="night" label="{{ 'soundscape.filter.night' | translate}}"/>
+        <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="allDay" label="{{ 'soundscape.filter.allDay' | translate}}"/>
       </div>
     }
     </div>
