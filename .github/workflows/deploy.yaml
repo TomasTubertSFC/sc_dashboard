@@ -1,0 +1,86 @@
+name: Deploy to production
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  FRONTEND_IMAGE: dockersfc/soundcollect-dash-frontend:${{ github.sha }}
+
+jobs:
+  build-frontend-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build frontend image
+        run: |
+          docker build -t $FRONTEND_IMAGE --target=dev --build-arg user=ubuntu --build-arg uid=1000 -f ./Dockerfile .
+      - name: Push images
+        run: |
+          docker push $FRONTEND_IMAGE
+
+  front-test:
+    needs: [ build-frontend-image ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Pull FRONTEND image
+        run: docker pull $FRONTEND_IMAGE
+      - name: Run tests
+        run: |
+          echo "tests de front, de momento creo que no hay"
+
+  remove-images:
+    needs: [ front-test ]
+    runs-on: ubuntu-latest
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Remove images
+        run: |
+          ./deployment/bin/remove-image.sh dockersfc/soundcollect-dash-frontend ${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  build-frontend:
+    needs: [ front-test ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build frontend image
+        run: |
+          docker build -t $FRONTEND_IMAGE --target=prod -f ./Dockerfile .
+          docker push $FRONTEND_IMAGE
+
+  deploy-prod:
+    needs: [ build-frontend ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Copy SSH key
+        run: |
+          echo "${{ secrets.SSH_KEY }}" >> ./id_rsa
+          chmod 600 id_rsa
+      - name: Deploy app
+        run: |
+          scp -C -o StrictHostKeyChecking=no -i ./id_rsa ./deployment/bin/deploy.sh ${{ secrets.SSH_CONNECTION_PROD }}:/home/ubuntu/deploy.sh
+          scp -C -o StrictHostKeyChecking=no -i ./id_rsa ./docker-compose.prod.yml ${{ secrets.SSH_CONNECTION_PROD }}:/usr/src/docker-compose.prod.yml
+          scp -C -o StrictHostKeyChecking=no -i ./id_rsa ./.env.prod.template ${{ secrets.SSH_CONNECTION_PROD }}:/usr/src/.env
+          ssh -tt -o StrictHostKeyChecking=no -i ./id_rsa ${{ secrets.SSH_CONNECTION_PROD }} "chmod +x /home/ubuntu/deploy.sh"
+                    ssh -tt -o StrictHostKeyChecking=no -i ./id_rsa ${{ secrets.SSH_CONNECTION_PROD }} "
+            sed -i '/IMAGE_TAG/c\IMAGE_TAG=${{ github.sha }}' /usr/src/.env
+            sed -i '/COMPOSE_PROJECT_NAME/c\COMPOSE_PROJECT_NAME=soundcollect-dashboard' /usr/src/.env
+
+            sed -i '/DOCKERHUB_USERNAME/c\DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}' /usr/src/.env
+            sed -i '/DOCKERHUB_PASSWORD/c\DOCKERHUB_PASSWORD=${{ secrets.DOCKERHUB_PASSWORD }}' /usr/src/.env"
+          ssh -tt -o StrictHostKeyChecking=no -i ./id_rsa ${{ secrets.SSH_CONNECTION_PROD }} "/home/ubuntu/deploy.sh"

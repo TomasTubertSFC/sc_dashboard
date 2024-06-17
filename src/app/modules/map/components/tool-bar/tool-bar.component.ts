@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, Signal, WritableSignal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, WritableSignal } from '@angular/core';
 
 @Component({
   selector: 'app-map-tool-bar',
@@ -7,12 +7,17 @@ import { Component, EventEmitter, Input, Output, Signal, WritableSignal } from '
 })
 export class MapToolBarComponent {
   @Input() showFilters?: WritableSignal<boolean>;
+  @Input() showMapLayers?: WritableSignal<boolean>;
   @Input() isFilterActive: boolean = false;
   
   @Output() toggleActiveFilters: EventEmitter<void> = new EventEmitter<void>();
 
   activeFilters(): void {
     this.toggleActiveFilters.emit();
+  }
+
+  toggleShowMapLayers(): void {
+    this.showMapLayers.set(!this.showMapLayers());
   }
 
   toggleShowFilters(): void {
