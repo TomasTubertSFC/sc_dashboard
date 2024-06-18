@@ -68,7 +68,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             return false;
           });
           this.updateChart(this.obsFiltered);
-          this.timeFilterSelected = null;
+          this.timeFilterSelected = this.timesFilter.DELETE;
         }
       }
     );
