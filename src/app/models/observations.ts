@@ -41,6 +41,8 @@ export interface ObservationsAttributes {
     created_at:             string;
     updated_at:             Date;
     roughtness_R?:          string;
+    segments?:              segment[];
+    path?:                  number[][];
 }
 
 export interface ObservationsRelationships {
@@ -71,4 +73,15 @@ interface UserAttributes {
 interface Profile {
     gender:    string;
     birthYear: number | string;
+}
+
+interface segment {
+  latitude:               string;
+  longitude:              string;
+  Leq:                    string;
+  LAeqT:                  string[] | string;
+  LAmax:                  string;
+  LAmin:                  string;
+  L90:                    string;
+  L10:                    string;
 }

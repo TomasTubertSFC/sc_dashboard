@@ -7,6 +7,7 @@ import { ObservationsService } from '../../../services/observations/observations
 import { Subscription } from 'rxjs';
 import { withHttpTransferCacheOptions } from '@angular/platform-browser';
 import { MapService } from '../../../services/map/map.service';
+import { color } from 'echarts';
 
 
 //time filter enum
@@ -34,6 +35,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private observations$!: Subscription
 
   public points: [number, number][] = [];
+  public polylines = signal<any[]>([]);
   public selectedPolygon: any | undefined = undefined;
   public polygonFilter = signal<any | undefined>(undefined);
   public timeFilter = signal<TimeFilter>(TimeFilter.WHOLEDAY);
@@ -59,6 +61,57 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
       this.observations = observations;
+      this.observations.map((obs) => {
+        //modificamos el path para añadir un numero de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
+        obs.attributes.path = [];
+        for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
+          obs.attributes.path.push([Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005]);
+        }
+        return obs;
+      });
+
+      let colors: string[] = [
+        '#FF0000',
+        '#00FF00',
+        '#0000FF',
+      ]
+
+      let polylines = this.observations.map((obs) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: obs.attributes.path
+        },
+        properties: {
+          color: '#000000',
+          width: 9
+        }
+      }));
+
+      //Obtener los segmentos de las polilineas
+
+      let segments = this.observations.map((obs) => {
+        let segments = [];
+        for (let i = 0; i < obs.attributes.path.length - 1; i++) {
+          segments.push({
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates: [obs.attributes.path[i], obs.attributes.path[i + 1]]
+            },
+            properties: {
+              color: colors[Math.floor(Math.random() * colors.length)],
+              width: 3
+            }
+          });
+        }
+        return segments;
+      }).flat();
+
+
+      //unificamos plolylines y segments
+      polylines = polylines.concat(segments);
+      this.polylines.update(() => polylines);
       this.updateMapSource();
     })
 
@@ -434,6 +487,17 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       clusterRadius: 50
     });
 
+    //Añadir la fuente de datos para las lineas de atributo path
+    this.map.addSource('polylines', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: this.polylines()
+      }
+    });
+
+
+
     this.map.addLayer({
       id: 'clusters',
       type: 'circle',
@@ -468,23 +532,25 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    // Agregar capa para los puntos individuales
+    // Agregar capa para los paths individuales
     this.map.addLayer({
-      id: 'unclustered-point',
-      type: 'circle',
-      source: 'observations',
-      filter: ['!', ['has', 'point_count']],
+      id: 'LineString',
+      type: 'line',
+      source: 'polylines',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
       paint: {
-        'circle-color': '#11b4da',
-        'circle-radius': 4,
-        'circle-stroke-width': 1,
-        'circle-stroke-color': '#fff'
+        'line-color': ['get', 'color'],
+        'line-width': ['get', 'width']
       }
     });
   };
 
   updateMapSource() {
-    const source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
+    if (!this.map || !this.map.isSourceLoaded('observations')) return;
+    let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
     source.setData({
       type: 'FeatureCollection',
       features: this.observations.map((obs) => ({
@@ -496,6 +562,13 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         properties: {}
       }))
     });
+    source = this.map.getSource('polylines') as mapboxgl.GeoJSONSource;
+    source.setData({
+      type: 'FeatureCollection',
+      features: this.polylines()
+    });
+    console.log(this.polylines());
+
   }
 
   ngOnDestroy(): void {
