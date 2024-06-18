@@ -201,7 +201,6 @@ export class ObservationsService {
             return valueDate === currentDate.getTime();
           });
           if (!!dayValue) {
-            // console.log('dayValue', dayValue)
             allDays.push({
               ...dayValue,
               completeDay: new Date(dayValue.date),
@@ -209,7 +208,6 @@ export class ObservationsService {
             });
           } else {
             const day = currentDate.toISOString().split('T')[0];
-            // console.log('currentDate', currentDate)
             allDays.push({
               count: 0,
               obs: [],

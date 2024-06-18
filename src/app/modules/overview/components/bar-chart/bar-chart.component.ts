@@ -150,14 +150,12 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     this.myChart.showLoading('default', this.loadingOptions);
     this.observationService.getAllObservationsFormated().subscribe((data) => {
       this.observations = data;
-      console.log('this.observations', this.observations);
       const arr30DaysBefore = data.filter((obs) => {
         const isBeforeToday = new Date(obs.date) <= this.today;
         const isAfterLastDay30 = new Date(obs.date) >= this.lastDay30;
         if (isBeforeToday && isAfterLastDay30) return true;
         return false;
       });
-      console.log(arr30DaysBefore);
       this.obsFiltered = arr30DaysBefore;
 
       this.options = {
