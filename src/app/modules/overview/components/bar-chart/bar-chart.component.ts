@@ -10,7 +10,10 @@ import { GridComponent, GridComponentOption } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ObservationsService } from '../../../../services/observations/observations.service';
-import { Observations, ObservationsDataChart } from '../../../../models/observations';
+import {
+  Observations,
+  ObservationsDataChart,
+} from '../../../../models/observations';
 import { FormControl, FormGroup } from '@angular/forms';
 
 type EChartsOption = echarts.ComposeOption<
@@ -60,25 +63,23 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         const haveTwoDaysSelected = values.daysFilter[1] !== null;
         if (haveTwoDaysSelected) {
           this.obsFiltered = this.observations.filter((obs) => {
-            const isBeforeToday = new Date (obs.date) <= values.daysFilter[1];
+            const isBeforeToday = new Date(obs.date) <= values.daysFilter[1];
             const isAfterLastDay30 = new Date(obs.date) >= values.daysFilter[0];
             if (isBeforeToday && isAfterLastDay30) return true;
             return false;
           });
           this.updateChart(this.obsFiltered);
-          this.timeFilterSelected = null
+          this.timeFilterSelected = null;
         }
       }
     );
   }
 
- private updateChart(observations: ObservationsDataChart[]) {
+  private updateChart(observations: ObservationsDataChart[]) {
     this.options = {
       xAxis: {
         type: 'category',
-        data: observations.map((obs) =>
-          obs.date
-        ),
+        data: observations.map((obs) => obs.date),
       },
       yAxis: {
         type: 'value',
@@ -93,34 +94,52 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     this.options && this.myChart.setOption(this.options);
   }
 
-  private currentWeek(date:Date){
+  private currentWeek(date: Date) {
     let yearStart = new Date(date.getFullYear(), 0, 1);
     let today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    let dayOfYear = ((today.valueOf() - yearStart.valueOf() + 1) / 86400000);
-    return Math.ceil(dayOfYear / 7)
+    let dayOfYear = (today.valueOf() - yearStart.valueOf() + 1) / 86400000;
+    return Math.ceil(dayOfYear / 7);
   }
 
-  weekFilter() {
-    const groupByWeek = this.obsFiltered.reduce((acc: {[key: number]: any[]},obs) => {
-      const day = obs.completeDay
-      const week = this.currentWeek(day)
-      if(!acc[week]){
-        acc[week] = [obs]
-      }
-      acc[week].push(obs)
-      return acc;
-    }, {})
-    const filteredObsByWeeks = Object.values(groupByWeek).map((weekObs) => {
+  public timeFilter(filter: string) {
+    //Get obs filtered by the days selected
+    const values = this.filtersForm.value;
+    const obsFiltered = this.observations.filter((obs) => {
+      const isBeforeToday = new Date(obs.date) <= values.daysFilter[1];
+      const isAfterLastDay30 = new Date(obs.date) >= values.daysFilter[0];
+      if (isBeforeToday && isAfterLastDay30) return true;
+      return false;
+    });
+    //Group obs selected by the time selected
+    const groupByTime = obsFiltered.reduce(
+      (acc: { [key: number]: any[] }, obs) => {
+        const day = obs.completeDay;
+        const time =
+          filter === 'week'
+            ? this.currentWeek(day)
+            : filter === 'month'
+            ? day.getMonth()
+            : day.getFullYear();
+        if (!acc[time]) {
+          acc[time] = [obs];
+        }
+        acc[time].push(obs);
+        return acc;
+      },
+      {}
+    );
+    //Create an array with the grouped obs with the structured data needed
+    const filteredObsByTime = Object.values(groupByTime).map((timeObs) => {
       return {
-        date: weekObs[0].date,
-        obs: weekObs,
-        count: weekObs.length,
-        completeDay: weekObs[0].completeDay
-      }
-    })
-    this.obsFiltered = filteredObsByWeeks;
-    this.updateChart(this.obsFiltered)
-    this.timeFilterSelected = 'week'
+        date: timeObs[0].date,
+        obs: timeObs,
+        count: timeObs.length,
+        completeDay: timeObs[0].completeDay,
+      };
+    });
+    this.obsFiltered = filteredObsByTime;
+    this.updateChart(this.obsFiltered);
+    this.timeFilterSelected = filter;
   }
 
   async ngAfterViewInit(): Promise<void> {
@@ -129,14 +148,14 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     this.myChart.showLoading('default', this.loadingOptions);
     this.observationService.getAllObservationsFormated().subscribe((data) => {
       this.observations = data;
-      console.log('this.observations', this.observations)
+      console.log('this.observations', this.observations);
       const arr30DaysBefore = data.filter((obs) => {
         const isBeforeToday = new Date(obs.date) <= this.today;
         const isAfterLastDay30 = new Date(obs.date) >= this.lastDay30;
         if (isBeforeToday && isAfterLastDay30) return true;
         return false;
       });
-      console.log(arr30DaysBefore)
+      console.log(arr30DaysBefore);
       this.obsFiltered = arr30DaysBefore;
 
       this.options = {
@@ -151,9 +170,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         },
         xAxis: {
           type: 'category',
-          data: arr30DaysBefore.map((obs) =>
-            obs.date
-          ),
+          data: arr30DaysBefore.map((obs) => obs.date),
           axisLabel: {
             interval: 0, // This forces displaying all labels
             rotate: 45, // Optional: you can rotate labels to prevent overlapping

@@ -10,7 +10,9 @@
         [maxDate]="today"
       />
     </form>
-    <p-button label="Setmanes" [disabled]="timeFilterSelected === 'week'" (onClick)="weekFilter()" />
+    <p-button label="Setmanes" [disabled]="timeFilterSelected === 'week'" (onClick)="timeFilter('week')" />
+    <p-button label="Mesos" [disabled]="timeFilterSelected === 'month'" (onClick)="timeFilter('month')" />
+    <p-button label="Anys" [disabled]="timeFilterSelected === 'year'" (onClick)="timeFilter('year')" />
   </div>
 
   <div id="bar-chart-container"></div>
