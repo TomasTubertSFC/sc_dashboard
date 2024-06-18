@@ -27,34 +27,33 @@ type EChartsOption = echarts.ComposeOption<
 })
 export class BarChartComponent implements OnInit, AfterViewInit {
   private myChart!: echarts.ECharts;
-  private options: EChartsOption;
-  private observations: ObservationsDataChart[] = [];
-  private obsFiltered: ObservationsDataChart[] = [];
-  public today: Date = new Date();
-  public timeFilterSelected!: string;
-  private lastDay30: Date = new Date(
-    new Date().setDate(this.today.getDate() - 30)
-  );
-  private dateOptions: Intl.DateTimeFormatOptions = {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  };
-  private loadingOptions = {
-    text: 'Carregant...',
-    color: '#FF7A1F',
-  };
-
-  private observationService: ObservationsService = inject(ObservationsService);
-
-  public filtersForm: FormGroup = new FormGroup({
-    daysFilter: new FormControl([this.lastDay30, new Date()], []),
-  });
-
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.myChart.resize();
   }
+  private options: EChartsOption;
+  public timesFilter = {
+    DELETE: 'delete',
+    WEEK: 'week',
+    MONTH: 'month',
+    YEAR: 'year',
+  }
+  private observations: ObservationsDataChart[] = [];
+  private obsFiltered: ObservationsDataChart[] = [];
+  public today: Date = new Date();
+  public timeFilterSelected: string = this.timesFilter.DELETE;
+  private lastDay30: Date = new Date(
+    new Date().setDate(this.today.getDate() - 30)
+  );
+  private loadingOptions = {
+    text: 'Carregant...',
+    color: '#FF7A1F',
+  };
+  private observationService: ObservationsService = inject(ObservationsService);
+  public filtersForm: FormGroup = new FormGroup({
+    daysFilter: new FormControl([this.lastDay30, new Date()], []),
+  });
+
 
   ngOnInit(): void {
     echarts.use([GridComponent, BarChart, CanvasRenderer]);
@@ -110,33 +109,36 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       if (isBeforeToday && isAfterLastDay30) return true;
       return false;
     });
-    //Group obs selected by the time selected
-    const groupByTime = obsFiltered.reduce(
-      (acc: { [key: number]: any[] }, obs) => {
-        const day = obs.completeDay;
-        const time =
-          filter === 'week'
-            ? this.currentWeek(day)
-            : filter === 'month'
-            ? day.getMonth()
-            : day.getFullYear();
-        if (!acc[time]) {
-          acc[time] = [obs];
-        }
-        acc[time].push(obs);
-        return acc;
-      },
-      {}
-    );
-    //Create an array with the grouped obs with the structured data needed
-    const filteredObsByTime = Object.values(groupByTime).map((timeObs) => {
-      return {
-        date: timeObs[0].date,
-        obs: timeObs,
-        count: timeObs.length,
-        completeDay: timeObs[0].completeDay,
-      };
-    });
+    let filteredObsByTime = obsFiltered;
+    if(filter !== this.timesFilter.DELETE){
+      //Group obs selected by the time selected
+      const groupByTime = obsFiltered.reduce(
+        (acc: { [key: number]: any[] }, obs) => {
+          const day = obs.completeDay;
+          const time =
+            filter === 'week'
+              ? this.currentWeek(day)
+              : filter === 'month'
+              ? day.getMonth()
+              : day.getFullYear();
+          if (!acc[time]) {
+            acc[time] = [obs];
+          }
+          acc[time].push(obs);
+          return acc;
+        },
+        {}
+      );
+      //Create an array with the grouped obs with the structured data needed
+      filteredObsByTime = Object.values(groupByTime).map((timeObs) => {
+        return {
+          date: timeObs[0].date,
+          obs: timeObs,
+          count: timeObs.length,
+          completeDay: timeObs[0].completeDay,
+        };
+      });
+    }
     this.obsFiltered = filteredObsByTime;
     this.updateChart(this.obsFiltered);
     this.timeFilterSelected = filter;
