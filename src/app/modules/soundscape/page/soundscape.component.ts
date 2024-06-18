@@ -62,7 +62,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
       this.observations = observations;
       this.observations.map((obs) => {
-        //modificamos el path para añadir un numero de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
+        //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
         obs.attributes.path = [];
         for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
           obs.attributes.path.push([Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005]);
@@ -84,7 +84,8 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         },
         properties: {
           color: '#000000',
-          width: 9
+          width: 6,
+          pause: 0
         }
       }));
 
@@ -101,7 +102,8 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
             },
             properties: {
               color: colors[Math.floor(Math.random() * colors.length)],
-              width: 3
+              width: 3,
+              pause: Math.random() < 0.2 ? 1 : 0
             }
           });
         }
@@ -542,8 +544,21 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         'line-cap': 'round'
       },
       paint: {
-        'line-color': ['get', 'color'],
-        'line-width': ['get', 'width']
+        'line-color':
+        [
+          'case',
+          ['==', ['get', 'pause'], 1],
+          '#FFF', // Dasharray si dashCondition es 1
+          ['get', 'color'] // Sin dasharray si dashCondition no es 1
+        ]
+       ,
+        'line-width': ['get', 'width'],
+        "line-dasharray":  [
+          'case',
+          ['==', ['get', 'pause'], 1],
+          [2, 3], // Dasharray si dashCondition es 1
+          [1, 0] // Sin dasharray si dashCondition no es 1
+        ]
       }
     });
   };
