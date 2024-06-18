@@ -14,7 +14,6 @@ export class MapLayersComponent {
 
 
   toggleLayerVisibility(layerId: string) {
-    console.log('layerId', layerId)
     this.mapService.map.setStyle('mapbox://styles/mapbox/' + layerId);
   }
 }

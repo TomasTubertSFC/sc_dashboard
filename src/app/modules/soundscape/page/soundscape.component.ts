@@ -1,7 +1,13 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, inject, signal } from '@angular/core';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import { Observations } from '../../../models/observations';
+import { ObservationsService } from '../../../services/observations/observations.service';
+import { Subscription } from 'rxjs';
+import { withHttpTransferCacheOptions } from '@angular/platform-browser';
+import { MapService } from '../../../services/map/map.service';
+import { color } from 'echarts';
 
 
 //time filter enum
@@ -9,7 +15,7 @@ enum TimeFilter {
   MORNING = 'morning',
   AFTERNOON = 'afternoon',
   NIGHT = 'night',
-  ALLDAY = 'allDay',
+  WHOLEDAY = 'wholeDay',
 }
 
 @Component({
@@ -23,30 +29,16 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   private map!: Map;
   private draw!: MapboxDraw;
+  private observationsService = inject(ObservationsService);
+  private mapService = inject(MapService);
+  private observations: Observations[] = [];
+  private observations$!: Subscription
+
   public points: [number, number][] = [];
+  public polylines = signal<any[]>([]);
   public selectedPolygon: any | undefined = undefined;
   public polygonFilter = signal<any | undefined>(undefined);
-  public timeFilter = signal<TimeFilter>(TimeFilter.ALLDAY);
-
-  public drawPolygonFilter(){
-    if(this.selectedPolygon && this.polygonFilter()){
-      this.draw.delete(this.selectedPolygon.id);
-      this.selectedPolygon = undefined;
-      this.polygonFilter.update(() => undefined)
-    }
-    this.draw.changeMode('draw_polygon');
-  };
-
-  public deletePolygonFilter(){
-    this.draw.delete(this.selectedPolygon.id);
-    this.selectedPolygon = undefined;
-    this.polygonFilter.update(() => undefined)
-  }
-  constructor() {
-    effect(() => {
-      if(this.polygonFilter()) console.log(this.timeFilter());
-    });
-  }
+  public timeFilter = signal<TimeFilter>(TimeFilter.WHOLEDAY);
   public mapSettings: {
     zoom: number;
     mapStyle: string;
@@ -56,14 +48,98 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     bounds: LngLatBounds;
     clusterMaxZoom: number;
   } = {
-    zoom: 10,
-    mapStyle: 'mapbox://styles/mapbox/light-v11',
-    centerMapLocation: [2.1487613, 41.3776589],
-    minZoom: 2,
-    maxZoom: 17,
-    bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
-    clusterMaxZoom: 17,
+      zoom: 10,
+      mapStyle: 'mapbox://styles/mapbox/light-v11',
+      centerMapLocation: [2.1487613, 41.3776589],
+      minZoom: 2,
+      maxZoom: 17,
+      bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
+      clusterMaxZoom: 17,
+    };
+
+  constructor() {
+
+    this.observations$ = this.observationsService.observations$.subscribe((observations) => {
+      this.observations = observations;
+
+      //TODO: esto debería hacerse en el backend
+      this.observations.map((obs) => {
+        //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
+        obs.attributes.path = [];
+        for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
+          obs.attributes.path.push([Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005]);
+        }
+        return obs;
+      });
+
+      //TODO: falta añadir los colores de los segmentos y si son pausas en la grabación
+      //Colores para los segmentos de las polilineas
+      let colors: string[] = [
+        '#FF0000',
+        '#00FF00',
+        '#0000FF',
+      ]
+
+      
+
+      //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
+      let polylines = this.observations.map((obs) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: obs.attributes.path
+        },
+        properties: {
+          color: '#333',
+          width: 6
+        }
+      }));
+
+      //Obtener los segmentos de las polilineas
+      polylines = polylines.concat(this.observations.map((obs) => {
+        let segments = [];
+        for (let i = 0; i < obs.attributes.path.length - 1; i++) {
+          segments.push({
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates: [obs.attributes.path[i], obs.attributes.path[i + 1]]
+            },
+            properties: {
+              //añadimos el color del segmento  //TODO: esto debería hacerse en el backend
+              color: colors[Math.floor(Math.random() * colors.length)],
+              width: 3,
+              //añadimos si el segmento es una pausa en la grabación //TODO: esto debería hacerse en el backend
+              pause: Math.random() < 0.2 ? 1 : 0
+            }
+          });
+        }
+        return segments;
+      }).flat());
+
+      this.polylines.update(() => polylines);
+      this.updateMapSource();
+    })
+
+    effect(() => {
+      if (this.polygonFilter()) console.log(this.timeFilter());
+    });
+  }
+
+  public drawPolygonFilter() {
+    if (this.polygonFilter()) {
+      this.deletePolygonFilter();
+    }
+    this.draw.changeMode('draw_polygon');
   };
+
+  public deletePolygonFilter() {
+    this.draw.delete(this.polygonFilter().id);
+    this.selectedPolygon = undefined;
+    this.polygonFilter.update(() => undefined)
+    this.observationsService.getAllObservations();
+  }
+
 
   ngAfterViewInit(): void {
     this.map = new Map({
@@ -86,10 +162,10 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     this.map.addControl(geocoder, 'top-left');
   }
-   /*
-  * Evento de carga del mapa
-  */
-   public onMapLoad() {
+  /*
+ * Evento de carga del mapa
+ */
+  public onMapLoad() {
 
     const selectionColor = '#C19FD9';
 
@@ -98,41 +174,41 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       displayControlsDefault: false,
       styles: [
         {
-            'id': 'gl-draw-polygon-fill-inactive',
-            'type': 'fill',
-            'filter': ['all', ['==', 'active', 'false'],
-                ['==', '$type', 'Polygon'],
-                ['!=', 'mode', 'static'],
-                ['!=', 'user_type', 'subarea']
-            ],
-            'paint': {
-              'fill-color': selectionColor,
-              'fill-outline-color': selectionColor,
-              'fill-opacity': 0.1
-            }
+          'id': 'gl-draw-polygon-fill-inactive',
+          'type': 'fill',
+          'filter': ['all', ['==', 'active', 'false'],
+            ['==', '$type', 'Polygon'],
+            ['!=', 'mode', 'static'],
+            ['!=', 'user_type', 'subarea']
+          ],
+          'paint': {
+            'fill-color': selectionColor,
+            'fill-outline-color': selectionColor,
+            'fill-opacity': 0.1
+          }
         },
         {
-            'id': 'gl-draw-polygon-fill-active',
-            'type': 'fill',
-            'filter': ['all', ['==', 'active', 'true'],
-                ['==', '$type', 'Polygon']
-            ],
-            'paint': {
-              'fill-color': selectionColor,
-              'fill-outline-color': selectionColor,
-              'fill-opacity': 0.1
-            }
+          'id': 'gl-draw-polygon-fill-active',
+          'type': 'fill',
+          'filter': ['all', ['==', 'active', 'true'],
+            ['==', '$type', 'Polygon']
+          ],
+          'paint': {
+            'fill-color': selectionColor,
+            'fill-outline-color': selectionColor,
+            'fill-opacity': 0.1
+          }
         },
         {
-            'id': 'gl-draw-polygon-midpoint',
-            'type': 'circle',
-            'filter': ['all', ['==', '$type', 'Point'],
-                ['==', 'meta', 'midpoint']
-            ],
-            'paint': {
-                'circle-radius': 3,
-                'circle-color': "#191919"
-            }
+          'id': 'gl-draw-polygon-midpoint',
+          'type': 'circle',
+          'filter': ['all', ['==', '$type', 'Point'],
+            ['==', 'meta', 'midpoint']
+          ],
+          'paint': {
+            'circle-radius': 3,
+            'circle-color': "#191919"
+          }
         },
         {
           'id': 'gl-draw-polygon-stroke-inactive',
@@ -147,13 +223,13 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
             'line-join': 'round'
           },
           'paint': {
-            'line-color':selectionColor,
+            'line-color': selectionColor,
             'line-width': [
               "case",
               ['==', ['get', "user_class_id"], 2], 2,
               2
             ],
-            'line-dasharray':[
+            'line-dasharray': [
               "case",
               ['==', ['get', "user_class_id"], 2], ["literal", [2, 0]],
               ["literal", [0.2, 2]],
@@ -161,91 +237,91 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
           }
         },
         {
-            'id': 'gl-draw-polygon-stroke-active',
-            'type': 'line',
-            'filter': ['all',
-              ['==', 'active', 'true'],
-              ['==', '$type', 'Polygon']
-            ],
-            'layout': {
-                'line-cap': 'round',
-                'line-join': 'round'
-            },
-            'paint': {
-                'line-color': selectionColor,
-                'line-dasharray': [0.2, 2],
-                'line-width': 2
-            }
+          'id': 'gl-draw-polygon-stroke-active',
+          'type': 'line',
+          'filter': ['all',
+            ['==', 'active', 'true'],
+            ['==', '$type', 'Polygon']
+          ],
+          'layout': {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          'paint': {
+            'line-color': selectionColor,
+            'line-dasharray': [0.2, 2],
+            'line-width': 2
+          }
         },
         {
-            'id': 'gl-draw-line-inactive',
-            'type': 'line',
-            'filter': ['all', ['==', 'active', 'false'],
-                ['==', '$type', 'LineString'],
-                ['!=', 'mode', 'static']
-            ],
-            'layout': {
-                'line-cap': 'round',
-                'line-join': 'round'
-            },
-            'paint': {
-                'line-color': selectionColor,
-                'line-width': 2
-            }
+          'id': 'gl-draw-line-inactive',
+          'type': 'line',
+          'filter': ['all', ['==', 'active', 'false'],
+            ['==', '$type', 'LineString'],
+            ['!=', 'mode', 'static']
+          ],
+          'layout': {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          'paint': {
+            'line-color': selectionColor,
+            'line-width': 2
+          }
         },
         {
-            'id': 'gl-draw-line-active',
-            'type': 'line',
-            'filter': ['all', ['==', '$type', 'LineString'],
-                ['==', 'active', 'true']
-            ],
-            'layout': {
-                'line-cap': 'round',
-                'line-join': 'round'
-            },
-            'paint': {
-                'line-color': selectionColor,
-                'line-dasharray': [0.2, 2],
-                'line-width': 2
-            }
+          'id': 'gl-draw-line-active',
+          'type': 'line',
+          'filter': ['all', ['==', '$type', 'LineString'],
+            ['==', 'active', 'true']
+          ],
+          'layout': {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          'paint': {
+            'line-color': selectionColor,
+            'line-dasharray': [0.2, 2],
+            'line-width': 2
+          }
         },
         {
-            'id': 'gl-draw-polygon-and-line-vertex-stroke-inactive',
-            'type': 'circle',
-            'filter': ['all', ['==', 'meta', 'vertex'],
-                ['==', '$type', 'Point'],
-                ['!=', 'mode', 'static']
-            ],
-            'paint': {
-                'circle-radius': 5,
-                'circle-color': '#fff'
-            }
+          'id': 'gl-draw-polygon-and-line-vertex-stroke-inactive',
+          'type': 'circle',
+          'filter': ['all', ['==', 'meta', 'vertex'],
+            ['==', '$type', 'Point'],
+            ['!=', 'mode', 'static']
+          ],
+          'paint': {
+            'circle-radius': 5,
+            'circle-color': '#fff'
+          }
         },
         {
-            'id': 'gl-draw-polygon-and-line-vertex-inactive',
-            'type': 'circle',
-            'filter': ['all', ['==', 'meta', 'vertex'],
-                ['==', '$type', 'Point'],
-                ['!=', 'mode', 'static']
-            ],
-            'paint': {
-                'circle-radius': 5,
-                'circle-color': "#191919"
-            }
+          'id': 'gl-draw-polygon-and-line-vertex-inactive',
+          'type': 'circle',
+          'filter': ['all', ['==', 'meta', 'vertex'],
+            ['==', '$type', 'Point'],
+            ['!=', 'mode', 'static']
+          ],
+          'paint': {
+            'circle-radius': 5,
+            'circle-color': "#191919"
+          }
         },
         {
-            'id': 'gl-draw-point-point-stroke-inactive',
-            'type': 'circle',
-            'filter': ['all', ['==', 'active', 'false'],
-                ['==', '$type', 'Point'],
-                ['==', 'meta', 'feature'],
-                ['!=', 'mode', 'static']
-            ],
-            'paint': {
-                'circle-radius': 8,
-                'circle-opacity': 1,
-                'circle-color': '#fff'
-            }
+          'id': 'gl-draw-point-point-stroke-inactive',
+          'type': 'circle',
+          'filter': ['all', ['==', 'active', 'false'],
+            ['==', '$type', 'Point'],
+            ['==', 'meta', 'feature'],
+            ['!=', 'mode', 'static']
+          ],
+          'paint': {
+            'circle-radius': 8,
+            'circle-opacity': 1,
+            'circle-color': '#fff'
+          }
         },
         {
           'id': 'gl-draw-point-inactive',
@@ -261,83 +337,83 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
           }
         },
         {
-            'id': 'gl-draw-point-stroke-active',
-            'type': 'circle',
-            'filter': ['all', ['==', '$type', 'Point'],
-                ['==', 'active', 'true'],
-                ['!=', 'meta', 'midpoint']
-            ],
-            'paint': {
-                'circle-radius': 7,
-                'circle-color': '#fff'
-            }
+          'id': 'gl-draw-point-stroke-active',
+          'type': 'circle',
+          'filter': ['all', ['==', '$type', 'Point'],
+            ['==', 'active', 'true'],
+            ['!=', 'meta', 'midpoint']
+          ],
+          'paint': {
+            'circle-radius': 7,
+            'circle-color': '#fff'
+          }
         },
         {
-            'id': 'gl-draw-point-active',
-            'type': 'circle',
-            'filter': ['all', ['==', '$type', 'Point'],
-                ['!=', 'meta', 'midpoint'],
-                ['==', 'active', 'true']
-            ],
-            'paint': {
-                'circle-radius': 8,
-                'circle-color': "#191919"
-            }
+          'id': 'gl-draw-point-active',
+          'type': 'circle',
+          'filter': ['all', ['==', '$type', 'Point'],
+            ['!=', 'meta', 'midpoint'],
+            ['==', 'active', 'true']
+          ],
+          'paint': {
+            'circle-radius': 8,
+            'circle-color': "#191919"
+          }
         },
         {
-            'id': 'gl-draw-polygon-fill-static',
-            'type': 'fill',
-            'filter': ['all', ['==', 'mode', 'static'],
-                ['==', '$type', 'Polygon']
-            ],
-            'paint': {
-                'fill-color': '#404040',
-                'fill-outline-color': '#404040',
-                'fill-opacity': 0.1
-            }
+          'id': 'gl-draw-polygon-fill-static',
+          'type': 'fill',
+          'filter': ['all', ['==', 'mode', 'static'],
+            ['==', '$type', 'Polygon']
+          ],
+          'paint': {
+            'fill-color': '#404040',
+            'fill-outline-color': '#404040',
+            'fill-opacity': 0.1
+          }
         },
         {
-            'id': 'gl-draw-polygon-stroke-static',
-            'type': 'line',
-            'filter': ['all', ['==', 'mode', 'static'],
-                ['==', '$type', 'Polygon']
-            ],
-            'layout': {
-                'line-cap': 'round',
-                'line-join': 'round'
-            },
-            'paint': {
-                'line-color': '#404040',
-                'line-width': 2
-            }
+          'id': 'gl-draw-polygon-stroke-static',
+          'type': 'line',
+          'filter': ['all', ['==', 'mode', 'static'],
+            ['==', '$type', 'Polygon']
+          ],
+          'layout': {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          'paint': {
+            'line-color': '#404040',
+            'line-width': 2
+          }
         },
         {
-            'id': 'gl-draw-line-static',
-            'type': 'line',
-            'filter': ['all', ['==', 'mode', 'static'],
-                ['==', '$type', 'LineString']
-            ],
-            'layout': {
-                'line-cap': 'round',
-                'line-join': 'round'
-            },
-            'paint': {
-                'line-color': '#404040',
-                'line-width': 2
-            }
+          'id': 'gl-draw-line-static',
+          'type': 'line',
+          'filter': ['all', ['==', 'mode', 'static'],
+            ['==', '$type', 'LineString']
+          ],
+          'layout': {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          'paint': {
+            'line-color': '#404040',
+            'line-width': 2
+          }
         },
         {
-            'id': 'gl-draw-point-static',
-            'type': 'circle',
-            'filter': ['all', ['==', 'mode', 'static'],
-                ['==', '$type', 'Point']
-            ],
-            'paint': {
-                'circle-radius': 5,
-                'circle-color': '#404040'
-            }
+          'id': 'gl-draw-point-static',
+          'type': 'circle',
+          'filter': ['all', ['==', 'mode', 'static'],
+            ['==', '$type', 'Point']
+          ],
+          'paint': {
+            'circle-radius': 5,
+            'circle-color': '#404040'
+          }
         },
-    ]
+      ]
 
     });
     this.map.addControl(this.draw);
@@ -348,10 +424,11 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     //Llamada a la función polygonCreated cuando se termina de dibujar un polígono
     this.map.on('draw.create', this.onDrawCreated.bind(this));
 
-    //Llamada a la función markerCreated cuando se termina de dibujar un marcador
-
     //La función updatedSubareaPolygon se llama cuando se actualiza un polígono
     this.map.on('draw.update', this.onDrawUpdated.bind(this));
+
+    this.addObservationsToMap();
+
   }
   private onDrawSelect(event: any) {
     this.selectedPolygon = event.features[0] ? event.features[0] : undefined;
@@ -367,7 +444,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   private getFilteredObservations(event: any) {
     this.polygonFilter.update(() => event.features[0])
-    console.log('getFilteredObservations');
+    this.observationsService.getFilteredObservationsForSoundscape(null, null, this.polygonFilter().geometry.coordinates[0]);
   }
 
   private getBboxFromPoints(): [[number, number], [number, number]] {
@@ -396,6 +473,59 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy(): void {}
+  private addObservationsToMap(observations: Observations[] = this.observations) {
+
+    //Añadir la fuente de datos para las lineas de atributo path
+    this.map.addSource('polylines', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: this.polylines()
+      }
+    });
+
+    // Agregar capa para los paths individuales
+    this.map.addLayer({
+      id: 'LineString',
+      type: 'line',
+      //filtramos si es zoom es mayor que 14
+      //minzoom: 14,
+      source: 'polylines',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color':
+        [
+          'case',
+          ['==', ['get', 'pause'], 1],
+          '#FFF', // Dasharray si pause es 1
+          ['get', 'color'] // Sin dasharray si pause no es 1
+        ]
+       ,
+        'line-width': ['get', 'width'],
+        "line-dasharray":  [
+          'case',
+          ['==', ['get', 'pause'], 1],
+          [2, 3], // Dasharray si pause es 1
+          [1, 0] // Sin dasharray si pause no es 1
+        ]
+      }
+    });
+  };
+
+  updateMapSource() {
+    if (!this.map || !this.map.isSourceLoaded('polylines')) return;
+    let source = this.map.getSource('polylines') as mapboxgl.GeoJSONSource;
+    source.setData({
+      type: 'FeatureCollection',
+      features: this.polylines()
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.observations$.unsubscribe();
+  }
 }
 
