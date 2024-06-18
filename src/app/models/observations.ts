@@ -9,6 +9,7 @@ export interface ObservationsDataChart {
     date: string;
     obs: Observations[];
     count: number;
+    completeDay: Date;
   }
 
 export interface ObservationsAttributes {
