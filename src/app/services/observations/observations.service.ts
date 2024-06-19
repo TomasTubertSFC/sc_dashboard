@@ -144,7 +144,7 @@ export class ObservationsService {
           longitude: obs.attributes.longitude,
           created_at: new Date(obs.attributes.created_at),
           types: obs.relationships.types.map((type) => type.id),
-          Leq: obs.attributes.Leq,
+          LAeq: obs.attributes.LAeq,
           userType: obs.relationships.user.type,
           quiet: obs.attributes.quiet,
         }))

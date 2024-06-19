@@ -46,6 +46,21 @@ export interface ObservationsAttributes {
     path:                   Segment[];
 }
 
+export interface Segment {
+  start:                  number[];
+  end:                    number[];
+  parameters:             SegmentParameters;
+}
+
+export interface SegmentParameters {
+  L10:                    number;
+  L90:                    number;
+  LAeq:                   number;
+  LAeqT:                  number[] | number;
+  pause:                  boolean;
+}
+
+
 export interface ObservationsRelationships {
     user:  User;
     types: ObservationsType[];
@@ -74,18 +89,4 @@ interface UserAttributes {
 interface Profile {
     gender:    string;
     birthYear: number | string;
-}
-
-interface Segment {
-  start:                  number[];
-  end:                    number[];
-  parameters:             SegmentParameters;
-}
-
-interface SegmentParameters {
-  L10:                    number;
-  L90:                    number;
-  LAeq:                   number;
-  LAeqT:                  number[] | number;
-  pause:                  boolean;
 }

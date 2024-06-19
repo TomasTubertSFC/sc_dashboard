@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { withHttpTransferCacheOptions } from '@angular/platform-browser';
 import { MapService } from '../../../services/map/map.service';
 import { color } from 'echarts';
+import { Segment } from 'chart.js/dist/helpers/helpers.segment';
 
 
 //time filter enum
@@ -66,10 +67,15 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       this.observations.map((obs) => {
         //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
         obs.attributes.path = [];
+        let start!: [number, number];
         for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
+
+          let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+          if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+
           obs.attributes.path.push({
-            start:  [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005],
-            end:    [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005],
+            start:  start,
+            end:    end,
             parameters:{
               pause:  Math.random() < 0.2 ? true : false,
               LAeq:   Math.floor(Math.random() * 140),
@@ -78,6 +84,8 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
               L90:    Math.floor(Math.random() * 140)
             }
           });
+
+          start = end;
         }
         return obs;
       });
@@ -107,7 +115,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
           case value > 80:
             return '#134367';
           default:
-            return '#000';
+            return '#333';
 
         }
       }
@@ -117,11 +125,12 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         type: 'Feature',
         geometry: {
           type: 'LineString',
-          coordinates: obs.attributes.path
+          coordinates: obs.attributes.path.map((value) => { return value.start })
         },
         properties: {
-          color: '#333',
-          width: 6
+          id:     obs.id,
+          color:  '#333',
+          width:  6
         }
       }));
 
@@ -530,7 +539,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         'line-color':
         [
           'case',
-          ['==', ['get', 'pause'], 1],
+          ['==', ['get', 'pause'], true],
           '#FFF', // Dasharray si pause es 1
           ['get', 'color'] // Sin dasharray si pause no es 1
         ]
@@ -538,12 +547,15 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         'line-width': ['get', 'width'],
         "line-dasharray":  [
           'case',
-          ['==', ['get', 'pause'], 1],
+          ['==', ['get', 'pause'],true],
           [2, 3], // Dasharray si pause es 1
           [1, 0] // Sin dasharray si pause no es 1
         ]
       }
     });
+
+
+
   };
 
   updateMapSource() {
