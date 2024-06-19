@@ -5,9 +5,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
 import { Subscription } from 'rxjs';
-import { withHttpTransferCacheOptions } from '@angular/platform-browser';
 import { MapService } from '../../../services/map/map.service';
-import { color } from 'echarts';
 
 
 //time filter enum
@@ -30,9 +28,9 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private map!: Map;
   private draw!: MapboxDraw;
   private observationsService = inject(ObservationsService);
-  private mapService = inject(MapService);
   private observations: Observations[] = [];
   private observations$!: Subscription
+  private observationSelectedId: string = '';
 
   public points: [number, number][] = [];
   public polylines = signal<any[]>([]);
@@ -66,56 +64,98 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       this.observations.map((obs) => {
         //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
         obs.attributes.path = [];
+        let start!: [number, number];
         for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
-          obs.attributes.path.push([Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005]);
+
+          let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+          if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+
+          obs.attributes.path.push({
+            start:  start,
+            end:    end,
+            parameters:{
+              pause:  Math.random() < 0.2 ? true : false,
+              LAeq:   Math.floor(Math.random() * 140),
+              LAeqT:  Math.floor(Math.random() * 140),
+              L10:    Math.floor(Math.random() * 140),
+              L90:    Math.floor(Math.random() * 140)
+            }
+          });
+
+          start = end;
         }
         return obs;
       });
 
-      //TODO: falta añadir los colores de los segmentos y si son pausas en la grabación
-      //Colores para los segmentos de las polilineas
-      let colors: string[] = [
-        '#FF0000',
-        '#00FF00',
-        '#0000FF',
-      ]
+      function getColor(value: number): string{
+        switch (true) {
+          case value <= 35:
+            return '#B7CE8E';
+          case value > 35 && value <= 40:
+            return '#1D8435';
+          case value > 40 && value <= 45:
+            return '#0E4C3C';
+          case value > 45 && value <= 50:
+            return '#ECD721';
+          case value > 50 && value <= 55:
+            return '#9F6F2C';
+          case value > 55 && value <= 60:
+            return '#EF7926';
+          case value > 60 && value <= 65:
+            return '#C71932';
+          case value > 65 && value <= 70:
+            return '#8D1A27';
+          case value > 70 && value <= 75:
+            return '#88497B';
+          case value > 75 && value <= 80:
+            return '#18558C';
+          case value > 80:
+            return '#134367';
+          default:
+            return '#333';
 
-      
+        }
+      }
 
       //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
+
       let polylines = this.observations.map((obs) => ({
         type: 'Feature',
         geometry: {
           type: 'LineString',
-          coordinates: obs.attributes.path
+          coordinates: obs.attributes.path.map((value) => { return value.start })
         },
         properties: {
-          color: '#333',
-          width: 6
+          id:     obs.id,
+          type:   'LineString',
+          color:  '#333',
+          width:  6
         }
       }));
 
       //Obtener los segmentos de las polilineas
-      polylines = polylines.concat(this.observations.map((obs) => {
-        let segments = [];
-        for (let i = 0; i < obs.attributes.path.length - 1; i++) {
-          segments.push({
-            type: 'Feature',
-            geometry: {
-              type: 'LineString',
-              coordinates: [obs.attributes.path[i], obs.attributes.path[i + 1]]
-            },
-            properties: {
-              //añadimos el color del segmento  //TODO: esto debería hacerse en el backend
-              color: colors[Math.floor(Math.random() * colors.length)],
-              width: 3,
-              //añadimos si el segmento es una pausa en la grabación //TODO: esto debería hacerse en el backend
-              pause: Math.random() < 0.2 ? 1 : 0
-            }
-          });
-        }
-        return segments;
-      }).flat());
+      polylines = polylines.concat(
+        this.observations.map((obs) => {
+          let segments:any = [];
+          for (let i = 0; i < obs.attributes.path.length - 1; i++) {
+            segments.push({
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: [obs.attributes.path[i].start, obs.attributes.path[i].end]
+              },
+              properties: {
+                type:   'Line',
+                color: getColor(obs.attributes.path[i].parameters.LAeq),
+                width: 3,
+                pause: obs.attributes.path[i].parameters.pause
+              }
+            });
+          }
+          return segments;
+        })
+        .flat()
+      );
 
       this.polylines.update(() => polylines);
       this.updateMapSource();
@@ -163,8 +203,8 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.map.addControl(geocoder, 'top-left');
   }
   /*
- * Evento de carga del mapa
- */
+  * Evento de carga del mapa
+  */
   public onMapLoad() {
 
     const selectionColor = '#C19FD9';
@@ -484,6 +524,39 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    this.map.addLayer({
+      id: 'lineLayer-hover',
+      type: 'line',
+      source: 'polylines',
+      layout: {
+
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+          'line-color': '#333',
+          'line-width': 3,
+          'line-gap-width': 5,
+      },
+      filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    });
+    this.map.addLayer({
+      id: 'lineLayer-select',
+      type: 'line',
+      source: 'polylines',
+      layout: {
+
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+          'line-color': '#FF7A1F',
+          'line-width': 4,
+          'line-gap-width': 5,
+      },
+      filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    });
+
     // Agregar capa para los paths individuales
     this.map.addLayer({
       id: 'LineString',
@@ -499,7 +572,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         'line-color':
         [
           'case',
-          ['==', ['get', 'pause'], 1],
+          ['==', ['get', 'pause'], true],
           '#FFF', // Dasharray si pause es 1
           ['get', 'color'] // Sin dasharray si pause no es 1
         ]
@@ -507,12 +580,39 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         'line-width': ['get', 'width'],
         "line-dasharray":  [
           'case',
-          ['==', ['get', 'pause'], 1],
+          ['==', ['get', 'pause'], true],
           [2, 3], // Dasharray si pause es 1
           [1, 0] // Sin dasharray si pause no es 1
         ]
       }
     });
+
+    this.map.on('mouseenter', 'LineString', (e:any) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+      for( let feature of e.features) {
+        if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
+          this.map.setFilter('lineLayer-hover', ['==', 'id', feature.properties.id]);
+          return;
+        }
+      };
+    });
+
+    this.map.on('click', 'LineString', (e:any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      for( let feature of e.features) {
+        if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
+          this.observationSelectedId = feature.properties.id;
+          this.map.setFilter('lineLayer-select', ['==', 'id', feature.properties.id]);
+          return;
+        }
+      };
+    });
+
+    this.map.on('mouseleave', 'LineString', (e:any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      this.map.setFilter('lineLayer-hover', ['==', 'id', '']);
+    });
+
   };
 
   updateMapSource() {

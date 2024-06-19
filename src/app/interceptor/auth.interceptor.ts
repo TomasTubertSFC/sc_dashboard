@@ -5,26 +5,22 @@ import {
   HttpEvent,
   HttpInterceptor,
   HTTP_INTERCEPTORS,
-  HttpXsrfTokenExtractor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private tokenExtractor: HttpXsrfTokenExtractor) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // Agregar la cabecera CSRF a todas las solicitudes no GET
-    //Se me hace raro que solo sean solicitudes no GET
-    if (req.method !== 'GET') {
-      const csrfToken = this.tokenExtractor.getToken() as string;
+    let token = localStorage.getItem('access_token');
+    if (token) {
       req = req.clone({
         setHeaders: {
-          'X-XSRF-TOKEN': csrfToken,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
     }
 
