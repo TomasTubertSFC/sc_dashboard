@@ -72,15 +72,35 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         return obs;
       });
 
-      //TODO: falta añadir los colores de los segmentos y si son pausas en la grabación
-      //Colores para los segmentos de las polilineas
-      let colors: string[] = [
-        '#FF0000',
-        '#00FF00',
-        '#0000FF',
-      ]
+      function getColor(value: number): string{
+        switch (true) {
+          case value <= 35:
+            return '#B7CE8E';
+          case value > 35 && value <= 40:
+            return '#1D8435';
+          case value > 40 && value <= 45:
+            return '#0E4C3C';
+          case value > 45 && value <= 50:
+            return '#ECD721';
+          case value > 50 && value <= 55:
+            return '#9F6F2C';
+          case value > 55 && value <= 60:
+            return '#EF7926';
+          case value > 60 && value <= 65:
+            return '#C71932';
+          case value > 65 && value <= 70:
+            return '#8D1A27';
+          case value > 70 && value <= 75:
+            return '#88497B';
+          case value > 75 && value <= 80:
+            return '#18558C';
+          case value > 80:
+            return '#134367';
+          default:
+            return '#000';
 
-      
+        }
+      }
 
       //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
       let polylines = this.observations.map((obs) => ({
@@ -107,7 +127,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
             },
             properties: {
               //añadimos el color del segmento  //TODO: esto debería hacerse en el backend
-              color: colors[Math.floor(Math.random() * colors.length)],
+              color: getColor(Math.floor(Math.random() * 100)),
               width: 3,
               //añadimos si el segmento es una pausa en la grabación //TODO: esto debería hacerse en el backend
               pause: Math.random() < 0.2 ? 1 : 0
