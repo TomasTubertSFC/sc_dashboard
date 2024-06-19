@@ -126,7 +126,7 @@ export class MapService {
           id: observation.id,
           created_at: observation.created_at,
           types: observation.types,
-          Leq: observation.Leq,
+          LAeq: observation.LAeq,
           userType: observation.userType,
           quiet: observation.quiet,
         },
@@ -346,8 +346,8 @@ export class MapService {
     if (soundPressure) {
       mapObs = mapObs.filter(
         (obs) =>
-          Number(obs.Leq) <= soundPressureFilter[1] &&
-          Number(obs.Leq) >= soundPressureFilter[0]
+          Number(obs.LAeq) <= soundPressureFilter[1] &&
+          Number(obs.LAeq) >= soundPressureFilter[0]
       );
     }
     if (hours) {

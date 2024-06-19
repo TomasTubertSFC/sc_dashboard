@@ -5,7 +5,7 @@ export interface MapObservation {
   longitude: string;
   created_at?: Date;
   types?: (string | number)[];
-  Leq?: string;
+  LAeq?: string;
   userType?: string;
   quiet?: string;
 }
@@ -14,7 +14,7 @@ export interface Properties {
   id: string;
   created_at: Date;
   types: (string | number)[];
-  Leq: string;
+  LAeq: string;
   userType: string;
   quiet: string;
   iconOffset?: [number, number];

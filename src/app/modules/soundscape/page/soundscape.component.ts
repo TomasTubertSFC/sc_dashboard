@@ -203,8 +203,8 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.map.addControl(geocoder, 'top-left');
   }
   /*
- * Evento de carga del mapa
- */
+  * Evento de carga del mapa
+  */
   public onMapLoad() {
 
     const selectionColor = '#C19FD9';
