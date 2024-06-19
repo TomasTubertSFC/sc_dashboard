@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { confirmPasswordValidator } from '../../../../validators/confirm-password.validator';
-import { UserService } from '../../../../services/user/user.service';
 
 import { MessageService } from 'primeng/api';
 
@@ -47,7 +46,6 @@ export class ProfileComponent {
 
   constructor(
     private messageService: MessageService,
-    private userService: UserService
   ) {}
 
   showSuccess() {

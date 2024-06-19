@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -8,8 +8,8 @@ import { AuthService } from '../../services/auth/auth.service';
 import { MessageService } from 'primeng/api';
 
 export interface UserLogin {
-  email: String;
-  password: String;
+  email: string;
+  password: string;
 }
 
 @Component({
@@ -27,6 +27,11 @@ export interface UserLogin {
   ],
 })
 export class LoginComponent {
+
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private messageService = inject(MessageService);
+
   private user!: UserLogin;
 
   private lastUrl!: string | null;
@@ -48,11 +53,8 @@ export class LoginComponent {
     ]),
   });
 
-  constructor(
-    @Inject(AuthService) private authService: AuthService,
-    private messageService: MessageService,
-    private router: Router
-  ) {
+  constructor() {
+    console.log('this.authService.isLoggedIn.value', this.authService.isLoggedIn.value)
     this.authService.isLoggedIn.value && this.router.navigate(['/']);
 
     this.router.events
@@ -99,7 +101,6 @@ export class LoginComponent {
       this.authService.login(this.user).subscribe({
         next: () => {
           this.showSuccess();
-          this.router.navigate(['/dashboard']);
           this.loading = false;
         },
         error: (resp: any) => {
