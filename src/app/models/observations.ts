@@ -1,3 +1,5 @@
+import { Point } from "mapbox-gl";
+
 export interface Observations {
     type:          string;
     id:            string;
@@ -13,7 +15,7 @@ export interface ObservationsDataChart {
   }
 
 export interface ObservationsAttributes {
-    Leq:                    string;
+    LAeq:                   string;
     LAeqT:                  string[] | string;
     LAmax:                  string;
     LAmin:                  string;
@@ -41,8 +43,7 @@ export interface ObservationsAttributes {
     created_at:             string;
     updated_at:             Date;
     roughtness_R?:          string;
-    segments?:              segment[];
-    path?:                  number[][];
+    path:                   Segment[];
 }
 
 export interface ObservationsRelationships {
@@ -75,13 +76,16 @@ interface Profile {
     birthYear: number | string;
 }
 
-interface segment {
-  latitude:               string;
-  longitude:              string;
-  Leq:                    string;
-  LAeqT:                  string[] | string;
-  LAmax:                  string;
-  LAmin:                  string;
-  L90:                    string;
-  L10:                    string;
+interface Segment {
+  start:                  number[];
+  end:                    number[];
+  parameters:             SegmentParameters;
+}
+
+interface SegmentParameters {
+  L10:                    number;
+  L90:                    number;
+  LAeq:                   number;
+  LAeqT:                  number[] | number;
+  pause:                  boolean;
 }

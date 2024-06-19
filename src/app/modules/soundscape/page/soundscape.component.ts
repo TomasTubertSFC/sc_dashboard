@@ -67,7 +67,17 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
         obs.attributes.path = [];
         for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
-          obs.attributes.path.push([Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005]);
+          obs.attributes.path.push({
+            start:  [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005],
+            end:    [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005],
+            parameters:{
+              pause:  Math.random() < 0.2 ? true : false,
+              LAeq:   Math.floor(Math.random() * 140),
+              LAeqT:  Math.floor(Math.random() * 140),
+              L10:    Math.floor(Math.random() * 140),
+              L90:    Math.floor(Math.random() * 140)
+            }
+          });
         }
         return obs;
       });
@@ -116,26 +126,27 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }));
 
       //Obtener los segmentos de las polilineas
-      polylines = polylines.concat(this.observations.map((obs) => {
-        let segments = [];
-        for (let i = 0; i < obs.attributes.path.length - 1; i++) {
-          segments.push({
-            type: 'Feature',
-            geometry: {
-              type: 'LineString',
-              coordinates: [obs.attributes.path[i], obs.attributes.path[i + 1]]
-            },
-            properties: {
-              //añadimos el color del segmento  //TODO: esto debería hacerse en el backend
-              color: getColor(Math.floor(Math.random() * 100)),
-              width: 3,
-              //añadimos si el segmento es una pausa en la grabación //TODO: esto debería hacerse en el backend
-              pause: Math.random() < 0.2 ? 1 : 0
-            }
-          });
-        }
-        return segments;
-      }).flat());
+      polylines = polylines.concat(
+        this.observations.map((obs) => {
+          let segments:any = [];
+          for (let i = 0; i < obs.attributes.path.length - 1; i++) {
+            segments.push({
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: [obs.attributes.path[i].start, obs.attributes.path[i].end]
+              },
+              properties: {
+                color: getColor(obs.attributes.path[i].parameters.LAeq),
+                width: 3,
+                pause: obs.attributes.path[i].parameters.pause
+              }
+            });
+          }
+          return segments;
+        })
+        .flat()
+      );
 
       this.polylines.update(() => polylines);
       this.updateMapSource();
