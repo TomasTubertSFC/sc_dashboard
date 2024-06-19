@@ -5,6 +5,7 @@ import { catchError, filter } from 'rxjs/operators';
 
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { environment } from '../../../environments/environments';
+import { UserLoginResponse } from '../../models/auth';
 
 export interface RecoverPasswords {
   password: String;
@@ -12,6 +13,8 @@ export interface RecoverPasswords {
   token?: String | null;
   email?: String | null;
 }
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -41,66 +44,30 @@ export class AuthService {
       .subscribe((event: NavigationEnd) => {
         this.lastUrl = event.urlAfterRedirects;
       });
+      localStorage.getItem('access_token') && this._isLoggedIn.next(true);
   }
 
-  login(user: any): Observable<any> {
+  login(user: {email:string,password:string}): Observable<UserLoginResponse> {
     return this.http
-      .post(
+      .post<UserLoginResponse>(
         `${environment.BACKEND_BASE_URL}/login`,
-        { ...user },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          withCredentials: true,
-        }
+        { ...user }
       )
       .pipe(
-        tap(() => {
-          if (this.lastUrl) {
+        tap((res) => {
+          if (this.lastUrl && this.lastUrl !== '/login') {
             this.router.navigate([this.lastUrl]);
             this.lastUrl = null;
           } else {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/']);
           }
-
+          localStorage.setItem('user', JSON.stringify(res.data.user));
+          localStorage.setItem('access_token', res.data.token);
           this._isLoggedIn.next(true);
         })
       );
   }
 
-  userIsLogged(): Observable<
-    | boolean
-    | {
-        status: number;
-        data: any;
-      }
-  > {
-
-    return this.http
-      .get<{ status: number; data: any }>(
-        `${environment.BACKEND_BASE_URL}/api/user-logged`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          withCredentials: true,
-        }
-      )
-      .pipe(
-        tap((resp: { status: number; data: any }) => {
-          this._isLoggedIn.next(true);
-        }),
-        catchError((error) => {
-          if (error.status === 401) {
-            return of(true);
-          }
-          return of(false);
-        })
-      );
-  }
 
   logout() {
     this.http
@@ -117,32 +84,10 @@ export class AuthService {
       )
       .subscribe(() => {
         this._isLoggedIn.next(false);
-        // this.user = undefined;
+        localStorage.removeItem('user');
+        localStorage.removeItem('access_token');
         this.router.navigate(['/login']);
       });
   }
 
-  recoverPasswordEmail(email: string): Observable<Object> {
-    return this.http.post(
-      `${environment.BACKEND_BASE_URL}/forgot-password`,
-      { email },
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  }
-
-  postCreatePasswords(passwords: RecoverPasswords): Observable<Object> {
-    return this.http.post(
-      `${environment.BACKEND_BASE_URL}/reset-password`,
-      { ...passwords },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        withCredentials: true,
-      }
-    );
-  }
 }

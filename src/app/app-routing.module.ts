@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppLayoutComponent } from './layout/components/layout/app.layout.component';
 import { LoginComponent } from './modules/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
-import { RecoverPasswordComponent } from './modules/recover-password/components/recover-password/recover-password.component';
-import { CreatePasswordComponent } from './modules/recover-password/components/create-password/create-password.component';
 import { ProfileComponent } from './modules/profile/components/profile/profile.component';
 import { MapComponent } from './modules/map/page/map.component';
 import { OverviewComponent } from './modules/overview/page/overview/overview.component';
@@ -18,7 +16,7 @@ const routes: Routes = [
   {
     path: '',
     component: AppLayoutComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -41,14 +39,6 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-  },
-  {
-    path: 'recover-password',
-    component: RecoverPasswordComponent,
-  },
-  {
-    path: 'password-reset/:token',
-    component: CreatePasswordComponent,
   },
 ];
 
