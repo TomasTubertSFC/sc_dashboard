@@ -24,8 +24,37 @@ export class ObservationsService {
         `${environment.BACKEND_BASE_URL}/observations`
       )
       .subscribe(({ data }) => {
+
+          //TODO: esto debería hacerse en el backend
+          data.map((obs) => {
+            //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
+            obs.attributes.path = [];
+            let start!: [number, number];
+            for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
+
+              let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+              if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+
+              obs.attributes.path.push({
+                start:  start,
+                end:    end,
+                parameters:{
+                  pause:  Math.random() < 0.2 ? true : false,
+                  LAeq:   Math.floor(Math.random() * 140),
+                  LAeqT:  Math.floor(Math.random() * 140),
+                  L10:    Math.floor(Math.random() * 140),
+                  L90:    Math.floor(Math.random() * 140)
+                }
+              });
+
+              start = end;
+            }
+            return obs;
+          });
+
         this.observations$.next(data);
         this.loading$.next(false);
+
       });
   }
 

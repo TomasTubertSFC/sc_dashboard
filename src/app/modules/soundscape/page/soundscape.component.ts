@@ -60,32 +60,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
       this.observations = observations;
 
-      //TODO: esto debería hacerse en el backend
-      this.observations.map((obs) => {
-        //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
-        obs.attributes.path = [];
-        let start!: [number, number];
-        for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
-
-          let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
-          if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
-
-          obs.attributes.path.push({
-            start:  start,
-            end:    end,
-            parameters:{
-              pause:  Math.random() < 0.2 ? true : false,
-              LAeq:   Math.floor(Math.random() * 140),
-              LAeqT:  Math.floor(Math.random() * 140),
-              L10:    Math.floor(Math.random() * 140),
-              L90:    Math.floor(Math.random() * 140)
-            }
-          });
-
-          start = end;
-        }
-        return obs;
-      });
 
       function getColor(value: number): string{
         switch (true) {
@@ -119,7 +93,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
       //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
 
-      let polylines = this.observations.map((obs) => ({
+      let linestrings = this.observations.map((obs) => ({
         type: 'Feature',
         geometry: {
           type: 'LineString',
@@ -134,7 +108,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }));
 
       //Obtener los segmentos de las polilineas
-      polylines = polylines.concat(
+      linestrings = linestrings.concat(
         this.observations.map((obs) => {
           let segments:any = [];
           for (let i = 0; i < obs.attributes.path.length - 1; i++) {
@@ -153,11 +127,10 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
             });
           }
           return segments;
-        })
-        .flat()
+        }).flat()
       );
 
-      this.polylines.update(() => polylines);
+      this.polylines.update(() => linestrings);
       this.updateMapSource();
     })
 
