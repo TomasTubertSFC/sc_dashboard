@@ -5,10 +5,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
 import { Subscription } from 'rxjs';
-import { withHttpTransferCacheOptions } from '@angular/platform-browser';
 import { MapService } from '../../../services/map/map.service';
-import { color } from 'echarts';
-import { Segment } from 'chart.js/dist/helpers/helpers.segment';
 
 
 //time filter enum
@@ -31,9 +28,9 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private map!: Map;
   private draw!: MapboxDraw;
   private observationsService = inject(ObservationsService);
-  private mapService = inject(MapService);
   private observations: Observations[] = [];
   private observations$!: Subscription
+  private observationSelectedId: string = '';
 
   public points: [number, number][] = [];
   public polylines = signal<any[]>([]);
@@ -121,6 +118,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
 
       //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
+
       let polylines = this.observations.map((obs) => ({
         type: 'Feature',
         geometry: {
@@ -129,6 +127,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         },
         properties: {
           id:     obs.id,
+          type:   'LineString',
           color:  '#333',
           width:  6
         }
@@ -146,6 +145,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
                 coordinates: [obs.attributes.path[i].start, obs.attributes.path[i].end]
               },
               properties: {
+                type:   'Line',
                 color: getColor(obs.attributes.path[i].parameters.LAeq),
                 width: 3,
                 pause: obs.attributes.path[i].parameters.pause
@@ -524,6 +524,39 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    this.map.addLayer({
+      id: 'lineLayer-hover',
+      type: 'line',
+      source: 'polylines',
+      layout: {
+
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+          'line-color': '#333',
+          'line-width': 3,
+          'line-gap-width': 5,
+      },
+      filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    });
+    this.map.addLayer({
+      id: 'lineLayer-select',
+      type: 'line',
+      source: 'polylines',
+      layout: {
+
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+          'line-color': '#FF7A1F',
+          'line-width': 4,
+          'line-gap-width': 5,
+      },
+      filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    });
+
     // Agregar capa para los paths individuales
     this.map.addLayer({
       id: 'LineString',
@@ -547,14 +580,38 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         'line-width': ['get', 'width'],
         "line-dasharray":  [
           'case',
-          ['==', ['get', 'pause'],true],
+          ['==', ['get', 'pause'], true],
           [2, 3], // Dasharray si pause es 1
           [1, 0] // Sin dasharray si pause no es 1
         ]
       }
     });
 
+    this.map.on('mouseenter', 'LineString', (e:any) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+      for( let feature of e.features) {
+        if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
+          this.map.setFilter('lineLayer-hover', ['==', 'id', feature.properties.id]);
+          return;
+        }
+      };
+    });
 
+    this.map.on('click', 'LineString', (e:any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      for( let feature of e.features) {
+        if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
+          this.observationSelectedId = feature.properties.id;
+          this.map.setFilter('lineLayer-select', ['==', 'id', feature.properties.id]);
+          return;
+        }
+      };
+    });
+
+    this.map.on('mouseleave', 'LineString', (e:any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      this.map.setFilter('lineLayer-hover', ['==', 'id', '']);
+    });
 
   };
 
