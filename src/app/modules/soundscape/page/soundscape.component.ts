@@ -7,7 +7,6 @@ import { ObservationsService } from '../../../services/observations/observations
 import { Subscription } from 'rxjs';
 import { GeoJSONObject} from '@turf/turf';
 
-
 export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends GeoJSONObject {
   type: "Feature";
   geometry: G;
@@ -28,6 +27,7 @@ enum TimeFilter {
   templateUrl: './soundscape.component.html',
   styleUrl: './soundscape.component.scss'
 })
+
 export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('map') mapContainer!: ElementRef;
@@ -41,6 +41,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   public points: [number, number][] = [];
   public polylines = signal<Feature[]>([]);
+  public startPoints = signal<Feature[]>([]);
   public selectedPolygon: any | undefined = undefined;
   public polygonFilter = signal<any | undefined>(undefined);
   public timeFilter = signal<TimeFilter>(TimeFilter.WHOLEDAY);
@@ -66,15 +67,15 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
       this.observations = observations;
-
-
-      this.polylines.update(() => this.observationsService.getLinsStringFromObservations());
+      this.polylines.update(() => this.observationsService.getLineStringFromObservations());
+      this.startPoints.update(() => this.observationsService.getStartPointsFromObservations());
       this.updateMapSource();
     })
 
     effect(() => {
       if (this.polygonFilter()) console.log(this.timeFilter());
     });
+
   }
 
   public drawPolygonFilter() {
@@ -435,6 +436,15 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    this.map.addSource('startPoints', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: this.startPoints()
+      }
+    });
+
+    // resaltar la línea a la que se hace hover de color negro
     this.map.addLayer({
       id: 'lineLayer-hover',
       type: 'line',
@@ -451,6 +461,8 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       },
       filter: ['==', 'id', '']  // Filtro vacío para iniciar
     });
+
+    // resaltar la línea seleccionada de color naranja
     this.map.addLayer({
       id: 'lineLayer-select',
       type: 'line',
@@ -498,6 +510,21 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    // Agregar icono de inicio
+    this.map.addLayer({
+      id: 'start',
+      type: 'circle',
+      source: 'startPoints',
+      paint: {
+        'circle-radius': 3,
+        'circle-color': '#6D6',
+        'circle-pitch-scale': 'viewport',
+        'circle-stroke-color': '#333',
+        'circle-stroke-width': 2,
+      }
+    });
+
+
     this.map.on('mouseenter', 'LineString', (e:any) => {
       this.map.getCanvas().style.cursor = 'pointer';
       for( let feature of e.features) {
@@ -527,12 +554,21 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   };
 
   updateMapSource() {
+
     if (!this.map || !this.map.isSourceLoaded('polylines')) return;
     let source = this.map.getSource('polylines') as mapboxgl.GeoJSONSource;
     source.setData({
       type: 'FeatureCollection',
       features: this.polylines()
     });
+
+    let sourceStartPoints = this.map.getSource('startPoints') as mapboxgl.GeoJSONSource;
+
+    sourceStartPoints.setData({
+      type: 'FeatureCollection',
+      features: this.startPoints()
+    });
+
   }
 
   ngOnDestroy(): void {

@@ -294,7 +294,10 @@ export class ObservationsService {
     );
   }
 
-  public getLinsStringFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
+  /*
+  * Función que recibe un array de observaciones y devuelve un array de polilineas con los segmentos de las observaciones para mostrar en el mapa
+  */
+  public getLineStringFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
 
     if(observations.length == 0) return null;
 
@@ -324,12 +327,10 @@ export class ObservationsService {
           return '#134367';
         default:
           return '#333';
-
       }
     }
 
     //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
-
     let linestrings:Feature[] = observations.map((obs) => ({
       type: 'Feature',
       geometry: {
@@ -356,7 +357,7 @@ export class ObservationsService {
               coordinates: [obs.attributes.path[i].start, obs.attributes.path[i].end]
             },
             properties: {
-              type:   'Line',
+              type:  'Line',
               color: getColor(obs.attributes.path[i].parameters.LAeq),
               width: 3,
               pause: obs.attributes.path[i].parameters.pause
@@ -366,11 +367,27 @@ export class ObservationsService {
         return segments;
       }).flat()
     );
+
     return linestrings;
 
   }
 
+  public getStartPointsFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
 
+    if(observations.length == 0) return null;
+
+    let points: Feature[] =  observations.map((obs) => ({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [Number(obs.attributes.path[0].start[0]), Number(obs.attributes.path[0].start[1])]
+      },
+      properties: {}
+    }));
+
+    return points;
+
+  }
 
   public getFilteredObservationsForSoundscape(minHour: number | null = null, maxHour: number | null = null, polygon: number[][]){
     this.observations$.pipe(
