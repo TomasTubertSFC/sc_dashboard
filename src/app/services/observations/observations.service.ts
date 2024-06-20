@@ -299,7 +299,7 @@ export class ObservationsService {
   */
   public getLineStringFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
 
-    if(observations.length == 0) return null;
+    if(observations.length == 0) return [];
 
     function getColor(value: number): string{
       switch (true) {
@@ -374,7 +374,7 @@ export class ObservationsService {
 
   public getStartPointsFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
 
-    if(observations.length == 0) return null;
+    if(observations.length == 0) return [];
 
     let points: Feature[] =  observations.map((obs) => ({
       type: 'Feature',
