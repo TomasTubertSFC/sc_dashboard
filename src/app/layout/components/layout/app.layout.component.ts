@@ -10,7 +10,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subject, Subscription } from 'rxjs';
 
 import { MenuService } from '../menu/app.menu.service';
-import { MapService } from '../../../services/map/map.service';
+import { MapService } from '../../../modules/map/service/map.service';
 import { ObservationsService } from '../../../services/observations/observations.service';
 
 interface LayoutState {
@@ -33,6 +33,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       this.loading = value;
     });
   }
-  
+
   ngOnDestroy(): void {}
 }

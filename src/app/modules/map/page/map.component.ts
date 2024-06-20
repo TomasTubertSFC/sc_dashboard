@@ -14,7 +14,7 @@ import {
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 import mapboxgl, { Map } from 'mapbox-gl';
-import { MapService } from '../../../services/map/map.service';
+import { MapService } from '../service/map.service';
 import { Subscription } from 'rxjs';
 import { effect } from '@angular/core';
 
