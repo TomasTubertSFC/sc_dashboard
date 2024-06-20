@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, WritableSignal, effect, signal } from '@angular/core';
-import { environment } from '../../../environments/environments';
-import { ObservationsService } from '../observations/observations.service';
-import { MapObservation, ObservationGeoJSON } from '../../models/map';
+import { environment } from '../../../../environments/environments';
+import { ObservationsService } from '../../../services/observations/observations.service';
+import { MapObservation, ObservationGeoJSON } from '../../../models/map';
 import mapboxgl, { LngLat, LngLatBounds, LngLatLike, Map } from 'mapbox-gl';
-import { Observations } from '../../models/observations';
+import { Observations } from '../../../models/observations';
 import { FeatureCollection, Geometry } from 'geojson';
 import {
   BehaviorSubject,
@@ -15,7 +15,7 @@ import {
   last,
   Subscription,
 } from 'rxjs';
-import { FormFilterValues } from '../../models/forms';
+import { FormFilterValues } from '../../../models/forms';
 
 @Injectable({
   providedIn: 'root',

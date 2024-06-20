@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormFilterValues } from '../../../../models/forms';
-import { MapService } from '../../../../services/map/map.service';
+import { MapService } from '../../service/map.service';
 
 @Component({
   selector: 'app-map-filters',
@@ -35,7 +35,7 @@ export class MapFiltersComponent implements OnInit {
     type: new FormControl(false, []),
     typeFilter: new FormGroup({}),
     soundPressure: new FormControl(false, []),
-    soundPressureFilter: new FormControl([35,80], []),
+    soundPressureFilter: new FormControl([35, 80], []),
     days: new FormControl(false, []),
     daysFilter: new FormControl([new Date(), new Date()], []),
     hours: new FormControl(false, []),
@@ -51,7 +51,7 @@ export class MapFiltersComponent implements OnInit {
     });
     this.filtersForm.valueChanges.subscribe((values: FormFilterValues) => {
       //Check if any value of form is setted to toggle the showFilters button
-      if(values.type || values.soundPressure || values.days || values.hours){
+      if (values.type || values.soundPressure || values.days || values.hours) {
         this.mapService.isFilterActive.next(true);
       } else {
         this.mapService.isFilterActive.next(false);
