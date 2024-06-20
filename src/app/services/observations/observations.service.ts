@@ -3,8 +3,15 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { BehaviorSubject, Observable, map, filter, switchMap } from 'rxjs';
 import { Observations, ObservationsDataChart } from '../../models/observations';
-import { Feature, MapObservation } from '../../models/map';
+import { MapObservation } from '../../models/map';
 import * as turf from '@turf/turf';
+
+export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends turf.GeoJSONObject {
+  type: "Feature";
+  geometry: G;
+  id?: string | number | undefined;
+  properties: P;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -24,8 +31,37 @@ export class ObservationsService {
         `${environment.BACKEND_BASE_URL}/observations`
       )
       .subscribe(({ data }) => {
+
+        //TODO: esto debería hacerse en el backend
+        data.map((obs) => {
+          //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
+          obs.attributes.path = [];
+          let start!: [number, number];
+          for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
+
+            let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+            if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+
+            obs.attributes.path.push({
+              start:  start,
+              end:    end,
+              parameters:{
+                pause:  Math.random() < 0.2 ? true : false,
+                LAeq:   Math.floor(Math.random() * 140),
+                LAeqT:  Math.floor(Math.random() * 140),
+                L10:    Math.floor(Math.random() * 140),
+                L90:    Math.floor(Math.random() * 140)
+              }
+            });
+
+            start = end;
+          }
+          return obs;
+        });
+
         this.observations$.next(data);
         this.loading$.next(false);
+
       });
   }
 
@@ -256,6 +292,101 @@ export class ObservationsService {
         );
       })
     );
+  }
+
+  /*
+  * Función que recibe un array de observaciones y devuelve un array de polilineas con los segmentos de las observaciones para mostrar en el mapa
+  */
+  public getLineStringFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
+
+    if(observations.length == 0) return null;
+
+    function getColor(value: number): string{
+      switch (true) {
+        case value <= 35:
+          return '#B7CE8E';
+        case value > 35 && value <= 40:
+          return '#1D8435';
+        case value > 40 && value <= 45:
+          return '#0E4C3C';
+        case value > 45 && value <= 50:
+          return '#ECD721';
+        case value > 50 && value <= 55:
+          return '#9F6F2C';
+        case value > 55 && value <= 60:
+          return '#EF7926';
+        case value > 60 && value <= 65:
+          return '#C71932';
+        case value > 65 && value <= 70:
+          return '#8D1A27';
+        case value > 70 && value <= 75:
+          return '#88497B';
+        case value > 75 && value <= 80:
+          return '#18558C';
+        case value > 80:
+          return '#134367';
+        default:
+          return '#333';
+      }
+    }
+
+    //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
+    let linestrings:Feature[] = observations.map((obs) => ({
+      type: 'Feature',
+      geometry: {
+        type: 'LineString',
+        coordinates: obs.attributes.path.map((value) => { return value.start })
+      },
+      properties: {
+        id:     obs.id,
+        type:   'LineString',
+        color:  '#333',
+        width:  6
+      }
+    }));
+
+    //Obtener los segmentos de las polilineas
+    linestrings = linestrings.concat(
+      observations.map((obs) => {
+        let segments:Feature[] = [];
+        for (let i = 0; i < obs.attributes.path.length - 1; i++) {
+          segments.push({
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates: [obs.attributes.path[i].start, obs.attributes.path[i].end]
+            },
+            properties: {
+              type:  'Line',
+              color: getColor(obs.attributes.path[i].parameters.LAeq),
+              width: 3,
+              pause: obs.attributes.path[i].parameters.pause
+            }
+          });
+        }
+        return segments;
+      }).flat()
+    );
+
+    return linestrings;
+
+  }
+
+  public getStartPointsFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
+
+    if(observations.length == 0) return null;
+
+    let points: Feature[] =  observations.map((obs) => ({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [Number(obs.attributes.path[0].start[0]), Number(obs.attributes.path[0].start[1])]
+      },
+      properties: {}
+    }));
+
+    return points;
+
   }
 
   public getFilteredObservationsForSoundscape(minHour: number | null = null, maxHour: number | null = null, polygon: number[][]){

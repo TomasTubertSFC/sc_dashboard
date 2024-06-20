@@ -5,8 +5,14 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
 import { Subscription } from 'rxjs';
-import { MapService } from '../../../services/map/map.service';
+import { GeoJSONObject} from '@turf/turf';
 
+export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends GeoJSONObject {
+  type: "Feature";
+  geometry: G;
+  id?: string | number | undefined;
+  properties: P;
+}
 
 //time filter enum
 enum TimeFilter {
@@ -21,6 +27,7 @@ enum TimeFilter {
   templateUrl: './soundscape.component.html',
   styleUrl: './soundscape.component.scss'
 })
+
 export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('map') mapContainer!: ElementRef;
@@ -33,7 +40,8 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private observationSelectedId: string = '';
 
   public points: [number, number][] = [];
-  public polylines = signal<any[]>([]);
+  public polylines = signal<Feature[]>([]);
+  public startPoints = signal<Feature[]>([]);
   public selectedPolygon: any | undefined = undefined;
   public polygonFilter = signal<any | undefined>(undefined);
   public timeFilter = signal<TimeFilter>(TimeFilter.WHOLEDAY);
@@ -59,111 +67,15 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
       this.observations = observations;
-
-      //TODO: esto debería hacerse en el backend
-      this.observations.map((obs) => {
-        //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
-        obs.attributes.path = [];
-        let start!: [number, number];
-        for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
-
-          let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
-          if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
-
-          obs.attributes.path.push({
-            start:  start,
-            end:    end,
-            parameters:{
-              pause:  Math.random() < 0.2 ? true : false,
-              LAeq:   Math.floor(Math.random() * 140),
-              LAeqT:  Math.floor(Math.random() * 140),
-              L10:    Math.floor(Math.random() * 140),
-              L90:    Math.floor(Math.random() * 140)
-            }
-          });
-
-          start = end;
-        }
-        return obs;
-      });
-
-      function getColor(value: number): string{
-        switch (true) {
-          case value <= 35:
-            return '#B7CE8E';
-          case value > 35 && value <= 40:
-            return '#1D8435';
-          case value > 40 && value <= 45:
-            return '#0E4C3C';
-          case value > 45 && value <= 50:
-            return '#ECD721';
-          case value > 50 && value <= 55:
-            return '#9F6F2C';
-          case value > 55 && value <= 60:
-            return '#EF7926';
-          case value > 60 && value <= 65:
-            return '#C71932';
-          case value > 65 && value <= 70:
-            return '#8D1A27';
-          case value > 70 && value <= 75:
-            return '#88497B';
-          case value > 75 && value <= 80:
-            return '#18558C';
-          case value > 80:
-            return '#134367';
-          default:
-            return '#333';
-
-        }
-      }
-
-      //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
-
-      let polylines = this.observations.map((obs) => ({
-        type: 'Feature',
-        geometry: {
-          type: 'LineString',
-          coordinates: obs.attributes.path.map((value) => { return value.start })
-        },
-        properties: {
-          id:     obs.id,
-          type:   'LineString',
-          color:  '#333',
-          width:  6
-        }
-      }));
-
-      //Obtener los segmentos de las polilineas
-      polylines = polylines.concat(
-        this.observations.map((obs) => {
-          let segments:any = [];
-          for (let i = 0; i < obs.attributes.path.length - 1; i++) {
-            segments.push({
-              type: 'Feature',
-              geometry: {
-                type: 'LineString',
-                coordinates: [obs.attributes.path[i].start, obs.attributes.path[i].end]
-              },
-              properties: {
-                type:   'Line',
-                color: getColor(obs.attributes.path[i].parameters.LAeq),
-                width: 3,
-                pause: obs.attributes.path[i].parameters.pause
-              }
-            });
-          }
-          return segments;
-        })
-        .flat()
-      );
-
-      this.polylines.update(() => polylines);
+      this.polylines.update(() => this.observationsService.getLineStringFromObservations());
+      this.startPoints.update(() => this.observationsService.getStartPointsFromObservations());
       this.updateMapSource();
     })
 
     effect(() => {
       if (this.polygonFilter()) console.log(this.timeFilter());
     });
+
   }
 
   public drawPolygonFilter() {
@@ -524,6 +436,15 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    this.map.addSource('startPoints', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: this.startPoints()
+      }
+    });
+
+    // resaltar la línea a la que se hace hover de color negro
     this.map.addLayer({
       id: 'lineLayer-hover',
       type: 'line',
@@ -540,6 +461,8 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       },
       filter: ['==', 'id', '']  // Filtro vacío para iniciar
     });
+
+    // resaltar la línea seleccionada de color naranja
     this.map.addLayer({
       id: 'lineLayer-select',
       type: 'line',
@@ -587,6 +510,21 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    // Agregar icono de inicio
+    this.map.addLayer({
+      id: 'start',
+      type: 'circle',
+      source: 'startPoints',
+      paint: {
+        'circle-radius': 3,
+        'circle-color': '#6D6',
+        'circle-pitch-scale': 'viewport',
+        'circle-stroke-color': '#333',
+        'circle-stroke-width': 2,
+      }
+    });
+
+
     this.map.on('mouseenter', 'LineString', (e:any) => {
       this.map.getCanvas().style.cursor = 'pointer';
       for( let feature of e.features) {
@@ -616,12 +554,21 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   };
 
   updateMapSource() {
+
     if (!this.map || !this.map.isSourceLoaded('polylines')) return;
     let source = this.map.getSource('polylines') as mapboxgl.GeoJSONSource;
     source.setData({
       type: 'FeatureCollection',
       features: this.polylines()
     });
+
+    let sourceStartPoints = this.map.getSource('startPoints') as mapboxgl.GeoJSONSource;
+
+    sourceStartPoints.setData({
+      type: 'FeatureCollection',
+      features: this.startPoints()
+    });
+
   }
 
   ngOnDestroy(): void {
