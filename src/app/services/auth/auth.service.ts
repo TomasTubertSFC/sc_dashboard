@@ -1,7 +1,7 @@
-import { HttpClient, HttpXsrfTokenExtractor } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, tap } from 'rxjs';
-import { catchError, filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { environment } from '../../../environments/environments';
@@ -27,10 +27,6 @@ export class AuthService {
 
   get isLoggedIn(): BehaviorSubject<boolean> {
     return this._isLoggedIn;
-  }
-
-  set isLoggedIn(status: boolean) {
-    this._isLoggedIn.next(status);
   }
 
   constructor(private http: HttpClient, private router: Router) {
