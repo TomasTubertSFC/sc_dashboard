@@ -172,7 +172,7 @@ export class ObservationsService {
   public getAllMapObservations(): Observable<MapObservation[]> {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
-      map((observations) => 
+      map((observations) => //TODO: Actualizar con la información que necesito ahora para el popUp
         observations.map((obs) => ({
           id: obs.id,
           user_id: obs.relationships.user.id,

@@ -646,7 +646,8 @@ export class MapService {
       const feature = e.features[0];
       console.log('feature', feature)
       console.log('feature.properties.id', feature.properties['id'])
-      const obs = this.mapObservations.find((obs) => obs.id === feature.properties['id'])
+
+      const obs = this.observationsService.observations$.getValue().find((obs) => obs.id === feature.properties['id'])
       console.log('obs', obs)
     })
   }
