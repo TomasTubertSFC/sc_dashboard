@@ -220,168 +220,167 @@ export class MapService {
   }
 
   //Funcion para caluclar el offset en circulo de las observaciones
-  private calculateSpiderfiedPositionsCircle(count: number) {
-    const leavesSeparation = 80;
-    const leavesOffset = [0, 0];
-    const points = [];
-    const theta = (2 * Math.PI) / count;
-    let angle = theta;
+  // private calculateSpiderfiedPositionsCircle(count: number) {
+  //   const leavesSeparation = 80;
+  //   const leavesOffset = [0, 0];
+  //   const points = [];
+  //   const theta = (2 * Math.PI) / count;
+  //   let angle = theta;
 
-    for (let i = 0; i < count; i += 1) {
-      angle = theta * i;
-      const x = leavesSeparation * Math.cos(angle) + leavesOffset[0];
-      const y = leavesSeparation * Math.sin(angle) + leavesOffset[1];
-      points.push([x, y]);
-    }
-    return points;
-  }
+  //   for (let i = 0; i < count; i += 1) {
+  //     angle = theta * i;
+  //     const x = leavesSeparation * Math.cos(angle) + leavesOffset[0];
+  //     const y = leavesSeparation * Math.sin(angle) + leavesOffset[1];
+  //     points.push([x, y]);
+  //   }
+  //   return points;
+  // }
 
   //Funcion para caluclar el offset en espiral de las observaciones
-  private calculateSpiderfiedPositions(count: number) {
-    const legLengthStart = 25;
-    const legLengthFactor = 5;
-    const leavesSeparation = 40;
-    const leavesOffset = [0, 0];
-    const points = [];
-    let legLength = legLengthStart;
-    let angle = 0;
+  // private calculateSpiderfiedPositions(count: number) {
+  //   const legLengthStart = 25;
+  //   const legLengthFactor = 5;
+  //   const leavesSeparation = 40;
+  //   const leavesOffset = [0, 0];
+  //   const points = [];
+  //   let legLength = legLengthStart;
+  //   let angle = 0;
 
-    for (let i = 0; i < count; i += 1) {
-      angle += leavesSeparation / legLength + i * 0.0005;
-      const x = legLength * Math.cos(angle) + leavesOffset[0];
-      const y = legLength * Math.sin(angle) + leavesOffset[1];
-      points.push([x, y]);
+  //   for (let i = 0; i < count; i += 1) {
+  //     angle += leavesSeparation / legLength + i * 0.0005;
+  //     const x = legLength * Math.cos(angle) + leavesOffset[0];
+  //     const y = legLength * Math.sin(angle) + leavesOffset[1];
+  //     points.push([x, y]);
 
-      legLength += (Math.PI * 2 * legLengthFactor) / angle;
-    }
-    return points;
-  }
+  //     legLength += (Math.PI * 2 * legLengthFactor) / angle;
+  //   }
+  //   return points;
+  // }
 
   //Funcion para crear el GEOJSON de los markers spiderfy
-  private spiderFyCluster(
-    source: mapboxgl.GeoJSONSource,
-    clusterId: number,
-    lngLat: { lat: number; lng: number }
-  ): void {
-    //Consigo todos los markers que el cluster tiene
-    source.getClusterLeaves(clusterId, Infinity, 0, (err, features) => {
-      if (err) {
-        return console.error(err);
-      }
+  // private spiderFyCluster(
+  //   source: mapboxgl.GeoJSONSource,
+  //   clusterId: number,
+  //   lngLat: { lat: number; lng: number }
+  // ): void {
+  //   //Consigo todos los markers que el cluster tiene
+  //   source.getClusterLeaves(clusterId, Infinity, 0, (err, features) => {
+  //     if (err) {
+  //       return console.error(err);
+  //     }
 
-      if (features?.length) {
-        // Calculate the spiderfied positions
-        const spiderfiedPositions =
-          features.length > 10
-            ? this.calculateSpiderfiedPositions(features.length)
-            : this.calculateSpiderfiedPositionsCircle(features.length);
+  //     if (features?.length) {
+  //       // Calculate the spiderfied positions
+  //       const spiderfiedPositions =
+  //         features.length > 10
+  //           ? this.calculateSpiderfiedPositions(features.length)
+  //           : this.calculateSpiderfiedPositionsCircle(features.length);
 
-        // Create a new GeoJson of features with the updated positions
-        const geoJson = {
-          type: 'FeatureCollection' as const,
-          features: features.map((feature, index) => ({
-            type: 'Feature' as const,
-            ...feature,
-            properties: {
-              ...feature.properties,
-              iconOffset: spiderfiedPositions[index],
-            },
-            geometry: {
-              ...feature.geometry,
-              coordinates: [lngLat.lng, lngLat.lat],
-            },
-          })),
-        };
+  //       // Create a new GeoJson of features with the updated positions
+  //       const geoJson = {
+  //         type: 'FeatureCollection' as const,
+  //         features: features.map((feature, index) => ({
+  //           type: 'Feature' as const,
+  //           ...feature,
+  //           properties: {
+  //             ...feature.properties,
+  //             iconOffset: spiderfiedPositions[index],
+  //           },
+  //           geometry: {
+  //             ...feature.geometry,
+  //             coordinates: [lngLat.lng, lngLat.lat],
+  //           },
+  //         })),
+  //       };
 
-        let source = this.map.getSource(
-          'observationsSpiderfy'
-        ) as mapboxgl.GeoJSONSource;
-        source.setData(geoJson as FeatureCollection<Geometry>);
+  //       let source = this.map.getSource(
+  //         'observationsSpiderfy'
+  //       ) as mapboxgl.GeoJSONSource;
+  //       source.setData(geoJson as FeatureCollection<Geometry>);
 
-        this.map.setPaintProperty(
-          'clusters',
-          'circle-color',
-          'rgba(215, 177, 242, 0.5)'
-        );
-      }
-    });
-  }
+  //       this.map.setPaintProperty(
+  //         'clusters',
+  //         'circle-color',
+  //         'rgba(215, 177, 242, 0.5)'
+  //       );
+  //     }
+  //   });
+  // }
 
-  private deletePointsSpiderfy(evt: any) {
-    const avoidLayers = [
-      'unclustered-point',
-      'unclustered-point-spiderfy',
-      'clusters',
-      'cluster-count',
-    ];
-    if (this.isMapReady) {
-      const features = this.map.queryRenderedFeatures(evt.point);
-      const isClickedOnPermitedLayer = features.some((feature) =>
-        avoidLayers.some((layer) => feature.layer.id.includes(layer))
-      );
+  // private deletePointsSpiderfy(evt: any) {
+  //   const avoidLayers = [
+  //     'unclustered-point',
+  //     'unclustered-point-spiderfy',
+  //     'clusters',
+  //     'cluster-count',
+  //   ];
+  //   if (this.isMapReady) {
+  //     const features = this.map.queryRenderedFeatures(evt.point);
+  //     const isClickedOnPermitedLayer = features.some((feature) =>
+  //       avoidLayers.some((layer) => feature.layer.id.includes(layer))
+  //     );
 
-      const observationsSpiderfy = this.map.getSource(
-        'observationsSpiderfy'
-      ) as mapboxgl.GeoJSONSource;
+  //     const observationsSpiderfy = this.map.getSource(
+  //       'observationsSpiderfy'
+  //     ) as mapboxgl.GeoJSONSource;
 
-      if (evt.type === 'zoomstart') {
-        this.map.setPaintProperty('clusters', 'circle-color', '#D7B1F2');
-        observationsSpiderfy.setData(
-          this.initialGeoJson as FeatureCollection<Geometry>
-        );
-        return;
-      }
+  //     if (evt.type === 'zoomstart') {
+  //       this.map.setPaintProperty('clusters', 'circle-color', '#D7B1F2');
+  //       observationsSpiderfy.setData(
+  //         this.initialGeoJson as FeatureCollection<Geometry>
+  //       );
+  //       return;
+  //     }
 
-      if (!isClickedOnPermitedLayer) {
-        this.map.setPaintProperty('clusters', 'circle-color', '#D7B1F2');
-        observationsSpiderfy.setData(
-          this.initialGeoJson as FeatureCollection<Geometry>
-        );
-      }
-    }
-  }
+  //     if (!isClickedOnPermitedLayer) {
+  //       this.map.setPaintProperty('clusters', 'circle-color', '#D7B1F2');
+  //       observationsSpiderfy.setData(
+  //         this.initialGeoJson as FeatureCollection<Geometry>
+  //       );
+  //     }
+  //   }
+  // }
 
   //Center after click on a cluster
-  private centerZoomCluster(evt: any) {
-    try {
-      const features = this.map.queryRenderedFeatures(evt.point, {
-        layers: ['clusters'],
-      });
+  // private centerZoomCluster(evt: any) {
+  //   try {
+  //     const features = this.map.queryRenderedFeatures(evt.point, {
+  //       layers: ['clusters'],
+  //     });
 
-      if (features.length) {
-        const source = this.map.getSource(
-          'observations'
-        ) as mapboxgl.GeoJSONSource;
-        const clusterId = features[0].properties['cluster_id'];
-        const lngLat = evt.lngLat;
+  //     if (features.length) {
+  //       const source = this.map.getSource(
+  //         'observations'
+  //       ) as mapboxgl.GeoJSONSource;
+  //       const clusterId = features[0].properties['cluster_id'];
+  //       const lngLat = evt.lngLat;
 
-        source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-          if (err || !zoom) {
-            return console.error(err);
-          }
-          if (zoom > 17) {
-            this.spiderFyCluster(source, clusterId, lngLat);
-          } else {
-            this.map.easeTo({
-              center: lngLat,
-              zoom: zoom,
-            });
-          }
-        });
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  }
+  //       source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+  //         if (err || !zoom) {
+  //           return console.error(err);
+  //         }
+  //         if (zoom > 17) {
+  //           this.spiderFyCluster(source, clusterId, lngLat);
+  //         } else {
+  //           this.map.easeTo({
+  //             center: lngLat,
+  //             zoom: zoom,
+  //           });
+  //         }
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('An error occurred:', error);
+  //   }
+  // }
 
   //Add mouse pointer on cluster hover
   private mouseEvent(evt: any) {
-    //mouseleve does not have features
-    console.log('evt', evt,evt.features);
-    // console.log('featureId', featureId);
-    // console.log('evt.type', evt.type);
-    if (evt.type === 'mouseenter') {
+    //Nos aseguramos de que la feature solo tenga un elemento
+    //Así seleccionamos todo el segmento y no solo una parte
+    if (evt.type === 'mouseenter' && evt.features.length === 1) {
       const featureId = evt.features[0].id;
+      console.log('featureId', featureId)
       this.map.getCanvas().style.cursor = 'pointer';
       this.featureIdSelected = evt.features[0].id
       this.map.setFeatureState(
@@ -390,6 +389,7 @@ export class MapService {
       );
       return;
     }
+    if(!this.featureIdSelected) return;
     this.map.getCanvas().style.cursor = '';
     this.map.setFeatureState(
       { source: 'observations', id: this.featureIdSelected },
@@ -550,45 +550,6 @@ export class MapService {
       generateId: true,
     });
 
-    //Hover
-    // this.map.addLayer({
-    //   id: 'lineLayer-hover',
-    //   type: 'line',
-    //   source: 'observations',
-    //   layout: {
-    //     'line-join': 'round',
-    //     'line-cap': 'round',
-    //   },
-    //   paint: {
-    //     'line-color': [
-    //       'case',
-    //       ['boolean', ['feature-state', 'hover'], false],
-    //       '#333',
-    //       'transparent',
-    //     ],
-    //     'line-width': 3,
-    //     'line-gap-width': 5,
-    //   },
-    //   // filter: ['==', 'id', '']  // Filtro vacío para iniciar
-    // });
-    //Hover
-    // this.map.addLayer({
-    //   id: 'lineLayer-select',
-    //   type: 'line',
-    //   source: 'observations',
-    //   layout: {
-
-    //     'line-join': 'round',
-    //     'line-cap': 'round'
-    //   },
-    //   paint: {
-    //       'line-color': '#FF7A1F',
-    //       'line-width': 4,
-    //       'line-gap-width': 5,
-    //   },
-    //   // filter: ['==', 'id', '']  // Filtro vacío para iniciar
-    // });
-
     // Agregar capa para los paths individuales
     this.map.addLayer({
       id: 'LineString',
@@ -602,7 +563,7 @@ export class MapService {
         'line-color': [
           'case',
           ['boolean', ['feature-state', 'hover'], false],
-          'red',
+          '#333',
           [
             'case',
             ['==', ['get', 'pause'], true],
@@ -610,10 +571,16 @@ export class MapService {
             ['get', 'color'], // No dasharray if pause is not 1
           ],
         ],
-        'line-width': [
+        'line-gap-width': [
           'case',
           ['boolean', ['feature-state', 'hover'], false],
           5,
+          0,      
+        ],
+        'line-width': [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          3,
           ['get', 'width'],
         ],
         'line-dasharray': [
@@ -674,5 +641,13 @@ export class MapService {
      // Add event listeners for 'mouseenter' and 'mouseleave' events on layers
     this.map.on('mouseenter', 'LineString', this.mouseEvent.bind(this));
     this.map.on('mouseleave', 'LineString', this.mouseEvent.bind(this));
+
+    this.map.on('click', 'LineString', (e) => {
+      const feature = e.features[0];
+      console.log('feature', feature)
+      console.log('feature.properties.id', feature.properties['id'])
+      const obs = this.mapObservations.find((obs) => obs.id === feature.properties['id'])
+      console.log('obs', obs)
+    })
   }
 }
