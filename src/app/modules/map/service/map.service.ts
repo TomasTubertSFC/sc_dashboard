@@ -16,6 +16,7 @@ import {
   Subscription,
 } from 'rxjs';
 import { FormFilterValues } from '../../../models/forms';
+import { Feature } from '@turf/turf';
 
 @Injectable({
   providedIn: 'root',
@@ -62,6 +63,7 @@ export class MapService {
     bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
     clusterMaxZoom: 17,
   };
+  private featureIdSelected!: string
 
   constructor(
     private http: HttpClient,
@@ -87,6 +89,8 @@ export class MapService {
       return;
     }
     this.observationsService.getAllMapObservations().subscribe((data) => {
+      // const a = this.observationsService.getLinsStringFromObservations()
+      // console.log('a', a)
       this.mapObservations = data;
       const geoJSON = this.createGeoJson(data);
       this.GeoJSON$.next(geoJSON);
@@ -110,32 +114,104 @@ export class MapService {
     }
   }
 
-  private createGeoJson(observations: MapObservation[]): ObservationGeoJSON {
-    const features = observations.map((observation, idx) => {
-      return {
-        type: 'Feature' as const,
-        id: idx,
-        geometry: {
-          type: 'Point' as const,
-          coordinates: [
-            Number(observation.longitude),
-            Number(observation.latitude),
-          ],
-        },
-        properties: {
-          id: observation.id,
-          created_at: observation.created_at,
-          types: observation.types,
-          LAeq: observation.LAeq,
-          userType: observation.userType,
-          quiet: observation.quiet,
-        },
-      };
-    });
+  private getSegmentColor(value: number): string {
+    switch (true) {
+      case value <= 35:
+        return '#B7CE8E';
+      case value > 35 && value <= 40:
+        return '#1D8435';
+      case value > 40 && value <= 45:
+        return '#0E4C3C';
+      case value > 45 && value <= 50:
+        return '#ECD721';
+      case value > 50 && value <= 55:
+        return '#9F6F2C';
+      case value > 55 && value <= 60:
+        return '#EF7926';
+      case value > 60 && value <= 65:
+        return '#C71932';
+      case value > 65 && value <= 70:
+        return '#8D1A27';
+      case value > 70 && value <= 75:
+        return '#88497B';
+      case value > 75 && value <= 80:
+        return '#18558C';
+      case value > 80:
+        return '#134367';
+      default:
+        return '#333';
+    }
+  }
+
+  private createGeoJson(observations: MapObservation[]): any {
+    // console.log('observations', observations)
+    //Obtener los segmentos de las polilineas
+    let linestrings: Feature[] = observations.map((obs) => ({
+      type: 'Feature',
+      geometry: {
+        type: 'LineString',
+        coordinates: obs.path.map((value) => {
+          return value.start;
+        }),
+      },
+      properties: {
+        id: obs.id,
+        type: 'LineString',
+        color: '#333',
+        width: 6,
+      },
+    }));
+    //Obtener los segmentos de las polilineas
+    linestrings = linestrings.concat(
+      observations
+        .map((obs) => {
+          let segments: Feature[] = [];
+          for (let i = 0; i < obs.path.length - 1; i++) {
+            segments.push({
+              type: 'Feature' as const,
+              geometry: {
+                type: 'LineString' as const,
+                coordinates: [obs.path[i].start, obs.path[i].end],
+              },
+              properties: {
+                id: obs.id,
+                type: 'Line',
+                color: this.getSegmentColor(obs.path[i].parameters.LAeq),
+                width: 3,
+                pause: obs.path[i].parameters.pause,
+              },
+            });
+          }
+          return segments;
+        })
+        .flat()
+    );
+
+    // const features = observations.map((observation, idx) => {
+    //   return {
+    //     type: 'Feature' as const,
+    //     id: idx,
+    //     geometry: {
+    //       type: 'Point' as const,
+    //       coordinates: [
+    //         Number(observation.longitude),
+    //         Number(observation.latitude),
+    //       ],
+    //     },
+    //     properties: {
+    //       id: observation.id,
+    //       created_at: observation.created_at,
+    //       types: observation.types,
+    //       LAeq: observation.LAeq,
+    //       userType: observation.userType,
+    //       quiet: observation.quiet,
+    //     },
+    //   };
+    // });
 
     return {
       type: 'FeatureCollection' as const,
-      features,
+      features: linestrings,
     };
   }
 
@@ -300,11 +376,26 @@ export class MapService {
 
   //Add mouse pointer on cluster hover
   private mouseEvent(evt: any) {
+    //mouseleve does not have features
+    console.log('evt', evt,evt.features);
+    // console.log('featureId', featureId);
+    // console.log('evt.type', evt.type);
     if (evt.type === 'mouseenter') {
+      const featureId = evt.features[0].id;
       this.map.getCanvas().style.cursor = 'pointer';
-    } else {
-      this.map.getCanvas().style.cursor = '';
+      this.featureIdSelected = evt.features[0].id
+      this.map.setFeatureState(
+        { source: 'observations', id: featureId },
+        { hover: true }
+      );
+      return;
     }
+    this.map.getCanvas().style.cursor = '';
+    this.map.setFeatureState(
+      { source: 'observations', id: this.featureIdSelected },
+      { hover: false }
+    );
+    this.featureIdSelected = ''
   }
 
   //Filter obs
@@ -369,86 +460,168 @@ export class MapService {
   }
 
   private buildClustersAndLayers(GeoJSON: any): void {
-    // Add a new source from our GeoJSON data and set the
+    // // Add a new source from our GeoJSON data and set the
+    // this.map.addSource('observations', {
+    //   type: 'geojson',
+    //   data: GeoJSON as FeatureCollection<Geometry, { [name: string]: any }>,
+    //   cluster: true,
+    //   clusterMaxZoom: this.mapSettings.clusterMaxZoom, // Max zoom to cluster points on
+    //   clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+    // });
+    // // Add a new source for spiderfy observations
+    // this.map.addSource('observationsSpiderfy', {
+    //   type: 'geojson',
+    //   data: this.initialGeoJson as FeatureCollection<
+    //     Geometry,
+    //     { [name: string]: any }
+    //   >,
+    //   cluster: false,
+    // });
+    // //Cluster background color
+    // this.map.addLayer({
+    //   id: 'clusters',
+    //   type: 'circle',
+    //   source: 'observations',
+    //   filter: ['has', 'point_count'],
+    //   paint: {
+    //     'circle-color': '#D7B1F2',
+    //     'circle-radius': 20,
+    //     'circle-stroke-color': 'rgba(215, 177, 242, 0.5)',
+    //     'circle-stroke-width': 5,
+    //   },
+    // });
+    // //Cluster number count
+    // this.map.addLayer({
+    //   id: 'cluster-count',
+    //   type: 'symbol',
+    //   source: 'observations',
+    //   filter: ['has', 'point_count'],
+    //   layout: {
+    //     'text-field': '{point_count_abbreviated}',
+    //     'text-size': 12,
+    //   },
+    //   paint: {
+    //     'text-color': '#ffffff',
+    //   },
+    // });
+    // //Markers
+    // this.map.addLayer({
+    //   id: 'unclustered-point',
+    //   type: 'symbol',
+    //   source: 'observations',
+    //   filter: ['!has', 'point_count'],
+    //   layout: {
+    //     'icon-image': [
+    //       'match',
+    //       ['get', 'userType'],
+    //       'citizen',
+    //       '1-icon',
+    //       '3-icon',
+    //     ],
+    //     'icon-size': 0.8,
+    //     'icon-allow-overlap': true,
+    //     'icon-ignore-placement': true,
+    //   },
+    // });
+    // //Spiderfy markers
+    // this.map.addLayer({
+    //   id: 'unclustered-point-spiderfy',
+    //   type: 'symbol',
+    //   source: 'observationsSpiderfy',
+    //   layout: {
+    //     'icon-image': [
+    //       'match',
+    //       ['get', 'userType'],
+    //       'citizen',
+    //       '1-icon',
+    //       '3-icon',
+    //     ],
+    //     'icon-size': 0.8,
+    //     'icon-allow-overlap': true,
+    //     'icon-ignore-placement': true,
+    //     'icon-offset': ['get', 'iconOffset'],
+    //   },
+    // });
+
+    //Añadir la fuente de datos para las lineas de atributo path
     this.map.addSource('observations', {
       type: 'geojson',
       data: GeoJSON as FeatureCollection<Geometry, { [name: string]: any }>,
-      cluster: true,
-      clusterMaxZoom: this.mapSettings.clusterMaxZoom, // Max zoom to cluster points on
-      clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+      generateId: true,
     });
-    // Add a new source for spiderfy observations
-    this.map.addSource('observationsSpiderfy', {
-      type: 'geojson',
-      data: this.initialGeoJson as FeatureCollection<
-        Geometry,
-        { [name: string]: any }
-      >,
-      cluster: false,
-    });
-    //Cluster background color
+
+    //Hover
+    // this.map.addLayer({
+    //   id: 'lineLayer-hover',
+    //   type: 'line',
+    //   source: 'observations',
+    //   layout: {
+    //     'line-join': 'round',
+    //     'line-cap': 'round',
+    //   },
+    //   paint: {
+    //     'line-color': [
+    //       'case',
+    //       ['boolean', ['feature-state', 'hover'], false],
+    //       '#333',
+    //       'transparent',
+    //     ],
+    //     'line-width': 3,
+    //     'line-gap-width': 5,
+    //   },
+    //   // filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    // });
+    //Hover
+    // this.map.addLayer({
+    //   id: 'lineLayer-select',
+    //   type: 'line',
+    //   source: 'observations',
+    //   layout: {
+
+    //     'line-join': 'round',
+    //     'line-cap': 'round'
+    //   },
+    //   paint: {
+    //       'line-color': '#FF7A1F',
+    //       'line-width': 4,
+    //       'line-gap-width': 5,
+    //   },
+    //   // filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    // });
+
+    // Agregar capa para los paths individuales
     this.map.addLayer({
-      id: 'clusters',
-      type: 'circle',
+      id: 'LineString',
+      type: 'line',
       source: 'observations',
-      filter: ['has', 'point_count'],
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round',
+      },
       paint: {
-        'circle-color': '#D7B1F2',
-        'circle-radius': 20,
-        'circle-stroke-color': 'rgba(215, 177, 242, 0.5)',
-        'circle-stroke-width': 5,
-      },
-    });
-    //Cluster number count
-    this.map.addLayer({
-      id: 'cluster-count',
-      type: 'symbol',
-      source: 'observations',
-      filter: ['has', 'point_count'],
-      layout: {
-        'text-field': '{point_count_abbreviated}',
-        'text-size': 12,
-      },
-      paint: {
-        'text-color': '#ffffff',
-      },
-    });
-    //Markers
-    this.map.addLayer({
-      id: 'unclustered-point',
-      type: 'symbol',
-      source: 'observations',
-      filter: ['!has', 'point_count'],
-      layout: {
-        'icon-image': [
-          'match',
-          ['get', 'userType'],
-          'citizen',
-          '1-icon',
-          '3-icon',
+        'line-color': [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          'red',
+          [
+            'case',
+            ['==', ['get', 'pause'], true],
+            '#FFF', // Dasharray if pause is 1
+            ['get', 'color'], // No dasharray if pause is not 1
+          ],
         ],
-        'icon-size': 0.8,
-        'icon-allow-overlap': true,
-        'icon-ignore-placement': true,
-      },
-    });
-    //Spiderfy markers
-    this.map.addLayer({
-      id: 'unclustered-point-spiderfy',
-      type: 'symbol',
-      source: 'observationsSpiderfy',
-      layout: {
-        'icon-image': [
-          'match',
-          ['get', 'userType'],
-          'citizen',
-          '1-icon',
-          '3-icon',
+        'line-width': [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          5,
+          ['get', 'width'],
         ],
-        'icon-size': 0.8,
-        'icon-allow-overlap': true,
-        'icon-ignore-placement': true,
-        'icon-offset': ['get', 'iconOffset'],
+        'line-dasharray': [
+          'case',
+          ['==', ['get', 'pause'], true],
+          [2, 3], // Dasharray si pause es 1
+          [1, 0], // Sin dasharray si pause no es 1
+        ],
       },
     });
   }
@@ -491,15 +664,15 @@ export class MapService {
       }
     });
 
-    // Add event listeners for 'zoomstart' and 'touchstart' events
-    this.map.on('zoomstart', this.deletePointsSpiderfy.bind(this));
-    this.map.on('touchstart', this.deletePointsSpiderfy.bind(this));
+    // // Add event listeners for 'zoomstart' and 'touchstart' events
+    // this.map.on('zoomstart', this.deletePointsSpiderfy.bind(this));
+    // this.map.on('touchstart', this.deletePointsSpiderfy.bind(this));
 
-    // Add event listeners for 'click' events on layers
-    this.map.on('click', 'clusters', this.centerZoomCluster.bind(this));
+    // // Add event listeners for 'click' events on layers
+    // this.map.on('click', 'clusters', this.centerZoomCluster.bind(this));
 
-    // // Add event listeners for 'mouseenter' and 'mouseleave' events on layers
-    this.map.on('mouseenter', 'clusters', this.mouseEvent.bind(this));
-    this.map.on('mouseleave', 'clusters', this.mouseEvent.bind(this));
+     // Add event listeners for 'mouseenter' and 'mouseleave' events on layers
+    this.map.on('mouseenter', 'LineString', this.mouseEvent.bind(this));
+    this.map.on('mouseleave', 'LineString', this.mouseEvent.bind(this));
   }
 }

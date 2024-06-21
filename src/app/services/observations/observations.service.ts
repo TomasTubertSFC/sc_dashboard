@@ -172,7 +172,7 @@ export class ObservationsService {
   public getAllMapObservations(): Observable<MapObservation[]> {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
-      map((observations) =>
+      map((observations) => 
         observations.map((obs) => ({
           id: obs.id,
           user_id: obs.relationships.user.id,
@@ -183,6 +183,7 @@ export class ObservationsService {
           LAeq: obs.attributes.LAeq,
           userType: obs.relationships.user.type,
           quiet: obs.attributes.quiet,
+          path: obs.attributes.path
         }))
       )
     );
@@ -324,7 +325,6 @@ export class ObservationsService {
           return '#134367';
         default:
           return '#333';
-
       }
     }
 
