@@ -1,3 +1,5 @@
+import { Segment } from "./observations";
+
 export interface MapObservation {
   id: string;
   user_id: string;
@@ -8,6 +10,7 @@ export interface MapObservation {
   LAeq?: string;
   userType?: string;
   quiet?: string;
+  path: Segment[];
 }
 
 export interface Properties {

@@ -172,7 +172,7 @@ export class ObservationsService {
   public getAllMapObservations(): Observable<MapObservation[]> {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
-      map((observations) =>
+      map((observations) => //TODO: Actualizar con la información que necesito ahora para el popUp
         observations.map((obs) => ({
           id: obs.id,
           user_id: obs.relationships.user.id,
@@ -180,9 +180,10 @@ export class ObservationsService {
           longitude: obs.attributes.longitude,
           created_at: new Date(obs.attributes.created_at),
           types: obs.relationships.types.map((type) => type.id),
-          LAeq: obs.attributes.LAeq,
+          Leq: obs.attributes.Leq,
           userType: obs.relationships.user.type,
           quiet: obs.attributes.quiet,
+          path: obs.attributes.path
         }))
       )
     );
