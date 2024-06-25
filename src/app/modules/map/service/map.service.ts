@@ -83,8 +83,6 @@ export class MapService {
       return;
     }
     this.observationsService.getAllMapObservations().subscribe((data) => {
-      // const a = this.observationsService.getLinsStringFromObservations()
-      // console.log('a', a)
       this.mapObservations = data;
       const geoJSON = this.createGeoJson(data);
       this.GeoJSON$.next(geoJSON);
@@ -138,7 +136,6 @@ export class MapService {
   }
 
   private createGeoJson(observations: MapObservation[]): any {
-    // console.log('observations', observations)
     //Obtener los segmentos de las polilineas
     let linestrings: Feature[] = observations.map((obs) => ({
       type: 'Feature',
@@ -374,7 +371,6 @@ export class MapService {
     //Así seleccionamos todo el segmento y no solo una parte
     if (evt.type === 'mouseenter' && evt.features.length === 1) {
       const featureId = evt.features[0].id;
-      console.log('featureId', featureId);
       this.map.getCanvas().style.cursor = 'pointer';
       this.featureIdSelected = evt.features[0].id;
       this.map.setFeatureState(
@@ -639,8 +635,6 @@ export class MapService {
 
     this.map.on('click', 'LineString', (e) => {
       const feature = e.features[0];
-      console.log('feature', feature);
-      console.log('feature.properties.id', feature.properties['id']);
 
       const obs = this.observationsService.observations$
         .getValue()

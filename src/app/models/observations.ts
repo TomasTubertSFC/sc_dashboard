@@ -15,7 +15,7 @@ export interface ObservationsDataChart {
   }
 
 export interface ObservationsAttributes {
-    LAeq:                   string;
+    Leq:                    string;
     LAeqT:                  string;
     LAmax:                  string;
     LAmin:                  string;

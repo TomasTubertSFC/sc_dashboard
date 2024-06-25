@@ -2,10 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  Inject,
   OnDestroy,
-  OnInit,
-  Signal,
   ViewChild,
   WritableSignal,
   inject,
@@ -47,7 +44,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   public hideModal(): void {
-    console.log('done')
     this.mapService.isOpenObservationInfoModal.next(false)
   }
 

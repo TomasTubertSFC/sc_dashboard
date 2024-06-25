@@ -13,7 +13,8 @@
   </ng-template>
   @if(observationSelected){
   <div class="flex flex-column justify-content-center align-items-center gap-3">
-    @if(observationSelected.attributes.images && observationSelected.attributes.images.length >= 1){
+    @if(observationSelected.attributes.images &&
+    observationSelected.attributes.images.length >= 1){
     <img
       [src]="observationSelected.attributes.images[0]"
       width="400"
@@ -84,20 +85,24 @@
       <h3 class="text-left headline-s font-medium">Àudio registrat</h3>
       <ul class="body-m mt-0">
         <li>
-          <span class="font-medium">Nivell percentil L10</span>: {{observationSelected.attributes.L10}}
+          <span class="font-medium">Nivell percentil L10:</span>
+          {{ observationSelected.attributes.L10 }}
         </li>
         <li>
-          <span class="font-medium">Nivell percentil L90</span>: {{observationSelected.attributes.L90}}
+          <span class="font-medium">Nivell percentil L90:</span>
+          {{ observationSelected.attributes.L90 }}
         </li>
         <li>
-        <!-- TODO: modificar en el modelo el Leq -->
-          <!-- <span class="font-medium">Nivell SPL equivalent LAeq:</span>:{{observationSelected.attributes.Leq}} -->
+          <span class="font-medium">Nivell SPL equivalent LAeq:</span>
+          {{ observationSelected.attributes.Leq }}
         </li>
         <li>
-          <span class="font-medium">Nivell màxim Lmax:</span>: {{observationSelected.attributes.LAmax}}
+          <span class="font-medium">Nivell màxim Lmax:</span>
+          {{ observationSelected.attributes.LAmax }}
         </li>
         <li>
-          <span class="font-medium">Nivell mínim Lmin:</span>: {{observationSelected.attributes.LAmin}}
+          <span class="font-medium">Nivell mínim Lmin:</span>
+          {{ observationSelected.attributes.LAmin }}
         </li>
       </ul>
       <div id="line-chart-container"></div>

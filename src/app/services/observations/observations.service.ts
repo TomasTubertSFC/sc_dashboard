@@ -180,7 +180,7 @@ export class ObservationsService {
           longitude: obs.attributes.longitude,
           created_at: new Date(obs.attributes.created_at),
           types: obs.relationships.types.map((type) => type.id),
-          LAeq: obs.attributes.LAeq,
+          Leq: obs.attributes.Leq,
           userType: obs.relationships.user.type,
           quiet: obs.attributes.quiet,
           path: obs.attributes.path
