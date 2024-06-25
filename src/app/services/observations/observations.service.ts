@@ -172,7 +172,7 @@ export class ObservationsService {
   public getAllMapObservations(): Observable<MapObservation[]> {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
-      map((observations) => 
+      map((observations) =>
         observations.map((obs) => ({
           id: obs.id,
           user_id: obs.relationships.user.id,
@@ -336,7 +336,13 @@ export class ObservationsService {
       type: 'Feature',
       geometry: {
         type: 'LineString',
-        coordinates: obs.relationships.segments.map((value) => { return [Number(value.start_latitude),Number(value.start_longitude)] })
+        //hacemos un reduce de sengments para combertirlos en un Linestring
+        coordinates: obs.relationships.segments.reduce((acc:turf.Position[], segment:any):turf.Position[] => {
+          acc.push([Number(segment.start_longitude), Number(segment.start_latitude)]);
+          if(segment.position == obs.relationships.segments.length) acc.push([Number(segment.end_longitude), Number(segment.end_latitude)]);
+          return acc;
+        }, [])
+
       },
       properties: {
         id:     obs.id,
@@ -350,18 +356,18 @@ export class ObservationsService {
     linestrings = linestrings.concat(
       observations.map((obs) => {
         let segments:Feature[] = [];
-        for (let i = 0; i < obs.relationships.segments.length - 1; i++) {
+        for (let i = 0; i <= obs.relationships.segments.length - 1; i++) {
           segments.push({
             type: 'Feature',
             geometry: {
               type: 'LineString',
-              coordinates: [[Number(obs.relationships.segments[i].start_longitude),Number(obs.relationships.segments[i].start_longitude)], [Number(obs.relationships.segments[i].end_longitude),Number(obs.relationships.segments[i].end_longitude)]]
+              coordinates: [[Number(obs.relationships.segments[i].start_longitude),Number(obs.relationships.segments[i].start_latitude)], [Number(obs.relationships.segments[i].end_longitude), Number(obs.relationships.segments[i].end_latitude)]]
             },
             properties: {
               type:  'Line',
-              color: getColor(obs.relationships.segments[i].LAeq),
+              color: obs.relationships.segments[i].LAeq ? getColor(obs.relationships.segments[i].LAeq) : null,
               width: 3,
-              pause: false //TODO: Añadir el valor de pause
+              pause: obs.relationships.segments[i].LAeq ? false : true //TODO: Añadir el valor de pause
             }
           });
         }
@@ -375,16 +381,24 @@ export class ObservationsService {
 
   public getStartPointsFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
 
+    observations = observations.filter((obs) => obs.relationships.segments.length > 0);
+
     if(observations.length == 0) return [];
 
-    let points: Feature[] =  observations.map((obs) => ({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [Number(obs.relationships.segments[0].start_longitude), Number(obs.relationships.segments[0].start_latitude)]
-      },
-      properties: {}
-    }));
+    let points: Feature[] = observations.map((obs) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [Number(obs.relationships.segments[0].start_longitude), Number(obs.relationships.segments[0].start_latitude)]
+        },
+        properties: {
+          id:     obs.id,
+          type:   'Point',
+          color:  '#333',
+          width:  6
+        }
+      })
+    );
 
     return points;
 

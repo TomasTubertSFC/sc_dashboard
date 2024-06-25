@@ -170,7 +170,7 @@ export class MapService {
                   ],
                   [
                     Number(path.end_longitude),
-                    Number(path.end_latitud),
+                    Number(path.end_latitude),
                   ],
                 ],
               },

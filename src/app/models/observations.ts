@@ -50,7 +50,7 @@ export interface Segment {
     position: number,
     start_latitude: string,
     start_longitude: string,
-    end_latitud: string,
+    end_latitude: string,
     end_longitude: string,
     L90: number,
     L10: number,

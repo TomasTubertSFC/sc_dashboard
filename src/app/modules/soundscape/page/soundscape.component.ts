@@ -36,7 +36,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private draw!: MapboxDraw;
   private observationsService = inject(ObservationsService);
   private observations: Observations[] = [];
-  private observations$!: Subscription
+  private observations$!: Subscription;
   private observationSelectedId: string = '';
 
   public points: [number, number][] = [];
@@ -66,6 +66,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   constructor() {
 
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
+
       this.observations = observations;
       this.polylines.update(() => this.observationsService.getLineStringFromObservations());
       this.startPoints.update(() => this.observationsService.getStartPointsFromObservations());
