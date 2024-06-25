@@ -43,13 +43,20 @@ export interface ObservationsAttributes {
     created_at:             string;
     updated_at:             Date;
     roughtness_R?:          string;
-    path:                   Segment[];
+    path:                   string;
 }
 
 export interface Segment {
-  start:                  number[];
-  end:                    number[];
-  parameters:             SegmentParameters;
+    position: number,
+    start_latitude: string,
+    start_longitude: string,
+    end_latitud: string,
+    end_longitude: string,
+    L90: number,
+    L10: number,
+    LAeq: number,
+    LAmax: number,
+    LAmin: number,
 }
 
 export interface SegmentParameters {
@@ -64,6 +71,7 @@ export interface SegmentParameters {
 export interface ObservationsRelationships {
     user:  User;
     types: ObservationsType[];
+    segments: Segment[];
 }
 
 export interface ObservationsType {

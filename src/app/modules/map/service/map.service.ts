@@ -56,8 +56,8 @@ export class MapService {
   };
   private featureIdSelected!: string;
   public observationSelected!: Observations;
-  public isOpenObservationInfoModal: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
-  
+  public isOpenObservationInfoModal: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
   constructor(
     private http: HttpClient,
@@ -83,6 +83,7 @@ export class MapService {
       return;
     }
     this.observationsService.getAllMapObservations().subscribe((data) => {
+      console.log('data', data)
       this.mapObservations = data;
       const geoJSON = this.createGeoJson(data);
       this.GeoJSON$.next(geoJSON);
@@ -136,13 +137,13 @@ export class MapService {
   }
 
   private createGeoJson(observations: MapObservation[]): any {
-    //Obtener los segmentos de las polilineas
+    //Borde negro de la linea
     let linestrings: Feature[] = observations.map((obs) => ({
       type: 'Feature',
       geometry: {
         type: 'LineString',
         coordinates: obs.path.map((value) => {
-          return value.start;
+          return [Number(value.start_longitude), Number(value.start_latitude)];
         }),
       },
       properties: {
@@ -155,24 +156,58 @@ export class MapService {
     //Obtener los segmentos de las polilineas
     linestrings = linestrings.concat(
       observations
-        .map((obs) => {
-          let segments: Feature[] = [];
-          for (let i = 0; i < obs.path.length - 1; i++) {
-            segments.push({
+        .map((obs) => {//TODO hacer esto con un map
+          // console.log('obs', obs)
+          let segments: Feature[] = obs.path.map((path) => {
+            return {
               type: 'Feature' as const,
               geometry: {
                 type: 'LineString' as const,
-                coordinates: [obs.path[i].start, obs.path[i].end],
+                coordinates: [
+                  [
+                    Number(path.start_longitude),
+                    Number(path.start_latitude),
+                  ],
+                  [
+                    Number(path.end_longitude),
+                    Number(path.end_latitud),
+                  ],
+                ],
               },
               properties: {
                 id: obs.id,
                 type: 'Line',
-                color: this.getSegmentColor(obs.path[i].parameters.LAeq),
+                color: this.getSegmentColor(path.LAeq),
                 width: 3,
-                pause: obs.path[i].parameters.pause,
+                pause: false, //TODO: Add pause
               },
-            });
-          }
+            }
+          })
+          // for (let i = 0; i < obs.path.length - 1; i++) {
+          //   segments.push({
+          //     type: 'Feature' as const,
+          //     geometry: {
+          //       type: 'LineString' as const,
+          //       coordinates: [
+          //         [
+          //           Number(obs.path[i].start_longitude),
+          //           Number(obs.path[i].start_latitude),
+          //         ],
+          //         [
+          //           Number(obs.path[i].end_longitude),
+          //           Number(obs.path[i].end_latitud),
+          //         ],
+          //       ],
+          //     },
+          //     properties: {
+          //       id: obs.id,
+          //       type: 'Line',
+          //       color: this.getSegmentColor(obs.path[i].LAeq),
+          //       width: 3,
+          //       pause: false, //TODO: Add pause
+          //     },
+          //   });
+          // }
           return segments;
         })
         .flat()
@@ -199,6 +234,8 @@ export class MapService {
     //     },
     //   };
     // });
+
+    console.log('linestrings', linestrings)
 
     return {
       type: 'FeatureCollection' as const,
@@ -639,8 +676,8 @@ export class MapService {
       const obs = this.observationsService.observations$
         .getValue()
         .find((obs) => obs.id === feature.properties['id']);
-        this.observationSelected = obs
-        this.isOpenObservationInfoModal.next(true)
+      this.observationSelected = obs;
+      this.isOpenObservationInfoModal.next(true);
     });
   }
 }

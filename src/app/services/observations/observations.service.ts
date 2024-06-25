@@ -32,32 +32,32 @@ export class ObservationsService {
       )
       .subscribe(({ data }) => {
 
-        //TODO: esto debería hacerse en el backend
-        data.map((obs) => {
-          //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
-          obs.attributes.path = [];
-          let start!: [number, number];
-          for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
+        // //TODO: esto debería hacerse en el backend
+        // data.map((obs) => {
+        //   //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
+        //   obs.attributes.path = [];
+        //   let start!: [number, number];
+        //   for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
 
-            let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
-            if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+        //     let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+        //     if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
 
-            obs.attributes.path.push({
-              start:  start,
-              end:    end,
-              parameters:{
-                pause:  Math.random() < 0.2 ? true : false,
-                LAeq:   Math.floor(Math.random() * 140),
-                LAeqT:  Math.floor(Math.random() * 140),
-                L10:    Math.floor(Math.random() * 140),
-                L90:    Math.floor(Math.random() * 140)
-              }
-            });
+        //     obs.attributes.path.push({
+        //       start:  start,
+        //       end:    end,
+        //       parameters:{
+        //         pause:  Math.random() < 0.2 ? true : false,
+        //         LAeq:   Math.floor(Math.random() * 140),
+        //         LAeqT:  Math.floor(Math.random() * 140),
+        //         L10:    Math.floor(Math.random() * 140),
+        //         L90:    Math.floor(Math.random() * 140)
+        //       }
+        //     });
 
-            start = end;
-          }
-          return obs;
-        });
+        //     start = end;
+        //   }
+        //   return obs;
+        // });
 
         this.observations$.next(data);
         this.loading$.next(false);
@@ -172,7 +172,7 @@ export class ObservationsService {
   public getAllMapObservations(): Observable<MapObservation[]> {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
-      map((observations) => //TODO: Actualizar con la información que necesito ahora para el popUp
+      map((observations) => 
         observations.map((obs) => ({
           id: obs.id,
           user_id: obs.relationships.user.id,
@@ -183,7 +183,7 @@ export class ObservationsService {
           Leq: obs.attributes.Leq,
           userType: obs.relationships.user.type,
           quiet: obs.attributes.quiet,
-          path: obs.attributes.path
+          path: obs.relationships.segments
         }))
       )
     );
@@ -336,7 +336,7 @@ export class ObservationsService {
       type: 'Feature',
       geometry: {
         type: 'LineString',
-        coordinates: obs.attributes.path.map((value) => { return value.start })
+        coordinates: obs.relationships.segments.map((value) => { return [Number(value.start_latitude),Number(value.start_longitude)] })
       },
       properties: {
         id:     obs.id,
@@ -350,18 +350,18 @@ export class ObservationsService {
     linestrings = linestrings.concat(
       observations.map((obs) => {
         let segments:Feature[] = [];
-        for (let i = 0; i < obs.attributes.path.length - 1; i++) {
+        for (let i = 0; i < obs.relationships.segments.length - 1; i++) {
           segments.push({
             type: 'Feature',
             geometry: {
               type: 'LineString',
-              coordinates: [obs.attributes.path[i].start, obs.attributes.path[i].end]
+              coordinates: [[Number(obs.relationships.segments[i].start_longitude),Number(obs.relationships.segments[i].start_longitude)], [Number(obs.relationships.segments[i].end_longitude),Number(obs.relationships.segments[i].end_longitude)]]
             },
             properties: {
               type:  'Line',
-              color: getColor(obs.attributes.path[i].parameters.LAeq),
+              color: getColor(obs.relationships.segments[i].LAeq),
               width: 3,
-              pause: obs.attributes.path[i].parameters.pause
+              pause: false //TODO: Añadir el valor de pause
             }
           });
         }
@@ -381,7 +381,7 @@ export class ObservationsService {
       type: 'Feature',
       geometry: {
         type: 'Point',
-        coordinates: [Number(obs.attributes.path[0].start[0]), Number(obs.attributes.path[0].start[1])]
+        coordinates: [Number(obs.relationships.segments[0].start_longitude), Number(obs.relationships.segments[0].start_latitude)]
       },
       properties: {}
     }));
