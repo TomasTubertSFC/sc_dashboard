@@ -1,22 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, WritableSignal, effect, signal } from '@angular/core';
-import { environment } from '../../../../environments/environments';
+import { Injectable } from '@angular/core';
 import { ObservationsService } from '../../../services/observations/observations.service';
 import { MapObservation, ObservationGeoJSON } from '../../../models/map';
-import mapboxgl, { LngLat, LngLatBounds, LngLatLike, Map } from 'mapbox-gl';
-import { Observations } from '../../../models/observations';
+import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 import { FeatureCollection, Geometry } from 'geojson';
-import {
-  BehaviorSubject,
-  Subject,
-  filter,
-  first,
-  forkJoin,
-  last,
-  Subscription,
-} from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { FormFilterValues } from '../../../models/forms';
 import { Feature } from '@turf/turf';
+import { Observations } from '../../../models/observations';
 
 @Injectable({
   providedIn: 'root',
@@ -63,7 +54,10 @@ export class MapService {
     bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
     clusterMaxZoom: 17,
   };
-  private featureIdSelected!: string
+  private featureIdSelected!: string;
+  public observationSelected!: Observations;
+  public isOpenObservationInfoModal: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
+  
 
   constructor(
     private http: HttpClient,
@@ -380,22 +374,22 @@ export class MapService {
     //Así seleccionamos todo el segmento y no solo una parte
     if (evt.type === 'mouseenter' && evt.features.length === 1) {
       const featureId = evt.features[0].id;
-      console.log('featureId', featureId)
+      console.log('featureId', featureId);
       this.map.getCanvas().style.cursor = 'pointer';
-      this.featureIdSelected = evt.features[0].id
+      this.featureIdSelected = evt.features[0].id;
       this.map.setFeatureState(
         { source: 'observations', id: featureId },
         { hover: true }
       );
       return;
     }
-    if(!this.featureIdSelected) return;
+    if (!this.featureIdSelected) return;
     this.map.getCanvas().style.cursor = '';
     this.map.setFeatureState(
       { source: 'observations', id: this.featureIdSelected },
       { hover: false }
     );
-    this.featureIdSelected = ''
+    this.featureIdSelected = '';
   }
 
   //Filter obs
@@ -555,6 +549,7 @@ export class MapService {
       id: 'LineString',
       type: 'line',
       source: 'observations',
+      //minzoom: 20,
       layout: {
         'line-join': 'round',
         'line-cap': 'round',
@@ -575,7 +570,7 @@ export class MapService {
           'case',
           ['boolean', ['feature-state', 'hover'], false],
           5,
-          0,      
+          0,
         ],
         'line-width': [
           'case',
@@ -638,17 +633,20 @@ export class MapService {
     // // Add event listeners for 'click' events on layers
     // this.map.on('click', 'clusters', this.centerZoomCluster.bind(this));
 
-     // Add event listeners for 'mouseenter' and 'mouseleave' events on layers
+    // Add event listeners for 'mouseenter' and 'mouseleave' events on layers
     this.map.on('mouseenter', 'LineString', this.mouseEvent.bind(this));
     this.map.on('mouseleave', 'LineString', this.mouseEvent.bind(this));
 
     this.map.on('click', 'LineString', (e) => {
       const feature = e.features[0];
-      console.log('feature', feature)
-      console.log('feature.properties.id', feature.properties['id'])
+      console.log('feature', feature);
+      console.log('feature.properties.id', feature.properties['id']);
 
-      const obs = this.observationsService.observations$.getValue().find((obs) => obs.id === feature.properties['id'])
-      console.log('obs', obs)
-    })
+      const obs = this.observationsService.observations$
+        .getValue()
+        .find((obs) => obs.id === feature.properties['id']);
+        this.observationSelected = obs
+        this.isOpenObservationInfoModal.next(true)
+    });
   }
 }

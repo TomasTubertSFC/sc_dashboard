@@ -12,6 +12,10 @@ import { LogoutIconComponent } from './logout-icon/logout-icon.components';
 import { DownloadIconComponent } from './download/download.components';
 import { MapIconComponent } from './map/map.components';
 import { SoundCollectIconComponent } from './soundcollect-icon/soundcollect-icon.components';
+import { WindComponent } from './wind/wind.component';
+import { HumidityComponent } from './humidity/humidity.component';
+import { ThermostatComponent } from './thermostat/thermostat.component';
+import { PressureComponent } from './pressure/pressure.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,11 @@ import { SoundCollectIconComponent } from './soundcollect-icon/soundcollect-icon
     LogoutIconComponent,
     MapIconComponent,
     DownloadIconComponent,
-    SoundCollectIconComponent
+    SoundCollectIconComponent,
+    WindComponent,
+    HumidityComponent,
+    ThermostatComponent,
+    PressureComponent,
   ],
   exports: [
     AddToChartComponent,
@@ -38,7 +46,11 @@ import { SoundCollectIconComponent } from './soundcollect-icon/soundcollect-icon
     LogoutIconComponent,
     DownloadIconComponent,
     MapIconComponent,
-    SoundCollectIconComponent
+    SoundCollectIconComponent,
+    WindComponent,
+    HumidityComponent,
+    ThermostatComponent,
+    PressureComponent,
   ],
   imports: [CommonModule],
 })

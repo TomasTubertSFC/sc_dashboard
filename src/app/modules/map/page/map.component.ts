@@ -16,7 +16,7 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, { Map } from 'mapbox-gl';
 import { MapService } from '../service/map.service';
 import { Subscription } from 'rxjs';
-import { effect } from '@angular/core';
+import { Observations } from '../../../models/observations';
 
 @Component({
   selector: 'app-map',
@@ -31,6 +31,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public showMapLayers: WritableSignal<boolean> = signal<boolean>(false);
   public activeFilters: boolean = false;
   private subscriptions = new Subscription();
+  public observationSelected!: Observations;
+  public isOpenObservationInfoModal: boolean = false;
 
   constructor() {
     this.subscriptions.add(
@@ -44,7 +46,17 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.mapService.isFilterActive.next(!this.activeFilters);
   }
 
+  public hideModal(): void {
+    console.log('done')
+    this.mapService.isOpenObservationInfoModal.next(false)
+  }
+
   ngAfterViewInit(): void {
+    this.mapService.isOpenObservationInfoModal.subscribe((isOpen) => {
+      this.isOpenObservationInfoModal = isOpen;
+      this.observationSelected = this.mapService.observationSelected;
+    });
+
     const map = new Map({
       container: this.mapDivElement.nativeElement, // container ID
       style: this.mapService.mapSettings.mapStyle, // style URL
