@@ -22,9 +22,10 @@ echarts.use([
 })
 export class SoundLevelsChartComponent implements AfterViewInit{
   @Input() observations: Observations[];
-
+  private max: Number = 0;
 
   ngAfterViewInit(): void {
+    let data = this.getDataFromObservations()
     let chartDom = document.getElementById('chart')!;
     let myChart = echarts.init(chartDom);
     let option: EChartsOption;
@@ -34,7 +35,7 @@ export class SoundLevelsChartComponent implements AfterViewInit{
         radius: [10, '80%']
       },
       radiusAxis: {
-        max: 100,
+        max: this.max.toFixed(2),
         z: 90,
         lineStyle: {
           color: '#000'
@@ -42,20 +43,19 @@ export class SoundLevelsChartComponent implements AfterViewInit{
       },
       angleAxis: {
         type: 'category',
-        data: ['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+        data: Array.from({length: 24}, (_, i) => `${i}:00 h.`),
         startAngle: 90
       },
       tooltip: {},
       series: {
         type: 'bar',
-        data: [2, 1.2, 2.4, 3.6, this.observations.length],
+        data: data,
         coordinateSystem: 'polar',
         barGap: '0%',
         barCategoryGap: '0%',
         itemStyle: {
           color: (params:any) => {
-            const colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99','#c2c2f0','#ffb3e6'];
-            return colors[params.dataIndex % colors.length];
+            return this.getColor(params.value);
           }
         }
       },
@@ -63,4 +63,55 @@ export class SoundLevelsChartComponent implements AfterViewInit{
     };
     option && myChart.setOption(option);
   }
+
+  private getDataFromObservations(): Number[] {
+    let data: Number[][] = Array.from({length: 24}, () => []);
+    let max = 0;
+    this.observations.forEach(observation => {
+      let hour = new Date(observation.attributes.created_at).getHours();
+      if(!data[hour]) data[hour] = [];
+      if(Number(observation.attributes.Leq)) {
+        data[hour].push(Number(observation.attributes.Leq));
+      }
+    });
+    
+    const result = data.map(hourData => {
+      if(hourData.length === 0) return 0;
+      let sum = hourData.reduce((a, b) => Number(a) + Number(b));
+      let avg = Number(sum)/hourData.length;
+      this.max = Math.max(Number(this.max), Number(avg));
+      return  Number((avg).toFixed(2));
+    });
+    return result; 
+  }
+
+  private getColor(value: number): string{
+    switch (true) {
+      case value <= 35:
+        return '#B7CE8E';
+      case value > 35 && value <= 40:
+        return '#1D8435';
+      case value > 40 && value <= 45:
+        return '#0E4C3C';
+      case value > 45 && value <= 50:
+        return '#ECD721';
+      case value > 50 && value <= 55:
+        return '#9F6F2C';
+      case value > 55 && value <= 60:
+        return '#EF7926';
+      case value > 60 && value <= 65:
+        return '#C71932';
+      case value > 65 && value <= 70:
+        return '#8D1A27';
+      case value > 70 && value <= 75:
+        return '#88497B';
+      case value > 75 && value <= 80:
+        return '#18558C';
+      case value > 80:
+        return '#134367';
+      default:
+        return '#333';
+    }
+  }
+
 }
