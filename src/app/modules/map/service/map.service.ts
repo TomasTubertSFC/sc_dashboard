@@ -23,15 +23,13 @@ export class MapService {
     new BehaviorSubject<boolean>(false);
 
   private mapObservations: MapObservation[] = [];
-  private filteredGeoJSON: ObservationGeoJSON = {
-    type: 'FeatureCollection',
-    features: [],
-  };
-  public GeoJSON$: BehaviorSubject<ObservationGeoJSON> =
-    new BehaviorSubject<ObservationGeoJSON>({
-      type: 'FeatureCollection',
-      features: [],
-    });
+  // private filteredGeoJSON: ObservationGeoJSON = {
+  //   type: 'FeatureCollection',
+  //   features: [],
+  // };
+  public features$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>(
+    []
+  );
   public initialGeoJson: ObservationGeoJSON = {
     type: 'FeatureCollection',
     features: [],
@@ -54,13 +52,11 @@ export class MapService {
     bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
     clusterMaxZoom: 17,
   };
-  private featureIdSelected!: string;
   public observationSelected!: Observations;
   public isOpenObservationInfoModal: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
   constructor(
-    private http: HttpClient,
     private observationsService: ObservationsService
   ) {
     //Subscribe to know if the filter is active
@@ -68,10 +64,10 @@ export class MapService {
       if (!this.map) return;
       if (isFilterActive) {
         //update the geojson
-        this.updateSourceObservations(this.filteredGeoJSON);
+        // this.updateSourceObservations(this.filteredGeoJSON);
       } else {
         //update the geojson
-        this.updateSourceObservations(this.GeoJSON$.getValue());
+        this.updateSourceObservations(this.features$.getValue());
       }
     });
   }
@@ -79,21 +75,36 @@ export class MapService {
   //Conseguir todos los olores en el constructor
   public getAllMapObservations(): void {
     if (this.mapObservations.length > 0) {
-      this.updateSourceObservations(this.GeoJSON$.getValue());
+      this.updateSourceObservations(this.features$.getValue());
       return;
     }
-    this.observationsService.getAllMapObservations().subscribe((data) => {
-      console.log('data', data)
-      this.mapObservations = data;
-      const geoJSON = this.createGeoJson(data);
-      this.GeoJSON$.next(geoJSON);
-      //update the source observations at map
-      this.updateSourceObservations(geoJSON);
+    this.observationsService.observations$.subscribe((data) => {
+      const features =
+        this.observationsService.getLineStringFromObservations(data);
+      if (features.length === 0) return;
+      this.mapObservations = data.map((obs) => ({
+        id: obs.id,
+        user_id: obs.relationships.user.id,
+        latitude: obs.attributes.latitude,
+        longitude: obs.attributes.longitude,
+        created_at: new Date(obs.attributes.created_at),
+        types: obs.relationships.types.map((type) => type.id),
+        Leq: obs.attributes.Leq,
+        userType: obs.relationships.user.type,
+        quiet: obs.attributes.quiet,
+        path: obs.relationships.segments,
+      }));
+      this.features$.next(features as Feature[]);
+      this.updateSourceObservations(features as Feature[]);
     });
   }
 
-  public updateSourceObservations(geoJson: any) {
+  public updateSourceObservations(features: Feature[]): void {
     let isSource = !!this.map.getSource('observations');
+    let geoJson = {
+      type: 'FeatureCollection' as const,
+      features: features,
+    };
     if (isSource) {
       let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
       source.setData(geoJson as FeatureCollection<Geometry>);
@@ -137,52 +148,54 @@ export class MapService {
   }
 
   private createGeoJson(observations: MapObservation[]): any {
+    let linestrings: Feature[] = [];
     //Borde negro de la linea
-    let linestrings: Feature[] = observations.map((obs) => ({
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: obs.path.map((value) => {
-          return [Number(value.start_longitude), Number(value.start_latitude)];
-        }),
-      },
-      properties: {
-        id: obs.id,
-        type: 'LineString',
-        color: '#333',
-        width: 6,
-      },
-    }));
+    // linestrings = observations.map((obs) => ({
+    //   type: 'Feature',
+    //   geometry: {
+    //     type: 'LineString',
+    //     coordinates: obs.path.map((value) => {
+    //       return [
+    //         [Number(value.start_longitude), Number(value.start_latitude)],
+    //         [Number(value.end_longitude), Number(value.end_latitude)],
+    //       ];
+    //     }),
+    //   },
+    //   properties: {
+    //     id: obs.id,
+    //     type: 'line',
+    //     color: '#333',
+    //     width: 6,
+    //   },
+    // }));
     //Obtener los segmentos de las polilineas
     linestrings = linestrings.concat(
       observations
-        .map((obs) => {//TODO hacer esto con un map
+        .map((obs) => {
+          //TODO hacer esto con un map
           // console.log('obs', obs)
-          let segments: Feature[] = obs.path.map((path) => {
+          let segments: Feature[] = obs.path.map((segment) => {
             return {
               type: 'Feature' as const,
               geometry: {
                 type: 'LineString' as const,
                 coordinates: [
                   [
-                    Number(path.start_longitude),
-                    Number(path.start_latitude),
+                    Number(segment.start_longitude),
+                    Number(segment.start_latitude),
                   ],
-                  [
-                    Number(path.end_longitude),
-                    Number(path.end_latitude),
-                  ],
+                  [Number(segment.end_longitude), Number(segment.end_latitude)],
                 ],
               },
               properties: {
                 id: obs.id,
                 type: 'Line',
-                color: this.getSegmentColor(path.LAeq),
+                color: this.getSegmentColor(segment.LAeq),
                 width: 3,
                 pause: false, //TODO: Add pause
               },
-            }
-          })
+            };
+          });
           // for (let i = 0; i < obs.path.length - 1; i++) {
           //   segments.push({
           //     type: 'Feature' as const,
@@ -235,7 +248,7 @@ export class MapService {
     //   };
     // });
 
-    console.log('linestrings', linestrings)
+    console.log('linestrings', linestrings);
 
     return {
       type: 'FeatureCollection' as const,
@@ -404,25 +417,15 @@ export class MapService {
 
   //Add mouse pointer on cluster hover
   private mouseEvent(evt: any) {
-    //Nos aseguramos de que la feature solo tenga un elemento
-    //Así seleccionamos todo el segmento y no solo una parte
     if (evt.type === 'mouseenter' && evt.features.length === 1) {
-      const featureId = evt.features[0].id;
+      const featureId = evt.features[0].properties.id;
       this.map.getCanvas().style.cursor = 'pointer';
-      this.featureIdSelected = evt.features[0].id;
-      this.map.setFeatureState(
-        { source: 'observations', id: featureId },
-        { hover: true }
-      );
+      this.map.setFilter('lineLayer-hover', ['==', 'id', featureId]);
       return;
     }
-    if (!this.featureIdSelected) return;
+    // if (!this.featureIdSelected) return;
     this.map.getCanvas().style.cursor = '';
-    this.map.setFeatureState(
-      { source: 'observations', id: this.featureIdSelected },
-      { hover: false }
-    );
-    this.featureIdSelected = '';
+    this.map.setFilter('lineLayer-hover', ['==', 'id', '']);
   }
 
   //Filter obs
@@ -480,13 +483,13 @@ export class MapService {
 
     //create the geojson
     const geoJSON = this.createGeoJson(mapObs);
-    this.filteredGeoJSON = geoJSON;
+    // this.filteredGeoJSON = geoJSON;
 
     //update the geojson
     this.updateSourceObservations(geoJSON);
   }
 
-  private buildClustersAndLayers(GeoJSON: any): void {
+  private buildClustersAndLayers(features: Feature[]): void {
     // // Add a new source from our GeoJSON data and set the
     // this.map.addSource('observations', {
     //   type: 'geojson',
@@ -573,8 +576,32 @@ export class MapService {
     //Añadir la fuente de datos para las lineas de atributo path
     this.map.addSource('observations', {
       type: 'geojson',
-      data: GeoJSON as FeatureCollection<Geometry, { [name: string]: any }>,
-      generateId: true,
+      data: {
+        type: 'FeatureCollection',
+        features: features as Feature<
+          Geometry,
+          {
+            [name: string]: any;
+          }
+        >[],
+      },
+    });
+
+    // resaltar la línea a la que se hace hover de color negro
+    this.map.addLayer({
+      id: 'lineLayer-hover',
+      type: 'line',
+      source: 'observations',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round',
+      },
+      paint: {
+        'line-color': '#333',
+        'line-width': 3,
+        'line-gap-width': 5,
+      },
+      filter: ['==', 'id', ''], // Filtro vacío para iniciar
     });
 
     // Agregar capa para los paths individuales
@@ -590,27 +617,11 @@ export class MapService {
       paint: {
         'line-color': [
           'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          '#333',
-          [
-            'case',
-            ['==', ['get', 'pause'], true],
-            '#FFF', // Dasharray if pause is 1
-            ['get', 'color'], // No dasharray if pause is not 1
-          ],
+          ['==', ['get', 'pause'], true],
+          '#FFF', // Dasharray si pause es 1
+          ['get', 'color'], // Sin dasharray si pause no es 1
         ],
-        'line-gap-width': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          5,
-          0,
-        ],
-        'line-width': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          3,
-          ['get', 'width'],
-        ],
+        'line-width': ['get', 'width'],
         'line-dasharray': [
           'case',
           ['==', ['get', 'pause'], true],
@@ -626,16 +637,16 @@ export class MapService {
 
     this.map.on('load', () => {
       //Add images of markers to map
-      [...Array(8)].forEach((_, numberColor) => {
-        const imageURL = `../../../assets/images/markers/marker-${numberColor}.png`;
-        this.map.loadImage(imageURL, (error, image) => {
-          if (error || !image)
-            return console.error(
-              `Failed to load image from URL "${imageURL}": ${error}`
-            );
-          this.map.addImage(numberColor + '-icon', image);
-        });
-      });
+      // [...Array(8)].forEach((_, numberColor) => {
+      //   const imageURL = `../../../assets/images/markers/marker-${numberColor}.png`;
+      //   this.map.loadImage(imageURL, (error, image) => {
+      //     if (error || !image)
+      //       return console.error(
+      //         `Failed to load image from URL "${imageURL}": ${error}`
+      //       );
+      //     this.map.addImage(numberColor + '-icon', image);
+      //   });
+      // });
 
       //Change map language to ES
       //Catalan does not exist in mapbox
@@ -652,10 +663,10 @@ export class MapService {
       //I want to detect if the layer with id observations exists
       if (this.isFilterActive.getValue()) {
         //update the geojson
-        this.buildClustersAndLayers(this.filteredGeoJSON);
+        // this.buildClustersAndLayers(this.filteredGeoJSON);
       } else {
         //update the geojson
-        this.buildClustersAndLayers(this.GeoJSON$.getValue());
+        this.buildClustersAndLayers(this.features$.getValue());
       }
     });
 
@@ -672,11 +683,13 @@ export class MapService {
 
     this.map.on('click', 'LineString', (e) => {
       const feature = e.features[0];
+      console.log('e.features', e.features)
 
       const obs = this.observationsService.observations$
         .getValue()
         .find((obs) => obs.id === feature.properties['id']);
       this.observationSelected = obs;
+      console.log('obs', obs)
       this.isOpenObservationInfoModal.next(true);
     });
   }
