@@ -23,13 +23,8 @@ export class MapService {
     new BehaviorSubject<boolean>(false);
 
   private mapObservations: MapObservation[] = [];
-  // private filteredGeoJSON: ObservationGeoJSON = {
-  //   type: 'FeatureCollection',
-  //   features: [],
-  // };
-  public features$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>(
-    []
-  );
+  private filteredFeatures: Feature[] = []
+  public features$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>([]);
   public initialGeoJson: ObservationGeoJSON = {
     type: 'FeatureCollection',
     features: [],
@@ -481,12 +476,18 @@ export class MapService {
       });
     }
 
-    //create the geojson
-    const geoJSON = this.createGeoJson(mapObs);
-    // this.filteredGeoJSON = geoJSON;
+    const observations = this.observationsService.observations$.getValue().filter((obs) => {
+      return mapObs.some((mapObs) => mapObs.id === obs.id);
+    })
+
+    //Get all features
+    const features =
+        this.observationsService.getLineStringFromObservations(observations);
+
+    this.filteredFeatures = features as Feature[];
 
     //update the geojson
-    this.updateSourceObservations(geoJSON);
+    this.updateSourceObservations(features as Feature[]);
   }
 
   private buildClustersAndLayers(features: Feature[]): void {
@@ -636,25 +637,12 @@ export class MapService {
     if (!this.isMapReady) return;
 
     this.map.on('load', () => {
-      //Add images of markers to map
-      // [...Array(8)].forEach((_, numberColor) => {
-      //   const imageURL = `../../../assets/images/markers/marker-${numberColor}.png`;
-      //   this.map.loadImage(imageURL, (error, image) => {
-      //     if (error || !image)
-      //       return console.error(
-      //         `Failed to load image from URL "${imageURL}": ${error}`
-      //       );
-      //     this.map.addImage(numberColor + '-icon', image);
-      //   });
-      // });
-
       //Change map language to ES
       //Catalan does not exist in mapbox
       this.map.setLayoutProperty('country-label', 'text-field', [
         'get',
         `name_es`,
       ]);
-      // this.buildClustersAndLayers(this.initialGeoJson);
     });
 
     //Build all clusters and layers after the style is loaded
@@ -663,7 +651,7 @@ export class MapService {
       //I want to detect if the layer with id observations exists
       if (this.isFilterActive.getValue()) {
         //update the geojson
-        // this.buildClustersAndLayers(this.filteredGeoJSON);
+        this.buildClustersAndLayers(this.filteredFeatures);
       } else {
         //update the geojson
         this.buildClustersAndLayers(this.features$.getValue());
@@ -683,13 +671,11 @@ export class MapService {
 
     this.map.on('click', 'LineString', (e) => {
       const feature = e.features[0];
-      console.log('e.features', e.features)
 
       const obs = this.observationsService.observations$
         .getValue()
         .find((obs) => obs.id === feature.properties['id']);
       this.observationSelected = obs;
-      console.log('obs', obs)
       this.isOpenObservationInfoModal.next(true);
     });
   }
