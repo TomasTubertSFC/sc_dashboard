@@ -22,7 +22,7 @@ echarts.use([
 })
 export class SoundLevelsChartComponent implements AfterViewInit{
   @Input() observations: Observations[];
-  
+
 
   ngAfterViewInit(): void {
     let chartDom = document.getElementById('chart')!;
@@ -52,6 +52,12 @@ export class SoundLevelsChartComponent implements AfterViewInit{
         coordinateSystem: 'polar',
         barGap: '0%',
         barCategoryGap: '0%',
+        itemStyle: {
+          color: (params:any) => {
+            const colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99','#c2c2f0','#ffb3e6'];
+            return colors[params.dataIndex % colors.length];
+          }
+        }
       },
       animation: false
     };
