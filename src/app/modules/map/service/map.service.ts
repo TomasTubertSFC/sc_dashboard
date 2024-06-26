@@ -354,22 +354,21 @@ export class MapService {
 
   private buildClustersAndLayers(features: Feature[]): void {
     // // Add a new source from our GeoJSON data and set the
-    this.map.addSource('observationsCluster', {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: features as Feature<
-          Geometry,
-          {
-            [name: string]: any;
-          }
-        >[],
-      },
-      cluster: true,
-      clusterMaxZoom: this.mapSettings.clusterMaxZoom, // Max zoom to cluster points on
-      clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
-    });
-
+    // this.map.addSource('observationsCluster', {
+    //   type: 'geojson',
+    //   data: {
+    //     type: 'FeatureCollection',
+    //     features: features as Feature<
+    //       Geometry,
+    //       {
+    //         [name: string]: any;
+    //       }
+    //     >[],
+    //   },
+    //   cluster: true,
+    //   clusterMaxZoom: this.mapSettings.clusterMaxZoom, // Max zoom to cluster points on
+    //   clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+    // });
     // //Cluster background color
     // this.map.addLayer({
     //   id: 'clusters',
