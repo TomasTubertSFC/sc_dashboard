@@ -364,6 +364,7 @@ export class ObservationsService {
               coordinates: [[Number(obs.relationships.segments[i].start_longitude),Number(obs.relationships.segments[i].start_latitude)], [Number(obs.relationships.segments[i].end_longitude), Number(obs.relationships.segments[i].end_latitude)]]
             },
             properties: {
+               id:   obs.id,
               type:  'Line',
               color: obs.relationships.segments[i].LAeq ? getColor(obs.relationships.segments[i].LAeq) : null,
               width: 3,
