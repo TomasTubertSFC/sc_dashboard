@@ -405,30 +405,4 @@ export class ObservationsService {
 
   }
 
-  public getFilteredObservationsForSoundscape(minHour: number | null = null, maxHour: number | null = null, polygon: number[][]){
-    this.observations$.pipe(
-      filter((value) => value.length > 0),
-      map((observations) => {
-        const polygonTurf = turf.polygon([polygon]);
-        return observations.filter((obs) => {
-          let point = turf.point([
-            Number(obs.attributes.longitude),
-            Number(obs.attributes.latitude),
-          ]);
-          const isInside = turf.booleanPointInPolygon(point, polygonTurf);
-          if (isInside) {
-            if (minHour && maxHour) {
-              const hour = new Date(obs.attributes.created_at).getHours();
-              return hour >= minHour && hour <= maxHour;
-            }
-            return true;
-          }
-          return false;
-        });
-      })
-    ).subscribe((filteredObservations) => {
-      this.observations$.next(filteredObservations);
-    });
-  }
-
 }
