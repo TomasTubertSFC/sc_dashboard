@@ -1,0 +1,113 @@
+<p-sidebar
+  header="Header"
+  position="right"
+  [(visible)]="isOpen"
+  (onHide)="closeModal()"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+>
+  <ng-template pTemplate="header">
+    <div class="text-center">
+      <h2 class="headline-m font-medium">Detall de l'Observació</h2>
+    </div>
+  </ng-template>
+  @if(observationSelected){
+  <div class="flex flex-column justify-content-center align-items-center gap-3">
+    @if(observationSelected.attributes.images &&
+    observationSelected.attributes.images.length >= 1){
+    <img
+      [src]="observationSelected.attributes.images[0]"
+      width="400"
+      height="300"
+      class="border-round-md"
+      style="object-fit: cover"
+    />
+    }
+    <div class="w-full">
+      <!-- Información general -->
+      <h3 class="text-left headline-s font-medium">
+        Informació formació general
+      </h3>
+      <h4 class="title-m mb-0">Tipus de so</h4>
+      <ul class="body-m mt-0">
+        @for(typeOfSound of observationSelected.relationships.types; track
+        $index){
+        <li>
+          {{ typeOfSound.name }}
+        </li>
+        }
+      </ul>
+      <h4 class="title-m mb-0">Data</h4>
+      <p class="body-m">
+        {{ observationSelected.attributes.created_at }}
+      </p>
+      <!-- Información meteorológica -->
+      <h3 class="text-left headline-s font-medium">Informació meteorològica</h3>
+      <div class="flex gap-2">
+        <div
+          class="flex flex-column p-3 justify-content-center align-items-center border-round-2xl meteo-information"
+        >
+          <p class="mb-0">Vent</p>
+          <icon-wind [iconClass]="'icon-orange'" />
+          <p class="font-medium">
+            {{ observationSelected.attributes.wind_speed }} km/h
+          </p>
+        </div>
+        <div
+          class="flex flex-column p-3 justify-content-center align-items-center border-round-2xl meteo-information"
+        >
+          <p class="mb-0">Humitat</p>
+          <icon-humidity [iconClass]="'icon-orange'" />
+          <p class="font-medium">
+            {{ observationSelected.attributes.humidity }}%
+          </p>
+        </div>
+        <div
+          class="flex flex-column p-3 justify-content-center align-items-center border-round-2xl meteo-information"
+        >
+          <p class="mb-0">Temp</p>
+          <icon-thermostat [iconClass]="'icon-orange'" />
+          <p class="font-medium">
+            {{ observationSelected.attributes.temperature }}c
+          </p>
+        </div>
+        <div
+          class="flex flex-column p-3 justify-content-center align-items-center border-round-2xl meteo-information"
+        >
+          <p class="mb-0">Pressió</p>
+          <icon-pressure [iconClass]="'icon-orange'" />
+          <p class="font-medium">
+            {{ observationSelected.attributes.pressure }}hPa
+          </p>
+        </div>
+      </div>
+      <!-- Àudio registrat -->
+      <h3 class="text-left headline-s font-medium">Àudio registrat</h3>
+      <ul class="body-m mt-0">
+        <li>
+          <span class="font-medium">Nivell percentil L10:</span>
+          {{ observationSelected.attributes.L10 }}
+        </li>
+        <li>
+          <span class="font-medium">Nivell percentil L90:</span>
+          {{ observationSelected.attributes.L90 }}
+        </li>
+        <li>
+          <span class="font-medium">Nivell SPL equivalent LAeq:</span>
+          {{ observationSelected.attributes.Leq }}
+        </li>
+        <li>
+          <span class="font-medium">Nivell màxim Lmax:</span>
+          {{ observationSelected.attributes.LAmax }}
+        </li>
+        <li>
+          <span class="font-medium">Nivell mínim Lmin:</span>
+          {{ observationSelected.attributes.LAmin }}
+        </li>
+      </ul>
+      <div id="line-chart-container"></div>
+    </div>
+  </div>
+
+  }
+</p-sidebar>

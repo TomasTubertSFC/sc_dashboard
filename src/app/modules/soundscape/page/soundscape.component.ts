@@ -4,8 +4,9 @@ import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
-import { Subscription } from 'rxjs';
+import { Subscription, min } from 'rxjs';
 import { GeoJSONObject} from '@turf/turf';
+import * as turf from '@turf/turf';
 
 export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends GeoJSONObject {
   type: "Feature";
@@ -35,10 +36,11 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private map!: Map;
   private draw!: MapboxDraw;
   private observationsService = inject(ObservationsService);
-  private observations: Observations[] = [];
-  private observations$!: Subscription
+  private AllObservations = signal<Observations[]>([]);
+  private observations$!: Subscription;
   private observationSelectedId: string = '';
 
+  public observations: Observations[] = [];
   public points: [number, number][] = [];
   public polylines = signal<Feature[]>([]);
   public startPoints = signal<Feature[]>([]);
@@ -54,26 +56,40 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     bounds: LngLatBounds;
     clusterMaxZoom: number;
   } = {
-      zoom: 10,
-      mapStyle: 'mapbox://styles/mapbox/light-v11',
-      centerMapLocation: [2.1487613, 41.3776589],
-      minZoom: 2,
-      maxZoom: 17,
-      bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
-      clusterMaxZoom: 17,
-    };
+    zoom: 10,
+    mapStyle: 'mapbox://styles/mapbox/light-v11',
+    centerMapLocation: [2.1487613, 41.3776589],
+    minZoom: 2,
+    maxZoom: 17,
+    bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
+    clusterMaxZoom: 17,
+  };
+
+  private hourRage:{[key: string]: number[] | null[]} = {
+    [TimeFilter.MORNING]: [7, 19],
+    [TimeFilter.AFTERNOON]: [19, 23],
+    [TimeFilter.NIGHT]: [23, 7],
+    [TimeFilter.WHOLEDAY]: [null, null],
+  };
+
 
   constructor() {
 
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
-      this.observations = observations;
-      this.polylines.update(() => this.observationsService.getLineStringFromObservations());
-      this.startPoints.update(() => this.observationsService.getStartPointsFromObservations());
+
+      this.AllObservations.update(() => observations);
+      this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
+      this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
+      this.observations = this.AllObservations()
       this.updateMapSource();
     })
 
     effect(() => {
-      if (this.polygonFilter()) console.log(this.timeFilter());
+      if (this.polygonFilter()){
+        let initalHour = this.hourRage[this.timeFilter()][0];
+        let finalHour = this.hourRage[this.timeFilter()][1];
+        this.getFilteredObservationsForSoundscape(initalHour, finalHour, this.polygonFilter().geometry.coordinates[0]);
+      }
     });
 
   }
@@ -99,6 +115,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       style: this.mapSettings.mapStyle, // style URL
       center: this.mapSettings.centerMapLocation, // starting position [lng, lat]
       zoom: this.mapSettings.zoom, // starting zoom
+      cooperativeGestures: true
     });
 
     this.map.on('load', () => this.onMapLoad());
@@ -396,7 +413,8 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   private getFilteredObservations(event: any) {
     this.polygonFilter.update(() => event.features[0])
-    this.observationsService.getFilteredObservationsForSoundscape(null, null, this.polygonFilter().geometry.coordinates[0]);
+    this.getFilteredObservationsForSoundscape(null, null, this.polygonFilter().geometry.coordinates[0]);
+    this.updateMapSource();
   }
 
   private getBboxFromPoints(): [[number, number], [number, number]] {
@@ -553,7 +571,10 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   };
 
-  updateMapSource() {
+  private updateMapSource() {
+
+    this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
+    this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
 
     if (!this.map || !this.map.isSourceLoaded('polylines')) return;
     let source = this.map.getSource('polylines') as mapboxgl.GeoJSONSource;
@@ -570,6 +591,22 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     });
 
   }
+
+  private getFilteredObservationsForSoundscape(minHour: number | null = null, maxHour: number | null = null, polygon: number[][]){
+    this.observations = this.AllObservations();
+    this.observations = this.observations.filter((obs) => {
+      const polygonTurf = turf.polygon([polygon]);
+      let point = turf.point([
+        Number(obs.attributes.longitude),
+        Number(obs.attributes.latitude),
+      ]);
+      return turf.booleanPointInPolygon(point, polygonTurf);
+
+    })
+    //TODO filtrar por hora
+  }
+
+
 
   ngOnDestroy(): void {
     this.observations$.unsubscribe();

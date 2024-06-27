@@ -20,6 +20,9 @@ import { SliderModule } from 'primeng/slider';
 import { CalendarModule } from 'primeng/calendar';
 import { MapLayersComponent } from './components/map-layers/map-layers.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { ObservationInfoModalComponent } from './components/observation-info-modal/observation-info-modal.component';
+import { SharedComponentsModule } from '../../shared/shared.module';
+
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     MapToolBarComponent,
     MapFiltersComponent,
     MapLayersComponent,
+    ObservationInfoModalComponent,
   ],
   imports: [
     FormsModule,
@@ -46,7 +50,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     DropdownModule,
     SkeletonModule,
     PaginatorModule,
-    RadioButtonModule
+    RadioButtonModule,
+    SharedComponentsModule
   ],
 })
 export class MapModule {}

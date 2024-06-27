@@ -32,32 +32,32 @@ export class ObservationsService {
       )
       .subscribe(({ data }) => {
 
-        //TODO: esto debería hacerse en el backend
-        data.map((obs) => {
-          //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
-          obs.attributes.path = [];
-          let start!: [number, number];
-          for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
+        // //TODO: esto debería hacerse en el backend
+        // data.map((obs) => {
+        //   //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
+        //   obs.attributes.path = [];
+        //   let start!: [number, number];
+        //   for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
 
-            let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
-            if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+        //     let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
+        //     if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
 
-            obs.attributes.path.push({
-              start:  start,
-              end:    end,
-              parameters:{
-                pause:  Math.random() < 0.2 ? true : false,
-                LAeq:   Math.floor(Math.random() * 140),
-                LAeqT:  Math.floor(Math.random() * 140),
-                L10:    Math.floor(Math.random() * 140),
-                L90:    Math.floor(Math.random() * 140)
-              }
-            });
+        //     obs.attributes.path.push({
+        //       start:  start,
+        //       end:    end,
+        //       parameters:{
+        //         pause:  Math.random() < 0.2 ? true : false,
+        //         LAeq:   Math.floor(Math.random() * 140),
+        //         LAeqT:  Math.floor(Math.random() * 140),
+        //         L10:    Math.floor(Math.random() * 140),
+        //         L90:    Math.floor(Math.random() * 140)
+        //       }
+        //     });
 
-            start = end;
-          }
-          return obs;
-        });
+        //     start = end;
+        //   }
+        //   return obs;
+        // });
 
         this.observations$.next(data);
         this.loading$.next(false);
@@ -180,9 +180,10 @@ export class ObservationsService {
           longitude: obs.attributes.longitude,
           created_at: new Date(obs.attributes.created_at),
           types: obs.relationships.types.map((type) => type.id),
-          LAeq: obs.attributes.LAeq,
+          Leq: obs.attributes.Leq,
           userType: obs.relationships.user.type,
           quiet: obs.attributes.quiet,
+          path: obs.relationships.segments
         }))
       )
     );
@@ -299,7 +300,7 @@ export class ObservationsService {
   */
   public getLineStringFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
 
-    if(observations.length == 0) return null;
+    if(observations.length == 0) return [];
 
     function getColor(value: number): string{
       switch (true) {
@@ -335,7 +336,13 @@ export class ObservationsService {
       type: 'Feature',
       geometry: {
         type: 'LineString',
-        coordinates: obs.attributes.path.map((value) => { return value.start })
+        //hacemos un reduce de sengments para combertirlos en un Linestring
+        coordinates: obs.relationships.segments.reduce((acc:turf.Position[], segment:any):turf.Position[] => {
+          acc.push([Number(segment.start_longitude), Number(segment.start_latitude)]);
+          if(segment.position == obs.relationships.segments.length) acc.push([Number(segment.end_longitude), Number(segment.end_latitude)]);
+          return acc;
+        }, [])
+
       },
       properties: {
         id:     obs.id,
@@ -349,18 +356,19 @@ export class ObservationsService {
     linestrings = linestrings.concat(
       observations.map((obs) => {
         let segments:Feature[] = [];
-        for (let i = 0; i < obs.attributes.path.length - 1; i++) {
+        for (let i = 0; i <= obs.relationships.segments.length - 1; i++) {
           segments.push({
             type: 'Feature',
             geometry: {
               type: 'LineString',
-              coordinates: [obs.attributes.path[i].start, obs.attributes.path[i].end]
+              coordinates: [[Number(obs.relationships.segments[i].start_longitude),Number(obs.relationships.segments[i].start_latitude)], [Number(obs.relationships.segments[i].end_longitude), Number(obs.relationships.segments[i].end_latitude)]]
             },
             properties: {
+               id:   obs.id,
               type:  'Line',
-              color: getColor(obs.attributes.path[i].parameters.LAeq),
+              color: obs.relationships.segments[i].LAeq ? getColor(obs.relationships.segments[i].LAeq) : null,
               width: 3,
-              pause: obs.attributes.path[i].parameters.pause
+              pause: obs.relationships.segments[i].LAeq ? false : true //TODO: Añadir el valor de pause
             }
           });
         }
@@ -374,45 +382,27 @@ export class ObservationsService {
 
   public getStartPointsFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
 
-    if(observations.length == 0) return null;
+    observations = observations.filter((obs) => obs.relationships.segments.length > 0);
 
-    let points: Feature[] =  observations.map((obs) => ({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [Number(obs.attributes.path[0].start[0]), Number(obs.attributes.path[0].start[1])]
-      },
-      properties: {}
-    }));
+    if(observations.length == 0) return [];
+
+    let points: Feature[] = observations.map((obs) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [Number(obs.relationships.segments[0].start_longitude), Number(obs.relationships.segments[0].start_latitude)]
+        },
+        properties: {
+          id:     obs.id,
+          type:   'Point',
+          color:  '#333',
+          width:  6
+        }
+      })
+    );
 
     return points;
 
-  }
-
-  public getFilteredObservationsForSoundscape(minHour: number | null = null, maxHour: number | null = null, polygon: number[][]){
-    this.observations$.pipe(
-      filter((value) => value.length > 0),
-      map((observations) => {
-        const polygonTurf = turf.polygon([polygon]);
-        return observations.filter((obs) => {
-          let point = turf.point([
-            Number(obs.attributes.longitude),
-            Number(obs.attributes.latitude),
-          ]);
-          const isInside = turf.booleanPointInPolygon(point, polygonTurf);
-          if (isInside) {
-            if (minHour && maxHour) {
-              const hour = new Date(obs.attributes.created_at).getHours();
-              return hour >= minHour && hour <= maxHour;
-            }
-            return true;
-          }
-          return false;
-        });
-      })
-    ).subscribe((filteredObservations) => {
-      this.observations$.next(filteredObservations);
-    });
   }
 
 }
