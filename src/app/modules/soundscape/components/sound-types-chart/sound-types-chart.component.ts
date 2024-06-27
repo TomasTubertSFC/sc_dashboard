@@ -18,6 +18,7 @@ export class SoundTypesChartComponent implements AfterViewInit{
   @Input() observations: Observations[];
   private chart: echarts.ECharts;
   private option! : echarts.EChartsCoreOption;
+  public totalObservationTypes:number = 0
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -29,10 +30,10 @@ export class SoundTypesChartComponent implements AfterViewInit{
     this.chart = echarts.init(chartDom);
 
     const rawData:number[][] = this.getDataFromObservations().cuantity;
-    let totalData:number = 0
+
     for (let i = 0; i < rawData[0].length; ++i) {
       for (let j:number = 0; j < rawData.length; ++j) {
-        totalData += rawData[j][i];
+        this.totalObservationTypes += rawData[j][i];
       }
     }
 
@@ -52,8 +53,7 @@ export class SoundTypesChartComponent implements AfterViewInit{
         label: {
           show: true,
           formatter: (params:any) =>{
-            console.log(params, totalData);
-            return `${params.value} (${Math.round((params.value / totalData) * 1000) / 10}%)`;
+            return `${params.value} (${Math.round((params.value / this.totalObservationTypes) * 1000) / 10}%)`;
           }
         },
         data: rawData[sid]
@@ -76,7 +76,7 @@ export class SoundTypesChartComponent implements AfterViewInit{
     };
 
     this.chart.setOption(this.option);
-    
+
   }
   private getDataFromObservations(): {types : string[], cuantity: number[][]} {
     let types:string[] = [];

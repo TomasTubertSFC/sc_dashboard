@@ -10,6 +10,7 @@ import { SharedComponentsModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { SoundLevelsChartComponent } from './components/sound-levels-chart/sound-levels-chart.component';
 import { SoundTypesChartComponent } from './components/sound-types-chart/sound-types-chart.component';
+import { QuasChartComponent } from './components/quas-chart/quas-chart.component';
 
 
 
@@ -18,6 +19,7 @@ import { SoundTypesChartComponent } from './components/sound-types-chart/sound-t
     SoundscapeComponent,
     SoundLevelsChartComponent,
     SoundTypesChartComponent,
+    QuasChartComponent,
   ],
   imports: [
     CommonModule,

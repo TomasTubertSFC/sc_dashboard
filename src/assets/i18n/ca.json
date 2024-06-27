@@ -42,7 +42,8 @@
       "title": "Nivells de so"
     },
     "soundTypes":{
-      "title": "Tipus de so"
+      "title": "Tipus de so",
+      "typesAverage": "Mitjana tipus de so enregistrat per observació"
     }
   }
 }
