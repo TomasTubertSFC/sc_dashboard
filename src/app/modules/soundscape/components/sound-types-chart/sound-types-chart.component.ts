@@ -5,7 +5,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { BarChart, PieChart } from 'echarts/charts';
 import { GridComponent, LegendComponent } from 'echarts/components';
 import { __values } from 'tslib';
-import { dataTool } from 'echarts';
+import { dataTool, format } from 'echarts';
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 
@@ -53,7 +53,7 @@ export class SoundTypesChartComponent implements AfterViewInit{
         label: {
           show: true,
           formatter: (params:any) =>{
-            return `${params.value} (${Math.round((params.value / this.totalObservationTypes) * 1000) / 10}%)`;
+            return `${Math.round((params.value / this.totalObservationTypes) * 1000) / 10}%`;
           }
         },
         data: rawData[sid]
@@ -63,6 +63,14 @@ export class SoundTypesChartComponent implements AfterViewInit{
     this.option = {
       legend: {
         selectedMode: true
+      },
+      tooltip: {
+        axisPointer: {
+          type: 'shadow',
+        },
+        formatter: (params:any) => {
+          return `${params.value} observacions`;
+        }
       },
       grid,
       yAxis: {
