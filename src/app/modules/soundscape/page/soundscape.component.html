@@ -22,10 +22,15 @@
     }
     </div>
 </div>
-<div class="flex flex-column w-full gap-3">
+<div class="flex flex-wrap w-full">
   <div #map class="map-container"></div>
   @if(observations.length > 0){
-    <app-sound-levels-chart class="card" [observations]="observations" />
+    <div class="col-12 md:col-8 flex">
+      <app-sound-levels-chart class="card w-full" [observations]="observations" />
+    </div>
+    <div class="col-12 md:col-4 flex">
+      <app-sound-types-chart class="card w-full" [observations]="observations" />
+    </div>
   }
 </div>
 
