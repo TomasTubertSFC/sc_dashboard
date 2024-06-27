@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { Observations } from '../../../../models/observations';
 import { PolarComponent, TitleComponent, TooltipComponent } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
@@ -21,13 +21,18 @@ echarts.use([
   styleUrl: './sound-levels-chart.component.scss'
 })
 export class SoundLevelsChartComponent implements AfterViewInit{
+  private chart: echarts.ECharts;
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.chart.resize();
+  }
   @Input() observations: Observations[];
   private max: Number = 0;
 
   ngAfterViewInit(): void {
     let data = this.getDataFromObservations()
-    let chartDom = document.getElementById('chart')!;
-    let myChart = echarts.init(chartDom);
+    let chartDom = document.getElementById('levelsChart')!;
+    this.chart = echarts.init(chartDom);
     let option: EChartsOption;
     option = {
 
@@ -43,7 +48,8 @@ export class SoundLevelsChartComponent implements AfterViewInit{
       },
       angleAxis: {
         type: 'category',
-        data: Array.from({length: 24}, (_, i) => `${i}:00 h.`),
+        //data: Array.from({length: 24}, (_, i) => `${i}:01 h - ${i == 23 ? 0 : i+1}:00 h`),
+        data: Array.from({length: 24}, (_, i) => `${i}:00`),
         startAngle: 90
       },
       tooltip: {},
@@ -61,7 +67,7 @@ export class SoundLevelsChartComponent implements AfterViewInit{
       },
       animation: false
     };
-    option && myChart.setOption(option);
+    this.chart.setOption(option);
   }
 
   private getDataFromObservations(): Number[] {
@@ -74,7 +80,7 @@ export class SoundLevelsChartComponent implements AfterViewInit{
         data[hour].push(Number(observation.attributes.Leq));
       }
     });
-    
+
     const result = data.map(hourData => {
       if(hourData.length === 0) return 0;
       let sum = hourData.reduce((a, b) => Number(a) + Number(b));
@@ -82,7 +88,7 @@ export class SoundLevelsChartComponent implements AfterViewInit{
       this.max = Math.max(Number(this.max), Number(avg));
       return  Number((avg).toFixed(2));
     });
-    return result; 
+    return result;
   }
 
   private getColor(value: number): string{

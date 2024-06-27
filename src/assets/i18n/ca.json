@@ -34,12 +34,15 @@
     },
     "filter":{
       "morning": "Matí (7:00 - 19:00)",
-      "afternoon": "Afternoon (19:00 - 23:00)",
-      "night": "Night (23:00 - 7:00)",
-      "wholeDay": "Whole day"
+      "afternoon": "Tarda (19:00 - 23:00)",
+      "night": "Nit (23:00 - 7:00)",
+      "wholeDay": "Tot el dia"
     },
     "soundLevels":{
       "title": "Nivells de so"
+    },
+    "soundTypes":{
+      "title": "Tipus de so"
     }
   }
 }
