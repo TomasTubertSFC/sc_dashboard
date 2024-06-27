@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ObservationsService } from '../../../services/observations/observations.service';
-import { MapObservation, ObservationGeoJSON } from '../../../models/map';
+import { MapObservation } from '../../../models/map';
 import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 import { FeatureCollection, Geometry } from 'geojson';
 import { BehaviorSubject } from 'rxjs';
@@ -22,9 +22,11 @@ export class MapService {
     new BehaviorSubject<boolean>(false);
 
   private mapObservations: MapObservation[] = [];
-  private filteredFeatures: Feature[] = []
-  public features$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>([]);
-  public initialGeoJson: ObservationGeoJSON = {
+  private filteredFeatures: Feature[] = [];
+  public features$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>(
+    []
+  );
+  public initialGeoJson: { type: string; features: Feature[] } = {
     type: 'FeatureCollection',
     features: [],
   };
@@ -50,9 +52,7 @@ export class MapService {
   public isOpenObservationInfoModal: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  constructor(
-    private observationsService: ObservationsService
-  ) {
+  constructor(private observationsService: ObservationsService) {
     //Subscribe to know if the filter is active
     this.isFilterActive.subscribe((isFilterActive) => {
       if (!this.map) return;
@@ -111,7 +111,6 @@ export class MapService {
       });
     }
   }
-
 
   public setMap(map: Map): void {
     this.map = map;
@@ -324,8 +323,8 @@ export class MapService {
     if (soundPressure) {
       mapObs = mapObs.filter(
         (obs) =>
-          Number(obs.LAeq) <= soundPressureFilter[1] &&
-          Number(obs.LAeq) >= soundPressureFilter[0]
+          Number(obs.Leq) <= soundPressureFilter[1] &&
+          Number(obs.Leq) >= soundPressureFilter[0]
       );
     }
     if (hours) {
@@ -338,13 +337,15 @@ export class MapService {
       });
     }
 
-    const observations = this.observationsService.observations$.getValue().filter((obs) => {
-      return mapObs.some((mapObs) => mapObs.id === obs.id);
-    })
+    const observations = this.observationsService.observations$
+      .getValue()
+      .filter((obs) => {
+        return mapObs.some((mapObs) => mapObs.id === obs.id);
+      });
 
     //Get all features
     const features =
-        this.observationsService.getLineStringFromObservations(observations);
+      this.observationsService.getLineStringFromObservations(observations);
 
     this.filteredFeatures = features as Feature[];
 
