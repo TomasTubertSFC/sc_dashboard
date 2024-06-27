@@ -35,37 +35,100 @@ export class SoundLevelsChartComponent implements AfterViewInit{
     this.chart = echarts.init(chartDom);
     let option: EChartsOption;
     option = {
-
+      legend: {
+        data: ['< 35 dB(A)', '35 - 40 dB(A)', '40 - 45 dB(A)', '45 - 50 dB(A)', '50 - 55 dB(A)', '55 - 60 dB(A)', '60 - 65 dB(A)', '65 - 70 dB(A)', '70 - 75 dB(A)', '75 - 80 dB(A)', '> 80 dB(A)'],
+      },
       polar: {
         radius: [10, '80%']
       },
       radiusAxis: {
         max: this.max.toFixed(2),
-        z: 90,
-        lineStyle: {
-          color: '#000'
+        z: 5,
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: '#333',
+            width: 1.5,
+            type: 'solid'
+          }
         },
+        axisTick: {
+          show: true,
+          lineStyle: {
+            color: '#333',
+            width: 1.5,
+            type: 'solid'
+          }
+        },
+        axisLabel: {
+          show: true,
+          formatter: '{value} dB(A)',
+          textStyle: {
+            color: '#333',
+            fontSize: 12,
+            //backgroundColor: '#FFF'
+          },
+        }
+
       },
       angleAxis: {
         type: 'category',
         //data: Array.from({length: 24}, (_, i) => `${i}:01 h - ${i == 23 ? 0 : i+1}:00 h`),
         data: Array.from({length: 24}, (_, i) => `${i}:00`),
-        startAngle: 90
-      },
-      tooltip: {},
-      series: {
-        type: 'bar',
-        data: data,
-        coordinateSystem: 'polar',
-        barGap: '0%',
-        barCategoryGap: '0%',
-        itemStyle: {
-          color: (params:any) => {
-            return this.getColor(params.value);
+        z: 6,
+        startAngle: 90,
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: '#333',
+            width: 2,
+            type: 'solid'
           }
+        },
+        axisTick: {
+          show: true,
+          lineStyle: {
+            color: '#333',
+            width: 2,
+            type: 'solid'
+          }
+        },
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985'
+          }
+        },
+        formatter: (params:any) => {
+          return `${params[0].value} dB(A)`;
         }
       },
-      animation: false
+      series: {
+        type: 'bar',
+        data: data.map((value) => {
+          return {
+            value: value,
+            name: this.getLabel(Number(value)),
+            itemStyle: {
+              color: this.getColor(Number(value))
+            }
+          };
+        }),
+        coordinateSystem: 'polar',
+        barGap: '0',
+        barCategoryGap: '0',
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        },
+      },
+      animation: true
     };
     this.chart.setOption(option);
   }
@@ -118,6 +181,35 @@ export class SoundLevelsChartComponent implements AfterViewInit{
       default:
         return '#333';
     }
+  }
+  private getLabel(value: number): string{
+    switch (true) {
+      case value <= 35:
+        return '< 35 dB(A)';
+      case value > 35 && value <= 40:
+        return '35 - 40 dB(A)';
+      case value > 40 && value <= 45:
+        return '40 - 45 dB(A)';
+      case value > 45 && value <= 50:
+        return '45 - 50 dB(A)';
+      case value > 50 && value <= 55:
+        return '50 - 55 dB(A)';
+      case value > 55 && value <= 60:
+        return '55 - 60 dB(A)';
+      case value > 60 && value <= 65:
+        return '60 - 65 dB(A)';
+      case value > 65 && value <= 70:
+        return '65 - 70 dB(A)';
+      case value > 70 && value <= 75:
+        return '70 - 75 dB(A)';
+      case value > 75 && value <= 80:
+        return '75 - 80 dB(A)';
+      case value > 80:
+        return '> 80 dB(A)';
+      default:
+        return 'Unknown';
+    }
+
   }
 
 }
