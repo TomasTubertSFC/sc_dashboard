@@ -18,7 +18,6 @@ export class QuasChartComponent implements AfterViewInit{
   private chart: echarts.ECharts;
   private option! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
-  //private quietTypesLabel = ['Silent', 'Quiet', 'Moderate', 'Loud', 'Very Loud'];
   private quietTypesLabel = ['Moderament tranquil', 'Bastant tranquil', 'Molt tranquil'];
   private dBLevels = ['>35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '>80'];
 
@@ -73,7 +72,7 @@ export class QuasChartComponent implements AfterViewInit{
         top:40
       },
       xAxis: {
-        name: 'dB(A)',
+        name: 'dBA',
         nameLocation: 'middle',
         nameGap: 35,
         type: 'category',
@@ -93,7 +92,6 @@ export class QuasChartComponent implements AfterViewInit{
   }
 
   private getDataFromObservations(): number[][] {
-    let quietTypes:string[] = [];
     let dBLevels:number[][] = [];
 
     for (let i = 0; i < this.quietTypesLabel.length; ++i) {

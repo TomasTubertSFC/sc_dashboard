@@ -21,29 +21,32 @@ echarts.use([
   styleUrl: './sound-levels-chart.component.scss'
 })
 export class SoundLevelsChartComponent implements AfterViewInit{
-  private chart: echarts.ECharts;
+  @Input() observations: Observations[];
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.chart.resize();
   }
-  @Input() observations: Observations[];
+  private chart: echarts.ECharts;
   private max: Number = 0;
 
   ngAfterViewInit(): void {
-    let data = this.getDataFromObservations()
+    let data = this.getDataFromObservations();
     let chartDom = document.getElementById('levelsChart')!;
     this.chart = echarts.init(chartDom);
     let option: EChartsOption;
+    let legendData: string[] = ['< 35 dBA', '35 - 40 dBA', '40 - 45 dBA', '45 - 50 dBA', '50 - 55 dBA', '55 - 60 dBA', '60 - 65 dBA', '65 - 70 dBA', '70 - 75 dBA', '75 - 80 dBA', '> 80 dBA'];
     option = {
       legend: {
-        data: ['< 35 dB(A)', '35 - 40 dB(A)', '40 - 45 dB(A)', '45 - 50 dB(A)', '50 - 55 dB(A)', '55 - 60 dB(A)', '60 - 65 dB(A)', '65 - 70 dB(A)', '70 - 75 dB(A)', '75 - 80 dB(A)', '> 80 dB(A)'],
+        data: legendData,
+        orient: 'vertical',
+        left: 'left'
       },
       polar: {
-        radius: [10, '80%']
+        radius: [10, '88%']
       },
       radiusAxis: {
         max: this.max.toFixed(2),
-        z: 5,
+        z: 1,
         axisLine: {
           show: true,
           lineStyle: {
@@ -62,12 +65,14 @@ export class SoundLevelsChartComponent implements AfterViewInit{
         },
         axisLabel: {
           show: true,
-          formatter: '{value} dB(A)',
+          formatter: '{value} dBA',
           textStyle: {
             color: '#333',
             fontSize: 12,
-            //backgroundColor: '#FFF'
           },
+          label: {
+            backgroundColor: '#6a7985'
+          }
         }
 
       },
@@ -75,7 +80,7 @@ export class SoundLevelsChartComponent implements AfterViewInit{
         type: 'category',
         //data: Array.from({length: 24}, (_, i) => `${i}:01 h - ${i == 23 ? 0 : i+1}:00 h`),
         data: Array.from({length: 24}, (_, i) => `${i}:00`),
-        z: 6,
+        z: 10,
         startAngle: 90,
         axisLine: {
           show: true,
@@ -99,35 +104,44 @@ export class SoundLevelsChartComponent implements AfterViewInit{
         axisPointer: {
           type: 'cross',
           label: {
-            backgroundColor: '#6a7985'
+            backgroundColor: '#6a7985',
+            formatter: (params:any) => {
+              if(params.axisDimension === 'angle') {
+                let hour = params.value.split(':')[0];
+                return `${hour}:01 h - ${hour == 23 ? 0 : Number(hour)+1}:00 h`
+              } else {
+                return `${Math.round(params.value)} dBA`
+              }
+            }
           }
         },
         formatter: (params:any) => {
-          return `${params[0].value} dB(A)`;
-        }
-      },
-      series: {
-        type: 'bar',
-        data: data.map((value) => {
-          return {
-            value: value,
-            name: this.getLabel(Number(value)),
-            itemStyle: {
-              color: this.getColor(Number(value))
-            }
-          };
-        }),
-        coordinateSystem: 'polar',
-        barGap: '0',
-        barCategoryGap: '0',
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
+          let dB = 0;
+          params.forEach((param:any) => {
+            dB = param.value > dB ? param.value : dB;
+          });
+          return dB ? `${dB} dBA` : 'Sense observacions';
         },
       },
+      series: Array.from({length: 24}, () => {}).map((_, sid) => {
+        return {
+          type: 'bar',
+          data:  Array.from({length: 24}, (_, i) => {
+            if(i === sid) return data[i];
+            return 0;
+          }),
+          coordinateSystem: 'polar',
+          name: this.getLabel(Number(data[sid])),
+          stack: 'a',
+          emphasis: {
+            focus: 'series'
+          },
+          itemStyle: {
+            color: this.getColor(Number(data[sid]))
+          },
+        };
+
+      }),
       animation: true
     };
     this.chart.setOption(option);
@@ -135,7 +149,6 @@ export class SoundLevelsChartComponent implements AfterViewInit{
 
   private getDataFromObservations(): Number[] {
     let data: Number[][] = Array.from({length: 24}, () => []);
-    let max = 0;
     this.observations.forEach(observation => {
       let hour = new Date(observation.attributes.created_at).getHours();
       if(!data[hour]) data[hour] = [];
@@ -185,27 +198,27 @@ export class SoundLevelsChartComponent implements AfterViewInit{
   private getLabel(value: number): string{
     switch (true) {
       case value <= 35:
-        return '< 35 dB(A)';
+        return '< 35 dBA';
       case value > 35 && value <= 40:
-        return '35 - 40 dB(A)';
+        return '35 - 40 dBA';
       case value > 40 && value <= 45:
-        return '40 - 45 dB(A)';
+        return '40 - 45 dBA';
       case value > 45 && value <= 50:
-        return '45 - 50 dB(A)';
+        return '45 - 50 dBA';
       case value > 50 && value <= 55:
-        return '50 - 55 dB(A)';
+        return '50 - 55 dBA';
       case value > 55 && value <= 60:
-        return '55 - 60 dB(A)';
+        return '55 - 60 dBA';
       case value > 60 && value <= 65:
-        return '60 - 65 dB(A)';
+        return '60 - 65 dBA';
       case value > 65 && value <= 70:
-        return '65 - 70 dB(A)';
+        return '65 - 70 dBA';
       case value > 70 && value <= 75:
-        return '70 - 75 dB(A)';
+        return '70 - 75 dBA';
       case value > 75 && value <= 80:
-        return '75 - 80 dB(A)';
+        return '75 - 80 dBA';
       case value > 80:
-        return '> 80 dB(A)';
+        return '> 80 dBA';
       default:
         return 'Unknown';
     }
