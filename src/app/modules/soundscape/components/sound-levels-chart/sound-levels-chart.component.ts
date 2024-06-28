@@ -102,7 +102,15 @@ export class SoundLevelsChartComponent implements AfterViewInit{
         axisPointer: {
           type: 'cross',
           label: {
-            backgroundColor: '#6a7985'
+            backgroundColor: '#6a7985',
+            formatter: (params:any) => {
+              if(params.axisDimension === 'angle') {
+                let hour = params.value.split(':')[0];
+                return `${hour}:01 h - ${hour == 23 ? 0 : Number(hour)+1}:00 h`
+              } else {
+                return `${Math.round(params.value)} dB(A)`
+              }
+            }
           }
         },
         formatter: (params:any) => {
@@ -110,7 +118,7 @@ export class SoundLevelsChartComponent implements AfterViewInit{
           params.forEach((param:any) => {
             dB = param.value > dB ? param.value : dB;
           });
-          return dB ? `${dB} dB(A)` : 'No data';;
+          return dB ? `${dB} dB(A)` : 'Sense observacions';
         },
       },
       series: Array.from({length: 24}, () => {}).map((_, sid) => {
