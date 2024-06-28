@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 import { SoundscapeComponent } from './page/soundscape.component';
 import { SharedComponentsModule } from '../../shared/shared.module';
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { SoundLevelsChartComponent } from './components/sound-levels-chart/sound-levels-chart.component';
 import { SoundTypesChartComponent } from './components/sound-types-chart/sound-types-chart.component';
 import { QuasChartComponent } from './components/quas-chart/quas-chart.component';
+import { PerceptionChartComponent } from './components/perception-chart/perception-chart.component';
 
 
 
@@ -20,6 +22,7 @@ import { QuasChartComponent } from './components/quas-chart/quas-chart.component
     SoundLevelsChartComponent,
     SoundTypesChartComponent,
     QuasChartComponent,
+    PerceptionChartComponent,
   ],
   imports: [
     CommonModule,
@@ -27,6 +30,7 @@ import { QuasChartComponent } from './components/quas-chart/quas-chart.component
     CheckboxModule,
     RadioButtonModule,
     SharedComponentsModule,
+    SelectButtonModule,
     FormsModule
   ]
 })

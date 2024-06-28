@@ -39,11 +39,17 @@
       "wholeDay": "Tot el dia"
     },
     "soundLevels":{
-      "title": "Nivells de so"
+      "title": "Visualització gradual dels nivells de so per hores"
     },
     "soundTypes":{
-      "title": "Tipus de so",
-      "typesAverage": "Mitjana tipus de so enregistrat per observació"
+      "title": "Tipus de so"
+    },
+    "quas":{
+      "title": "Distribució de nivells de pressió sonora a l'àrea tranquil·la"
+    },
+    "perception":{
+      "title": "Descripció de la percepció del espai"
+
     }
   }
 }
