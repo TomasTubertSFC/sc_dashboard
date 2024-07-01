@@ -52,6 +52,9 @@
     },
     "pressure":{
       "title": "Distribució de nivells de pressió sonora a l'àrea tranquil·la"
+    },
+    "qualitativeData":{
+      "title": "Dades qualitatives"
     }
   }
 }
