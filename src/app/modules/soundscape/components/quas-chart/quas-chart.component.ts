@@ -19,7 +19,7 @@ export class QuasChartComponent implements AfterViewInit{
   private option! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
   private quietTypesLabel = ['Moderament tranquil', 'Bastant tranquil', 'Molt tranquil'];
-  private dBLevels = ['>35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '>80'];
+  private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '> 80'];
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -84,7 +84,18 @@ export class QuasChartComponent implements AfterViewInit{
         nameGap: 35,
         type: 'value'
       },
-      tooltip: {},
+      tooltip: {
+        color: true,
+        axisPointer: {
+          type: 'shadow',
+        },
+         formatter: function(params:any) {
+            var content = `<b>${params.seriesName}</b><br/>`;
+            content += params.name + ' dBA<br/>';
+            content += params.value + ' observacions';
+            return content;
+          }
+      },
       series
     };
 
